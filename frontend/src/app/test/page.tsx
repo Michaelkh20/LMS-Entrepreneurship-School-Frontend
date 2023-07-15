@@ -1,4 +1,6 @@
+import DownloadButton from "@/components/DownloadButton/dwnld-button"
 import FormComponent from "@/components/Form/form"
+import LoadButton from "@/components/LoadButton/load-button"
 import TradeLotCard from "@/components/LotCard/lot-card"
 import HeaderAdminBig from "@/components/headers/header-admin-big/header"
 import HeaderAdmin from "@/components/headers/header-admin/header"
@@ -24,6 +26,8 @@ export default function Test() {
                 conditions="Условия торгового лота"
             />
             <FormComponent/>
+            <LoadButton/>
+            <DownloadButton/>
             <h1>Test</h1>
         </main>
     )
