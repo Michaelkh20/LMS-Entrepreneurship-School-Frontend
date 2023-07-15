@@ -20,6 +20,13 @@
   gap: 1.5rem;
 }
 
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+}
+
 .name {
   font-size: 1.5rem;
 }
