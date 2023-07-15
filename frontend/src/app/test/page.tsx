@@ -1,3 +1,5 @@
+import FormComponent from "@/components/Form/form"
+import TradeLotCard from "@/components/LotCard/lot-card"
 import HeaderAdminBig from "@/components/headers/header-admin-big/header"
 import HeaderAdmin from "@/components/headers/header-admin/header"
 import HeaderLernerBig from "@/components/headers/header-lerner-big/header"
@@ -8,12 +10,20 @@ import HeaderTracker from "@/components/headers/header-tracker/header"
 export default function Test() {
     return (
         <main>
-            <HeaderAdmin/>
-            <HeaderAdminBig/>
-            <HeaderLerner/>
-            <HeaderLernerBig/>
-            <HeaderTrackerBig/>
-            <HeaderTracker/>
+            <HeaderAdmin />
+            <HeaderAdminBig />
+            <HeaderLerner />
+            <HeaderLernerBig />
+            <HeaderTrackerBig />
+            <HeaderTracker />
+            <TradeLotCard
+                number={12345}
+                description="Торговый лот описания"
+                performer="Имя исполнителя"
+                price={100}
+                conditions="Условия торгового лота"
+            />
+            <FormComponent/>
             <h1>Test</h1>
         </main>
     )
