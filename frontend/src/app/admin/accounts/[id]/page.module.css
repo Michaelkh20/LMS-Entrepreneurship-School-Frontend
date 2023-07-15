@@ -1,0 +1,60 @@
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem 0;
+}
+
+.row {
+    display: flex;
+    direction: row;
+    justify-content: space-between;
+    margin: 2rem 1rem;
+    width: 70%;
+    margin-left: 15%;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+
+.name {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.role {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6D6AFF;
+}
+
+.buttonRedux {
+    padding: 1rem 1rem;
+    border: none;
+    background-color: #E1F8FF;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.buttonRedux:hover {
+    background-color: white;
+}
+
+.balance {
+    font-size: 1.2rem;
+}
+
+.line {
+    margin-top: 1.5rem;
+    margin-left: 15%;
+    display: flex;
+    direction: row;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.2rem;
+
+}
