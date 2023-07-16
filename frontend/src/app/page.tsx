@@ -1,94 +1,114 @@
 import Image from 'next/image'
 import styles from './page.module.css'
+import { Mulish, Jura } from 'next/font/google'
+import Link from 'next/link'
+
+const mulish = Mulish({
+  subsets: ['latin']
+})
+
+const jura = Jura({
+  subsets: ['latin']
+})
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className={mulish.className}>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+
+          <header className={styles.header_box}>
+              <button className={styles.main_page_button}>&lt; На главную</button>
+              <div className={styles.right_header_box}>
+                <div className={styles.image_and_text_box}>
+                  <Link href = "">
+                    <Image
+                      src="/shop_image.svg"
+                      width={53}
+                      height={53}
+                      alt=""
+                    />
+                  </Link>
+                  <p className={styles.balance_counter}>15 $</p>
+                </div>
+                <div className={styles.image_and_text_box}>
+                  <Link href = "">
+                    <Image
+                      src="/profile_image.svg"
+                      width={45}
+                      height={50}
+                      alt=""
+                    />
+                  </Link>
+                  <p className={styles.username}>Иван</p>
+                </div>
+              </div>
+          </header>
+
+          <div className={jura.className}>
+              <h1 className={styles.page_label}>МАГАЗИН</h1>
+          </div>
+
+          <div className={styles.lots_container}>
+            <div className={styles.lot}>
+              <div className={jura.className}>
+                  <h1 className={styles.lot_name}>Лот №1</h1>
+                </div>
+                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
+                <p className={styles.lot_holder}>Исполнитель лота:</p>
+                <p className={styles.lot_holder_name}>Солодихина Анна</p>
+                <div className={styles.lot_price_container}>
+                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
+                  <p className={styles.lot_price_count}>200</p>
+                </div>
+                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
+                <button className={styles.application_lot_button}>Подать заявку</button>
+            </div>
+            <div className={styles.lot}>
+              <div className={jura.className}>
+                  <h1 className={styles.lot_name}>Лот №1</h1>
+                </div>
+                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
+                <p className={styles.lot_holder}>Исполнитель лота:</p>
+                <p className={styles.lot_holder_name}>Солодихина Анна</p>
+                <div className={styles.lot_price_container}>
+                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
+                  <p className={styles.lot_price_count}>200</p>
+                </div>
+                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
+                <button className={styles.application_lot_button}>Подать заявку</button>
+            </div>
+            <div className={styles.lot}>
+              <div className={jura.className}>
+                  <h1 className={styles.lot_name}>Лот №1</h1>
+                </div>
+                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
+                <p className={styles.lot_holder}>Исполнитель лота:</p>
+                <p className={styles.lot_holder_name}>Солодихина Анна</p>
+                <div className={styles.lot_price_container}>
+                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
+                  <p className={styles.lot_price_count}>200</p>
+                </div>
+                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
+                <button className={styles.application_lot_button}>Подать заявку</button>
+            </div>
+            <div className={styles.lot}>
+              <div className={jura.className}>
+                <h1 className={styles.lot_name}>Лот №1</h1>
+              </div>
+              <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
+              <p className={styles.lot_holder}>Исполнитель лота:</p>
+              <p className={styles.lot_holder_name}>Солодихина Анна</p>
+              <div className={styles.lot_price_container}>
+                <p className={styles.lot_price}>Стоимость (ШПрот):</p>
+                <p className={styles.lot_price_count}>200</p>
+              </div>
+              <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
+              <button className={styles.application_lot_button}>Подать заявку</button>
+            </div>
+          </div>
+
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
       </div>
     </main>
   )
