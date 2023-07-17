@@ -38,6 +38,7 @@
     border-radius: 0.75rem;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
+    font-weight: 600;
 }
 
 .buttonRedux:hover {
@@ -57,4 +58,54 @@
     gap: 2rem;
     font-size: 1.2rem;
 
+}
+
+.deleteButton {
+    padding: 1rem 1rem;
+    border: none;
+    padding: 1rem 3rem;
+    color: white;
+    background-color: #FF6D6D;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.buttonContainer {
+    display: flex;
+    direction: row;
+    margin-top: 2rem;
+    justify-content: flex-start;
+    align-items: center;
+    width: 70%;
+    margin-left: 15%;
+    gap: 3rem;
+}
+.deleteButton:hover {
+    background-color: #FF4F4F;
+}
+
+.underlineText {
+    margin-left: 15%;
+    margin-top: 5rem;
+    font-size: 1.5rem;
+}
+
+.buttonUp {
+    margin-top: 1rem;
+    padding: 1rem 1rem;
+    margin-left: 15%;
+    border: 1px solid #C2C2C2;
+    background-color: white;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.buttonUp:hover {
+    background-color: #F2F2F2;
 }

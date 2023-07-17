@@ -1,0 +1,35 @@
+/* Table.module.css */
+
+.table {
+    width: 70%;
+    margin-left: 15%;
+    border-radius: 12px;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+  
+  .localClass th,
+  .localClass td {
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+  
+  .localClass th {
+    background-color: #D6E4FF;
+    font-weight: bold;
+  }
+  
+  .column20 {
+    width: 20%;
+  }
+  
+  .column40 {
+    width: 40%;
+  }
+  
+  .column10 {
+    width: 10%;
+  }
+  
+  
