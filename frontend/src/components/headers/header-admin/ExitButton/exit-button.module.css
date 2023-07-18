@@ -1,11 +1,16 @@
 /* Exit-Button Module */
 
 .button {
-    padding: 0.5rem 2.5rem;
-    font-size: 1.5rem;
+    /*padding: 0.5rem 2.5rem;*/
+    padding: .75rem 2rem;
+    font-size: var(--f-size-20);
     background-color: #E1F8FF;
     border: none;
-    border-radius: 0.75rem;
+    border-radius: var(--button-border-radius);
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
     align-items: center;
     cursor: pointer;
   }
+
