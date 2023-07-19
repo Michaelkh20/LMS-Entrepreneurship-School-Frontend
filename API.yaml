@@ -3,7 +3,7 @@ openapi: "3.0.2"
 info:
   title: "LMS Entrepreneurship School API"
   description: "API for interaction with LMS backend. \n\n Путь без роли доступны всем. \n\n /admin - доступ только Admin. \n\n /learner - доступ Learner и Tracker. \n\n /tracker - доступ только Tracker. \n\n Во всех requests и responses неиспользуемые поля должны содержать null."
-  version: "1.0.0"
+  version: "1.0.1"
 
 servers:
 - url: https://localhost:3000/api/v1
@@ -48,7 +48,8 @@ paths:
         - $ref: '#/components/parameters/email'
         - $ref: '#/components/parameters/teamNumber'
         - $ref: '#/components/parameters/role'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -198,7 +199,8 @@ paths:
       operationId: getTeams
       parameters:
         - $ref: '#/components/parameters/teamNumber'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -345,7 +347,8 @@ paths:
         - $ref: '#/components/parameters/assessmentType'
         - $ref: '#/components/parameters/dateFrom'
         - $ref: '#/components/parameters/dateTo'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/pageable'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -605,7 +608,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/lessonId'
         - $ref: '#/components/parameters/taskType'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -751,7 +755,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/lessonNumber'
         - $ref: '#/components/parameters/lessonTitle'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/pageable'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -918,7 +923,8 @@ paths:
         - $ref: '#/components/parameters/lotNumber'
         - $ref: '#/components/parameters/lotTitle'
         - $ref: '#/components/parameters/learnerId'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -1051,7 +1057,8 @@ paths:
         - $ref: '#/components/parameters/transactionType'
         - $ref: '#/components/parameters/dateFrom'
         - $ref: '#/components/parameters/dateTo'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -1119,7 +1126,8 @@ paths:
         - $ref: '#/components/parameters/transactionType'
         - $ref: '#/components/parameters/dateFrom'
         - $ref: '#/components/parameters/dateTo'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -1150,7 +1158,8 @@ paths:
         - $ref: '#/components/parameters/receiverId'
         - $ref: '#/components/parameters/dateFrom'
         - $ref: '#/components/parameters/dateTo'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -1263,7 +1272,8 @@ paths:
         - $ref: '#/components/parameters/claimStatus'
         - $ref: '#/components/parameters/dateFrom'
         - $ref: '#/components/parameters/dateTo'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -1343,7 +1353,7 @@ paths:
         500:
           $ref: '#/components/responses/500'
           
-  /admin/files:
+  /learner/files:
     post:
       tags:
         - Files
@@ -1369,7 +1379,7 @@ paths:
         500:
           $ref: '#/components/responses/500'
   
-  /admin/files/{fileId}:
+  /files/{fileId}:
     get:
       tags:
         - Files
@@ -1403,7 +1413,8 @@ paths:
         - $ref: '#/components/parameters/taskIdRequired'
         - $ref: '#/components/parameters/learnerId'
         - $ref: '#/components/parameters/teamId'
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/pageable'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -1427,7 +1438,8 @@ paths:
       description: "Get list of solutions for learner. \n\n Возвращает все задания с типом 'HW' даже, если решение не было загружено (completeDate = null в response). \n\n Фильтрация невозможна."
       operationId: getSolutionsLearner
       parameters:
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
       responses:
         200:
           description: Successful response
@@ -1469,7 +1481,8 @@ paths:
       description: "Get list of tasks with solutions' info for tracker. \n\n Возвращает все задания с типом 'HW'."
       operationId: getSolutionsTracker
       parameters:
-        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/sortProperty'
+        - $ref: '#/components/parameters/sortOrder'
       responses:
         200:
           description: Successful response
@@ -1710,19 +1723,20 @@ components:
       description: Search claim status
       schema:
         $ref: '#/components/schemas/claimStatus'
-    sort:
-      name: sort
+    sortProperty:
+      name: sortProperty
       in: query
-      description: >-
-        Sorting criteria in the format: "property (asc|desc)". Default sort
-        order is ascending. Multiple sort criteria are supported.
+      description: Property of response to sort by
       schema:
-        type: array
-        items:
-          type: string
+        type: string
         example: 
-          - name asc
-          - email desc
+          name
+    sortOrder:
+      name: sortOrder
+      in: query
+      description: OSorting order
+      schema:
+        $ref: '#/components/schemas/sortOrder'
     page:
       name: page
       in: query
@@ -1901,6 +1915,10 @@ components:
     emailGroupingTypes:
       type: string
       enum: ['All', 'Learners', 'Trackers']
+    sortOrder:
+      type: string
+      enum: ['asc', 'desc']
+      example: 'asc'
     pageNumber:
       type: integer
       default: 1
