@@ -2,8 +2,8 @@ openapi: "3.0.2"
 
 info:
   title: "LMS Entrepreneurship School API"
-  description: "API for interaction with LMS backend. \n\n Путь без роли доступны всем. \n\n /admin - доступ только Admin. \n\n /learner - доступ Learner и Tracker. \n\n /tracker - доступ только Tracker. \n\n Во всех requests и responses неиспользуемые поля должны содержать null."
-  version: "1.0.1"
+  description: "API for interaction with LMS backend. \n\n Путь без роли доступны всем. \n\n /admin - доступ только Admin. \n\n /learner - доступ Learner и Tracker. \n\n /tracker - доступ только Tracker. \n\n Во всех requests и responses неиспользуемые поля должны содержать null. \n\n Response 404 возвращается для Learner и Tracker при попытке доступа к Admin."
+  version: "1.1.1"
 
 servers:
 - url: https://localhost:3000/api/v1
@@ -30,8 +30,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
-        401:
-          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
               
@@ -61,6 +63,10 @@ paths:
                 $ref: '#/components/schemas/AccountsPage'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         500:
           $ref: '#/components/responses/500'
                   
@@ -80,8 +86,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -99,10 +111,16 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRequest'
       responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
         200:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
           
@@ -124,6 +142,8 @@ paths:
                 $ref: '#/components/schemas/UserProfile'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -166,6 +186,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -187,6 +209,8 @@ paths:
                 $ref: '#/components/schemas/UserSelectionList'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
 
@@ -212,6 +236,10 @@ paths:
                 $ref: '#/components/schemas/TeamsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -233,6 +261,12 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -252,8 +286,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
                   
@@ -275,6 +315,8 @@ paths:
                 $ref: '#/components/schemas/TeamProfile'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -291,6 +333,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -312,6 +356,8 @@ paths:
                 $ref: '#/components/schemas/LearnerTeamProfile'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -331,6 +377,8 @@ paths:
                 $ref: '#/components/schemas/TeamSelectionList'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -359,8 +407,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssessmentsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -380,8 +432,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -399,10 +457,14 @@ paths:
             schema:
               $ref: '#/components/schemas/AssessmentRequest'
       responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
         200:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -424,6 +486,8 @@ paths:
                 $ref: '#/components/schemas/AssessmentInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -440,6 +504,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -466,6 +532,8 @@ paths:
                 $ref: '#/components/schemas/FinalGradeInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -503,10 +571,14 @@ paths:
             schema:
               $ref: '#/components/schemas/FinalGradeFormula'      
       responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
         200:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -525,10 +597,14 @@ paths:
             schema:
               $ref: '#/components/schemas/BonusRequest'
       responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
         200:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -550,8 +626,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LearnerAssessmentTableItem'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -572,8 +652,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -595,6 +681,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -619,8 +707,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TasksPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -640,8 +732,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -663,6 +761,12 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
     
@@ -684,6 +788,8 @@ paths:
                 $ref: '#/components/schemas/TaskInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -700,6 +806,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -721,6 +829,8 @@ paths:
                 $ref: '#/components/schemas/TaskSelectionList'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -742,6 +852,8 @@ paths:
                 $ref: '#/components/schemas/DeadlineInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -769,6 +881,10 @@ paths:
                 $ref: '#/components/schemas/LessonsPage'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         500:
           $ref: '#/components/responses/500'
                   
@@ -790,6 +906,12 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
             
@@ -811,6 +933,12 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
         500:
           $ref: '#/components/responses/500'
     
@@ -832,6 +960,8 @@ paths:
                 $ref: '#/components/schemas/LessonInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -844,10 +974,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/idPath'
       responses:
-        200:
-          $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -867,6 +997,8 @@ paths:
                 $ref: '#/components/schemas/LessonSelectionList'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -909,6 +1041,8 @@ paths:
                 $ref: '#/components/schemas/LearnerLessonInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
       
@@ -936,6 +1070,10 @@ paths:
                 $ref: '#/components/schemas/LotsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -957,6 +1095,10 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -978,6 +1120,10 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
     
@@ -999,6 +1145,8 @@ paths:
                 $ref: '#/components/schemas/LotInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -1015,6 +1163,8 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1028,7 +1178,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/lotNumber'
         - $ref: '#/components/parameters/lotTitle'
-        - $ref: '#/components/parameters/learnerId'
         - $ref: '#/components/parameters/priceFrom'
         - $ref: '#/components/parameters/priceTo'
         - $ref: '#/components/parameters/page'
@@ -1042,6 +1191,8 @@ paths:
                 $ref: '#/components/schemas/LearnerLotsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         500:
           $ref: '#/components/responses/500'
 
@@ -1070,6 +1221,10 @@ paths:
                 $ref: '#/components/schemas/TransactionsPage'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         500:
           $ref: '#/components/responses/500'
                   
@@ -1091,6 +1246,10 @@ paths:
           $ref: '#/components/responses/200'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         500:
           $ref: '#/components/responses/500'
     
@@ -1112,6 +1271,8 @@ paths:
                 $ref: '#/components/schemas/TransactionInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1139,6 +1300,8 @@ paths:
                 $ref: '#/components/schemas/LearnerTransactionsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         500:
           $ref: '#/components/responses/500'
           
@@ -1171,6 +1334,10 @@ paths:
                 $ref: '#/components/schemas/ClaimsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
             
@@ -1190,8 +1357,12 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
     
@@ -1213,6 +1384,8 @@ paths:
                 $ref: '#/components/schemas/ClaimInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                 
@@ -1257,6 +1430,8 @@ paths:
 
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1285,6 +1460,10 @@ paths:
                 $ref: '#/components/schemas/LearnerClaimsPage'
         401:
           $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
         
@@ -1304,8 +1483,14 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        403:
+          description: "Not enough money"
+        404:
+          description: "Lot or reciever not found"
         500:
           $ref: '#/components/responses/500'
   
@@ -1322,13 +1507,15 @@ paths:
         - $ref: '#/components/parameters/lessonIdRequired'
       responses:
         200:
-          description: 'Ответ содержит информацию об уроке в поле lesson и список leartners вообще всех зарегистрированных учеников, с полем didCome = true и возможно accruedСurrency у тех, кто пришёл.'
+          description: 'Ответ содержит информацию об уроке в поле lesson и список learners вообще всех зарегистрированных учеников, с полем didCome = true и возможно accruedСurrency у тех, кто пришёл.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AttendanceInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
                   
@@ -1348,8 +1535,12 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1374,6 +1565,8 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          description: "The uploaded file was not a .zip"
         401:
           $ref: '#/components/responses/401'
         500:
@@ -1399,8 +1592,14 @@ paths:
               schema:
                 type: string
                 format: binary
+        '401':
+          $ref: '#/components/responses/401'
         '404':
-          description: ZIP file not found
+          $ref: '#/components/responses/404'
+        '403':
+          description: The learner don't have access to this file.
+        '500':
+          $ref: '#/components/responses/500'
           
   /admin/solutions:
     get:
@@ -1425,8 +1624,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SolutionsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
 
@@ -1452,15 +1655,15 @@ paths:
         500:
           $ref: '#/components/responses/500'
           
-  /learner/solutions/{id}:
+  /learner/solutions/{taskId}:
     get:
       tags:
         - Solutions
-      summary: Get solution by id for learner
-      description: Get solution by id for learner
+      summary: Get solution by task id for learner
+      description: Get solution by task id for learner
       operationId: getSolutionByIdLearner
       parameters:
-        - $ref: '#/components/parameters/idPath'
+        - $ref: '#/components/parameters/taskIdPath'
       responses:
         200:
           description: Successful response
@@ -1470,6 +1673,8 @@ paths:
                 $ref: '#/components/schemas/LearnerSolutionInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1492,6 +1697,8 @@ paths:
                 $ref: '#/components/schemas/TrackerTasksSolutionsTable'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   
@@ -1513,6 +1720,8 @@ paths:
                 $ref: '#/components/schemas/TrackerSolutionsTable'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1534,6 +1743,8 @@ paths:
                 $ref: '#/components/schemas/TrackerSolutionInfo'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
           
@@ -1554,8 +1765,12 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
         401:
           $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
     
@@ -1579,6 +1794,13 @@ components:
     taskId:
       name: taskId
       in: query
+      description: Task id
+      schema:
+        $ref: '#/components/schemas/id'
+    taskIdPath:
+      name: taskId
+      in: path
+      required: true
       description: Task id
       schema:
         $ref: '#/components/schemas/id'
@@ -1760,8 +1982,26 @@ components:
   responses:
     200:
       description: Successful response
+    NotSpecified:
+      description: Bad Request. Some of the crucial properties have not been specified
+    IncorrectParameters:
+      description: Bad Request. Incorrect parameters.
     401:
       description: Unauthorized
+    403:
+      description: Forbidden
+    404:
+      description: Not found.
+    409:
+      description: Key properties of entity already in use.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+              example: 'testId'
+    
     500:
       description: Internal server error
   
@@ -1815,7 +2055,7 @@ components:
       type: string
       format: phone
       example: +79157777777
-    messanger:
+    messenger:
       type: string
       example: "tg:@ivan"
     gender:
@@ -2022,8 +2262,8 @@ components:
           $ref: '#/components/schemas/email'
         phone:
           $ref: '#/components/schemas/phone'
-        messanger:
-          $ref: '#/components/schemas/messanger'
+        messenger:
+          $ref: '#/components/schemas/messenger'
         teamNumber:
           type: array
           items:
@@ -2044,8 +2284,8 @@ components:
           $ref: '#/components/schemas/fullName'  
         email:
           $ref: '#/components/schemas/email'
-        messanger:
-          $ref: '#/components/schemas/messanger'
+        messenger:
+          $ref: '#/components/schemas/messenger'
         role:
           $ref: '#/components/schemas/role'
     
@@ -2064,8 +2304,8 @@ components:
           $ref: '#/components/schemas/email'
         phone:
           $ref: '#/components/schemas/phone'
-        messanger:
-          $ref: '#/components/schemas/messanger'
+        messenger:
+          $ref: '#/components/schemas/messenger'
         gender:
           $ref: '#/components/schemas/gender'
         role:
@@ -2528,7 +2768,7 @@ components:
         terms:
           $ref: '#/components/schemas/criteria'  
         performer:
-          $ref: '#/components/schemas/UserSelectionItem'
+          $ref: '#/components/schemas/fullName'
         price:
           $ref: '#/components/schemas/price'
     
