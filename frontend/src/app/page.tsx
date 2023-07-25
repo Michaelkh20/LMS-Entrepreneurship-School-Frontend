@@ -46,106 +46,181 @@ export default function Home() {
           </header>
 
           <div className={jura.className}>
-              <h1 className={styles.page_label}>МАГАЗИН</h1>
+              <h1 className={styles.page_label}>ЛИЧНЫЙ КАБИНЕТ</h1>
           </div>
 
-          <div className={styles.lots_container}>
-            <div className={styles.lot}>
-              <div className={jura.className}>
-                  <h1 className={styles.lot_name}>Лот №1</h1>
-                </div>
-                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
-                <p className={styles.lot_holder}>Исполнитель лота:</p>
-                <p className={styles.lot_holder_name}>Солодихина Анна</p>
-                <div className={styles.lot_price_container}>
-                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
-                  <p className={styles.lot_price_count}>200</p>
-                </div>
-                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
-                <button className={styles.application_lot_button}>Подать заявку</button>
+          <div className={styles.content_container}>
+            <div className={styles.balance_container}>
+              <p>Баланс шпрот - 15 ШП</p>
+              <button>Сделать перевод</button>
             </div>
-            <div className={styles.lot}>
-              <div className={jura.className}>
-                  <h1 className={styles.lot_name}>Лот №1</h1>
+            <div className={styles.user_data_container}>
+              <p className={styles.user_data_label}>Контактные данные участника</p>
+              <div className={styles.user_data}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
                 </div>
-                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
-                <p className={styles.lot_holder}>Исполнитель лота:</p>
-                <p className={styles.lot_holder_name}>Солодихина Анна</p>
-                <div className={styles.lot_price_container}>
-                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
-                  <p className={styles.lot_price_count}>200</p>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
                 </div>
-                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
-                <button className={styles.application_lot_button}>Подать заявку</button>
-            </div>
-            <div className={styles.lot}>
-              <div className={jura.className}>
-                  <h1 className={styles.lot_name}>Лот №1</h1>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
                 </div>
-                <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
-                <p className={styles.lot_holder}>Исполнитель лота:</p>
-                <p className={styles.lot_holder_name}>Солодихина Анна</p>
-                <div className={styles.lot_price_container}>
-                  <p className={styles.lot_price}>Стоимость (ШПрот):</p>
-                  <p className={styles.lot_price_count}>200</p>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
                 </div>
-                <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
-                <button className={styles.application_lot_button}>Подать заявку</button>
-            </div>
-            <div className={styles.lot}>
-              <div className={jura.className}>
-                <h1 className={styles.lot_name}>Лот №1</h1>
               </div>
-              <p className={styles.lot_content}>Консультации по всему материалу курса и всем домашним заданиям</p>
-              <p className={styles.lot_holder}>Исполнитель лота:</p>
-              <p className={styles.lot_holder_name}>Солодихина Анна</p>
-              <div className={styles.lot_price_container}>
-                <p className={styles.lot_price}>Стоимость (ШПрот):</p>
-                <p className={styles.lot_price_count}>200</p>
-              </div>
-              <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)</p>
-              <button className={styles.application_lot_button}>Подать заявку</button>
             </div>
+
+            <p className={styles.theme_label}>Тема проекта</p>
+
+
+            <div className={styles.team_members_container}>
+              <p className={styles.team_members_label}>Участники команды</p>
+              <div className={styles.team_members}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+              </div>
+
+              <div className={styles.team_members}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+              </div>
+
+              <div className={styles.team_members}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+              </div>
+
+            </div>
+
+
+
+            <div className={styles.tracker_container}>
+              <p className={styles.team_members_label}>Трекер команды</p>
+              <div className={styles.team_members}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+              </div>
+              
+              <div className={styles.team_members}>
+                <div className={styles.user_data_component}>
+                  <Image
+                        src="/purple_circle.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                  />
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+                <div className={styles.user_data_component}>
+                  <p>123123123</p>
+                </div>
+              </div>
+
+            </div>
+
+
+
+
+
+            
           </div>
 
-          <div className={styles.create_lot}>
-            <div className={jura.className}>
-              <h1>Предложить свой лот</h1>
-            </div>
-            <div className={styles.create_lot_data}>
-              <div className={styles.left_create_lot_data}>
-                <div className={styles.label_and_input_box}>
-                  <p>Название лота*</p>
-                  <input></input>
-                </div>
-                <div className={styles.label_and_input_box}>
-                  <p>Описание*</p>
-                  <input></input>
-                </div>
-              </div>
-              <div className={styles.right_create_lot_data}>
-                <div className={styles.label_and_input_price_box}>
-                  <p>Стоимость*</p>
-                  <input></input>
-                </div>
-                <div className={styles.label_and_input_box}>
-                  <p>Условия*</p>
-                  <input></input>
-                </div>
-              </div>
-            </div>
-            <div className={styles.send_form_box}>
-              <p>Отправить заявку</p>
-              <Link href="">
-                <Image
-                  src = "/send_lot_form_button.svg"
-                  width = {58}
-                  height = {56}
-                  alt = ""
-                />
-              </Link>
-            </div>
-          </div>
 
         </div>
       </div>
