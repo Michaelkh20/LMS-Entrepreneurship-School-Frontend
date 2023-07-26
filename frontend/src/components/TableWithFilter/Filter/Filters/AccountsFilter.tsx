@@ -1,6 +1,6 @@
 import {Form, FormProps, Input, Select} from "antd";
 import formStyles from "../form.module.css";
-import {NameFormItem, EmailFormItem, TeamFormItem, RoleFormItem} from "@/components/TableWithFilter/FormItems"
+import {NameFormItem, EmailFormItem, TeamFormItem, RoleFormItem} from "@/components/Form/FormItems";
 import {FilterWrapper} from "@/components/TableWithFilter/Filter/FilterWrapper";
 
 export function AccountsFilter({onChangeEvent}: any) {

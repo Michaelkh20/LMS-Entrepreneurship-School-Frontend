@@ -6,7 +6,7 @@ import {
     TeamFormItem,
     RoleFormItem,
     StatusFormItem, UserSelectionFormItem, DatePickerFormItem
-} from "@/components/TableWithFilter/FormItems"
+} from "@/components/Form/FormItems";
 import {FilterWrapper} from "@/components/TableWithFilter/Filter/FilterWrapper";
 
 export function CurrencyTransferFilter({onChangeEvent}: any) {
