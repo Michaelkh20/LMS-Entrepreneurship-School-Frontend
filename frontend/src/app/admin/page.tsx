@@ -20,7 +20,7 @@ const AdminPage: React.FC = () => {
 
     return (
         <>
-            <HeaderAdmin />
+            <HeaderAdmin isHomePage = {true}/>
             <div className={styles.buttonRow}>
                 <div></div>
                 <button className={styles.button}>Создать рассылку</button>

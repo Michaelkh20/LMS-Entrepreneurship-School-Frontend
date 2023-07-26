@@ -13,6 +13,12 @@
     align-items: center;
     gap: 1rem;
   }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
   
   .adminLabel {
     margin-right: 0.5rem;
