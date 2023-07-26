@@ -4,12 +4,14 @@ import styles from './header.module.css';
 
 export default function HeaderAdmin() {
     return (
-        <nav className={styles.nav}>
-            <div className={styles.left}>
-                <span className={styles.adminIcon}><AdminIcon/></span>
-                <span className={styles.adminLabel}>Администратор</span>
-            </div>
-            <ExitButton/>
-        </nav>
+        <div className={styles.nav_wrapper}>
+            <nav className={styles.nav}>
+                <div className={styles.left}>
+                    <span className={styles.adminIcon}><AdminIcon/></span>
+                    <span className={styles.adminLabel}>Администратор</span>
+                </div>
+                <ExitButton/>
+            </nav>
+        </div>
     )
 }
