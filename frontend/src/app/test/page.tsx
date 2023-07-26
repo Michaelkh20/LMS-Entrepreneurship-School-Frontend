@@ -2,8 +2,6 @@ import DownloadButton from "@/components/Buttons/DownloadButton/dwnld-button"
 import FormComponent from "@/components/Form/form"
 import LoadButton from "@/components/LoadButton/load-button"
 import TradeLotCard from "@/components/LotCard/lot-card"
-import HeaderTrackerBig from "@/components/headers/header-tracker-learner/header"
-import HeaderTracker from "@/components/headers/header-tracker-learner/header"
 
 export default function Test() {
     return (
