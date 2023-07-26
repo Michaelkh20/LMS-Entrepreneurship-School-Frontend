@@ -1,10 +1,8 @@
-import HeaderAdminBig from "@/components/headers/header-admin/header";
 import style from './page.module.css';
 
 export default function Page({ params }: { params: { id: string } }) {
     return (
         <div>
-            <HeaderAdminBig />
             <h1 className={style.title}> Профиль </h1>
             <div>ID IS: {params.id}</div>
             <div className={style.row}>
