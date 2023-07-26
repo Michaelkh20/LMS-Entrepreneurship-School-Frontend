@@ -27,7 +27,7 @@ const FormComponent: React.FC = () => {
 
     return (
         <div>
-            <Form
+            {/*<Form
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 14 }}
                 layout="vertical"
@@ -56,7 +56,7 @@ const FormComponent: React.FC = () => {
                     <Switch checked={isTeam} onChange={(checked: boolean | ((prevState: boolean) => boolean)) => setIsTeam(checked)} />
                 </Form.Item>
                 <button className={style.button} type="submit">Подтвердить изменения</button>
-            </Form>
+            </Form>*/}
         </div>
     );
 };
