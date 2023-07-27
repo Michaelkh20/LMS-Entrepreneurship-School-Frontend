@@ -6,11 +6,8 @@
 
 .row {
     display: flex;
-    direction: row;
     justify-content: space-between;
-    margin: 2rem 1rem;
-    width: 70%;
-    margin-left: 15%;
+    margin: 2rem 0;
 }
 
 .left {
@@ -50,12 +47,11 @@
 
 .line {
     margin-top: 1.5rem;
-    margin-left: 15%;
     display: flex;
     direction: row;
     align-items: center;
     gap: 2rem;
-    font-size: 1.2rem;
+    font-size: var(--f-size-20);
 
 }
 
