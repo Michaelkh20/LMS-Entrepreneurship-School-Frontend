@@ -1,5 +1,5 @@
 import NavBarAdmin from '@/components/headers/header-admin/header';
-import EditForm from '../../form';
+import EditForm from '../../../../../components/AccountForm/form';
 import style from './page.module.css';
 
 const RegistrationPage: React.FC = () => {
@@ -10,7 +10,6 @@ const RegistrationPage: React.FC = () => {
 
   return (
     <div>
-        <NavBarAdmin isHomePage={false} />
         <h1 className={style.title}> Редактирование профиля </h1>
         <EditForm isRegistrationForm = {false} />
     </div>

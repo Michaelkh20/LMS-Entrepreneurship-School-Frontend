@@ -1,6 +1,5 @@
-import NavBarAdmin from '@/components/headers/header-admin/header';
 import style from './page.module.css';
-import TableComponent from './table';
+import TableComponent from '../../../../components/TableOfMark/TableOfMark';
 
 export default function Page({ params }: { params: { id: string } }) {
     const data = [
@@ -30,7 +29,6 @@ export default function Page({ params }: { params: { id: string } }) {
       ];
     return (
         <div>
-            <NavBarAdmin isHomePage={false} />
             <h1 className={style.title}> Профиль </h1>
             <div>ID IS: {params.id}</div>
             <div className={style.row}>
