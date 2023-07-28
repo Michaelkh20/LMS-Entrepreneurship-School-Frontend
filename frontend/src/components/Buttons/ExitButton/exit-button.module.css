@@ -3,7 +3,7 @@
 .button {
     /*padding: 0.5rem 2.5rem;*/
     padding: .75rem 2rem;
-    font-size: var(--f-size-20);
+    font-size: 1.15rem;
     background-color: #E1F8FF;
     border: none;
     border-radius: var(--button-border-radius);
