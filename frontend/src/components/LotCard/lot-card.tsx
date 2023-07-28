@@ -1,4 +1,6 @@
 import styles from './card.module.css';
+import { Mulish, Jura } from 'next/font/google'
+
 interface TradeLotCardProps {
     number: number;
     description: string;
@@ -6,6 +8,10 @@ interface TradeLotCardProps {
     price: number;
     conditions: string;
 }
+
+const jura = Jura({
+    subsets: ['latin']
+})
 
 const TradeLotCard: React.FC<TradeLotCardProps> = ({
     number,
@@ -15,24 +21,19 @@ const TradeLotCard: React.FC<TradeLotCardProps> = ({
     conditions,
 }) => {
     return (
-        <div className={styles.card}>
-            <div className={styles.header}>
-                <h3 className={styles.number}>Лот №{number}</h3>
+        <div className={styles.lot}>
+            <div className={jura.className}>
+                <h1 className={styles.lot_name}>Лот №{number}</h1>
             </div>
-            <div className={styles.body}>
-                <p className={styles.description}>Описание: {description}</p>
-                <p className={styles.performer}>
-                    <h1 className={styles.pink}> Исполнитель лота: </h1>
-                    {performer}
-                </p>
-                <p className={styles.price}>
-                    Стоимость лота: <span className={styles.bigBlue}>{price}</span>
-                </p>
-                <p className={styles.conditions}><span className={styles.smallBlue} >Условия:</span> {conditions}</p>
+            <p className={styles.lot_content}>{description}</p>
+            <p className={styles.lot_holder}>Исполнитель лота:</p>
+            <p className={styles.lot_holder_name}>{performer}</p>
+            <div className={styles.lot_price_container}>
+                <p className={styles.lot_price}>Стоимость (ШПрот):</p>
+                <p className={styles.lot_price_count}>{price}</p>
             </div>
-            <div className={styles.footer}>
-                <button className={styles.button}>Подать заявку</button>
-            </div>
+            <p className={styles.lot_condition_value}><span className={styles.lot_condition}>Условия:</span> {conditions}</p>
+            <button className={styles.application_lot_button}>Подать заявку</button>
         </div>
     );
 };

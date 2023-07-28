@@ -1,91 +1,109 @@
-/* TradeLotCard.module.css */
+.lot {
+  box-sizing: border-box;
+  width: 48.3%;
+  min-width: 300px;
+  border-radius: 18px;
+  border: 1px solid var(--unnamed, #BFC4F1);
+  padding: 45px 25px 26px 70px;
+  background: #F8F5FF;
+}
 
-.card {
-    background-color: #f2f2f2;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-    width: 35%;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.625rem;
-  }
-  
-  .number {
-    font-size: 1.125rem;
-    font-weight: bold;
-    color: #0039CA;
-  }
-  
-  .price {
-    margin-top: 1.5rem;
-    font-size:  0.875rem;
-  }
-  
-  .body {
-    margin-bottom: 0.625rem;
-  }
-  
-  .description,
-  .performer {
-    font-size: 0.875rem;
-    font-weight: 700;
-  }
-  
-  .description {
-    margin-bottom: 0.3125rem;
-  }
-  
-  .performer {
-    margin-top: 1.5rem;
-    margin-bottom: 0.3125rem;
-  }
+.lot_name {
+  color: #0039CA;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin: 0;
+}
 
-  .pink {
-    color: #F26097;
-    font-size: 0.875rem;
-    font-weight: 400;
-  }
+.lot_content {
+  color: #2D2D2D;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
 
-  .bigBlue {
-    color: #0039CA;
-    font-size: 1.125rem;
-  }
+.lot_holder {
+  color: #F26097;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  margin: 5px 0px;
+}
 
-  .smallBlue {
-    color: #0039CA;
-  }
-  
-  .conditions {
-    font-size: 0.875rem;
-    font-style: italic;
-    margin-top: 1.5rem;
-    font-weight: 300;
-  }
+.lot_holder_name {
+  margin: 0;
+  color: #2D2D2D;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+}
 
-  .footer {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .button {
-    margin-right: 2rem;
-    padding: 0.5rem 1rem;
-    color: #0039CA;
-    border: 0.08rem solid #BFC4F1;
-    border-radius: 0.7rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color:#8498FF;
-    color: white;
-  }
-  
-  
-  
+.lot_price_container {
+  display: flex;
+  height: 39px;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.lot_price {
+  color: #2D2D2D;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lot_price_count {
+  color: #0039CA;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lot_condition {
+  color: #0039CA;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.lot_condition_value {
+  word-wrap: break-word;
+  color: #2D2D2D;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.application_lot_button {
+  width: 155px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid #BFC4F1;
+  background: white;
+  float: right;
+  color: #0039CA;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+  font-family: inherit;
+  transition-duration: 0.4s;
+}
+
+.application_lot_button:hover {
+  color: white;
+  background: #8497FF
+}
