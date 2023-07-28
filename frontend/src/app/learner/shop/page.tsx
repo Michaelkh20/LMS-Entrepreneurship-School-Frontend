@@ -2,7 +2,7 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { Mulish, Jura } from 'next/font/google'
 import Link from 'next/link'
-import HeaderLernerBig from "@/components/headers/header-lerner-big/header"
+import NavBar from "@/components/headers/header-tracker-learner/header"
 import TradeLotCard from "@/components/LotCard/lot-card"
 
 const mulish = Mulish({
@@ -18,7 +18,12 @@ export default function Home() {
     <main className={mulish.className}>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <HeaderLernerBig/>
+          <NavBar
+            balance={15}
+            name="Иван" 
+            isHomePage={false} 
+            isTrackerPage={false}          
+          />
           <div className={jura.className}>
               <h1 className={styles.page_label}>МАГАЗИН</h1>
           </div>
