@@ -1,6 +1,6 @@
-import HeaderAdmin from "@/components/headers/header-admin/header";
 import React from "react";
 import styles from "./layout.module.css"
+import NavBarAdmin from "@/components/headers/header-admin/header";
 
 export default function RootLayout({
                                        children,
@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
     return (
         <>
-            <HeaderAdmin/>
+            <NavBarAdmin isHomePage = {false}/>
             <main className={styles.main}>
                 {children}
             </main>

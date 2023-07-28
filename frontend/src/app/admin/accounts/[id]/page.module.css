@@ -54,3 +54,26 @@
     font-size: var(--f-size-20);
 
 }
+
+.underlineText {
+    margin-left: 3rem;
+    margin-top: 5rem;
+    font-size: 1.5rem;
+}
+
+.buttonUp {
+    margin-top: 1rem;
+    padding: 1rem 1rem;
+    margin-left: 3rem;
+    border: 1px solid #C2C2C2;
+    background-color: white;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.buttonUp:hover {
+    background-color: #F2F2F2;
+}
