@@ -1,11 +1,10 @@
+import { Id } from '@/types/common';
+import { AssessmentRequest, GetSolutionsTrackerApiArg } from '@/types/requests';
 import {
-  AssessmentRequest,
-  GetSolutionsTrackerApiArg,
-  Id,
   TrackerSolutionInfo,
   TrackerSolutionsTable,
   TrackerTasksSolutionsTable,
-} from '@/types/common';
+} from '@/types/responses';
 import { learnerApi } from './learnerApi';
 
 const trackerApi = learnerApi.injectEndpoints({
@@ -52,8 +51,6 @@ const trackerApi = learnerApi.injectEndpoints({
   }),
   overrideExisting: false,
 });
-
-export { trackerApi as lmsApi };
 
 export const {
   useCreateAssessmentByTrackerMutation,

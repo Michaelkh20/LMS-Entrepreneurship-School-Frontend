@@ -1,17 +1,12 @@
-import {
-  AuthRequest,
-  AuthResponse,
-  FinalGradeFormula,
-  FinalGradeInfo,
-  Id,
-  UserProfile,
-} from '@/types/common';
+import { FinalGradeFormula, Id } from '@/types/common';
+import { AuthRequest } from '@/types/requests';
+import { AuthResponse, FinalGradeInfo, UserProfile } from '@/types/responses';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const commonApi = createApi({
   reducerPath: 'commonAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/',
+    baseUrl: process.env.BACKEND_URL,
   }),
   endpoints: (build) => ({
     auth: build.mutation<AuthResponse, AuthRequest>({

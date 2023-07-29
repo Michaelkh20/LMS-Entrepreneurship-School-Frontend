@@ -1,11 +1,14 @@
+import { Id, TaskType } from '@/types/common';
 import {
   GetClaimsLearnerApiArg,
   GetLotsLearnerApiArg,
   GetSolutionsLearnerApiArg,
   GetTransactionsLearnerApiArg,
-  Id,
-  LearnerAssessmentTableItem,
   LearnerClaimRequest,
+  UploadFileApiArg,
+} from '@/types/requests';
+import {
+  LearnerAssessmentTableItem,
   LearnerClaimsPage,
   LearnerLessonInfo,
   LearnerLessonTableItem,
@@ -14,10 +17,8 @@ import {
   LearnerSolutionsTable,
   LearnerTeamProfile,
   LearnerTransactionsPage,
-  TaskType,
-  UploadFileApiArg,
   UserBalance,
-} from '@/types/common';
+} from '@/types/responses';
 import { commonApi } from './commonApi';
 
 export const learnerApi = commonApi.injectEndpoints({
