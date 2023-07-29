@@ -1,0 +1,8 @@
+{
+  "schemaFile": "./openapi-schema.json",
+  "apiFile": "./emptyApi.ts",
+  "apiImport": "emptyApi",
+  "outputFile": "./lmsApi.ts",
+  "exportName": "lmsApi",
+  "hooks": true
+}
