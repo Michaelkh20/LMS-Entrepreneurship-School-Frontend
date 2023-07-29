@@ -1,0 +1,67 @@
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.theme {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.buttonRedux {
+    padding: .75rem 2rem;
+    font-size: 1.15rem;
+    background-color: #E1F8FF;
+    border: none;
+    border-radius: var(--button-border-radius);
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.buttonRedux:hover {
+    background-color: #C7F1FF;
+}
+
+.first-row {
+    background-color: #E1F8FF;
+}
+
+.sign {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 3rem;
+}
+
+.buttonDelete {
+    margin-top: 2rem;
+    /* Выравнивание по правому краю */
+    margin-left: auto;
+    padding: .75rem 2rem;
+    font-size: 1.15rem;
+    background-color: #FF6D6D;
+    color: white;
+    border: none;
+    border-radius: var(--button-border-radius);
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.buttonDelete:hover {
+    background-color: #FF4F4F;
+}
