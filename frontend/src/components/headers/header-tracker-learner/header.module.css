@@ -37,11 +37,11 @@
 }
 
 .icon {
-  font-size:2.25rem;
+  font-size: 2.25rem;
 }
 .iconMarket {
-  font-size:2.25rem;
-  color: #FF69A1;
+  font-size: 2.25rem;
+  color: #ff69a1;
 }
 
 @media (max-width: 768px) {

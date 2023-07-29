@@ -10,8 +10,8 @@ const RegistrationPage: React.FC = () => {
 
   return (
     <div>
-        <h1 className={style.title}> Создание профиля </h1>
-        <EditForm isRegistrationForm = {true}/>
+      <h1 className={style.title}> Создание профиля </h1>
+      <EditForm isRegistrationForm={true} />
     </div>
   );
 };

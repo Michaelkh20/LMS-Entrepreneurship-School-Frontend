@@ -1,9 +1,7 @@
-"use client"
+'use client';
 
-import { AimOutlined } from "@ant-design/icons"
+import { AimOutlined } from '@ant-design/icons';
 
 export default function MarketIcon() {
-    return (
-        <AimOutlined />
-    )
+  return <AimOutlined />;
 }

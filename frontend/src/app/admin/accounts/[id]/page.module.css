@@ -1,79 +1,78 @@
 .title {
-    text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0;
+  text-align: center;
+  font-size: 2rem;
+  margin: 2rem 0;
 }
 
 .row {
-    display: flex;
-    justify-content: space-between;
-    margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0;
 }
 
 .left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
 }
 
 .name {
-    font-size: 1.5rem;
-    font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .role {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #6D6AFF;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #6d6aff;
 }
 
 .buttonRedux {
-    padding: 1rem 1rem;
-    border: none;
-    background-color: #E1F8FF;
-    font-size: 1rem;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+  padding: 1rem 1rem;
+  border: none;
+  background-color: #e1f8ff;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .buttonRedux:hover {
-    background-color: white;
+  background-color: white;
 }
 
 .balance {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .line {
-    margin-top: 1.5rem;
-    display: flex;
-    direction: row;
-    align-items: center;
-    gap: 2rem;
-    font-size: var(--f-size-20);
-
+  margin-top: 1.5rem;
+  display: flex;
+  direction: row;
+  align-items: center;
+  gap: 2rem;
+  font-size: var(--f-size-20);
 }
 
 .underlineText {
-    margin-left: 3rem;
-    margin-top: 5rem;
-    font-size: 1.5rem;
+  margin-left: 3rem;
+  margin-top: 5rem;
+  font-size: 1.5rem;
 }
 
 .buttonUp {
-    margin-top: 1rem;
-    padding: 1rem 1rem;
-    margin-left: 3rem;
-    border: 1px solid #C2C2C2;
-    background-color: white;
-    font-size: 1rem;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    font-weight: 600;
+  margin-top: 1rem;
+  padding: 1rem 1rem;
+  margin-left: 3rem;
+  border: 1px solid #c2c2c2;
+  background-color: white;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-weight: 600;
 }
 
 .buttonUp:hover {
-    background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
