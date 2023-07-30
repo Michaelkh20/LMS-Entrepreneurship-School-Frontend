@@ -1,45 +1,45 @@
 :root {
-    --max-width: 1170px;
-    --border-radius: 12px;
-    --font-sans: 'Mulish', sans-serif;
+  --max-width: 1170px;
+  --border-radius: 12px;
+  --font-sans: 'Mulish', sans-serif;
 
-    --f-size-24: 1.5rem;
-    --f-size-20: 1.25rem;
-    --f-size-16: 1rem;
-    --f-size-title: 2.5rem;
+  --f-size-24: 1.5rem;
+  --f-size-20: 1.25rem;
+  --f-size-16: 1rem;
+  --f-size-title: 2.5rem;
 
-    --section-gap: 2rem;
+  --section-gap: 2rem;
 
-    --border-color: #d9d9d9;
+  --border-color: #d9d9d9;
 
-    --button-border-radius: 8px;
+  --button-border-radius: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-    }
+  :root {
+  }
 }
 
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html,
 body {
-    max-width: 100vw;
-    overflow-x: hidden;
-    /*font-family: var(--font-sans);*/
+  max-width: 100vw;
+  overflow-x: hidden;
+  /*font-family: var(--font-sans);*/
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {
-    html {
-        /*color-scheme: dark;*/
-    }
+  html {
+    /*color-scheme: dark;*/
+  }
 }
