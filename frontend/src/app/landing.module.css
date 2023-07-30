@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
+
+.main {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.main>div {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.upperPanel {
+  position: relative;
+}
+
+.upperPanel>div>a>img[alt="lk"] {
+  width: 3.2vw;
+}
+
+.upperPanel>div>a>img[alt="vk"] {
+  width: 3.4vw;
+}
+
+.upperPanel>div>a>img[alt="yt"] {
+  width: 3.4vw;
+}
+
+.upperPanel>div>a {
+  margin-right: 2vw;
+}
+
+.upperPanel>div {
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  transform: translate(-50%, -50%);
+  color: white; /* Настройте цвет текста */
+}
+
+.upperPanel>img {
+  width: 100%;
+}
+
+.upperPanel>div>span {
+  position: absolute;
+  top: 100%;
+  right: 81%;
+  color: #000;
+  font-family: Mulish;
+  font-size: 1vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding-left: 0.2em;
+}
+
+.dlitelnost {
+  position: relative; 
+  display: inline-block;
+
+}
+
+.dlitelnost>img {
+  min-width: 100%;
+}
+
+.dlitelnost>span {
+  position: absolute; /* Устанавливаем абсолютное позиционирование */
+  top: 50%; /* Положение текста по вертикали (по центру) */
+  left: 50%; /* Положение текста по горизонтали (по центру) */
+  transform: translate(-50%, -50%); /* Смещаем текст обратно на половину своего размера, чтобы он был точно в центре */
+  color: rgb(0, 0, 0); /* Цвет текста */
+  font-size: 24px; /* Размер текста */
+  background-color: rgba(0, 0, 0, 0); /* Непрозрачный фон */
+  padding: 10px; /* Отступы вокруг текста */
+  color: #232323;
+  font-family: Mulish;
+  font-size: 1.2vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.secondPart {
+  display: flex;
+  justify-content: space-between;
+}
+
+.secondPart>div {
+  width: 33vw;
+  height: 80vh;
+  border-radius: 18px;
+  box-shadow: 0px 4px 4px 0px #CFD8E8, 0px -4px 4px 0px #FFF;
+  margin-top: 80px;
+  margin-bottom: 50px;
+}
+
+.secondPart>div[side="left"] {
+  background-color: rgba(0, 118, 185, 0.04);
+  margin-left: 15%;
+}
+
+.secondPart>div[side="left"]>iframe {
+  height: 50%;
+  scale: 0.75;
+  margin-bottom: 0;
+}
+
+.secondPart>div>span {
+  display: flex;
+  justify-content: center;
+  margin-top: 7%; 
+  color: var(--unnamed, #2D2D2D);
+  font-family: Jura;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.secondPart>div>span[afterVideo] {
+  text-align: justify;
+  font-family: Mulish;  
+  font-style: normal;
+  line-height: normal;
+  margin-left: 15%;
+}
+
+.secondPart>div>span[afterVideo="first"] {
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+  margin-right: 15%;
+  margin-top: -3%;
+}
+
+.secondPart>div>span[afterVideo="second"] {
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration-line: underline;
+  margin: 0;
+  margin-left: 15%;
+  padding: 0;
+  margin-top: 1em;
+  justify-content: flex-start;
+}
+
+.secondPart>div[side="right"] {
+  background-color: rgba(238, 228, 250, 0.40);
+  margin-right: 15%;
+}
+
+.secondPart>div[side="right"]>img {
+  max-width: 100%;
+  scale: 0.95;
+}
+
+.secondPart>div[side="right"]>span {
+  margin-bottom: 1em;
+}
+
+.components {
+  position: relative;
+  color: var(--unnamed, #2D2D2D);
+  display: flex;
+  justify-content: center;
+  font-family: Jura;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.components>span {
+  position: relative;
+  z-index: 1;
+}
+
+.components::before {
+  content: '';
+  position: absolute;
+  left: 380px;
+  right: 0;
+  top: 60%;
+  width: 755px;
+  height: 18px;
+  background-color: rgba(225, 248, 255, 1);
+}
+
+.programComponents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.programComponents>div {
+  display: flex;
+  justify-content:space-between;
+  margin-top: 3em;
+  margin-left: 15%;
+  margin-right: 10%;
+}
+
+.componentBlock {
+  text-align: justify;
+  font-family: Mulish;
+  display: flex;
+  flex-direction: column;
+  align-items:  flex-start;
+  width: 20em;
+}
+
+.componentBlock>div[name] {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.componentBlock>div>span[number] {
+  background-color: #BFC4F1;
+  border-radius: 50%;
+  padding: 0.7em;
+  color: var(--unnamed, #FFF);  
+  font-size: 0.9em;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.componentBlock>div>span[about] {
+  border-radius: 30px;
+  border: 1px solid var(--unnamed, #BFC4F1);
+  display: inline-flex;
+  padding: 7px;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 0.9em;
+  margin-left: 1.5em;
+  font-weight: 600;
+}
+
+.componentBlock>span[description] {
+  color: var(--unnamed, #2D2D2D);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-right: 10%;
+}
+
+.itsAnna {
+  position: relative;
+}
+
+.itsAnna>img {
+  margin-top: 5em;
+  width: 100%;
+}
+
+.itsAnna>div[side] {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: black; /* Настройте цвет текста */
+  font-size: 15px; /* Настройте размер шрифта */
+}
+
+.itsAnna>div[side="left"] {
+  top: 75%;
+  left: 27%;
+}
+
+.itsAnna>div>div {
+  display: flex;
+  width: 25em;
+}
+
+.itsAnna>div>div>span {
+  margin-bottom: 2.5em;
+  margin-left: 1em;
+  font-family: Mulish;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.itsAnna>div>div>img {
+  width: 1.7em;
+  height: 1.7em;
+}
+
+.itsAnna>div[side="right"] {
+  top: 57%;
+  left: 77%;
+}
+
+.itsAnna>div[side="right"]>div>span {
+  padding-right: 20%;
+}
+
+.components[students]::before {
+  content: '';
+  position: absolute;
+  left: 140px;
+  right: 0;
+  top: 60%;
+  width: 1235px;
+  height: 18px;
+  background-color: rgba(225, 248, 255, 1);
+}
+
+.components[faq]::before {
+  content: '';
+  position: absolute;
+  left: 500px;
+  right: 0;
+  top: 60%;
+  width: 520px;
+  height: 18px;
+  background-color: rgba(225, 248, 255, 1);
+}
+
+.components[experts]::before {
+  content: '';
+  position: absolute;
+  left: 425px;
+  right: 0;
+  top: 60%;
+  width: 670px;
+  height: 18px;
+  background-color: rgba(225, 248, 255, 1);
+}
+
+.contest>div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5%;
+}
+
+.contest>div>span {
+  color: #000;
+  font-family: Mulish;
+  font-size: 1.08vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 1em 1em;
+  border-radius: 2em;
+}
+
+.contest>div>span[blue] {
+  border: 1px solid var(--unnamed, #0039CA);
+}
+
+.contest>div>span[blue]:hover {
+  background-color: #0039CA;
+  color: white;
+}
+
+.contest>div>span[pink] {
+  border: 1px solid var(--unnamed, #F26097);
+}
+
+.contest>div>span[pink]:hover {
+  background-color: #F26097;
+  color: white;
+}
+.contest>div>span[grey] {
+  border: 1px solid var(--unnamed, #2D2D2D);
+}
+
+.contest>div>span[grey]:hover {
+  background-color: #2D2D2D;
+  color: white;
+}
+
+
+.contest[smth] {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 3%;
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+}
+
+.faq>div{
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 1.2%;
+  width: 80%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  background: #F2F3FC;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+  padding-left: 3%;
+  padding-right: 1.5%;
+}
+
+.faq>div>span {
+  color: var(--unnamed, #2D2D2D);
+  font-family: Mulish;
+  font-size: 1.3em;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.faq>div>span>span {
+  display: none;
+  color: var(--unnamed, #000);
+  font-family: Mulish;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.faq>div>span>span>a {
+  text-decoration: underline;
+}
+
+.faq>div>button {
+  display: flex;
+  background: none;
+  border: none;
+}
+
