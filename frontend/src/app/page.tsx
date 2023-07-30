@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.upperPanel}>
-        <img src="First.svg" alt="aboba" />
+        <img src="First.svg" alt="" />
         <div>
           <a href="#" target="_blank">
             <img src="LK.png" alt="lk" />
@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.dlitelnost}>
-        <img src="dlitelnost.svg" alt="aboba" />
+        <img src="dlitelnost.svg" alt="" />
         <span>Длительность программы — с октября по май.</span>
       </div>
       <div className={styles.secondPart}>
