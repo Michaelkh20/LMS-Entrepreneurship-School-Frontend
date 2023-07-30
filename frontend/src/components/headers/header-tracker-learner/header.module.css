@@ -6,6 +6,7 @@
   align-items: center;
   padding: 1rem 10rem;
   background-color: #ffffff;
+  max-width: var(--max-width);
 }
 
 .left {
