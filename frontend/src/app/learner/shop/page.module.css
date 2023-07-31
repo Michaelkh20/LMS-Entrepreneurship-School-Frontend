@@ -1,24 +1,21 @@
 .wrapper {
   width: 100%;
-  padding: 0px;
+  padding: 0;
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 90rem;
 }
 
 .container {
   width: 86%;
-  min-width: 900px;
+  min-width: 56.25rem;
   border-radius: 0px;
   margin: 0 auto;
 }
 
-
-/* CONTENT */
-
 .page_label {
-  color: #2D2D2D;
+  color: #2d2d2d;
   text-align: center;
-  font-size: 42px;
+  font-size: 2.625rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -29,25 +26,25 @@
 .lots_container {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px 30px;
+  gap: 1.875rem;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 60px;
+  margin-top: 3.75rem;
 }
 
 .lot {
   box-sizing: border-box;
-  width: 48.3%;
-  min-width: 300px;
-  border-radius: 18px;
-  border: 1px solid var(--unnamed, #BFC4F1);
-  padding: 45px 25px 26px 70px;
-  background: #F8F5FF;
+  width: 3.01875rem;
+  min-width: 18.75rem;
+  border-radius: 1.125rem;
+  border: 1px solid var(--unnamed, #bfc4f1);
+  padding: 2.8125rem 1.5625rem 1.625rem 4.375rem;
+  background: #f8f5ff;
 }
 
 .lot_name {
-  color: #0039CA;
-  font-size: 28px;
+  color: #0039ca;
+  font-size: 1.75rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -56,82 +53,82 @@
 }
 
 .lot_content {
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
-  margin-top: 15px;
-  margin-bottom: 30px;
+  margin-top: 0.9375rem;
+  margin-bottom: 1.875rem;
 }
 
 .lot_holder {
-  color: #F26097;
-  font-size: 16px;
+  color: #f26097;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  margin: 5px 0px;
+  margin: 0.3125rem 0;
 }
 
 .lot_holder_name {
   margin: 0;
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
 }
 
 .lot_price_container {
   display: flex;
-  height: 39px;
+  height: 2.4375rem;
   flex-direction: row;
   align-items: center;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 0.9375rem;
+  margin-top: 1.875rem;
 }
 
 .lot_price {
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
   margin: 0;
 }
 
 .lot_price_count {
-  color: #0039CA;
-  font-size: 26px;
+  color: #0039ca;
+  font-size: 1.625rem;
   font-style: normal;
   font-weight: 700;
   margin: 0;
 }
 
 .lot_condition {
-  color: #0039CA;
-  font-size: 16px;
+  color: #0039ca;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
 }
 
 .lot_condition_value {
   word-wrap: break-word;
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  margin-top: 15px;
-  margin-bottom: 30px;
+  margin-top: 0.9375rem;
+  margin-bottom: 1.875rem;
 }
 
 .application_lot_button {
-  width: 155px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid #BFC4F1;
+  width: 9.6875rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #bfc4f1;
   background: white;
   float: right;
-  color: #0039CA;
+  color: #0039ca;
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -142,135 +139,5 @@
 
 .application_lot_button:hover {
   color: white;
-  background: #8497FF
-}
-
-.create_lot {
-  width: 100%;
-  background-color: #F5FAFC;
-  box-sizing: border-box;
-  padding: 44px 140px;
-  margin-bottom: 217px;
-  margin-top: 70px;
-  border-radius: 18px;
-  border: 1px solid #D9D9D9;
-}
-
-.create_lot h1 {
-  color: #2D2D2D;
-  text-align: center;
-  font-size: 42px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
-  margin-bottom: 50px;
-}
-
-.create_lot_data {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 100px;
-}
-
-.left_create_lot_data {
-  display: flex;
-  width: 40%;
-  gap: 55px 0px;
-  flex-direction: column;
-}
-
-.right_create_lot_data {
-  display: flex;
-  width: 40%;
-  gap: 55px 0px;
-  flex-direction: column;
-}
-
-.label_and_input_box p{
-  color: #2D2D2D;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  margin: 0;
-}
-
-.label_and_input_price_box {
-  display: flex;
-  flex-direction: row;
-  min-height: 73px;
-  gap: 20px;
-}
-
-.label_and_input_price_box p{
-  color: #2D2D2D;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-}
-
-.label_and_input_box input{
-  padding: 0;
-  width: 100%;
-  min-height: 48px;
-  color: #2D2D2D;
-  font-family: inherit;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid #2D2D2D;
-  background: transparent;
-  margin: 0;
-}
-
-.label_and_input_price_box input{
-  padding: 0;
-  margin: 0;
-  width: 90px;
-  height: 46px;
-  outline: none;
-  border-radius: 5px;
-  border: 1px solid #2D2D2D;
-  background: transparent;
-  text-align: center;
-  font-family: inherit;
-  color: #0039CA;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 22px;
-}
-
-.label_and_input_price_box input::placeholder{
-  color: #0039CA;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 22px;
-}
-
-.send_form_box {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 60px;
-  align-items: center;
-  gap: 20px;
-}
-
-.send_form_box p {
-  color: #2D2D2D;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-}
-
-.send_form_box a {
-  height: 56px;
+  background: #8497ff;
 }

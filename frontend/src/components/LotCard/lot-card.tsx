@@ -2,11 +2,11 @@ import styles from './card.module.css';
 import { Mulish, Jura } from 'next/font/google'
 
 interface TradeLotCardProps {
-    number: number;
-    description: string;
-    performer: string;
-    price: number;
-    conditions: string;
+  number: number;
+  description: string;
+  performer: string;
+  price: number;
+  conditions: string;
 }
 
 const jura = Jura({
@@ -14,11 +14,11 @@ const jura = Jura({
 })
 
 const TradeLotCard: React.FC<TradeLotCardProps> = ({
-    number,
-    description,
-    performer,
-    price,
-    conditions,
+  number,
+  description,
+  performer,
+  price,
+  conditions,
 }) => {
     return (
         <div className={styles.lot}>
@@ -39,4 +39,3 @@ const TradeLotCard: React.FC<TradeLotCardProps> = ({
 };
 
 export default TradeLotCard;
-

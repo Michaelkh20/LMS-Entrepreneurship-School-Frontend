@@ -1,10 +1,10 @@
 .button {
-    padding: 0.75rem 2rem;
-    font-size: 1.25rem;
-    background-color: #198754;
-    color: white;
-    border: none;
-    border-radius: 0.75rem;
-    align-items: center;
-    cursor: pointer;
+  padding: 0.75rem 2rem;
+  font-size: 1.25rem;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  align-items: center;
+  cursor: pointer;
 }

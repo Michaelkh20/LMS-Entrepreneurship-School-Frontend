@@ -1,16 +1,16 @@
 .lot {
   box-sizing: border-box;
   width: 48.3%;
-  min-width: 300px;
-  border-radius: 18px;
-  border: 1px solid var(--unnamed, #BFC4F1);
-  padding: 45px 25px 26px 70px;
-  background: #F8F5FF;
+  min-width: 18.75rem;
+  border-radius: 1.125rem;
+  border: 1px solid var(--unnamed, #bfc4f1);
+  padding: 2.8125rem 1.5625rem 1.625rem 4.375rem;
+  background: #f8f5ff;
 }
 
 .lot_name {
-  color: #0039CA;
-  font-size: 28px;
+  color: #0039ca;
+  font-size: 1.75rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -19,82 +19,82 @@
 }
 
 .lot_content {
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
-  margin-top: 15px;
-  margin-bottom: 30px;
+  margin-top: 0.9375rem;
+  margin-bottom: 1.875rem;
 }
 
 .lot_holder {
-  color: #F26097;
-  font-size: 16px;
+  color: #f26097;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  margin: 5px 0px;
+  margin: 0.3125rem 0;
 }
 
 .lot_holder_name {
   margin: 0;
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
 }
 
 .lot_price_container {
   display: flex;
-  height: 39px;
+  height: 2.4375rem;
   flex-direction: row;
   align-items: center;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 0.9375rem;
+  margin-top: 1.875rem;
 }
 
 .lot_price {
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
   margin: 0;
 }
 
 .lot_price_count {
-  color: #0039CA;
-  font-size: 26px;
+  color: #0039ca;
+  font-size: 1.625rem;
   font-style: normal;
   font-weight: 700;
   margin: 0;
 }
 
 .lot_condition {
-  color: #0039CA;
-  font-size: 16px;
+  color: #0039ca;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
 }
 
 .lot_condition_value {
   word-wrap: break-word;
-  color: #2D2D2D;
-  font-size: 16px;
+  color: #2d2d2d;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  margin-top: 15px;
-  margin-bottom: 30px;
+  margin-top: 0.9375rem;
+  margin-bottom: 1.875rem;
 }
 
 .application_lot_button {
-  width: 155px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid #BFC4F1;
+  width: 9.6875rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #bfc4f1;
   background: white;
   float: right;
-  color: #0039CA;
+  color: #0039ca;
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -105,5 +105,5 @@
 
 .application_lot_button:hover {
   color: white;
-  background: #8497FF
+  background: #8497ff;
 }

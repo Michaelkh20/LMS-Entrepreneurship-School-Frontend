@@ -1,33 +1,27 @@
-"use client"
+'use client';
 import style from './form.module.css';
 import React, { SetStateAction, useState } from 'react';
-import {
-    DatePicker,
-    Form,
-    Input,
-    Select,
-    Switch,
-} from 'antd';
+import { DatePicker, Form, Input, Select, Switch } from 'antd';
 
 const { TextArea } = Input;
 
 type SizeType = Parameters<typeof Form>[0]['size'];
 
 const FormComponent: React.FC = () => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [criteria, setCriteria] = useState('');
-    const [deadline, setDeadline] = useState(null);
-    const [theme, setTheme] = useState('');
-    const [isTeam, setIsTeam] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [criteria, setCriteria] = useState('');
+  const [deadline, setDeadline] = useState(null);
+  const [theme, setTheme] = useState('');
+  const [isTeam, setIsTeam] = useState(false);
 
-    const handleFormSubmit = () => {
-        // Обработка отправки формы
-    };
+  const handleFormSubmit = () => {
+    // Обработка отправки формы
+  };
 
-    return (
-        <div>
-            {/*<Form
+  return (
+    <div>
+      {/*<Form
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 14 }}
                 layout="vertical"
@@ -57,8 +51,8 @@ const FormComponent: React.FC = () => {
                 </Form.Item>
                 <button className={style.button} type="submit">Подтвердить изменения</button>
             </Form>*/}
-        </div>
-    );
+    </div>
+  );
 };
 
 export default FormComponent;

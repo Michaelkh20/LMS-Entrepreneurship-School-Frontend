@@ -1,18 +1,18 @@
 /* AdminPage.module.css */
 
 .button {
-    border-radius: var(--button-border-radius);
-    padding: 1rem 1.5rem;
-    border: none;
-    background-color: #AC88D9;
-    color: white;
-    font-size: var(--f-size-20);
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+  border-radius: var(--button-border-radius);
+  padding: 1rem 1.5rem;
+  border: none;
+  background-color: #ac88d9;
+  color: white;
+  font-size: var(--f-size-20);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .button:hover {
-    background-color: #8C6FC4;
+  background-color: #8c6fc4;
 }
 
 /*.buttonRow {
@@ -63,36 +63,35 @@
 }*/
 
 .buttonRow {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: var(--section-gap);
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--section-gap);
 }
 
 .card_wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    padding-top: var(--section-gap);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: var(--section-gap);
 }
 
 .card {
-    padding: 3.5rem 2rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    font-size: var(--f-size-24);
-    flex: 1 0 calc(25% - 1.5rem);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: .1s ease-in-out;
+  padding: 3.5rem 2rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  font-size: var(--f-size-24);
+  flex: 1 0 calc(25% - 1.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
 }
 
 .card:hover {
-    background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .card__text {
-    font-size: var(--f-size-24);
+  font-size: var(--f-size-24);
 }
-
