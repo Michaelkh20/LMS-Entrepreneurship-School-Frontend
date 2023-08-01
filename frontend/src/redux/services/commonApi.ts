@@ -3,6 +3,18 @@ import { AuthRequest } from '@/types/requests';
 import { AuthResponse, FinalGradeInfo, UserProfile } from '@/types/responses';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+export function providesList<
+  R extends { id: string | number }[],
+  T extends string,
+>(resultsWithIds: R | undefined, tagType: T) {
+  return resultsWithIds
+    ? [
+        { type: tagType, id: 'LIST' },
+        ...resultsWithIds.map(({ id }) => ({ type: tagType, id })),
+      ]
+    : [{ type: tagType, id: 'LIST' }];
+}
+
 export const commonApi = createApi({
   reducerPath: 'commonAPI',
   baseQuery: fetchBaseQuery({
@@ -16,27 +28,7 @@ export const commonApi = createApi({
         body: authRequest,
       }),
     }),
-
-    getAccountById: build.query<UserProfile, Id>({
-      query: (id) => ({ url: `/accounts/${id}` }),
-    }),
-
-    getFinalGradesByLearnerId: build.query<FinalGradeInfo, Id>({
-      query: (learnerId) => ({
-        url: `/assessments/final-grades`,
-        params: { learnerId: learnerId },
-      }),
-    }),
-
-    getFinalGradeFormula: build.query<FinalGradeFormula, void>({
-      query: () => ({ url: `/assessments/formula` }),
-    }),
   }),
 });
 
-export const {
-  useAuthMutation,
-  useGetAccountByIdQuery,
-  useGetFinalGradeFormulaQuery,
-  useGetFinalGradesByLearnerIdQuery,
-} = commonApi;
+export const { useAuthMutation } = commonApi;

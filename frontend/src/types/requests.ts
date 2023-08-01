@@ -251,8 +251,8 @@ export type GetSolutionsTrackerApiArg = {
 };
 
 export type AuthRequest = {
-  login?: string;
-  password?: string;
+  login: string;
+  password: string;
 };
 
 export type AccountRequest = {

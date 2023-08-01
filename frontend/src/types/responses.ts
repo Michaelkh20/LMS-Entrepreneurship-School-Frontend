@@ -50,7 +50,7 @@ export type UserBalance = {
 };
 
 export type AuthResponse = {
-  role?: Role;
+  role: Role;
 };
 
 export type UserTableItem = {
@@ -67,7 +67,7 @@ export type AccountsPage = {
 };
 
 export type UserProfile = {
-  id?: Id;
+  id: Id;
   fullName?: FullName;
   email?: Email;
   phone?: Phone;

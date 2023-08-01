@@ -29,6 +29,7 @@ import {
   ClaimInfo,
   ClaimsPage,
   DeadlineInfo,
+  FinalGradeInfo,
   LessonInfo,
   LessonSelectionList,
   LessonsPage,
@@ -44,11 +45,16 @@ import {
   TeamsPage,
   TransactionInfo,
   TransactionsPage,
+  UserProfile,
   UserSelectionList,
 } from '@/types/responses';
-import { commonApi } from './commonApi';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query';
 
-const adminApi = commonApi.injectEndpoints({
+export const adminApi = createApi({
+  reducerPath: 'adminAPI',
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.BACKEND_URL,
+  }),
   endpoints: (build) => ({
     getAccounts: build.query<AccountsPage, GetAccountsApiArg>({
       query: (queryArg) => ({
@@ -80,6 +86,10 @@ const adminApi = commonApi.injectEndpoints({
         method: 'PUT',
         body: accountRequest,
       }),
+    }),
+
+    getAccountById: build.query<UserProfile, Id>({
+      query: (id) => ({ url: `/accounts/${id}` }),
     }),
 
     deleteAccountById: build.mutation<undefined, Id>({
@@ -183,6 +193,17 @@ const adminApi = commonApi.injectEndpoints({
         url: `/admin/assessments/${id}`,
         method: 'DELETE',
       }),
+    }),
+
+    getFinalGradesByLearnerId: build.query<FinalGradeInfo, Id>({
+      query: (learnerId) => ({
+        url: `/assessments/final-grades`,
+        params: { learnerId: learnerId },
+      }),
+    }),
+
+    getFinalGradeFormula: build.query<FinalGradeFormula, void>({
+      query: () => ({ url: `/assessments/formula` }),
     }),
 
     updateFinalGradeFormula: build.mutation<undefined, FinalGradeFormula>({
@@ -448,6 +469,8 @@ const adminApi = commonApi.injectEndpoints({
 });
 
 export const {
+  useGetAccountByIdQuery,
+  useGetFinalGradesByLearnerIdQuery,
   useGetAccountsQuery,
   useCreateAccountMutation,
   useUpdateAccountMutation,
@@ -495,4 +518,5 @@ export const {
   useUpdateAttendanceMutation,
   useGetSolutionsQuery,
   useCreateEmailMutation,
+  useGetFinalGradeFormulaQuery,
 } = adminApi;
