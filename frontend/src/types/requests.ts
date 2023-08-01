@@ -65,7 +65,6 @@ export type GetAssessmentsApiArg = {
   dateTo?: Date;
   sortProperty?: string;
   sortOrder?: SortOrder;
-  pageable?: boolean;
   page?: PageNumber;
   pageSize?: PageSize;
 };
@@ -256,75 +255,75 @@ export type AuthRequest = {
 };
 
 export type AccountRequest = {
-  id?: Id;
-  name?: Name;
-  surname?: Surname;
-  middleName?: MiddleName;
-  email?: Email;
-  phone?: Phone;
-  messenger?: Messenger;
-  gender?: Gender;
-  role?: Role;
-  password?: Password;
+  id: Id | null;
+  name: Name;
+  surname: Surname;
+  middleName: MiddleName;
+  email: Email;
+  phone: Phone;
+  messenger: Messenger;
+  gender: Gender;
+  role: Role;
+  password: Password;
 };
 
 export type TeamRequest = {
-  id?: Id;
-  projectTheme?: ProjectTheme;
-  members?: Id[];
+  id: Id | null;
+  projectTheme: ProjectTheme;
+  members: Id[];
 };
 
 export type AssessmentRequest = {
-  id?: Id;
-  learnerId?: Id;
-  teamId?: Id;
-  assessment?: Assessment;
-  taskId?: Id;
-  comment?: Comment;
+  id: Id | null;
+  learnerId: Id;
+  teamId: Id;
+  assessment: Assessment;
+  taskId: Id;
+  comment: Comment;
 };
 
 export type BonusRequest = {
-  learnerId?: Id;
-  bonus?: Bonus;
+  learnerId: Id;
+  bonus: Bonus;
 };
 
 export type TaskRequest = {
-  id?: Id;
-  title?: TaskTitle;
-  lessonId?: Id;
-  description?: Description;
-  criteria?: Criteria;
-  isTeamWork?: boolean;
-  link?: Link;
-  taskType?: TaskType;
-  deadline?: DateTime;
+  id: Id | null;
+  title: TaskTitle;
+  lessonId: Id | null;
+  description: Description;
+  criteria: Criteria;
+  isTeamWork: boolean;
+  link: Link | null;
+  taskType: TaskType;
+  deadline: DateTime;
 };
 
 export type LessonRequest = {
-  id?: Id;
-  number?: LessonNumber;
-  title?: LessonTitle;
-  description?: Description;
-  date?: Date;
-  presLink?: Link;
-  videoLink?: Link;
-  homeworkId?: Id;
-  testId?: Id;
+  id: Id;
+  number: LessonNumber;
+  title: LessonTitle;
+  description: Description;
+  date: Date;
+  presLink: Link | null;
+  videoLink: Link | null;
+  homeworkId: Id | null;
+  testId: Id | null;
 };
 
 export type AdminLotRequest = {
-  id?: Id;
-  title?: LotTitle;
-  description?: Description;
-  terms?: Criteria;
-  performer?: FullName;
-  price?: Price;
+  id: Id | null;
+  title: LotTitle;
+  description: Description;
+  terms: Criteria;
+  performer: FullName;
+  price: Price;
 };
 
 export type TransactionRequest = {
-  learnerId?: Id;
-  description?: Description;
-  sum?: Sum;
+  learnerId: Id;
+  description: Description;
+  sum: Sum;
 };
 
 export type AdminClaimRequest = {

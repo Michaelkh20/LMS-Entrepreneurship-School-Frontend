@@ -48,13 +48,25 @@ import {
   UserProfile,
   UserSelectionList,
 } from '@/types/responses';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { errorHandler, providesList } from './helpers/tagHelpers';
 
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.BACKEND_URL,
   }),
+  tagTypes: [
+    'Account',
+    'Team',
+    'Assessment',
+    'FinalGrades',
+    'FinalGradeFormula',
+    'Task',
+    'Lesson',
+    'Lot',
+    'Transaction',
+  ],
   endpoints: (build) => ({
     getAccounts: build.query<AccountsPage, GetAccountsApiArg>({
       query: (queryArg) => ({
@@ -70,6 +82,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Account'),
     }),
 
     createAccount: build.mutation<undefined, AccountRequest>({
@@ -78,6 +91,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: accountRequest,
       }),
+      invalidatesTags: (result, error, accountRequest) =>
+        errorHandler(error, 'Account', 'LIST'),
     }),
 
     updateAccount: build.mutation<undefined, AccountRequest>({
@@ -86,10 +101,13 @@ export const adminApi = createApi({
         method: 'PUT',
         body: accountRequest,
       }),
+      invalidatesTags: (result, error, accountRequest) =>
+        errorHandler(error, 'Account', [accountRequest.id!, 'LIST']),
     }),
 
     getAccountById: build.query<UserProfile, Id>({
       query: (id) => ({ url: `/accounts/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Account', id),
     }),
 
     deleteAccountById: build.mutation<undefined, Id>({
@@ -97,13 +115,16 @@ export const adminApi = createApi({
         url: `/admin/accounts/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Account', [id, 'LIST']),
     }),
 
-    getAccountsForSelect: build.query<UserSelectionList, Role | undefined>({
+    getAccountsForSelect: build.query<UserSelectionList, Role>({
       query: (role) => ({
         url: `/admin/accounts/select`,
         params: { role: role },
       }),
+      providesTags: (result) => providesList(result, 'Account'),
     }),
 
     getTeams: build.query<TeamsPage, GetTeamsApiArg>({
@@ -117,6 +138,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Team'),
     }),
 
     createTeam: build.mutation<undefined, TeamRequest>({
@@ -125,6 +147,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: teamRequest,
       }),
+      invalidatesTags: (result, error, teamRequest) =>
+        errorHandler(error, 'Team', 'LIST'),
     }),
 
     updateTeam: build.mutation<undefined, TeamRequest>({
@@ -133,10 +157,13 @@ export const adminApi = createApi({
         method: 'PUT',
         body: teamRequest,
       }),
+      invalidatesTags: (result, error, teamRequest) =>
+        errorHandler(error, 'Team', [teamRequest.id!, 'LIST']),
     }),
 
     getTeamById: build.query<TeamProfile, Id>({
       query: (id) => ({ url: `/admin/teams/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Team', id),
     }),
 
     deleteTeamById: build.mutation<undefined, Id>({
@@ -144,10 +171,13 @@ export const adminApi = createApi({
         url: `/admin/teams/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Team', [id, 'LIST']),
     }),
 
     getTeamsForSelect: build.query<TeamSelectionList, void>({
       query: () => ({ url: `/admin/teams/select` }),
+      providesTags: (result) => providesList(result, 'Team'),
     }),
 
     getAssessments: build.query<AssessmentsPage, GetAssessmentsApiArg>({
@@ -161,11 +191,11 @@ export const adminApi = createApi({
           dateTo: queryArg.dateTo,
           sortProperty: queryArg.sortProperty,
           sortOrder: queryArg.sortOrder,
-          pageable: queryArg.pageable,
           page: queryArg.page,
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Assessment'),
     }),
 
     createAssessment: build.mutation<undefined, AssessmentRequest>({
@@ -174,6 +204,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: assessmentRequest,
       }),
+      invalidatesTags: (result, error, teamRequest) =>
+        errorHandler(error, 'Assessment', 'LIST'),
     }),
 
     updateAssessment: build.mutation<undefined, AssessmentRequest>({
@@ -182,10 +214,14 @@ export const adminApi = createApi({
         method: 'PUT',
         body: assessmentRequest,
       }),
+      invalidatesTags: (result, error, assessmentRequest) =>
+        errorHandler(error, 'Assessment', [assessmentRequest.id!, 'LIST']),
     }),
 
     getAssessmentById: build.query<AssessmentInfo, Id>({
       query: (id) => ({ url: `/admin/assessments/${id}` }),
+      providesTags: (result, error, id) =>
+        errorHandler(error, 'Assessment', id),
     }),
 
     deleteAssessmentById: build.mutation<undefined, Id>({
@@ -193,6 +229,8 @@ export const adminApi = createApi({
         url: `/admin/assessments/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Assessment', [id, 'LIST']),
     }),
 
     getFinalGradesByLearnerId: build.query<FinalGradeInfo, Id>({
@@ -200,10 +238,13 @@ export const adminApi = createApi({
         url: `/assessments/final-grades`,
         params: { learnerId: learnerId },
       }),
+      providesTags: (result, error, learnerId) =>
+        errorHandler(error, 'FinalGrades', learnerId),
     }),
 
     getFinalGradeFormula: build.query<FinalGradeFormula, void>({
       query: () => ({ url: `/assessments/formula` }),
+      providesTags: ['FinalGradeFormula'],
     }),
 
     updateFinalGradeFormula: build.mutation<undefined, FinalGradeFormula>({
@@ -212,6 +253,7 @@ export const adminApi = createApi({
         method: 'PUT',
         body: finalGradeFormula,
       }),
+      invalidatesTags: (result, error) => (!error ? ['FinalGradeFormula'] : []),
     }),
 
     increaseFinalGrade: build.mutation<undefined, BonusRequest>({
@@ -220,6 +262,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: bonusRequest,
       }),
+      invalidatesTags: (result, error, bonusRequest) =>
+        errorHandler(error, 'FinalGrades', bonusRequest.learnerId),
     }),
 
     getTasks: build.query<TasksPage, GetTasksApiArg>({
@@ -234,6 +278,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Task'),
     }),
 
     createTask: build.mutation<undefined, TaskRequest>({
@@ -242,6 +287,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: taskRequest,
       }),
+      invalidatesTags: (result, error, taskRequest) =>
+        errorHandler(error, 'Task', 'LIST'),
     }),
 
     updateTask: build.mutation<undefined, TaskRequest>({
@@ -250,10 +297,13 @@ export const adminApi = createApi({
         method: 'PUT',
         body: taskRequest,
       }),
+      invalidatesTags: (result, error, taskRequest) =>
+        errorHandler(error, 'Task', [taskRequest.id!, 'LIST']),
     }),
 
     getTaskById: build.query<TaskInfo, Id>({
       query: (id) => ({ url: `/admin/tasks/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Task', id),
     }),
 
     deleteTaskById: build.mutation<undefined, Id>({
@@ -261,6 +311,8 @@ export const adminApi = createApi({
         url: `/admin/tasks/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Task', [id, 'LIST']),
     }),
 
     getTasksForSelect: build.query<TaskSelectionList, TaskType>({
@@ -268,10 +320,12 @@ export const adminApi = createApi({
         url: `/admin/tasks/select`,
         params: { taskType: taskType },
       }),
+      providesTags: (result) => providesList(result, 'Task'),
     }),
 
     getDeadlineByTask: build.query<DeadlineInfo, Id>({
-      query: (id) => ({ url: `/admin/tasks/${id}/deadline` }),
+      query: (taskId) => ({ url: `/admin/tasks/${taskId}/deadline` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Task', id),
     }),
 
     getLessons: build.query<LessonsPage, GetLessonsApiArg>({
@@ -287,6 +341,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Lesson'),
     }),
 
     createLesson: build.mutation<undefined, LessonRequest>({
@@ -295,6 +350,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: lessonRequest,
       }),
+      invalidatesTags: (result, error, lessonRequest) =>
+        errorHandler(error, 'Lesson', 'LIST'),
     }),
 
     updateLesson: build.mutation<undefined, LessonRequest>({
@@ -303,10 +360,13 @@ export const adminApi = createApi({
         method: 'PUT',
         body: lessonRequest,
       }),
+      invalidatesTags: (result, error, lessonRequest) =>
+        errorHandler(error, 'Lesson', [lessonRequest.id!, 'LIST']),
     }),
 
     getLessonById: build.query<LessonInfo, Id>({
       query: (id) => ({ url: `/admin/lessons/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Lesson', id),
     }),
 
     deleteLessonById: build.mutation<undefined, Id>({
@@ -314,10 +374,13 @@ export const adminApi = createApi({
         url: `/admin/lessons/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Lesson', [id, 'LIST']),
     }),
 
     getLessonsForSelect: build.query<LessonSelectionList, void>({
       query: () => ({ url: `/admin/lessons/select` }),
+      providesTags: (result) => providesList(result, 'Task'),
     }),
 
     getLots: build.query<LotsPage, GetLotsApiArg>({
@@ -333,6 +396,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Lot'),
     }),
 
     createLot: build.mutation<undefined, AdminLotRequest>({
@@ -341,6 +405,8 @@ export const adminApi = createApi({
         method: 'POST',
         body: adminLotRequest,
       }),
+      invalidatesTags: (result, error, adminLotRequest) =>
+        errorHandler(error, 'Lot', 'LIST'),
     }),
 
     updateLot: build.mutation<undefined, AdminLotRequest>({
@@ -349,10 +415,13 @@ export const adminApi = createApi({
         method: 'PUT',
         body: adminLotRequest,
       }),
+      invalidatesTags: (result, error, adminLotRequest) =>
+        errorHandler(error, 'Lot', [adminLotRequest.id!, 'LIST']),
     }),
 
     getLotById: build.query<LotInfo, Id>({
       query: (id) => ({ url: `/admin/lots/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Lot', id),
     }),
 
     deleteLotById: build.mutation<undefined, Id>({
@@ -360,6 +429,8 @@ export const adminApi = createApi({
         url: `/admin/lots/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: (result, error, id) =>
+        errorHandler(error, 'Lot', [id, 'LIST']),
     }),
 
     getTransactions: build.query<TransactionsPage, GetTransactionsApiArg>({
@@ -376,6 +447,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Transaction'),
     }),
 
     createManualTransaction: build.mutation<undefined, TransactionRequest>({
@@ -384,10 +456,14 @@ export const adminApi = createApi({
         method: 'POST',
         body: transactionRequest,
       }),
+      invalidatesTags: (result, error, adminLotRequest) =>
+        errorHandler(error, 'Transaction', 'LIST'),
     }),
 
     getTransactionById: build.query<TransactionInfo, Id>({
       query: (id) => ({ url: `/admin/transactions/${id}` }),
+      providesTags: (result, error, id) =>
+        errorHandler(error, 'Transaction', id),
     }),
 
     getClaims: build.query<ClaimsPage, GetClaimsApiArg>({
@@ -465,7 +541,6 @@ export const adminApi = createApi({
       }),
     }),
   }),
-  overrideExisting: false,
 });
 
 export const {
