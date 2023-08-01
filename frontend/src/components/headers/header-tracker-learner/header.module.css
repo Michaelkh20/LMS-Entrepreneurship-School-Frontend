@@ -22,32 +22,33 @@
 }
 
 .name {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .menu {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   cursor: pointer;
 }
 
 .balance {
-  font-size: 1.5rem;
-  padding-right: 1.5rem;
+  font-size: 1.25rem;
+  padding-right: 0.5rem;
 }
 
 .icon {
-  font-size: 2.25rem;
+  font-size: 1.5rem;
+}
+.markIcon {
+  font-size: 1rem;
+  background-color: #ff69a1;
+  color: white;
+  width: 3rem;
+  border-radius: 0.5rem;
+  text-align: center;
 }
 .iconMarket {
-  font-size: 2.25rem;
+  font-size: 1rem;
   color: #ff69a1;
-}
-
-@media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
