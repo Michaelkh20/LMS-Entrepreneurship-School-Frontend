@@ -66,7 +66,10 @@ export const adminApi = createApi({
     'Lesson',
     'Lot',
     'Transaction',
+    'Claim',
+    'Attendance',
   ],
+  keepUnusedDataFor: 180,
   endpoints: (build) => ({
     getAccounts: build.query<AccountsPage, GetAccountsApiArg>({
       query: (queryArg) => ({
@@ -204,7 +207,7 @@ export const adminApi = createApi({
         method: 'POST',
         body: assessmentRequest,
       }),
-      invalidatesTags: (result, error, teamRequest) =>
+      invalidatesTags: (result, error, assessmentRequest) =>
         errorHandler(error, 'Assessment', 'LIST'),
     }),
 
@@ -325,7 +328,8 @@ export const adminApi = createApi({
 
     getDeadlineByTask: build.query<DeadlineInfo, Id>({
       query: (taskId) => ({ url: `/admin/tasks/${taskId}/deadline` }),
-      providesTags: (result, error, id) => errorHandler(error, 'Task', id),
+      providesTags: (result, error, taskId) =>
+        errorHandler(error, 'Task', taskId),
     }),
 
     getLessons: build.query<LessonsPage, GetLessonsApiArg>({
@@ -336,7 +340,6 @@ export const adminApi = createApi({
           lessonTitle: queryArg.lessonTitle,
           sortProperty: queryArg.sortProperty,
           sortOrder: queryArg.sortOrder,
-          pageable: queryArg.pageable,
           page: queryArg.page,
           pageSize: queryArg.pageSize,
         },
@@ -456,7 +459,7 @@ export const adminApi = createApi({
         method: 'POST',
         body: transactionRequest,
       }),
-      invalidatesTags: (result, error, adminLotRequest) =>
+      invalidatesTags: (result, error, transactionRequest) =>
         errorHandler(error, 'Transaction', 'LIST'),
     }),
 
@@ -484,6 +487,7 @@ export const adminApi = createApi({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: (result) => providesList(result?.content, 'Claim'),
     }),
 
     updateClaim: build.mutation<undefined, AdminClaimRequest>({
@@ -492,14 +496,18 @@ export const adminApi = createApi({
         method: 'PUT',
         body: adminClaimRequest,
       }),
+      invalidatesTags: (result, error, adminClaimRequest) =>
+        errorHandler(error, 'Claim', [adminClaimRequest.id!, 'LIST']),
     }),
 
     getClaimById: build.query<ClaimInfo, Id>({
       query: (id) => ({ url: `/admin/claims/${id}` }),
+      providesTags: (result, error, id) => errorHandler(error, 'Claim', id),
     }),
 
     getNewClaimsAmount: build.query<NewClaimsAmount[], void>({
       query: () => ({ url: `/admin/claims/new-amount` }),
+      providesTags: (result, error) => errorHandler(error, 'Claim', 'LIST'),
     }),
 
     getAttendance: build.query<AttendanceInfo, Id>({
@@ -507,6 +515,8 @@ export const adminApi = createApi({
         url: `/admin/attendance`,
         params: { lessonId: lessonId },
       }),
+      providesTags: (result, error, lessonId) =>
+        errorHandler(error, 'Attendance', lessonId),
     }),
 
     updateAttendance: build.mutation<undefined, AttendanceRequest>({
@@ -515,6 +525,8 @@ export const adminApi = createApi({
         method: 'PUT',
         body: attendanceRequest,
       }),
+      invalidatesTags: (result, error, attendanceRequest) =>
+        errorHandler(error, 'Attendance', attendanceRequest.lessonId),
     }),
 
     getSolutions: build.query<SolutionsPage, GetSolutionsApiArg>({
@@ -526,7 +538,6 @@ export const adminApi = createApi({
           teamId: queryArg.teamId,
           sortProperty: queryArg.sortProperty,
           sortOrder: queryArg.sortOrder,
-          pageable: queryArg.pageable,
           page: queryArg.page,
           pageSize: queryArg.pageSize,
         },

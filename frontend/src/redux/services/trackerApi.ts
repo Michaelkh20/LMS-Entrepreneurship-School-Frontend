@@ -6,6 +6,7 @@ import {
   TrackerTasksSolutionsTable,
 } from '@/types/responses';
 import { learnerApi } from './learnerApi';
+import { errorHandler } from './helpers/tagHelpers';
 
 const trackerApi = learnerApi.injectEndpoints({
   endpoints: (build) => ({
@@ -15,6 +16,8 @@ const trackerApi = learnerApi.injectEndpoints({
         method: 'POST',
         body: assessmentRequest,
       }),
+      invalidatesTags: (result, error, assessmentRequest) =>
+        errorHandler(error, 'Assessment', 'LIST'),
     }),
 
     updateAssessmentByTracker: build.mutation<undefined, AssessmentRequest>({
@@ -23,6 +26,8 @@ const trackerApi = learnerApi.injectEndpoints({
         method: 'PUT',
         body: assessmentRequest,
       }),
+      invalidatesTags: (result, error, assessmentRequest) =>
+        errorHandler(error, 'Assessment', [assessmentRequest.taskId, 'LIST']),
     }),
 
     getSolutionsTracker: build.query<
@@ -36,6 +41,8 @@ const trackerApi = learnerApi.injectEndpoints({
           sortOrder: queryArg.sortOrder,
         },
       }),
+      providesTags: (result, error, assessmentRequest) =>
+        errorHandler(error, 'Assessment', 'LIST'),
     }),
 
     getSolutionsByTaskIdTracker: build.query<TrackerSolutionsTable, Id>({
@@ -43,10 +50,13 @@ const trackerApi = learnerApi.injectEndpoints({
         url: `/tracker/solutions`,
         params: { taskId: taskId },
       }),
+      providesTags: (result, error, taskId) =>
+        errorHandler(error, 'Assessment', taskId),
     }),
 
     getSolutionInfoByIdTracker: build.query<TrackerSolutionInfo, Id>({
       query: (id) => ({ url: `/tracker/solutions/${id}` }),
+      keepUnusedDataFor: 0,
     }),
   }),
   overrideExisting: false,

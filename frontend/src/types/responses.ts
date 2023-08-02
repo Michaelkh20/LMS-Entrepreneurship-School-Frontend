@@ -61,6 +61,7 @@ export type UserTableItem = {
   role: Role;
   balance: Balance;
 };
+
 export type AccountsPage = {
   pagination: Pagination;
   content: UserTableItem[];
@@ -79,7 +80,7 @@ export type UserProfile = {
 };
 
 export type UserSelectionItem = {
-  id: Id | null;
+  id: Id;
   name: ShortName;
 };
 
@@ -176,7 +177,7 @@ export type LearnerAssessmentTableItem = {
 export type TaskTableItem = {
   id: Id;
   title: TaskTitle;
-  lesson: LessonSelectionItem;
+  lesson: LessonSelectionItem | null;
   taskType: TaskType;
   deadline: DateTime;
 };
@@ -212,6 +213,7 @@ export type LessonTableItem = {
   title: LessonTitle;
   date: Date;
 };
+
 export type LessonsPage = {
   pagination: Pagination;
   content: LessonTableItem[];
@@ -253,17 +255,18 @@ export type LearnerLessonInfo = {
   title: LessonTitle;
   description: Description;
   date: Date;
-  presLink: Link;
-  videoLink: Link;
-  homework: TaskInfo;
-  test: TaskInfo;
+  presLink: Link | null;
+  videoLink: Link | null;
+  homework: TaskInfo | null;
+  test: TaskInfo | null;
 };
 
 export type LotTableItem = {
   id: Id;
   number: LotNumber;
   title: LotTitle;
-  performer: UserSelectionItem;
+  performerUser: UserSelectionItem | null;
+  performerOther: FullName | null;
   price: Price;
 };
 
@@ -278,7 +281,8 @@ export type LotInfo = {
   title: LotTitle;
   description: Description;
   terms: Criteria;
-  performer: UserSelectionItem;
+  performerUser: UserSelectionItem | null;
+  performerOther: FullName | null;
   price: Price;
 };
 
@@ -313,7 +317,7 @@ export type TransactionInfo = {
   description: Description;
   dateTime: DateTime;
   sum: Sum;
-  calim: ClaimSelectionItem | null;
+  claim: ClaimSelectionItem | null;
 };
 
 export type LearnerTransactionTableItem = {
@@ -332,14 +336,14 @@ export type LearnerTransactionsPage = {
 export type AdminClaimTableItem = {
   id: Id;
   claimType: ClaimType;
-  lot: LotSelectionItem;
-  task: TaskSelectionItem;
+  lot: LotSelectionItem | null;
+  task: TaskSelectionItem | null;
   learner: UserSelectionItem;
-  receiver: UserSelectionItem;
+  receiver: UserSelectionItem | null;
   dateTime: DateTime;
   status: ClaimStatus;
-  sum: Sum;
-  delay: Delay;
+  sum: Sum | null;
+  delay: Delay | null;
 };
 
 export type ClaimsPage = {
@@ -372,12 +376,12 @@ export type ClaimInfo = {
   Не заполненные поля должны содержать null. */
   id: Id;
   claimType: ClaimType;
-  lot: LotInfo;
-  deadline: DeadlineInfo;
-  learner: UserSelectionItem;
+  lot: LotInfo | null;
+  deadline: DeadlineInfo | null;
+  learner: UserSelectionItem | null;
   dateTime: DateTime;
   status: ClaimStatus;
-  fine: Sum;
+  fine: Sum | null;
 };
 
 export type NewClaimsAmount = {
@@ -405,14 +409,14 @@ export type AttendanceInfo = {
   learners: {
     learner: UserTableItem;
     didCome: boolean;
-    accruedСurrency: Price;
+    accruedСurrency: Price | null;
   }[];
 };
 
 export type AdminSolutionTableItem = {
   /** status 200 Если task коммандный, то заполнено поле team, а если task индивидуальный,  то заполнено поле learner. */
-  learner: UserSelectionItem;
-  team: TeamSelectionItem;
+  learner: UserSelectionItem | null;
+  team: TeamSelectionItem | null;
   completeDateTime: DateTime;
   fileId: Id;
 };
@@ -425,7 +429,7 @@ export type SolutionsPage = {
 export type LearnerSolutionTableItem = {
   task: TaskSelectionItem;
   deadline: DateTime;
-  completeDateTime: DateTime;
+  completeDateTime: DateTime | null;
 };
 
 export type LearnerSolutionsTable = {
@@ -442,8 +446,8 @@ export type TrackerAssessment = {
 export type LearnerSolutionInfo = {
   id: Id;
   task: TaskInfo;
-  completeDateTime: DateTime;
-  fileId: Id;
+  completeDateTime: DateTime | null;
+  fileId: Id | null;
   trackerAssessments: TrackerAssessment[];
 };
 
@@ -462,7 +466,7 @@ export type TrackerSolutionTableItem = {
   id: Id;
   name: string;
   completeDateTime: DateTime;
-  assessment: Assessment;
+  assessment: Assessment | null;
 };
 
 export type TrackerSolutionsTable = {
@@ -477,5 +481,5 @@ export type TrackerSolutionInfo = {
   completeDateTime: DateTime;
   fileId: Id;
   comment: Comment;
-  assessment: Assessment;
+  assessment: Assessment | null;
 };

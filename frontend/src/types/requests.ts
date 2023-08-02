@@ -87,8 +87,6 @@ export type GetLessonsApiArg = {
   sortProperty?: string;
   /** OSorting order */
   sortOrder?: SortOrder;
-  /** Если false, то без pagination. */
-  pageable?: boolean;
   /** Page number */
   page?: PageNumber;
   /** The size of the page to be returned */
@@ -211,8 +209,8 @@ export type GetClaimsLearnerApiArg = {
 
 export type UploadFileApiArg = {
   body: {
-    file?: Blob;
-    taskId?: Id;
+    file: Blob;
+    taskId: Id;
   };
 };
 
@@ -227,8 +225,6 @@ export type GetSolutionsApiArg = {
   sortProperty?: string;
   /** OSorting order */
   sortOrder?: SortOrder;
-  /** Если false, то без pagination. */
-  pageable?: boolean;
   /** Page number */
   page?: PageNumber;
   /** The size of the page to be returned */
@@ -275,8 +271,8 @@ export type TeamRequest = {
 
 export type AssessmentRequest = {
   id: Id | null;
-  learnerId: Id;
-  teamId: Id;
+  learnerId: Id | null;
+  teamId: Id | null;
   assessment: Assessment;
   taskId: Id;
   comment: Comment;
@@ -300,7 +296,7 @@ export type TaskRequest = {
 };
 
 export type LessonRequest = {
-  id: Id;
+  id: Id | null;
   number: LessonNumber;
   title: LessonTitle;
   description: Description;
@@ -328,16 +324,16 @@ export type TransactionRequest = {
 
 export type AdminClaimRequest = {
   /** Поле fine заполняется только при типе заявки = DeadlineFailed и поле action = Approve */
-  id?: Id;
-  action?: ClaimAction;
-  fine?: Sum;
+  id: Id;
+  action: ClaimAction;
+  fine: Sum | null;
 };
 
 export type LearnerLotRequest = {
-  title?: LotTitle;
-  description?: Description;
-  terms?: Criteria;
-  price?: Price;
+  title: LotTitle;
+  description: Description;
+  terms: Criteria;
+  price: Price;
 };
 
 export type LearnerClaimRequest = {
@@ -350,25 +346,25 @@ export type LearnerClaimRequest = {
     Если claimType = Transfer, то также должны быть заполнены поля receiverId(получатель) и sum.
   
     Не заполненные поля должны содержать null. */
-  claimType?: ClaimType;
-  lot?: LearnerLotRequest;
-  buyingLotId?: Id;
-  receiverId?: Id;
-  sum?: Sum;
+  claimType: ClaimType;
+  lot: LearnerLotRequest | null;
+  buyingLotId: Id | null;
+  receiverId: Id | null;
+  sum: Sum | null;
 };
 
 export type AttendanceRequest = {
-  lessonId?: Id;
-  learners?: {
-    learnerId?: Id;
-    accruedСurrency?: Price;
+  lessonId: Id;
+  learners: {
+    learnerId: Id;
+    accruedСurrency: Price | null;
   }[];
 };
 
 export type EmailRequest = {
-  grouping?: EmailGroupingTypes[];
-  learnersIds?: Id[];
-  teamsIds?: Id[];
-  title?: string;
-  content?: Description;
+  grouping: EmailGroupingTypes[];
+  learnersIds: Id[];
+  teamsIds: Id[];
+  title: string;
+  content: Description;
 };
