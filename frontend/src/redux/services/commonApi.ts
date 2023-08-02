@@ -15,7 +15,13 @@ export const commonApi = createApi({
         body: authRequest,
       }),
     }),
+    logOut: build.mutation<undefined, void>({
+      query: () => ({
+        url: `/logout`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useAuthMutation } = commonApi;
+export const { useAuthMutation, useLogOutMutation } = commonApi;
