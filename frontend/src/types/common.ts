@@ -74,6 +74,6 @@ export type EmailGroupingTypes = 'All' | 'Learners' | 'Trackers';
 
 // Request and response types
 export type FinalGradeFormula = {
-  weight?: GradeWeight;
-  type?: FinalGradeType;
+  weight: GradeWeight;
+  type: FinalGradeType;
 }[];
