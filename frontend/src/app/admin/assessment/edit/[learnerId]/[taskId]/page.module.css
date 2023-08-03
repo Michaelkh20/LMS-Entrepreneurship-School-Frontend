@@ -24,8 +24,7 @@
 }
 
 .bigInput {
-    width: 15rem;
-    height: 6rem;
+    width: 10rem;
     font-size: 1rem;
     border-color: #C8C8C8;
     margin-top: 1rem;
@@ -43,4 +42,10 @@
     border-radius: 0.75rem;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 8rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.confirmButton:hover {
+    background-color: #157347;
 }

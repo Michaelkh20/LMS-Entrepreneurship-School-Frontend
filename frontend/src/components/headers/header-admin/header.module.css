@@ -33,7 +33,7 @@
 }
 
 .adminIcon {
-  font-size: 2.25rem;
+  margin-top: 0.25rem;
 }
 
 @media (max-width: 768px) {

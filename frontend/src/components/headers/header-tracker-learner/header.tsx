@@ -10,7 +10,8 @@ import { usePathname } from 'next/navigation';
 import { items } from '../DropdownItems';
 import { LEARNER_HOME_PAGE, TRACKER_HOME_PAGE } from '../../../../constants';
 import Link from 'next/link';
-import marketIcon from '../../../../public/SVGRepo_iconCarrier.svg'
+import marketIcon from '../../../../public/market.svg';
+import icon from '../../../../public/icon.svg';
 import Image from 'next/image';
 
 interface HeaderBigProps {
@@ -34,12 +35,9 @@ const NavBar: React.FC<HeaderBigProps> = ({ balance, name, isTrackerPage }) => {
         )}
       </div>
       <div className={styles.right}>
-        <span className={styles.markIcon}>{!isTrackerPage && 
-        <h1>
-          A+
-        </h1>}</span>
+        <span className={styles.markIcon}>{!isTrackerPage && <h1>A+</h1>}</span>
         <span className={styles.iconMarket}>
-          <Image src = {marketIcon} alt = "marketIcon" width={30} height={30}/>
+          <Image src={marketIcon} alt="marketIcon" width={40} height={40} />
         </span>
         <span className={styles.balance}>{balance} $</span>
         <Dropdown menu={{ items }}>
@@ -47,7 +45,7 @@ const NavBar: React.FC<HeaderBigProps> = ({ balance, name, isTrackerPage }) => {
             <Space>
               <div className={styles.menu}>
                 <span className={styles.icon}>
-                  <PersonIcon />
+                  <Image src={icon} alt="Icon" width={35} height={35} />
                 </span>
                 <span className={styles.name}> {name} </span>
               </div>
