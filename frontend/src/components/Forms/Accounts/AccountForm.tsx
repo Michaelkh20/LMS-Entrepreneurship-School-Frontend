@@ -8,16 +8,12 @@ interface RegistrationFormProps {
   onSubmit: (values: any) => void;
 }
 
-interface EditFormProps {
-  isRegistrationForm?: boolean;
-}
-
-export default function EditForm({ isRegistrationForm }: EditFormProps) {
+export default function AccountForm({ isEdit }: { isEdit: boolean }) {
   const [form] = useForm();
 
   const onSubmit = (values: any) => {
     // Handle form submission based on the form type
-    if (isRegistrationForm) {
+    if (isEdit) {
       // Logic for registration form
     } else {
       // Logic for edit form
@@ -129,9 +125,9 @@ export default function EditForm({ isRegistrationForm }: EditFormProps) {
           <Button
             type="primary"
             htmlType="submit"
-            style={{ backgroundColor: '#198754', align: 'left' }}
+            style={{ backgroundColor: '#198754' }}
           >
-            {isRegistrationForm ? 'Создать аккаунт' : 'Подтвердить изменения'}
+            {isEdit ? 'Подтвердить изменения' : 'Создать аккаунт'}
           </Button>
         </Space>
       </Form.Item>

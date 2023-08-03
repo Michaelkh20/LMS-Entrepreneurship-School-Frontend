@@ -54,7 +54,7 @@ import { errorHandler, providesList } from './helpers/tagHelpers';
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.BACKEND_URL,
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   }),
   tagTypes: [
     'Account',

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from './lot-application.module.css';
+import styles from './lotClaimLearner.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Jura } from 'next/font/google';
@@ -9,7 +9,7 @@ const jura = Jura({
   subsets: ['latin'],
 });
 
-export default function BackButton() {
+export default function LotClaimLearner() {
   return (
     <div className={styles.create_lot}>
       <div className={jura.className}>

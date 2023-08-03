@@ -8,7 +8,7 @@ import {
   StatusFormItem,
   UserSelectionFormItem,
   DatePickerFormItem,
-} from '@/components/Form/FormItems';
+} from '@/components/Forms/FormItems';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 
 export function CurrencyTransferFilter({ onChangeEvent }: any) {
