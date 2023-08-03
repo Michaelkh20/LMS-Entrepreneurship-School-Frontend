@@ -36,41 +36,106 @@ export type ClaimTitle = string;
 export type Delay = number;
 
 // Enums
-export type Role = 'Learner' | 'Tracker';
+// export type Role = 'Learner' | 'Tracker';
 
-export type SortOrder = 'asc' | 'desc';
+// export type SortOrder = 'asc' | 'desc';
 
-export type AssessmentType = 'FinalGrade' | 'TrackerGrade';
+// export type AssessmentType = 'FinalGrade' | 'TrackerGrade';
 
-export type FinalGradeType =
-  | 'HW'
-  | 'Testing'
-  | 'Competitions'
-  | 'Exams'
-  | 'Attendance';
-export type TaskType = 'HW' | 'Test' | 'Competition' | 'Exam';
+// export type FinalGradeType =
+//   | 'HW'
+//   | 'Testing'
+//   | 'Competitions'
+//   | 'Exams'
+//   | 'Attendance';
+// export type TaskType = 'HW' | 'Test' | 'Competition' | 'Exam';
 
-export type TransactionType =
-  | 'Activity'
-  | 'SellLot'
-  | 'AdminIncome'
-  | 'TransferIncome'
-  | 'FailedDeadline'
-  | 'BuyLot'
-  | 'AdminOutcome'
-  | 'TransferOutcome';
+// export type TransactionType =
+//   | 'Activity'
+//   | 'SellLot'
+//   | 'AdminIncome'
+//   | 'TransferIncome'
+//   | 'FailedDeadline'
+//   | 'BuyLot'
+//   | 'AdminOutcome'
+//   | 'TransferOutcome';
 
-export type ClaimType =
-  | 'BuyingLot'
-  | 'FailedDeadline'
-  | 'PlacingLot'
-  | 'Transfer';
+// export type ClaimType =
+//   | 'BuyingLot'
+//   | 'FailedDeadline'
+//   | 'PlacingLot'
+//   | 'Transfer';
 
-export type ClaimStatus = 'Waiting' | 'Approved' | 'Declined';
+// export type ClaimStatus = 'Waiting' | 'Approved' | 'Declined';
 
-export type ClaimAction = 'Approve' | 'Reject';
+// export type ClaimAction = 'Approve' | 'Reject';
 
-export type EmailGroupingTypes = 'All' | 'Learners' | 'Trackers';
+// export type EmailGroupingTypes = 'All' | 'Learners' | 'Trackers';
+
+export enum Role {
+  Learner = 'Learner',
+  Tracker = 'Tracker',
+}
+
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export enum AssessmentType {
+  FinalGrade = 'FinalGrade',
+  TrackerGrade = 'TrackerGrade',
+}
+
+export enum FinalGradeType {
+  HW = 'HW',
+  Testing = 'Testing',
+  Competitions = 'Competitions',
+  Exams = 'Exams',
+  Attendance = 'Attendance',
+}
+
+export enum TaskType {
+  HW = 'HW',
+  Test = 'Test',
+  Competition = 'Competition',
+  Exam = 'Exam',
+}
+
+export enum TransactionType {
+  Activity = 'Activity',
+  SellLot = 'SellLot',
+  AdminIncome = 'AdminIncome',
+  TransferIncome = 'TransferIncome',
+  FailedDeadline = 'FailedDeadline',
+  BuyLot = 'BuyLot',
+  AdminOutcome = 'AdminOutcome',
+  TransferOutcome = 'TransferOutcome',
+}
+
+export enum ClaimType {
+  BuyingLot = 'BuyingLot',
+  FailedDeadline = 'FailedDeadline',
+  PlacingLot = 'PlacingLot',
+  Transfer = 'Transfer',
+}
+
+export enum ClaimStatus {
+  Waiting = 'Waiting',
+  Approved = 'Approved',
+  Declined = 'Declined',
+}
+
+export enum ClaimAction {
+  Approve = 'Approve',
+  Reject = 'Reject',
+}
+
+export enum EmailGroupingTypes {
+  All = 'All',
+  Learners = 'Learners',
+  Trackers = 'Trackers',
+}
 
 // Request and response types
 export type FinalGradeFormula = {
