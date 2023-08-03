@@ -6,10 +6,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 }
 
-.main>div {
+.main > div {
   margin: 0;
   padding: 0;
   display: flex;
@@ -19,23 +18,23 @@
   position: relative;
 }
 
-.upperPanel>div>a>img[alt="lk"] {
+.upperPanel > div[links] > a > img[alt='lk'] {
   width: 3.2vw;
 }
 
-.upperPanel>div>a>img[alt="vk"] {
+.upperPanel > div[links] > a > img[alt='vk'] {
   width: 3.4vw;
 }
 
-.upperPanel>div>a>img[alt="yt"] {
+.upperPanel > div[links] > a > img[alt='yt'] {
   width: 3.4vw;
 }
 
-.upperPanel>div>a {
+.upperPanel > div[links] > a {
   margin-right: 2vw;
 }
 
-.upperPanel>div {
+.upperPanel > div[links] {
   position: absolute;
   top: 10%;
   right: -5%;
@@ -43,11 +42,71 @@
   color: white; /* Настройте цвет текста */
 }
 
-.upperPanel>img {
+.upperPanel > div[apply] > a {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  padding: 1vw 3vw;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 50px;
+  background: var(--unnamed, #0039ca);
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  font-size: 1.2vw;
+}
+
+.upperPanel > span[school] {
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1vw 1.1vw;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 50px;
+  border: 2px solid var(--unnamed, #0039ca);
+  background: #fff;
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  font-size: 1.2vw;
+}
+
+.upperPanel > div[apply] > a > span {
+  color: white;
+}
+
+.upperPanel > span[business] {
+  position: absolute;
+  top: 10%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1vw 1.1vw;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 50px;
+  border-radius: 50px;
+  border: 2px solid var(--unnamed, #bfc4f1);
+  background: #fff;
+  font-size: 1.2vw;
+
+  /* Тень */
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+}
+
+.upperPanel > img {
   width: 100%;
 }
 
-.upperPanel>div>span {
+.upperPanel > div > span {
   position: absolute;
   top: 100%;
   right: 81%;
@@ -61,25 +120,28 @@
 }
 
 .dlitelnost {
-  position: relative; 
+  position: relative;
   display: inline-block;
 }
 
-.dlitelnost>img {
+.dlitelnost > img {
   max-width: 100%;
 }
 
 @media screen and (max-width: 500px) {
-  .dlitelnost>img {
+  .dlitelnost > img {
     max-width: 140%;
   }
 }
 
-.dlitelnost>span {
+.dlitelnost > span {
   position: absolute; /* Устанавливаем абсолютное позиционирование */
   top: 50%; /* Положение текста по вертикали (по центру) */
   left: 50%; /* Положение текста по горизонтали (по центру) */
-  transform: translate(-50%, -50%); /* Смещаем текст обратно на половину своего размера, чтобы он был точно в центре */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Смещаем текст обратно на половину своего размера, чтобы он был точно в центре */
   color: rgb(0, 0, 0); /* Цвет текста */
   background-color: rgba(0, 0, 0, 0); /* Непрозрачный фон */
   padding: 10px; /* Отступы вокруг текста */
@@ -96,30 +158,32 @@
   justify-content: space-between;
 }
 
-.secondPart>div {
+.secondPart > div {
   width: 33vw;
   border-radius: 1vw;
-  box-shadow: 0px 4px 4px 0px #CFD8E8, 0px -4px 4px 0px #FFF;
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
   margin-top: 5%;
   margin-bottom: 5vw;
 }
 
-.secondPart>div[side="left"] {
+.secondPart > div[side='left'] {
   background-color: rgba(0, 118, 185, 0.04);
   margin-left: 15%;
 }
 
-.secondPart>div[side="left"]>iframe {
+.secondPart > div[side='left'] > iframe {
   height: 50%;
   border-radius: 0.8rem;
   scale: 0.8;
 }
 
-.secondPart>div>span {
+.secondPart > div > span {
   display: flex;
   justify-content: center;
-  margin-top: 7%; 
-  color: var(--unnamed, #2D2D2D);
+  margin-top: 7%;
+  color: var(--unnamed, #2d2d2d);
   font-family: Jura;
   font-size: 2.5vw;
   font-style: normal;
@@ -128,16 +192,16 @@
   text-transform: uppercase;
 }
 
-.secondPart>div>span[afterVideo] {
+.secondPart > div > span[afterVideo] {
   font-size: 0.9vw;
   text-align: justify;
-  font-family: Mulish;  
+  font-family: Mulish;
   font-style: normal;
   line-height: normal;
   margin-left: 15%;
 }
 
-.secondPart>div>span[afterVideo="first"] {
+.secondPart > div > span[afterVideo='first'] {
   text-transform: none;
   font-weight: 600;
   line-height: normal;
@@ -145,7 +209,7 @@
   margin-top: -3%;
 }
 
-.secondPart>div>span[afterVideo="second"] {
+.secondPart > div > span[afterVideo='second'] {
   font-weight: 700;
   text-decoration-line: underline;
   padding: 0;
@@ -154,47 +218,45 @@
   justify-content: flex-start;
 }
 
-.secondPart>div[side="right"] {
-  background-color: rgba(238, 228, 250, 0.40);
+.secondPart > div[side='right'] {
+  background-color: rgba(238, 228, 250, 0.4);
   margin-right: 15%;
 }
 
 @media screen and (max-width: 500px) {
-  .secondPart>div>span[afterVideo] {
+  .secondPart > div > span[afterVideo] {
     font-size: 1.3vw;
   }
 
-  .secondPart>div {
+  .secondPart > div {
     width: 50vw;
   }
 
-  .secondPart>div[side="left"] {
+  .secondPart > div[side='left'] {
     margin-left: 5%;
   }
 
-  .secondPart>div[side="right"] {
+  .secondPart > div[side='right'] {
     margin-right: 5%;
     margin-left: 5%;
   }
-  .dlitelnost>span {
+  .dlitelnost > span {
     font-size: 1.9vw;
   }
 }
 
-
-
-.secondPart>div[side="right"]>img {
+.secondPart > div[side='right'] > img {
   max-width: 100%;
   scale: 0.95;
 }
 
-.secondPart>div[side="right"]>span {
+.secondPart > div[side='right'] > span {
   margin-bottom: 3vw;
 }
 
 .components {
   position: relative;
-  color: var(--unnamed, #2D2D2D);
+  color: var(--unnamed, #2d2d2d);
   display: flex;
   justify-content: center;
   font-family: Jura;
@@ -205,7 +267,7 @@
   text-transform: uppercase;
 }
 
-.components>span {
+.components > span {
   position: relative;
   z-index: 1;
 }
@@ -229,7 +291,7 @@
   margin-right: 15%;
 }
 
-.programComponents>div {
+.programComponents > div {
   display: flex;
   justify-content: space-between;
   margin-top: 4vw;
@@ -242,32 +304,32 @@
   font-family: Mulish;
   display: flex;
   flex-direction: column;
-  align-items:  flex-start;
+  align-items: flex-start;
   width: 20vw;
 }
 
-.componentBlock>div[name] {
+.componentBlock > div[name] {
   display: flex;
   margin-bottom: 2vw;
 }
 
-.componentBlock>div>span {
+.componentBlock > div > span {
   text-align: center;
 }
 
-.componentBlock>div>span[number] {
-  background-color: #BFC4F1;
+.componentBlock > div > span[number] {
+  background-color: #bfc4f1;
   border-radius: 50%;
   padding: 0.6vw;
-  color: var(--unnamed, #FFF);  
+  color: var(--unnamed, #fff);
   font-size: 1vw;
   font-weight: 500;
   line-height: normal;
 }
 
-.componentBlock>div>span[about] {
+.componentBlock > div > span[about] {
   border-radius: 2rem;
-  border: 0.5px solid var(--unnamed, #BFC4F1);
+  border: 0.5px solid var(--unnamed, #bfc4f1);
   display: inline-flex;
   padding: 0.5vw;
   font-weight: 500;
@@ -275,8 +337,8 @@
   margin-left: 1.5em;
 }
 
-.componentBlock>span[description] {
-  color: var(--unnamed, #2D2D2D);
+.componentBlock > span[description] {
+  color: var(--unnamed, #2d2d2d);
   font-size: 0.8vw;
   font-style: normal;
   font-weight: 400;
@@ -288,16 +350,16 @@
   .componentBlock {
     width: 40%;
   }
-  .componentBlock>div>span[number] {
+  .componentBlock > div > span[number] {
     font-size: 2vw;
   }
-  .componentBlock>div>span[about] {
+  .componentBlock > div > span[about] {
     font-size: 1.2vw;
   }
-  .componentBlock>span[description] {
-    font-size:2vw;
+  .componentBlock > span[description] {
+    font-size: 2vw;
   }
-  .programComponents>div {
+  .programComponents > div {
     margin-left: 7%;
     margin-right: 7%;
   }
@@ -307,13 +369,13 @@
   position: relative;
 }
 
-.itsAnna>img {
+.itsAnna > img {
   margin-top: 5vw;
   margin-bottom: 5vw;
   width: 100%;
 }
 
-.itsAnna>div[side] {
+.itsAnna > div[side] {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -322,17 +384,17 @@
   font-size: 1vw; /* Настройте размер шрифта */
 }
 
-.itsAnna>div[side="left"] {
+.itsAnna > div[side='left'] {
   top: 70%;
   left: 27%;
 }
 
-.itsAnna>div>div {
+.itsAnna > div > div {
   display: flex;
   width: 25vw;
 }
 
-.itsAnna>div>div>span {
+.itsAnna > div > div > span {
   margin-bottom: 2.5em;
   margin-left: 1em;
   font-family: Mulish;
@@ -342,32 +404,32 @@
   line-height: normal;
 }
 
-.itsAnna>div>div>img {
+.itsAnna > div > div > img {
   width: 1.7em;
   height: 1.7em;
 }
 
-.itsAnna>div[side="right"] {
+.itsAnna > div[side='right'] {
   top: 52%;
   left: 77%;
 }
 
-.itsAnna>div[side="right"]>div>span {
+.itsAnna > div[side='right'] > div > span {
   padding-right: 20%;
 }
 
 @media screen and (max-width: 500px) {
-  .itsAnna>div[side="left"] {
+  .itsAnna > div[side='left'] {
     top: 65%;
     left: 20%;
   }
 
-  .itsAnna>div>div>span {
+  .itsAnna > div > div > span {
     font-size: 1.3vw;
     margin-bottom: 1vw;
   }
 
-  .itsAnna>div[side="right"]>div>span {
+  .itsAnna > div[side='right'] > div > span {
     padding-right: 0;
   }
 }
@@ -397,13 +459,13 @@
   height: 1.3vw;
 }
 
-.contest>div {
+.contest > div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5%;
 }
 
-.contest>div>span {
+.contest > div > span {
   color: #000;
   font-family: Mulish;
   font-size: 1.08vw;
@@ -415,29 +477,29 @@
   margin-right: 1%;
 }
 
-.contest>div>span[blue] {
-  border: 1px solid var(--unnamed, #0039CA);
+.contest > div > span[blue] {
+  border: 1px solid var(--unnamed, #0039ca);
 }
 
-.contest>div>span[blue]:hover {
-  background-color: #0039CA;
+.contest > div > span[blue]:hover {
+  background-color: #0039ca;
   color: white;
 }
 
-.contest>div>span[pink] {
-  border: 1px solid var(--unnamed, #F26097);
+.contest > div > span[pink] {
+  border: 1px solid var(--unnamed, #f26097);
 }
 
-.contest>div>span[pink]:hover {
-  background-color: #F26097;
+.contest > div > span[pink]:hover {
+  background-color: #f26097;
   color: white;
 }
-.contest>div>span[grey] {
-  border: 1px solid var(--unnamed, #2D2D2D);
+.contest > div > span[grey] {
+  border: 1px solid var(--unnamed, #2d2d2d);
 }
 
-.contest>div>span[grey]:hover {
-  background-color: #2D2D2D;
+.contest > div > span[grey]:hover {
+  background-color: #2d2d2d;
   color: white;
 }
 
@@ -445,13 +507,13 @@
   margin-top: 3%;
   display: flex;
   flex-direction: column;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 9%;
+  margin-right: 9%;
   margin-bottom: 3%;
 }
 
 @media screen and (max-width: 500px) {
-  .contest>div>span {
+  .contest > div > span {
     font-size: 2vw;
   }
 
@@ -468,16 +530,15 @@
   margin-top: 2%;
 }
 
-.faq>div{
+.faq > div {
   margin-left: 10%;
   margin-right: 10%;
-  margin-bottom: 1.2%;
   width: 80%;
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   border-radius: 0.8vw;
-  background: #F2F3FC;
+  background: #f2f3fc;
   padding-top: 1.5%;
   padding-bottom: 1.5%;
   padding-left: 3%;
@@ -485,8 +546,8 @@
   margin-top: 1.5%;
 }
 
-.faq>div>span {
-  color: var(--unnamed, #2D2D2D);
+.faq > div > span {
+  color: var(--unnamed, #2d2d2d);
   font-family: Mulish;
   font-size: 3vh;
   font-style: normal;
@@ -494,7 +555,7 @@
   line-height: normal;
 }
 
-.faq>div>span>span {
+.faq > div > span > span {
   display: none;
   color: var(--unnamed, #000);
   font-family: Mulish;
@@ -504,31 +565,30 @@
   line-height: normal;
 }
 
-.faq>div>span>span>a {
+.faq > div > span > span > a {
   text-decoration: underline;
 }
 
-.faq>div>button {
+.faq > div > button {
   display: flex;
   background: none;
   border: none;
 }
 
-@media screen and (max-width: 500px){
-  .faq>div>button {
+@media screen and (max-width: 500px) {
+  .faq > div > button {
     scale: 0.6;
   }
 
-  .faq>div {
+  .faq > div {
     margin-left: 4%;
     margin-right: 4%;
   }
 
-  .faq>div>span {
+  .faq > div > span {
     font-size: 2vh;
   }
-  .faq>div>span>span {
+  .faq > div > span > span {
     font-size: 1.5vh;
   }
 }
-
