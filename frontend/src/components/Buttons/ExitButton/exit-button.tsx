@@ -6,8 +6,7 @@ import { ImportOutlined } from '@ant-design/icons';
 export default function ExitButton() {
   return (
     <button className={styles.button}>
-      {' '}
-      Выход <ImportOutlined />{' '}
+      Выход <ImportOutlined />
     </button>
   );
 }
