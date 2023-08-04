@@ -1,5 +1,5 @@
 import { Form } from 'antd';
-import { TeamFormItem } from '@/components/Form/FormItems';
+import { TeamFormItem } from '@/components/Forms/FormItems';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 import formStyles from '@/components/TableWithFilter/Filter/form.module.css';
 
