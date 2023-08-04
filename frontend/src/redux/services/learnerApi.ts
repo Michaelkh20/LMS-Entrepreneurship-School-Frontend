@@ -1,4 +1,4 @@
-import { Id, TaskType } from '@/types/common';
+import { FinalGradeFormula, Id, TaskType } from '@/types/common';
 import {
   GetClaimsLearnerApiArg,
   GetLotsLearnerApiArg,
@@ -8,6 +8,7 @@ import {
   UploadFileApiArg,
 } from '@/types/requests';
 import {
+  FinalGradeInfo,
   LearnerAssessmentTableItem,
   LearnerClaimsPage,
   LearnerLessonInfo,
@@ -18,27 +19,46 @@ import {
   LearnerTeamProfile,
   LearnerTransactionsPage,
   UserBalance,
+  UserProfile,
 } from '@/types/responses';
-import { commonApi } from './commonApi';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { errorHandler, providesList } from './helpers/tagHelpers';
 
-export const learnerApi = commonApi.injectEndpoints({
+export const learnerApi = createApi({
+  reducerPath: 'learnerAPI',
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.BACKEND_URL,
+  }),
+  tagTypes: ['Balance', 'Claim', 'Transaction', 'Solution', 'Assessment'],
+  keepUnusedDataFor: 180,
   endpoints: (build) => ({
-    getUserBalanceById: build.query<UserBalance, void>({
+    getProfile: build.query<UserProfile, void>({
+      query: () => ({ url: `/accounts/profile` }),
+      providesTags: ['Balance'],
+    }),
+
+    getUserBalance: build.query<UserBalance, void>({
       query: () => ({ url: `/learner/accounts/balance-name` }),
+      providesTags: ['Balance'],
     }),
 
     getTeamByIdLearner: build.query<LearnerTeamProfile, Id>({
       query: (id) => ({ url: `/learner/teams/${id}` }),
     }),
 
-    getFinalAssessmentsLearner: build.query<
-      LearnerAssessmentTableItem[],
-      TaskType
-    >({
+    getAssessmentsLearner: build.query<LearnerAssessmentTableItem[], TaskType>({
       query: (taskType) => ({
-        url: `/learner/assessments/final`,
+        url: `/learner/assessments`,
         params: { taskType: taskType },
       }),
+    }),
+
+    getFinalGradeFormula: build.query<FinalGradeFormula, void>({
+      query: () => ({ url: `/assessments/formula` }),
+    }),
+
+    getFinalGradesLearner: build.query<FinalGradeInfo, void>({
+      query: () => ({ url: `/assessments/final-grades` }),
     }),
 
     getLessonsLearner: build.query<LearnerLessonTableItem[], void>({
@@ -79,6 +99,7 @@ export const learnerApi = commonApi.injectEndpoints({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: ['Transaction'],
     }),
 
     getClaimsLearner: build.query<LearnerClaimsPage, GetClaimsLearnerApiArg>({
@@ -95,6 +116,7 @@ export const learnerApi = commonApi.injectEndpoints({
           pageSize: queryArg.pageSize,
         },
       }),
+      providesTags: ['Claim'],
     }),
 
     createClaim: build.mutation<undefined, LearnerClaimRequest>({
@@ -103,6 +125,7 @@ export const learnerApi = commonApi.injectEndpoints({
         method: 'POST',
         body: learnerClaimRequest,
       }),
+      invalidatesTags: ['Balance', 'Claim', 'Transaction'],
     }),
 
     uploadFile: build.mutation<undefined, UploadFileApiArg>({
@@ -111,6 +134,8 @@ export const learnerApi = commonApi.injectEndpoints({
         method: 'POST',
         body: queryArg.body,
       }),
+      invalidatesTags: (result, error, querArg) =>
+        errorHandler(error, 'Solution', [querArg.body.taskId, 'LIST']),
     }),
 
     getSolutionsLearner: build.query<
@@ -124,18 +149,27 @@ export const learnerApi = commonApi.injectEndpoints({
           sortOrder: queryArg.sortOrder,
         },
       }),
+      providesTags: (result) =>
+        providesList(
+          result?.content.map((solution) => solution.task),
+          'Solution'
+        ),
     }),
 
-    getSolutionByIdLearner: build.query<LearnerSolutionInfo, Id>({
+    getSolutionByTaskIdLearner: build.query<LearnerSolutionInfo, Id>({
       query: (taskId) => ({ url: `/learner/solutions/${taskId}` }),
+      providesTags: (result, error, taskId) =>
+        errorHandler(error, 'Solution', taskId),
     }),
   }),
 });
 
 export const {
-  useGetUserBalanceByIdQuery,
+  useGetFinalGradesLearnerQuery,
+  useGetProfileQuery,
+  useGetUserBalanceQuery,
   useGetTeamByIdLearnerQuery,
-  useGetFinalAssessmentsLearnerQuery,
+  useGetAssessmentsLearnerQuery,
   useGetLessonsLearnerQuery,
   useGetLessonByIdLearnerQuery,
   useGetLotsLearnerQuery,
@@ -144,5 +178,6 @@ export const {
   useCreateClaimMutation,
   useUploadFileMutation,
   useGetSolutionsLearnerQuery,
-  useGetSolutionByIdLearnerQuery,
+  useGetSolutionByTaskIdLearnerQuery,
+  useGetFinalGradeFormulaQuery,
 } = learnerApi;

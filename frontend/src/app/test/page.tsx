@@ -2,6 +2,7 @@ import DownloadButton from '@/components/Buttons/DownloadButton/dwnld-button';
 import FormComponent from '@/components/Form/form';
 import LoadButton from '@/components/LoadButton/load-button';
 import TradeLotCard from '@/components/LotCard/lot-card';
+import NavBar from '@/components/headers/header-tracker-learner/header';
 
 export default function Test() {
   return (
@@ -16,6 +17,7 @@ export default function Test() {
       <FormComponent />
       <LoadButton />
       <DownloadButton />
+      <NavBar balance={50} name = {"Ivan"} isTrackerPage = {false}/>
       <h1>Test</h1>
     </main>
   );

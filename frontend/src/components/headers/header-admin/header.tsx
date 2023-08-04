@@ -8,6 +8,8 @@ import ExitButton from '../../Buttons/ExitButton/exit-button';
 import styles from './header.module.css';
 import { ADMIN_HOME_PAGE } from '../../../../constants';
 import Link from 'next/link';
+import icon from '../../../../public/icon.svg';
+import Image from 'next/image';
 
 const NavBarAdmin: React.FC = () => {
   const path = usePathname();
@@ -17,7 +19,7 @@ const NavBarAdmin: React.FC = () => {
     <nav className={styles.nav}>
       <div className={styles.left}>
         <span className={styles.adminIcon}>
-          <AdminIcon />
+          <Image src={icon} alt="Icon" width={35} height={35}/>
         </span>
         <span className={styles.adminLabel}>Администратор</span>
       </div>

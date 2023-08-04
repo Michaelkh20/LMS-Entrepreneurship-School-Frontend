@@ -65,7 +65,6 @@ export type GetAssessmentsApiArg = {
   dateTo?: Date;
   sortProperty?: string;
   sortOrder?: SortOrder;
-  pageable?: boolean;
   page?: PageNumber;
   pageSize?: PageSize;
 };
@@ -88,8 +87,6 @@ export type GetLessonsApiArg = {
   sortProperty?: string;
   /** OSorting order */
   sortOrder?: SortOrder;
-  /** Если false, то без pagination. */
-  pageable?: boolean;
   /** Page number */
   page?: PageNumber;
   /** The size of the page to be returned */
@@ -212,8 +209,8 @@ export type GetClaimsLearnerApiArg = {
 
 export type UploadFileApiArg = {
   body: {
-    file?: Blob;
-    taskId?: Id;
+    file: Blob;
+    taskId: Id;
   };
 };
 
@@ -228,8 +225,6 @@ export type GetSolutionsApiArg = {
   sortProperty?: string;
   /** OSorting order */
   sortOrder?: SortOrder;
-  /** Если false, то без pagination. */
-  pageable?: boolean;
   /** Page number */
   page?: PageNumber;
   /** The size of the page to be returned */
@@ -251,94 +246,94 @@ export type GetSolutionsTrackerApiArg = {
 };
 
 export type AuthRequest = {
-  login?: string;
-  password?: string;
+  login: string;
+  password: string;
 };
 
 export type AccountRequest = {
-  id?: Id;
-  name?: Name;
-  surname?: Surname;
-  middleName?: MiddleName;
-  email?: Email;
-  phone?: Phone;
-  messenger?: Messenger;
-  gender?: Gender;
-  role?: Role;
-  password?: Password;
+  id: Id | null;
+  name: Name;
+  surname: Surname;
+  middleName: MiddleName;
+  email: Email;
+  phone: Phone;
+  messenger: Messenger;
+  gender: Gender;
+  role: Role;
+  password: Password;
 };
 
 export type TeamRequest = {
-  id?: Id;
-  projectTheme?: ProjectTheme;
-  members?: Id[];
+  id: Id | null;
+  projectTheme: ProjectTheme;
+  members: Id[];
 };
 
 export type AssessmentRequest = {
-  id?: Id;
-  learnerId?: Id;
-  teamId?: Id;
-  assessment?: Assessment;
-  taskId?: Id;
-  comment?: Comment;
+  id: Id | null;
+  learnerId: Id | null;
+  teamId: Id | null;
+  assessment: Assessment;
+  taskId: Id;
+  comment: Comment;
 };
 
 export type BonusRequest = {
-  learnerId?: Id;
-  bonus?: Bonus;
+  learnerId: Id;
+  bonus: Bonus;
 };
 
 export type TaskRequest = {
-  id?: Id;
-  title?: TaskTitle;
-  lessonId?: Id;
-  description?: Description;
-  criteria?: Criteria;
-  isTeamWork?: boolean;
-  link?: Link;
-  taskType?: TaskType;
-  deadline?: DateTime;
+  id: Id | null;
+  title: TaskTitle;
+  lessonId: Id | null;
+  description: Description;
+  criteria: Criteria;
+  isTeamWork: boolean;
+  link: Link | null;
+  taskType: TaskType;
+  deadline: DateTime;
 };
 
 export type LessonRequest = {
-  id?: Id;
-  number?: LessonNumber;
-  title?: LessonTitle;
-  description?: Description;
-  date?: Date;
-  presLink?: Link;
-  videoLink?: Link;
-  homeworkId?: Id;
-  testId?: Id;
+  id: Id | null;
+  number: LessonNumber;
+  title: LessonTitle;
+  description: Description;
+  date: Date;
+  presLink: Link | null;
+  videoLink: Link | null;
+  homeworkId: Id | null;
+  testId: Id | null;
 };
 
 export type AdminLotRequest = {
-  id?: Id;
-  title?: LotTitle;
-  description?: Description;
-  terms?: Criteria;
-  performer?: FullName;
-  price?: Price;
+  id: Id | null;
+  title: LotTitle;
+  description: Description;
+  terms: Criteria;
+  performer: FullName;
+  price: Price;
 };
 
 export type TransactionRequest = {
-  learnerId?: Id;
-  description?: Description;
-  sum?: Sum;
+  learnerId: Id;
+  description: Description;
+  sum: Sum;
 };
 
 export type AdminClaimRequest = {
   /** Поле fine заполняется только при типе заявки = DeadlineFailed и поле action = Approve */
-  id?: Id;
-  action?: ClaimAction;
-  fine?: Sum;
+  id: Id;
+  action: ClaimAction;
+  fine: Sum | null;
 };
 
 export type LearnerLotRequest = {
-  title?: LotTitle;
-  description?: Description;
-  terms?: Criteria;
-  price?: Price;
+  title: LotTitle;
+  description: Description;
+  terms: Criteria;
+  price: Price;
 };
 
 export type LearnerClaimRequest = {
@@ -351,25 +346,25 @@ export type LearnerClaimRequest = {
     Если claimType = Transfer, то также должны быть заполнены поля receiverId(получатель) и sum.
   
     Не заполненные поля должны содержать null. */
-  claimType?: ClaimType;
-  lot?: LearnerLotRequest;
-  buyingLotId?: Id;
-  receiverId?: Id;
-  sum?: Sum;
+  claimType: ClaimType;
+  lot: LearnerLotRequest | null;
+  buyingLotId: Id | null;
+  receiverId: Id | null;
+  sum: Sum | null;
 };
 
 export type AttendanceRequest = {
-  lessonId?: Id;
-  learners?: {
-    learnerId?: Id;
-    accruedСurrency?: Price;
+  lessonId: Id;
+  learners: {
+    learnerId: Id;
+    accruedСurrency: Price | null;
   }[];
 };
 
 export type EmailRequest = {
-  grouping?: EmailGroupingTypes[];
-  learnersIds?: Id[];
-  teamsIds?: Id[];
-  title?: string;
-  content?: Description;
+  grouping: EmailGroupingTypes[];
+  learnersIds: Id[];
+  teamsIds: Id[];
+  title: string;
+  content: Description;
 };
