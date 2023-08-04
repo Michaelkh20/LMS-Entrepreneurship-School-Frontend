@@ -8,11 +8,65 @@
 .container {
   width: 86%;
   min-width: 56.25rem;
-  border-radius: 0;
+  border-radius: 0px;
   margin: 0 auto;
 }
 
-/* CONTENT */
+.header_box {
+  width: 100%;
+  height: 4.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.4375rem;
+}
+
+.main_page_button {
+  width: 10.8125rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #767676;
+  background: white;
+  color: #000;
+  text-align: center;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.right_header_box {
+  display: flex;
+  flex-direction: row;
+  gap: 2.875rem;
+}
+
+.image_and_text_box {
+  display: flex;
+  flex-direction: row;
+  gap: 0.9375rem;
+  align-items: center;
+}
+
+.balance_counter {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #2d2d2d;
+}
+
+.username {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #2d2d2d;
+}
 
 .page_label {
   color: #2d2d2d;
@@ -34,7 +88,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 2.25rem;
+  justify-content: space-between;
 }
 
 .balance_container p {
@@ -47,19 +101,25 @@
 }
 
 .balance_container button {
-  width: 12.25rem;
-  height: 2.5rem;
+  width: 15.625rem;
+  height: 3.4375rem;
   border-radius: 0.75rem;
-  border: 1px solid #bfc4f1;
-  background: white;
-  color: #0039ca;
+  border: none;
+  background: #e1f8ff;
+  color: black;
   text-align: center;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.balance_container button:hover {
+  background: #ff69a1;
+  color: white;
 }
 
 .user_data_container {
@@ -142,16 +202,17 @@
   margin-bottom: 0.625rem;
 }
 
-.team_members_container {
+.team_container {
   width: 100%;
   box-sizing: border-box;
   padding: 1.875rem 3.75rem;
   border-radius: 0.625rem;
   background: #f5fafc;
   margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-.team_members_label {
+.team_label {
   color: #2d2d2d;
   font-size: 1.375rem;
   font-style: normal;
