@@ -2,7 +2,6 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import { Mulish, Jura } from 'next/font/google';
 import Link from 'next/link';
-import NavBar from '@/components/headers/header-tracker-learner/header';
 
 const mulish = Mulish({
   subsets: ['latin'],
@@ -17,8 +16,6 @@ export default function Home() {
     <main className={mulish.className}>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <NavBar balance={15} name="Иван" isTrackerPage={true} />
-
           <div className={jura.className}>
             <h1 className={styles.page_label}>ЛИЧНЫЙ КАБИНЕТ</h1>
           </div>
