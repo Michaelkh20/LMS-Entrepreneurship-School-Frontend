@@ -75,6 +75,7 @@ export type Delay = number;
 export enum Role {
   Learner = 'Learner',
   Tracker = 'Tracker',
+  Admin = 'Admin',
 }
 
 export enum SortOrder {

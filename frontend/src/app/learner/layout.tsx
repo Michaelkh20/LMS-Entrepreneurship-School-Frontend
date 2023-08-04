@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './layout.module.css';
-import AdminNavbar from '@/components/NavBars/AdminNavbar/AdminNavbar';
+import Navbar from '@/components/NavBars/Navbar/Navbar';
 
-export default function AdminLayout({
+export default function LearnerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <AdminNavbar />
+      <Navbar balance={15} name="Ivan" isTrackerPage={true} />
       <main className={styles.main}>{children}</main>
     </>
   );

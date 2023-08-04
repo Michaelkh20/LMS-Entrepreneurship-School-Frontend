@@ -1,9 +1,8 @@
 /* Exit-Button Module */
 
 .button {
-  /*padding: 0.5rem 2.5rem;*/
   font-size: 1rem;
-  padding: 0.6rem 0.75rem;
+  padding: 0.6rem 1.25rem;
   background-color: #e1f8ff;
   border: none;
   border-radius: var(--button-border-radius);

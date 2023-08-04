@@ -1,8 +1,8 @@
-import DownloadButton from '@/components/Buttons/DownloadButton/dwnld-button';
-import FormComponent from '@/components/Form/form';
-import LoadButton from '@/components/LoadButton/load-button';
+import DownloadButton from '@/components/Buttons/DownloadButton/DownloadButton';
+import FormComponent from '@/components/Forms/form';
+import UploadButton from '@/components/Buttons/UploadButton/UploadButton';
 import TradeLotCard from '@/components/LotCard/lot-card';
-import NavBar from '@/components/headers/header-tracker-learner/header';
+import Navbar from '@/components/NavBars/Navbar/Navbar';
 
 export default function Test() {
   return (
@@ -15,9 +15,9 @@ export default function Test() {
         conditions="Условия торгового лота"
       />
       <FormComponent />
-      <LoadButton />
+      <UploadButton />
       <DownloadButton />
-      <NavBar balance={50} name = {"Ivan"} isTrackerPage = {false}/>
+      <Navbar balance={50} name={'Ivan'} isTrackerPage={false} />
       <h1>Test</h1>
     </main>
   );

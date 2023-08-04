@@ -2,16 +2,16 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import BackButton from '../../Buttons/BackButton/back-button';
+import HomeButton from '../../Buttons/HomeButton/HomeButton';
 import AdminIcon from '../../Icons/person-icon';
-import ExitButton from '../../Buttons/ExitButton/exit-button';
-import styles from './header.module.css';
+import ExitButton from '../../Buttons/ExitButton/ExitButton';
+import styles from './adminNavbar.module.css';
 import { ADMIN_HOME_PAGE } from '../../../../constants';
-import Link from 'next/link';
 import icon from '../../../../public/icon.svg';
 import Image from 'next/image';
+import { Role } from '@/types/common';
 
-const NavBarAdmin: React.FC = () => {
+export default function AdminNavbar() {
   const path = usePathname();
   const isHomePage = path === ADMIN_HOME_PAGE;
 
@@ -19,20 +19,14 @@ const NavBarAdmin: React.FC = () => {
     <nav className={styles.nav}>
       <div className={styles.left}>
         <span className={styles.adminIcon}>
-          <Image src={icon} alt="Icon" width={35} height={35}/>
+          <Image src={icon} alt="Profile icon" width={35} height={35} />
         </span>
         <span className={styles.adminLabel}>Администратор</span>
       </div>
       <div className={styles.right}>
-        {!isHomePage && (
-          <Link href={ADMIN_HOME_PAGE}>
-            <BackButton />
-          </Link>
-        )}
+        {!isHomePage && <HomeButton role={Role.Admin} />}
         <ExitButton />
       </div>
     </nav>
   );
-};
-
-export default NavBarAdmin;
+}
