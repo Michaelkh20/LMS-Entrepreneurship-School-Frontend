@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './layout.module.css';
-import NavBarAdmin from '@/components/headers/header-admin/header';
+import AdminNavbar from '@/components/NavBars/AdminNavbar/AdminNavbar';
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <NavBarAdmin isHomePage={false} />
+      <AdminNavbar />
       <main className={styles.main}>{children}</main>
     </>
   );

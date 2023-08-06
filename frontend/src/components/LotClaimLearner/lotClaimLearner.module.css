@@ -1,0 +1,129 @@
+.create_lot {
+  width: 100%;
+  background-color: #f5fafc;
+  box-sizing: border-box;
+  padding: 2.75rem 8.75rem;
+  margin-bottom: 217px;
+  margin-top: 70px;
+  border-radius: 18px;
+  border: 1px solid #d9d9d9;
+}
+
+.create_lot h1 {
+  color: #2d2d2d;
+  text-align: center;
+  font-size: 2.625rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 3.125rem;
+}
+
+.create_lot_data {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 6.25rem;
+}
+
+.left_create_lot_data {
+  display: flex;
+  width: 40%;
+  gap: 3.4375rem 0;
+  flex-direction: column;
+}
+
+.right_create_lot_data {
+  display: flex;
+  width: 40%;
+  gap: 3.4375rem 0;
+  flex-direction: column;
+}
+
+.label_and_input_box p {
+  color: #2d2d2d;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  margin: 0;
+}
+
+.label_and_input_price_box {
+  display: flex;
+  flex-direction: row;
+  min-height: 4.5625rem;
+  gap: 1.25rem;
+}
+
+.label_and_input_price_box p {
+  color: #2d2d2d;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.label_and_input_box input {
+  padding: 0;
+  width: 100%;
+  min-height: 3rem;
+  color: #2d2d2d;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  outline: none;
+  border: none;
+  border-bottom: 0.0625rem solid #2d2d2d;
+  background: transparent;
+  margin: 0;
+}
+
+.label_and_input_price_box input {
+  padding: 0;
+  margin: 0;
+  width: 5.625rem;
+  height: 2.875rem;
+  outline: none;
+  border-radius: 0.3125rem;
+  border: 0.0625rem solid #2d2d2d;
+  background: transparent;
+  text-align: center;
+  font-family: inherit;
+  color: #0039ca;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+}
+
+.label_and_input_price_box input::placeholder {
+  color: #0039ca;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+}
+
+.send_form_box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 3.75rem;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.send_form_box p {
+  color: #2d2d2d;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+}
+
+.send_form_box a {
+  height: 3.5rem;
+}

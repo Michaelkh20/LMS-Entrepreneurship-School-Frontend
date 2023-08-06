@@ -1,0 +1,62 @@
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem 0;
+}
+
+.buttonRedux {
+    padding: 1rem 1rem;
+    border: none;
+    background-color: #e1f8ff;
+    font-size: 1rem;
+    float: right;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.buttonRedux:hover {
+    background-color: #c7f1ff;
+}
+
+.value {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.bigValue {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #B8BC00
+}
+
+.param {
+    margin-top: 5rem
+}
+
+.paramName {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.smallValue {
+    font-size: 1rem;
+}
+
+.deleteButton {
+    margin-top: 2rem;
+    float: right;
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    background-color: #ff6d6d;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-bottom: 8rem;
+}
+
+.deleteButton:hover {
+    background-color: #ff4f4f;
+}

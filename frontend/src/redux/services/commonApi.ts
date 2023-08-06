@@ -1,12 +1,11 @@
-import { FinalGradeFormula, Id } from '@/types/common';
 import { AuthRequest } from '@/types/requests';
-import { AuthResponse, FinalGradeInfo, UserProfile } from '@/types/responses';
+import { AuthResponse } from '@/types/responses';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const commonApi = createApi({
   reducerPath: 'commonAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.BACKEND_URL,
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   }),
   endpoints: (build) => ({
     auth: build.mutation<AuthResponse, AuthRequest>({
@@ -16,27 +15,13 @@ export const commonApi = createApi({
         body: authRequest,
       }),
     }),
-
-    getAccountById: build.query<UserProfile, Id>({
-      query: (id) => ({ url: `/accounts/${id}` }),
-    }),
-
-    getFinalGradesByLearnerId: build.query<FinalGradeInfo, Id>({
-      query: (learnerId) => ({
-        url: `/assessments/final-grades`,
-        params: { learnerId: learnerId },
+    logOut: build.mutation<undefined, void>({
+      query: () => ({
+        url: `/logout`,
+        method: 'POST',
       }),
-    }),
-
-    getFinalGradeFormula: build.query<FinalGradeFormula, void>({
-      query: () => ({ url: `/assessments/formula` }),
     }),
   }),
 });
 
-export const {
-  useAuthMutation,
-  useGetAccountByIdQuery,
-  useGetFinalGradeFormulaQuery,
-  useGetFinalGradesByLearnerIdQuery,
-} = commonApi;
+export const { useAuthMutation, useLogOutMutation } = commonApi;
