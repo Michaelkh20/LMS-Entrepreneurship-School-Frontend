@@ -19,19 +19,15 @@
 }
 
 .upperPanel > div[links] > a > img[alt='lk'] {
-  width: 3.2vw;
+  scale: 0.9;
 }
 
-.upperPanel > div[links] > a > img[alt='vk'] {
-  width: 3.4vw;
-}
-
-.upperPanel > div[links] > a > img[alt='yt'] {
-  width: 3.4vw;
+.upperPanel > div[links] > a > img {
+  width: 3.1rem;
 }
 
 .upperPanel > div[links] > a {
-  margin-right: 2vw;
+  margin-right: 2rem;
 }
 
 .upperPanel > div[links] {
@@ -39,7 +35,6 @@
   top: 10%;
   right: -5%;
   transform: translate(-50%, -50%);
-  color: white; /* Настройте цвет текста */
 }
 
 .upperPanel > div[apply] > a {
@@ -48,15 +43,12 @@
   left: 15%;
   transform: translate(-50%, -50%);
   display: inline-flex;
-  padding: 1vw 3vw;
+  padding: 0.9375rem 3.125rem;
   align-items: flex-start;
-  gap: 10px;
-  border-radius: 50px;
-  background: var(--unnamed, #0039ca);
-  box-shadow:
-    0px 4px 4px 0px #cfd8e8,
-    0px -4px 4px 0px #fff;
-  font-size: 1.2vw;
+  gap: 0.625rem;
+  border-radius: 3.125rem;
+background: var(--unnamed, #0039CA);
+box-shadow: 0px 4px 4px 0px #CFD8E8, 0px -4px 4px 0px #FFF;
 }
 
 .upperPanel > span[school] {
@@ -78,7 +70,12 @@
 }
 
 .upperPanel > div[apply] > a > span {
-  color: white;
+  color: var(--unnamed, #fff);
+  font-family: Mulish;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .upperPanel > span[business] {
@@ -95,8 +92,6 @@
   border: 2px solid var(--unnamed, #bfc4f1);
   background: #fff;
   font-size: 1.2vw;
-
-  /* Тень */
   box-shadow:
     0px 4px 4px 0px #cfd8e8,
     0px -4px 4px 0px #fff;
@@ -125,7 +120,7 @@
 }
 
 .dlitelnost > img {
-  max-width: 100%;
+  width: 100%;
 }
 
 @media screen and (max-width: 500px) {
@@ -219,8 +214,11 @@
 }
 
 .secondPart > div[side='right'] {
+  display: flex;
   background-color: rgba(238, 228, 250, 0.4);
   margin-right: 15%;
+
+  flex-direction: column;
 }
 
 @media screen and (max-width: 500px) {
