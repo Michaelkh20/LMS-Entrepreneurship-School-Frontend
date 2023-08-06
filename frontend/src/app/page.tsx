@@ -37,7 +37,7 @@ const LandingPage: React.FC = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperPanel}>
-        <img src="First.svg" alt="" />
+        <img src="./landing/First.svg" alt="" />
         <div apply="">
           <Link href={'/apply'}>
             <span>Подать заявку</span>
@@ -47,25 +47,25 @@ const LandingPage: React.FC = () => {
         <span business="">Бизнес школа трекеров</span>
         <div links="">
           <Link href={'/auth'}>
-            <img src="LK.png" alt="lk" />
+            <img src="./landing/LK.png" alt="lk" />
           </Link>
 
           <a href="#" target="_blank">
-            <img src="VK.png" alt="vk" />
+            <img src="./landing/VK.png" alt="vk" />
           </a>
 
           <a
             href="https://www.youtube.com/@techno.startup/featured"
             target="_blank"
           >
-            <img src="YT.png" alt="yt" />
+            <img src="./landing/YT.png" alt="yt" />
           </a>
           <br />
           <span>Войти</span>
         </div>
       </div>
       <div className={styles.dlitelnost}>
-        <img src="dlitelnost.svg" alt="" />
+        <img src="./landing/dlitelnost.svg" alt="" />
         <span>Длительность программы — с октября по май.</span>
       </div>
       <div className={styles.secondPart}>
@@ -95,7 +95,7 @@ const LandingPage: React.FC = () => {
 
         <div side={'right'}>
           <span>УЧАЩИЕСЯ УЗНАЮТ</span>
-          <img src="Bucket.svg" alt="about program" />
+          <img src="./landing/Bucket.svg" alt="about program" />
         </div>
       </div>
       <div className={styles.components}>
@@ -215,11 +215,11 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
       <div className={styles.itsAnna}>
-        <img src="Anna.svg" alt="Hello, it's Anna" />
+        <img src="./landing/Anna.svg" alt="Hello, it's Anna" />
 
         <div side="left">
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Разработка программ, робототехнических наборов и интерактивного
               оборудования для образовательных учреждений
@@ -227,12 +227,12 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>Закончила МГТУ им. Баумана и НИУ ВШЭ</span>
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Опыт работы в гос.структурах (руководитель проектов в сфере
               робототехники Координационного центра при Минкомсвязи, программный
@@ -243,14 +243,14 @@ const LandingPage: React.FC = () => {
 
         <div side="right">
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Старший преподаватель кафедры менеджмента инноваций НИУ ВШЭ
             </span>
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Руководитель проекта «Школа предпринимательства» Распределенного
               лицея НИУ ВШЭ
@@ -258,7 +258,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Автор курсов «Техно-стартап», «Технологический маркетинг» и
               «Дизайн-мышление» НИУ ВШЭ
@@ -266,7 +266,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>
               Автор более 60 публикаций, книг и методических пособий по
               педагогике, робототехнике и использованию технологий в образовании
@@ -274,22 +274,22 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>Редактор журнала «Вестник Цифровой экономики»</span>
           </div>
 
           <div>
-            <img src="PinkCircle.svg" alt="" />
+            <img src="./landing/PinkCircle.svg" alt="" />
             <span>Ментор УНМЦ "Гидронавтика" МГТУ им. Н.Э. Баумана</span>
           </div>
         </div>
       </div>
 
-      <div className={styles.components} experts="">
+      <div className={styles.components} >
         <span>Эксперты программы</span>
       </div>
 
-      <div className={styles.components} students="">
+      <div className={styles.components} >
         <span>Наши ученики побеждают в конкурсах</span>
       </div>
 
@@ -335,10 +335,12 @@ const LandingPage: React.FC = () => {
           <span blue="">Хакатон “Изобретатели будущего” (3 победы)</span>
         </div>
       </div>
-      <div className={styles.components} faq="">
+
+      <div className={styles.components}>
         <span>Частые вопросы</span>
       </div>
-      <div className={styles.faq}>
+
+      <div className={styles.faq} smth="">
         <div>
           <span>
             В каком формате проходят занятия? <br />
@@ -352,9 +354,9 @@ const LandingPage: React.FC = () => {
           </span>
           <button onClick={() => handleButtonClick(1)}>
             {buttonIndex1 ? (
-              <img src="X.svg" alt="" />
+              <img src="./landing/X.svg" alt="" />
             ) : (
-              <img src="Plus.svg" alt="" />
+              <img src="./landing/Plus.svg" alt="" />
             )}
           </button>
         </div>
@@ -372,9 +374,9 @@ const LandingPage: React.FC = () => {
           </span>
           <button onClick={() => handleButtonClick(2)}>
             {buttonIndex2 ? (
-              <img src="X.svg" alt="" />
+              <img src="./landing/X.svg" alt="" />
             ) : (
-              <img src="Plus.svg" alt="" />
+              <img src="./landing/Plus.svg" alt="" />
             )}
           </button>
         </div>
@@ -392,9 +394,9 @@ const LandingPage: React.FC = () => {
           </span>
           <button onClick={() => handleButtonClick(3)}>
             {buttonIndex3 ? (
-              <img src="X.svg" alt="" />
+              <img src="./landing/X.svg" alt="" />
             ) : (
-              <img src="Plus.svg" alt="" />
+              <img src="./landing/Plus.svg" alt="" />
             )}
           </button>
         </div>
@@ -412,9 +414,9 @@ const LandingPage: React.FC = () => {
           </span>
           <button onClick={() => handleButtonClick(4)}>
             {buttonIndex4 ? (
-              <img src="X.svg" alt="" />
+              <img src="./landing/X.svg" alt="" />
             ) : (
-              <img src="Plus.svg" alt="" />
+              <img src="./landing/Plus.svg" alt="" />
             )}
           </button>
         </div>
@@ -432,9 +434,9 @@ const LandingPage: React.FC = () => {
           </span>
           <button onClick={() => handleButtonClick(5)}>
             {buttonIndex5 ? (
-              <img src="X.svg" alt="" />
+              <img src="./landing/X.svg" alt="" />
             ) : (
-              <img src="Plus.svg" alt="" />
+              <img src="./landing/Plus.svg" alt="" />
             )}
           </button>
         </div>
