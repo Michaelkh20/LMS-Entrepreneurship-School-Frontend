@@ -3,69 +3,7 @@
   padding: 0;
   margin: 0 auto;
   max-width: 90rem;
-}
-
-.container {
-  width: 86%;
   min-width: 56.25rem;
-  border-radius: 0px;
-  margin: 0 auto;
-}
-
-.header_box {
-  width: 100%;
-  height: 4.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.4375rem;
-}
-
-.main_page_button {
-  width: 10.8125rem;
-  height: 2.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid #767676;
-  background: white;
-  color: #000;
-  text-align: center;
-  font-family: inherit;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
-}
-
-.right_header_box {
-  display: flex;
-  flex-direction: row;
-  gap: 2.875rem;
-}
-
-.image_and_text_box {
-  display: flex;
-  flex-direction: row;
-  gap: 0.9375rem;
-  align-items: center;
-}
-
-.balance_counter {
-  font-family: inherit;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  color: #2d2d2d;
-}
-
-.username {
-  font-family: inherit;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  color: #2d2d2d;
 }
 
 .page_label {
@@ -89,6 +27,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 2.25rem;
 }
 
 .balance_container p {
@@ -101,7 +40,7 @@
 }
 
 .balance_container button {
-  width: 15.625rem;
+  width: 20.625rem;
   height: 3.4375rem;
   border-radius: 0.75rem;
   border: none;
@@ -164,90 +103,4 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-}
-
-.theme_label_box p {
-  border-radius: 0.625rem;
-  border: 0.1875rem solid #ff72a5;
-  background: #fff;
-  color: #2d2d2d;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  padding: 0.5625rem 0.5rem;
-}
-
-.theme_label {
-  display: inline-block;
-  color: #2d2d2d;
-  font-size: 1.625rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  border-radius: 0.625rem;
-  border: 0.1875rem solid #ff69a1;
-  background: #fff;
-  padding: 0.375rem 0.625rem;
-  box-sizing: border-box;
-  margin-bottom: 0.625rem;
-}
-
-.team_number {
-  color: #0039ca;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 0.625rem;
-}
-
-.team_container {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1.875rem 3.75rem;
-  border-radius: 0.625rem;
-  background: #f5fafc;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.team_label {
-  color: #2d2d2d;
-  font-size: 1.375rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 0.625rem;
-}
-
-.team_members {
-  display: flex;
-  width: max-content;
-  flex-direction: row;
-  align-items: center;
-  gap: 2.1875rem;
-  border-radius: 0.625rem;
-  background: #fff;
-  padding-right: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.tracker_container {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1.875rem 3.75rem;
-  border-radius: 0.625rem;
-  margin-top: 2.375rem;
-  background: #fbffeb;
-}
-
-.tracker_label {
-  color: #2d2d2d;
-  font-size: 1.375rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 1rem;
-  margin-top: 1.875rem;
 }
