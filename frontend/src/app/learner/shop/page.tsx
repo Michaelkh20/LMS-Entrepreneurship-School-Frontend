@@ -4,16 +4,13 @@ import TradeLotCard from '@/components/LotCard/lot-card';
 import LotApplication from '@/components/LotClaimLearner/LotClaimLearner';
 
 const jura = Jura({
-  subsets: ['latin'],
+  subsets: ['cyrillic'],
 });
 
 export default function Home() {
   return (
     <div className={styles.wrapper}>
-      <div className={jura.className}>
-        <h1 className={styles.page_label}>МАГАЗИН</h1>
-      </div>
-
+      <h1 className={`${styles.page_label} ${jura.className}`}>МАГАЗИН</h1>
       <div className={styles.lots_container}>
         <TradeLotCard
           number={12345}

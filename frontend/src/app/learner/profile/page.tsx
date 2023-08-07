@@ -1,11 +1,51 @@
 import styles from './page.module.css';
 import { Jura } from 'next/font/google';
 import UserData from '@/components/ProfileComponents/UserData/user-data';
-import Team from '@/components/ProfileComponents/Team/team';
+import Team, { TeamProps } from '@/components/ProfileComponents/Team/team';
+import { Role } from '@/types/common';
+import { TeamMemberProps } from '@/components/ProfileComponents/TeamMember/team-member';
 
 const jura = Jura({
-  subsets: ['latin'],
+  subsets: ['cyrillic'],
 });
+
+const team_props: TeamProps = {
+  number: 11,
+  theme: 'Тема',
+};
+
+const team_members: TeamMemberProps[] = [
+  {
+    name: 'Андрей Иванов Иванович',
+    email: 'ivanivanov@mail.ru',
+    messenger: '@ivanivanov04',
+    role: Role.Learner,
+  },
+  {
+    name: 'Иван Иванов Иванович',
+    email: 'ivanivanov@mail.ru',
+    messenger: '@ivanivanov04',
+    role: Role.Learner,
+  },
+  {
+    name: 'Иван Иванов Иванович',
+    email: 'ivanivanov@mail.ru',
+    messenger: '@ivanivanov04',
+    role: Role.Learner,
+  },
+  {
+    name: 'Иван Иванов Иванович',
+    email: 'ivanivanov@mail.ru',
+    messenger: '@ivanivanov04',
+    role: Role.Tracker,
+  },
+  {
+    name: 'Андрей Иванов Иванович',
+    email: 'ivanivanov@mail.ru',
+    messenger: '@ivanivanov04',
+    role: Role.Tracker,
+  },
+];
 
 export default function Home() {
   return (
@@ -27,7 +67,7 @@ export default function Home() {
             <UserData props={'VK: @ivanivanov04'} />
           </div>
         </div>
-        <Team></Team>
+        <Team props={team_props} members={team_members}></Team>
       </div>
     </div>
   );
