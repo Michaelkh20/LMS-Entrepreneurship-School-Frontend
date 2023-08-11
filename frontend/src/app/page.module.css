@@ -1,232 +1,1196 @@
 .main {
+  background-color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-  background-color: white;
-}
-
-.description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
-  font-size: 0.85rem;
-  max-width: var(--max-width);
-  width: 100%;
-  z-index: 2;
-  font-family: var(--font-mono);
-}
-
-.description a {
-  display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
 }
 
-.description p {
-  position: relative;
-  margin: 0;
-  padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
-  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-  border-radius: var(--border-radius);
-}
-
-.code {
-  font-weight: 700;
-  font-family: var(--font-mono);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
-  width: var(--max-width);
-  max-width: 100%;
-}
-
-.card {
-  padding: 1rem 1.2rem;
-  border-radius: var(--border-radius);
-  background: rgba(var(--card-rgb), 0);
-  border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition:
-    background 200ms,
-    border 200ms;
-}
-
-.card span {
-  display: inline-block;
-  transition: transform 200ms;
-}
-
-.card h2 {
-  font-weight: 600;
-  margin-bottom: 0.7rem;
-}
-
-.card p {
-  margin: 0;
-  opacity: 0.6;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  max-width: 30ch;
-}
-
-.center {
+.main > div {
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.upperPanel {
   position: relative;
-  padding: 4rem 0;
 }
 
-.center::before {
-  background: var(--secondary-glow);
-  border-radius: 50%;
-  width: 480px;
-  height: 360px;
-  margin-left: -400px;
+.links > a > img[alt='lk'] {
+  scale: 0.95;
 }
 
-.center::after {
-  background: var(--primary-glow);
-  width: 240px;
-  height: 180px;
-  z-index: -1;
+.links > a > img {
+  width: 3.2vw;
 }
 
-.center::before,
-.center::after {
-  content: '';
-  left: 50%;
+.links > a {
+  margin-right: 2vw;
+}
+
+.links {
   position: absolute;
-  filter: blur(45px);
-  transform: translateZ(0);
+  top: 10%;
+  right: -5%;
+  transform: translate(-50%, -50%);
 }
 
-.logo {
-  position: relative;
-}
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  }
-
-  .card:hover span {
-    transform: translateX(4px);
-  }
-}
-
-@media (prefers-reduced-motion) {
-  .card:hover span {
-    transform: none;
-  }
+.apply > a {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  padding: 1rem 3rem;
+  align-items: flex-start;
+  border-radius: 10rem;
+  background: var(--unnamed, #0039ca);
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  font-size: 1.1rem;
 }
 
-/* Mobile */
-@media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
+.apply > a > span {
+  color: var(--unnamed, #fff);
+}
 
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
-  }
+.school {
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1rem;
+  align-items: flex-start;
+  border-radius: 10rem;
+  border: 0.15vw solid var(--unnamed, #0039ca);
+  background: #fff;
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  font-size: 1.1rem;
+}
 
-  .card {
-    padding: 1rem 2.5rem;
-  }
+.business {
+  position: absolute;
+  top: 10%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1rem;
+  align-items: flex-start;
+  border-radius: 10rem;
+  border: 0.15vw solid var(--unnamed, #bfc4f1);
+  background: #fff;
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  font-size: 1.1rem;
+}
 
-  .card h2 {
-    margin-bottom: 0.5rem;
-  }
+.upperPanel > img {
+  width: 100%;
+}
 
-  .center {
-    padding: 8rem 0 6rem;
-  }
+.upperPanel > div > span {
+  position: absolute;
+  top: 100%;
+  right: 81%;
+  color: #000;
+  font-size: 1vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
 
-  .center::before {
-    transform: none;
-    height: 300px;
-  }
-
-  .description {
+@media screen and (max-width: 1350px) {
+  .apply > a {
+    padding: 0.7rem 2.1rem;
     font-size: 0.8rem;
   }
 
-  .description a {
-    padding: 1rem;
+  .business {
+    padding: 0.7rem;
+    font-size: 0.8rem;
   }
 
-  .description p,
-  .description div {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
+  .school {
+    padding: 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .apply > a {
+    padding: 0.5rem 1.4rem;
+    font-size: 0.6rem;
   }
 
-  .description p {
+  .business {
+    padding: 0.5rem;
+    font-size: 0.6rem;
+  }
+
+  .school {
+    padding: 0.5rem;
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .apply > a {
+    font-size: 0.5rem;
+  }
+
+  .business {
+    font-size: 0.5rem;
+  }
+
+  .school {
+    font-size: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .apply > a {
+    font-size: 0.45rem;
+  }
+
+  .business {
+    font-size: 0.45rem;
+  }
+
+  .school {
+    font-size: 0.45rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .apply > a {
+    padding: 0.35rem 1rem;
+    font-size: 0.35rem;
+  }
+
+  .business {
+    padding: 0.35rem;
+    font-size: 0.35rem;
+  }
+
+  .school {
+    padding: 0.35rem;
+    font-size: 0.35rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .apply > a {
+    padding: 0.25rem 0.7rem;
+    font-size: 0.3rem;
+  }
+
+  .business {
+    padding: 0.25rem;
+    font-size: 0.3rem;
+  }
+
+  .school {
+    padding: 0.25rem;
+    font-size: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .apply > a {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.25rem;
+  }
+
+  .business {
+    padding: 0.15rem;
+    font-size: 0.25rem;
+  }
+
+  .school {
+    padding: 0.15rem;
+    font-size: 0.25rem;
+  }
+}
+
+.dlitelnost {
+  position: relative;
+  display: inline-block;
+}
+
+.dlitelnost > img {
+  width: 100%;
+  height: 100%;
+}
+
+.dlitelnost > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(0, 0, 0);
+  color: #232323;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+@media screen and (min-width: 1900px) {
+  .dlitelnost > span {
+    padding-bottom: 1rem;
+  }
+  .dlitelnost > img {
+    transform: scaleY(0.8);
+    transform-origin: top;
+  }
+}
+
+@media screen and (min-width: 3000px) {
+  .dlitelnost > span {
+    padding-bottom: 2rem;
+  }
+  .dlitelnost > img {
+    transform: scaleY(0.7);
+    transform-origin: top;
+  }
+}
+
+@media screen and (min-width: 4500px) {
+  .dlitelnost > span {
+    padding-bottom: 4rem;
+  }
+  .dlitelnost > img {
+    transform: scaleY(0.6);
+    transform-origin: top;
+  }
+}
+
+@media screen and (min-width: 5500px) {
+  .dlitelnost > span {
+    padding-bottom: 6rem;
+  }
+  .dlitelnost > img {
+    transform: scaleY(0.5);
+    transform-origin: top;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .dlitelnost > span {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .dlitelnost > span {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .dlitelnost > span {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .dlitelnost > span {
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .dlitelnost > span {
+    font-size: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .dlitelnost > span {
+    font-size: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 250px) {
+  .dlitelnost > span {
+    font-size: 0.2rem;
+  }
+}
+
+.secondPart {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
+.secondPart > div {
+  width: 33rem;
+  border-radius: 1rem;
+  box-shadow:
+    0px 4px 4px 0px #cfd8e8,
+    0px -4px 4px 0px #fff;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.secondPart > .left {
+  background-color: rgba(0, 118, 185, 0.04);
+  margin-left: 17rem;
+}
+
+.secondPart > .left > iframe {
+  height: 18rem;
+  border: none;
+  border-radius: 0.8rem;
+  scale: 0.8;
+}
+
+.secondPart > div > span {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+  color: var(--unnamed, #2d2d2d);
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.secondPart > div > .first {
+  font-size: 0.85rem;
+  text-align: justify;
+  font-style: normal;
+  line-height: normal;
+  margin-left: 15%;
+  margin-right: 15%;
+  text-transform: none;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -1rem;
+}
+
+.secondPart > div > .second {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  text-align: justify;
+  font-style: normal;
+  line-height: normal;
+  margin-left: 15%;
+  font-weight: 700;
+  text-decoration-line: underline;
+  margin-bottom: 1vw;
+  justify-content: flex-start;
+  text-transform: none;
+}
+
+.secondPart > .right {
+  display: flex;
+  background-color: rgba(238, 228, 250, 0.4);
+  margin-right: 17rem;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1600px) {
+  .secondPart > .left {
+    margin-left: 14rem;
+  }
+
+  .secondPart > .right {
+    margin-right: 14rem;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .secondPart > .left {
+    margin-left: 11rem;
+  }
+
+  .secondPart > .right {
+    margin-right: 11rem;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .secondPart > .left {
+    margin-left: 9rem;
+  }
+
+  .secondPart > .right {
+    margin-right: 9rem;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .secondPart > .left {
+    margin-left: 6rem;
+  }
+
+  .secondPart > .right {
+    margin-right: 6rem;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .secondPart > .left {
+    margin-left: 4rem;
+  }
+
+  .secondPart > .right {
+    margin-right: 4rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .secondPart {
+    flex-direction: column;
     align-items: center;
-    inset: 0 0 auto;
-    padding: 2rem 1rem 1.4rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
-    background-clip: padding-box;
-    backdrop-filter: blur(24px);
+    gap: 0;
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+  .secondPart > .left {
+    margin-left: 0;
   }
 
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
-    z-index: 1;
+  .secondPart > .right {
+    margin-right: 0;
+  }
+
+  .secondPart > div {
+    margin: 0;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
 }
 
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(2, 50%);
+@media screen and (max-width: 700px) {
+  .secondPart > div {
+    width: 25rem;
+  }
+
+  .secondPart > div > span {
+    margin-top: 2rem;
+  }
+
+  .secondPart > .left > iframe {
+    height: 14rem;
+  }
+
+  .secondPart > div > span {
+    font-size: 2rem;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    filter: invert(1);
+@media screen and (max-width: 500px) {
+  .secondPart > div {
+    width: 20rem;
   }
 
-  .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
+  .secondPart > div > span {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .secondPart > .left > iframe {
+    height: 11rem;
+  }
+
+  .secondPart > div > .first {
+    font-size: 0.6rem;
+  }
+
+  .secondPart > div > .second {
+    font-size: 0.75rem;
   }
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
+@media screen and (max-width: 400px) {
+  .secondPart > div {
+    width: 15rem;
   }
-  to {
-    transform: rotate(0deg);
+
+  .secondPart > div > span {
+    margin-top: 1.2rem;
+  }
+
+  .secondPart > .left > iframe {
+    height: 8rem;
+  }
+
+  .secondPart > div > span {
+    font-size: 1.2rem;
+  }
+
+  .secondPart > div > .first {
+    font-size: 0.6rem;
+  }
+
+  .secondPart > div > .second {
+    font-size: 0.7rem;
+  }
+}
+
+.secondPart > .right > img {
+  max-width: 100%;
+  scale: 0.95;
+}
+
+.secondPart > .right > span {
+  margin-bottom: 3rem;
+}
+
+.components {
+  position: relative;
+  color: var(--unnamed, #2d2d2d);
+  display: flex;
+  justify-content: center;
+  font-size: 4rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.components > span {
+  position: relative;
+  z-index: 1;
+}
+
+.components > span::before {
+  content: '';
+  position: absolute;
+  border-radius: 0.5rem;
+  top: 67%;
+  width: 100%;
+  height: 1.3rem;
+  background-color: rgba(225, 248, 255, 1);
+  z-index: -1;
+}
+
+@media screen and (max-width: 1400px) {
+  .components {
+    font-size: 3rem;
+  }
+  .components > span::before {
+    border-radius: 0.375rem;
+    height: 0.975rem;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .components {
+    font-size: 2.5rem;
+  }
+  .components > span::before {
+    border-radius: 0.3rem;
+    height: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .components {
+    font-size: 2rem;
+  }
+  .components > span::before {
+    border-radius: 0.25rem;
+    height: 0.65rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .components {
+    font-size: 1.5rem;
+  }
+  .components > span::before {
+    border-radius: 0.2rem;
+    height: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .components {
+    font-size: 1.2rem;
+  }
+  .components > span::before {
+    border-radius: 0.15rem;
+    height: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .components {
+    font-size: 1rem;
+  }
+  .components > span::before {
+    border-radius: 0.1rem;
+    height: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .components {
+    font-size: 0.8rem;
+  }
+  .components > span::before {
+    border-radius: 0.8rem;
+    height: 0.25rem;
+  }
+}
+
+@media screen and (max-width: 290px) {
+  .components {
+    font-size: 0.7rem;
+  }
+  .components > span::before {
+    border-radius: 0.7rem;
+    height: 0.2rem;
+  }
+}
+
+.programComponents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.programComponents > div {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 4rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+}
+
+.componentBlock {
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 25rem;
+  margin-right: 2rem;
+}
+
+.componentBlock > .name {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.componentBlock > div > span {
+  text-align: center;
+}
+
+.componentBlock > div > .number {
+  background-color: #bfc4f1;
+  border-radius: 50%;
+  padding: 0.8rem;
+  color: var(--unnamed, #fff);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.componentBlock > div > .about {
+  align-items: center;
+  border-radius: 2rem;
+  border: 0.5px solid var(--unnamed, #bfc4f1);
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 1.5rem;
+}
+
+.componentBlock > .description {
+  color: var(--unnamed, #2d2d2d);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media screen and (max-width: 1420px) {
+  .componentBlock {
+    margin-right: 1.5rem;
+  }
+
+  .programComponents > div {
+    margin-top: 2rem;
+    margin-left: 7rem;
+    margin-right: 4rem;
+  }
+
+  .componentBlock > div > .about {
+    font-size: 0.8rem;
+    padding: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .programComponents > div {
+    margin-top: 2rem;
+    margin-left: 4.5rem;
+    margin-right: 2rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.9rem;
+  }
+
+  .componentBlock > .name {
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 1075px) {
+  .componentBlock {
+    margin-right: 1.1rem;
+    margin-top: 2rem;
+  }
+
+  .programComponents > div {
+    margin-top: 0.6rem;
+    margin-left: 3rem;
+    margin-right: 2rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.8rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 810px) {
+  .programComponents > div {
+    margin-left: 2.5rem;
+    margin-right: 1.7rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.8rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.3rem 1rem;
+    font-size: 0.55rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .componentBlock {
+    margin-right: 0.8rem;
+  }
+
+  .programComponents > div {
+    margin-left: 2rem;
+    margin-right: 1.2rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.1rem 0.5rem;
+    font-size: 0.55rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .componentBlock {
+    margin-right: 0.7rem;
+  }
+
+  .programComponents > div {
+    margin-left: 1.7rem;
+    margin-right: 1rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.6rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.5rem;
+    font-size: 0.4rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.5rem;
+    margin-left: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .componentBlock {
+    margin-right: 0.5rem;
+  }
+
+  .componentBlock > .name {
+    margin-bottom: 0.6rem;
+  }
+
+  .programComponents > div {
+    margin-top: 0.7rem;
+    margin-left: 1.5rem;
+    margin-right: 0.9rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.4rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.5rem;
+    font-size: 0.35rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.1rem 0.3rem;
+    font-size: 0.35rem;
+    margin-left: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .componentBlock > .name {
+    margin-bottom: 0.4rem;
+  }
+
+  .programComponents > div {
+    margin-top: 0.7rem;
+    margin-left: 1.1rem;
+    margin-right: 0.7rem;
+  }
+
+  .componentBlock > .description {
+    font-size: 0.35rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.4rem;
+    font-size: 0.35rem;
+  }
+
+  .componentBlock > div > .about {
+    padding: 0.1rem 0.25rem;
+    font-size: 0.3rem;
+    margin-left: 0.3rem;
+  }
+}
+
+.itsAnna {
+  position: relative;
+}
+
+.itsAnna > img {
+  margin-top: 5vw;
+  margin-bottom: 5vw;
+  width: 100%;
+}
+
+.itsAnna > div {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: black; /* Настройте цвет текста */
+  font-size: 1vw; /* Настройте размер шрифта */
+}
+
+.itsAnna > .Annaleft {
+  top: 70%;
+  left: 27%;
+}
+
+.itsAnna > div > div {
+  display: flex;
+  width: 25vw;
+}
+
+.itsAnna > div > div > span {
+  margin-bottom: 2.5em;
+  margin-left: 1em;
+  font-size: 1vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.itsAnna > div > div > img {
+  width: 1.7em;
+  height: 1.7em;
+}
+
+.itsAnna > .AnnaRight {
+  top: 52%;
+  left: 77%;
+}
+
+.itsAnna > .AnnaRight > div > span {
+  padding-right: 20%;
+}
+
+@media screen and (max-width: 500px) {
+  .itsAnna > .Annaleft {
+    top: 65%;
+    left: 20%;
+  }
+
+  .itsAnna > div > div > span {
+    font-size: 1.3vw;
+    margin-bottom: 1vw;
+  }
+
+  .itsAnna > .AnnaRight > div > span {
+    padding-right: 0;
+  }
+}
+
+.contest > div {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.contest > div > span {
+  color: #000;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 1rem;
+  border-radius: 2em;
+  margin-right: 1rem;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
+}
+
+.contest > div > .blue {
+  border: 1px solid var(--unnamed, #0039ca);
+}
+
+.contest > div > .blue:hover {
+  background-color: #0039ca;
+  color: white;
+}
+
+.contest > div > .pink {
+  border: 1px solid var(--unnamed, #f26097);
+}
+
+.contest > div > .pink:hover {
+  background-color: #f26097;
+  color: white;
+}
+.contest > div > .grey {
+  border: 1px solid var(--unnamed, #2d2d2d);
+}
+
+.contest > div > .grey:hover {
+  background-color: #2d2d2d;
+  color: white;
+}
+
+.contest {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-bottom: 3rem;
+}
+
+@media screen and (max-width: 1100px) {
+  .contest > div > span {
+    font-size: 0.9rem;
+  }
+
+  .contest {
+    margin-top: 1.5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .contest > div > span {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .contest > div > span {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .contest > div > span {
+    font-size: 0.55rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .contest > div > span {
+    font-size: 0.45rem;
+  }
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.faq > div {
+  position: relative;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  width: 80%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 1rem;
+  background: #f2f3fc;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 3rem;
+  padding-right: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.faq > div > span {
+  color: var(--unnamed, #2d2d2d);
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding-right: 10%;
+}
+
+.faq > div > span > span {
+  color: var(--unnamed, #000);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  /* opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 2.5s ease, opacity 2.5s ease; */
+}
+
+/* .show {
+  opacity: 1;
+  max-height: 200px;
+} */
+
+.faq > div > span > span > a {
+  text-decoration: underline;
+}
+
+.faq > div > button {
+  position: absolute;
+  left: 95%;
+  top: 27%;
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+  .faq > div > button {
+    left: 90%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .faq > div {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .faq > div > span {
+    font-size: 1.2rem;
+  }
+
+  .faq > div > span > span {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .faq > div > button {
+    left: 88%;
+    scale: 0.9;
+  }
+
+  .faq > div {
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .faq > div > span {
+    font-size: 1rem;
+  }
+
+  .faq > div > span > span {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .faq > div > button {
+    left: 85%;
+    scale: 0.8;
+  }
+
+  .faq > div > span {
+    font-size: 0.8rem;
+  }
+
+  .faq > div > span > span {
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .faq > div > span {
+    font-size: 0.7rem;
+  }
+
+  .faq > div > span > span {
+    font-size: 0.5rem;
   }
 }
