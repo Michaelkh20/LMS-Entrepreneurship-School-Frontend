@@ -9,7 +9,7 @@ export default function LearnerLayout({
 }) {
   return (
     <>
-      <Navbar balance={15} name="Ivan" isTrackerPage={false} />
+      <Navbar balance={15} name="Ivan" isTrackerPage={true} />
       <main className={styles.main}>{children}</main>
     </>
   );
