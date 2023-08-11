@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './exitButton.module.css';
 import Image from 'next/image';
-import icon from '../../../../public/admin/log-out.png';
+import icon from '../../../../public/admin/log-out.svg';
 import Link from 'next/link';
 
 export default function ExitButton() {
