@@ -54,7 +54,7 @@ import { errorHandler, providesList } from './helpers/tagHelpers';
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   }),
   tagTypes: [
     'Account',
@@ -122,10 +122,10 @@ export const adminApi = createApi({
         errorHandler(error, 'Account', [id, 'LIST']),
     }),
 
-    getAccountsForSelect: build.query<UserSelectionList, Role | void>({
+    getAccountsForSelect: build.query<UserSelectionList, Role>({
       query: (role) => ({
         url: `/admin/accounts/select`,
-        params: role ? { role: role } : undefined,
+        params: { role: role },
       }),
       providesTags: (result) => providesList(result, 'Account'),
     }),
@@ -318,10 +318,10 @@ export const adminApi = createApi({
         errorHandler(error, 'Task', [id, 'LIST']),
     }),
 
-    getTasksForSelect: build.query<TaskSelectionList, TaskType | void>({
+    getTasksForSelect: build.query<TaskSelectionList, TaskType>({
       query: (taskType) => ({
         url: `/admin/tasks/select`,
-        params: taskType ? { taskType: taskType } : undefined,
+        params: { taskType: taskType },
       }),
       providesTags: (result) => providesList(result, 'Task'),
     }),

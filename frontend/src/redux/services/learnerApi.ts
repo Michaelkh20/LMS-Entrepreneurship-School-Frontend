@@ -27,7 +27,7 @@ import { errorHandler, providesList } from './helpers/tagHelpers';
 export const learnerApi = createApi({
   reducerPath: 'learnerAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   }),
   tagTypes: ['Balance', 'Claim', 'Transaction', 'Solution', 'Assessment'],
   keepUnusedDataFor: 180,
