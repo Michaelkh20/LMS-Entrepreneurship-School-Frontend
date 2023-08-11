@@ -5,13 +5,14 @@ import FormComponent from '@/components/Forms/form';
 import UploadButton from '@/components/Buttons/UploadButton/UploadButton';
 import TradeLotCard from '@/components/LotCard/lot-card';
 import Navbar from '@/components/NavBars/Navbar/Navbar';
-import { Form } from 'antd';
-import { UserSelectionFormItem } from '@/components/Forms/FormItems';
+import { DatePicker, Form } from 'antd';
 import { AccountRequest } from '@/types/requests';
 import { Role } from '@/types/common';
 import { useCreateAccountMutation } from '@/redux/services/adminApi';
 import { useAuthMutation } from '@/redux/services/commonApi';
 import { useEffect, useMemo } from 'react';
+import { UserSelectionFormItem } from '@/components/Forms/FormItems/Filters';
+import dayjs from 'dayjs';
 
 export default function Test() {
   const [auth, { isSuccess: isAuthSuccess }] = useAuthMutation();
@@ -71,6 +72,10 @@ export default function Test() {
   //   authUser();
   // }, [auth, createUser, users]);
 
+  function onValuesChangeHandler(changedValues: any, values: any) {
+    console.log(values);
+  }
+
   return (
     <main>
       <TradeLotCard
@@ -87,11 +92,22 @@ export default function Test() {
       <h1>Test</h1>
       <div>Auth: {isAuthSuccess ? 'true' : 'false'}</div>
       <div>Create user: {isSuccess ? 'true' : 'false'}</div>
-      <Form>
+      <Form onValuesChange={onValuesChangeHandler}>
         <UserSelectionFormItem
           placeholder="Выберите пользователя"
           name="user"
         />
+        <Form.Item
+          name="gvergvre"
+          // normalize={(value, prevValue, allValues) => {
+          //   return 1;
+          // }}
+          // getValueFromEvent={(date) => date.format('YYYY-MM-DD')}
+          getValueFromEvent={(date) => date.toISOString()}
+          // getValueFromEvent={(date) => console.log(date)}
+        >
+          <DatePicker placeholder="fvwefew" />
+        </Form.Item>
       </Form>
     </main>
   );

@@ -1,6 +1,5 @@
-import NavBarAdmin from '@/components/headers/header-admin/header';
 import style from './page.module.css';
-import AccountForm from '@/components/Forms/Accounts/AccountForm';
+import CreateAccountForm from '@/components/Forms/Accounts/CreateAccountForm';
 
 const RegistrationPage: React.FC = () => {
   const handleFormSubmit = (values: any) => {
@@ -11,7 +10,7 @@ const RegistrationPage: React.FC = () => {
   return (
     <div>
       <h1 className={style.title}> Создание профиля </h1>
-      <AccountForm isEdit={false} />
+      <CreateAccountForm isEdit={false} />
     </div>
   );
 };

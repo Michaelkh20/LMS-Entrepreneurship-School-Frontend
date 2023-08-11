@@ -1,4 +1,4 @@
-import AccountForm from '../../../../../components/Forms/Accounts/AccountForm';
+import CreateAccountForm from '../../../../../components/Forms/Accounts/CreateAccountForm';
 import style from './page.module.css';
 
 const RegistrationPage: React.FC = () => {
@@ -10,7 +10,7 @@ const RegistrationPage: React.FC = () => {
   return (
     <div>
       <h1 className={style.title}> Редактирование профиля </h1>
-      <AccountForm isEdit={true} />
+      <CreateAccountForm isEdit={true} />
     </div>
   );
 };
