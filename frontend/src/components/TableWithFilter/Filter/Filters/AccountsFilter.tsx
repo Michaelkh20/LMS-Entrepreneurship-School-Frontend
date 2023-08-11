@@ -5,7 +5,7 @@ import {
   EmailFormItem,
   TeamFormItem,
   RoleFormItem,
-} from '@/components/Forms/FormItems';
+} from '@/components/Forms/FormItems/Filters';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 
 export function AccountsFilter({ onChangeEvent }: any) {
