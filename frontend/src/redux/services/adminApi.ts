@@ -54,7 +54,7 @@ import { errorHandler, providesList } from './helpers/tagHelpers';
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+    baseUrl: '/api',
   }),
   tagTypes: [
     'Account',
@@ -109,7 +109,7 @@ export const adminApi = createApi({
     }),
 
     getAccountById: build.query<UserProfile, Id>({
-      query: (id) => ({ url: `/accounts/${id}` }),
+      query: (id) => ({ url: `/admin/accounts/${id}` }),
       providesTags: (result, error, id) => errorHandler(error, 'Account', id),
     }),
 
@@ -122,10 +122,10 @@ export const adminApi = createApi({
         errorHandler(error, 'Account', [id, 'LIST']),
     }),
 
-    getAccountsForSelect: build.query<UserSelectionList, Role>({
+    getAccountsForSelect: build.query<UserSelectionList, Role | void>({
       query: (role) => ({
         url: `/admin/accounts/select`,
-        params: { role: role },
+        params: role ? { role: role } : undefined,
       }),
       providesTags: (result) => providesList(result, 'Account'),
     }),
@@ -318,10 +318,10 @@ export const adminApi = createApi({
         errorHandler(error, 'Task', [id, 'LIST']),
     }),
 
-    getTasksForSelect: build.query<TaskSelectionList, TaskType>({
+    getTasksForSelect: build.query<TaskSelectionList, TaskType | void>({
       query: (taskType) => ({
         url: `/admin/tasks/select`,
-        params: { taskType: taskType },
+        params: taskType ? { taskType: taskType } : undefined,
       }),
       providesTags: (result) => providesList(result, 'Task'),
     }),
