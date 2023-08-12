@@ -6,12 +6,19 @@ export default function PhoneNumber({
   onChange: onControlledChange,
   ...props
 }: React.ComponentProps<typeof Input>) {
-  const [value, setValue] = useState<
-    string | number | readonly string[] | undefined
-  >('');
+  const [value, setValue] = useState<string | undefined>('');
 
   useEffect(() => {
-    setValue(controlledValue);
+    if (controlledValue === undefined) {
+      setValue(controlledValue);
+    } else if (typeof controlledValue === 'string') {
+      if (/^\d+$/.test(controlledValue)) {
+        setValue(formatInput(controlledValue));
+      } else {
+        setValue(controlledValue);
+      }
+    }
+    console.log(controlledValue);
   }, [controlledValue]);
 
   const isNumericInput = (event: React.KeyboardEvent<HTMLInputElement>) => {

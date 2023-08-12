@@ -94,9 +94,11 @@ export default function EditAccountForm({ id }: { id: Id }) {
   }
 
   if (isLoading) {
-    return <Spin tip="Loading" size="large"></Spin>;
+    return <Spin size="large"></Spin>;
   } else if (isError) {
-    <Result status="error" title={'Sorry, something went wrong.'}></Result>;
+    return (
+      <Result status="error" title={'Sorry, something went wrong.'}></Result>
+    );
   } else {
     return (
       <Form
@@ -204,8 +206,13 @@ export default function EditAccountForm({ id }: { id: Id }) {
           rules={[
             { required: true, message: 'Введите номер телефона' },
             {
-              len: 19,
-              message: 'Неверный формат номера телефона',
+              validator: (_, value) => {
+                if (value.replace(/\D/g, '').length !== 10) {
+                  // Check for 10 digits only
+                  return Promise.reject('Неверный формат номера телефона');
+                }
+                return Promise.resolve();
+              },
             },
           ]}
           labelCol={{ span: 6 }}
@@ -252,7 +259,7 @@ export default function EditAccountForm({ id }: { id: Id }) {
               disabled={!validEmail || !validPhone}
               loading={updateResult.isLoading}
             >
-              Создать аккаунт
+              Подтвердить изменения
             </Button>
           </Space>
         </Form.Item>
