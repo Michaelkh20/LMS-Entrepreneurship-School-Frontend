@@ -10,10 +10,15 @@
   gap: 0.75rem;
   align-items: center;
   cursor: pointer;
+  transition: 0.2s ease-in-out;
 }
 
 .button p {
   font-family: inherit;
   font-weight: 700;
   font-size: 1.125rem;
+}
+
+.button:hover {
+  background-color: #c7f1ff;
 }

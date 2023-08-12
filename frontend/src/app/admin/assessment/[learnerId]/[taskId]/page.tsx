@@ -1,32 +1,53 @@
-import style from './page.module.css';
+import { Jura } from 'next/font/google';
+import styles from './page.module.css';
+import Link from 'next/link';
 
-export default function Page({ params }: { params: { learnerId: string, taskId: string } }) {
-    return (
-        <div>
-            <h1 className={style.title}> Оценка </h1>
-            <button className={style.buttonRedux}> Редактировать оценку </button>
-            <h1 className = {style.value}>Оценка: <a className={style.bigValue}> 5 </a></h1>
-            <div className={style.param}>
-                <h1 className = {style.paramName}>ТИП</h1>
-                <h1 className={style.smallValue}> Оц. в ведомость </h1>
-            </div>
-            <div className={style.param}>
-                <h1 className = {style.paramName}>Ученик</h1>
-                <h1 className={style.smallValue}> Иванов Иван Иванович </h1>
-            </div>
-            <div className={style.param}>
-                <h1 className = {style.paramName}>Задание</h1>
-                <h1 className={style.smallValue}> ссылка на дз </h1>
-            </div>
-            <div className={style.param}>
-                <h1 className = {style.paramName}>Комментарий</h1>
-                <h1 className={style.smallValue}> какой-то коммент </h1>
-            </div>
-            <div className={style.param}>
-                <h1 className = {style.paramName}>Дата выставления</h1>
-                <h1 className={style.smallValue}> 23.07.2003 </h1>
-            </div>
-            <button className={style.deleteButton}> Удалить оценку </button>
+const jura = Jura({
+  subsets: ['cyrillic'],
+});
+
+export default function Page({
+  params,
+}: {
+  params: { learnerId: string; taskId: string };
+}) {
+  return (
+    <div>
+      <h1 className={`${styles.title} ${jura.className}`}>ОЦЕНКА</h1>
+      <div className={styles.redux_button_container}>
+        <button className={styles.buttonRedux}>Редактировать</button>
+      </div>
+      <div className={styles.grade_container}>
+        <p className={styles.grade}>Оценка: </p>
+        <p className={styles.grade_value}>5</p>
+      </div>
+
+      <div className={styles.grade_props}>
+        <div className={styles.grade_props_component}>
+          <p className={styles.prop_type}>Тип</p>
+          <p className={styles.prop_value}>Оц. в ведомость</p>
         </div>
+        <div className={styles.grade_props_component}>
+          <p className={styles.prop_type}>Ученик</p>
+          <p className={styles.prop_value}>Иванов Иван Иванович</p>
+        </div>
+        <div className={styles.grade_props_component}>
+          <p className={styles.prop_type}>Задание</p>
+          <Link className={styles.prop_value} href={''}>
+            Ссылка_на_ДЗ
+          </Link>
+        </div>
+        <div className={styles.grade_props_component}>
+          <p className={styles.prop_type}>Комментарий</p>
+          <p className={styles.prop_value}>какой-то комментарий</p>
+        </div>
+        <div className={styles.grade_props_component}>
+          <p className={styles.prop_type}>Дата выставления</p>
+          <p className={styles.prop_value}>08.07.2023</p>
+        </div>
+      </div>
+
+      <button className={styles.delete_button}> Удалить оценку </button>
+    </div>
   );
 }

@@ -42,8 +42,7 @@
 }
 
 .buttonRedux:hover {
-  background-color: #9d9cf7;
-  color: white;
+  background-color: #c7f1ff;
 }
 
 .balance {
@@ -88,6 +87,10 @@
   color: white;
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+.delete_button:hover {
+  background-color: #ff4f4f;
 }
 
 .final_grade_label {
