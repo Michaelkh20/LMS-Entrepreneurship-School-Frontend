@@ -3,9 +3,9 @@ import formStyles from '../form.module.css';
 import {
   NameFormItem,
   EmailFormItem,
-  TeamFormItem,
+  TeamNumberFormItem,
   RoleFormItem,
-} from '@/components/Forms/FormItems';
+} from '@/components/Forms/FormItems/Filters';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 
 export function AccountsFilter({ onChangeEvent }: any) {
@@ -29,7 +29,7 @@ export function AccountsFilter({ onChangeEvent }: any) {
       >
         <NameFormItem />
         <EmailFormItem />
-        <TeamFormItem />
+        <TeamNumberFormItem />
         <RoleFormItem />
       </Form>
     </FilterWrapper>

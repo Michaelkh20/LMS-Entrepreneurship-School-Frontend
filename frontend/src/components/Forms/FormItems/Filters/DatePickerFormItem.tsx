@@ -1,11 +1,12 @@
-import { DatePicker, Form, Input } from 'antd';
+import { DatePicker, DatePickerProps, Form, Input } from 'antd';
+import type { Dayjs } from 'dayjs';
 
 export function DatePickerFormItem({
-  placeholder,
   name,
+  placeholder,
 }: {
-  placeholder: string;
   name: string;
+  placeholder: string;
 }) {
   return (
     <Form.Item name={name}>
