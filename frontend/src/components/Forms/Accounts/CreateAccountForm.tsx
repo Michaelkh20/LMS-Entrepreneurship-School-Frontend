@@ -47,9 +47,7 @@ export default function CreateAccountForm() {
           );
         }
 
-        console.log(fieldsError);
         form.setFields(fieldsError);
-        form.validateFields({ validateOnly: true });
       } else {
         message.error('Что-то пошло не так', 5);
       }
