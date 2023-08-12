@@ -1,6 +1,11 @@
-import style from './page.module.css';
+import styles from './page.module.css';
 import TableComponent from '../../../../components/TableOfMark/TableOfMark';
 import Link from 'next/link';
+import { Jura } from 'next/font/google';
+
+const jura = Jura({
+  subsets: ['cyrillic'],
+});
 
 export default function Page({ params }: { params: { id: string } }) {
   const data = [
@@ -30,34 +35,36 @@ export default function Page({ params }: { params: { id: string } }) {
   ];
   return (
     <div>
-      <h1 className={style.title}> Профиль </h1>
+      <h1 className={`${styles.title} ${jura.className}`}>ПРОФИЛЬ</h1>
       <div>ID IS: {params.id}</div>
-      <div className={style.row}>
-        <div className={style.left}>
-          <h1 className={style.name}>Имя Студента из API</h1>
-          <h1 className={style.role}> РОЛЬ из API </h1>
-          <button className={style.buttonRedux}> Редактировать</button>
+      <div className={styles.row}>
+        <div className={styles.left}>
+          <h1 className={styles.name}>Имя Студента из API</h1>
         </div>
-        <div className={style.balance}>Баланс: 777</div>
+        <p className={styles.balance}>
+          Баланс: <span className={styles.balance_value}>777 ШП</span>
+        </p>
       </div>
-      <div className={style.line}>
-        Email <h1 className={style.role}> mail </h1>
+      <h1 className={styles.role}> РОЛЬ из API </h1>
+      <button className={styles.buttonRedux}> Редактировать</button>
+      <div className={styles.learner_data}>
+        <div className={styles.learner_props}>
+          <p className={styles.prop}>Email:</p>
+          <p className={styles.prop}>Телефон:</p>
+          <p className={styles.prop}>Мессенджер:</p>
+          <p className={styles.prop}>Команда:</p>
+        </div>
+        <div className={styles.learner_props}>
+          <p className={styles.prop_value}>iiivanov@edu.hse.ru</p>
+          <p className={styles.prop_value}>iPhone</p>
+          <p className={styles.prop_value}>tg:@ivan</p>
+          <p className={styles.prop_value}>№1</p>
+        </div>
       </div>
-      <div className={style.line}>
-        Email <h1 className={style.role}> mail </h1>
-      </div>
-      <div className={style.line}>
-        Email <h1 className={style.role}> mail </h1>
-      </div>
-      <div className={style.line}>
-        Email <h1 className={style.role}> mail </h1>
-      </div>
-      <div className={style.line}>
-        Email <h1 className={style.role}> mail </h1>
-      </div>
-      <h1 className={style.underlineText}>Итоговая оценка</h1>
+      <button className={styles.delete_button}>Удалить</button>
+      <h1 className={styles.final_grade_label}>Итоговая оценка</h1>
       <TableComponent data={data} />
-      <button className={style.buttonUp}> Повысить итоговую </button>
+      <button className={styles.buttonUp}> Повысить итоговую </button>
     </div>
   );
 }
