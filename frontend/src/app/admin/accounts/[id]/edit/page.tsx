@@ -1,5 +1,10 @@
+import { Jura } from 'next/font/google';
 import AccountForm from '../../../../../components/Forms/Accounts/AccountForm';
-import style from './page.module.css';
+import styles from './page.module.css';
+
+const jura = Jura({
+  subsets: ['cyrillic'],
+});
 
 const RegistrationPage: React.FC = () => {
   const handleFormSubmit = (values: any) => {
@@ -9,7 +14,9 @@ const RegistrationPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className={style.title}> Редактирование профиля </h1>
+      <h1 className={`${styles.title} ${jura.className}`}>
+        РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+      </h1>
       <AccountForm isEdit={true} />
     </div>
   );
