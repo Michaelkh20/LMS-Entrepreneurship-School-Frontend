@@ -6,11 +6,7 @@ const jura = Jura({
   subsets: ['cyrillic'],
 });
 
-export default function Page({
-  params,
-}: {
-  params: { learnerId: string; taskId: string };
-}) {
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h1 className={`${styles.title} ${jura.className}`}>ОЦЕНКА</h1>
