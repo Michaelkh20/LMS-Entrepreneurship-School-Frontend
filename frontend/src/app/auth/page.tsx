@@ -1,11 +1,18 @@
 import React from 'react';
 import styles from './auth.module.css';
-import inscription from '../landing.module.css';
+import Image from 'next/image';
 
 const Authorization: React.FC = () => {
   return (
     <div className={styles.main}>
-      <img src="./auth/authBackground.svg" alt="sdfds" />
+      {/* <Image
+        width={1440}
+        height={835}
+        layout="responsive"
+        src="./auth/authBackground.svg"
+        alt=""
+      /> */}
+      <img src="./auth/authBackground.svg" alt="" />
       <div className={styles.components}>
         <span>АВТОРИЗАЦИЯ</span>
       </div>
@@ -22,7 +29,7 @@ const Authorization: React.FC = () => {
             <img src="./auth/userIcon.svg" alt="" />
           </div>
 
-          <div pass="">
+          <div className={styles.pass}>
             <input
               type="password"
               id="password"

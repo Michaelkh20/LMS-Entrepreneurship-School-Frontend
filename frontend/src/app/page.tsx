@@ -245,6 +245,18 @@ const LandingPage: React.FC = () => {
         <span className={jura.className}>Эксперты программы</span>
       </div>
 
+      <br />
+      <div className={styles.expertsImage}>
+      <Image
+        width={1183}
+        height={1066}
+        // layout="responsive"
+        src="./landing/experts.svg"
+        alt=""
+      />
+      </div>
+      <br />
+
       <div className={styles.components}>
         <span className={jura.className}>
           Наши ученики побеждают в конкурсах

@@ -61,7 +61,7 @@
   padding-right: 2vw;
 }
 
-.logPass > form > div[pass] {
+.logPass > form > .pass {
   background: #f5fafc;
 }
 
@@ -100,6 +100,10 @@
   font-weight: 700;
   line-height: normal;
   margin-right: 4%;
+}
+
+.logPass > div > button > img {
+  font-size: 1.5vw;
 }
 
 .logPass > div > button {

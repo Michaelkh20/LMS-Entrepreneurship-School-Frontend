@@ -38,14 +38,14 @@
   left: 15%;
   transform: translate(-50%, -50%);
   display: inline-flex;
-  padding: 1rem 3rem;
+  padding: 1vw 3vw;
   align-items: flex-start;
   border-radius: 10rem;
   background: var(--unnamed, #0039ca);
   box-shadow:
-    0px 4px 4px 0px #cfd8e8,
-    0px -4px 4px 0px #fff;
-  font-size: 1.1rem;
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1vw;
 }
 
 .apply > a > span {
@@ -58,15 +58,15 @@
   left: 35%;
   transform: translate(-50%, -50%);
   display: flex;
-  padding: 1rem;
+  padding: 1vw;
   align-items: flex-start;
   border-radius: 10rem;
   border: 0.15vw solid var(--unnamed, #0039ca);
   background: #fff;
   box-shadow:
-    0px 4px 4px 0px #cfd8e8,
-    0px -4px 4px 0px #fff;
-  font-size: 1.1rem;
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1vw;
 }
 
 .business {
@@ -75,15 +75,15 @@
   left: 55%;
   transform: translate(-50%, -50%);
   display: flex;
-  padding: 1rem;
+  padding: 1vw;
   align-items: flex-start;
   border-radius: 10rem;
   border: 0.15vw solid var(--unnamed, #bfc4f1);
   background: #fff;
   box-shadow:
-    0px 4px 4px 0px #cfd8e8,
-    0px -4px 4px 0px #fff;
-  font-size: 1.1rem;
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1vw;
 }
 
 .upperPanel > img {
@@ -101,7 +101,7 @@
   line-height: normal;
 }
 
-@media screen and (max-width: 1350px) {
+/* @media screen and (max-width: 1350px) {
   .apply > a {
     padding: 0.7rem 2.1rem;
     font-size: 0.8rem;
@@ -212,7 +212,7 @@
     padding: 0.15rem;
     font-size: 0.25rem;
   }
-}
+} */
 
 .dlitelnost {
   position: relative;
@@ -745,16 +745,18 @@
   }
 }
 
-@media screen and (max-width: 1075px) {
+@media screen and (max-width: 1020px) {
   .componentBlock {
-    margin-right: 1.1rem;
     margin-top: 2rem;
-  }
-
-  .programComponents > div {
-    margin-top: 0.6rem;
+    margin-right: 3rem;
     margin-left: 3rem;
-    margin-right: 2rem;
+  }
+
+  .programComponents > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
   }
 
   .componentBlock > .description {
@@ -762,152 +764,71 @@
   }
 
   .componentBlock > div > .number {
-    padding: 0.7rem;
-    font-size: 0.9rem;
+    padding: 0.6rem;
+    font-size: 1rem;
   }
 
   .componentBlock > div > .about {
     padding: 0.3rem 1rem;
     font-size: 0.8rem;
-    margin-left: 0.4rem;
-  }
-}
-
-@media screen and (max-width: 810px) {
-  .programComponents > div {
-    margin-left: 2.5rem;
-    margin-right: 1.7rem;
-  }
-
-  .componentBlock > .description {
-    font-size: 0.8rem;
-  }
-
-  .componentBlock > div > .number {
-    padding: 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  .componentBlock > div > .about {
-    padding: 0.3rem 1rem;
-    font-size: 0.55rem;
-    margin-left: 0.4rem;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .componentBlock {
-    margin-right: 0.8rem;
-  }
-
-  .programComponents > div {
-    margin-left: 2rem;
-    margin-right: 1.2rem;
-  }
-
-  .componentBlock > div > .number {
-    padding: 0.55rem;
-    font-size: 0.7rem;
-  }
-
-  .componentBlock > div > .about {
-    padding: 0.1rem 0.5rem;
-    font-size: 0.55rem;
     margin-left: 0.4rem;
   }
 }
 
 @media screen and (max-width: 500px) {
   .componentBlock {
-    margin-right: 0.7rem;
+    margin-top: 1.2rem;
+    padding-left: 3rem;
   }
 
-  .programComponents > div {
-    margin-left: 1.7rem;
-    margin-right: 1rem;
+  .componentBlock > .description {
+    font-size: 0.7rem;
+    padding-right: 3rem;
+  }
+
+  .componentBlock > div > .number {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .componentBlock > div > .about {
+    font-size: 0.8rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .componentBlock {
+    margin-top: 1rem;
+    padding-left: 5rem;
   }
 
   .componentBlock > .description {
     font-size: 0.6rem;
-  }
-
-  .componentBlock > div > .number {
-    padding: 0.5rem;
-    font-size: 0.4rem;
-  }
-
-  .componentBlock > div > .about {
-    padding: 0.1rem 0.4rem;
-    font-size: 0.5rem;
-    margin-left: 0.3rem;
-  }
-}
-
-@media screen and (max-width: 410px) {
-  .componentBlock {
-    margin-right: 0.5rem;
-  }
-
-  .componentBlock > .name {
-    margin-bottom: 0.6rem;
-  }
-
-  .programComponents > div {
-    margin-top: 0.7rem;
-    margin-left: 1.5rem;
-    margin-right: 0.9rem;
-  }
-
-  .componentBlock > .description {
-    font-size: 0.4rem;
-  }
-
-  .componentBlock > div > .number {
-    padding: 0.5rem;
-    font-size: 0.35rem;
-  }
-
-  .componentBlock > div > .about {
-    padding: 0.1rem 0.3rem;
-    font-size: 0.35rem;
-    margin-left: 0.3rem;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .componentBlock > .name {
-    margin-bottom: 0.4rem;
-  }
-
-  .programComponents > div {
-    margin-top: 0.7rem;
-    margin-left: 1.1rem;
-    margin-right: 0.7rem;
-  }
-
-  .componentBlock > .description {
-    font-size: 0.35rem;
+    padding-right: 5rem;
   }
 
   .componentBlock > div > .number {
     padding: 0.4rem;
-    font-size: 0.35rem;
+    font-size: 0.7rem;
   }
 
   .componentBlock > div > .about {
-    padding: 0.1rem 0.25rem;
-    font-size: 0.3rem;
-    margin-left: 0.3rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.7rem;
+    margin-left: 0.4rem;
   }
 }
 
 .itsAnna {
   position: relative;
+  flex-direction: column;
+  margin-top: 5rem;
+  margin-bottom: 2rem;
 }
 
 .itsAnna > img {
-  margin-top: 5vw;
-  margin-bottom: 5vw;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
@@ -916,8 +837,7 @@
   flex-direction: column;
   position: absolute;
   transform: translate(-50%, -50%);
-  color: black; /* Настройте цвет текста */
-  font-size: 1vw; /* Настройте размер шрифта */
+  color: black;
 }
 
 .itsAnna > .Annaleft {
@@ -930,18 +850,18 @@
   width: 25vw;
 }
 
+.itsAnna > div > div > img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
 .itsAnna > div > div > span {
-  margin-bottom: 2.5em;
-  margin-left: 1em;
+  margin-bottom: 2.5vw;
+  margin-left: 1vw;
   font-size: 1vw;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-}
-
-.itsAnna > div > div > img {
-  width: 1.7em;
-  height: 1.7em;
 }
 
 .itsAnna > .AnnaRight {
@@ -953,31 +873,65 @@
   padding-right: 20%;
 }
 
-@media screen and (max-width: 500px) {
-  .itsAnna > .Annaleft {
-    top: 65%;
-    left: 20%;
+@media screen and (max-width: 1000px) {
+  .itsAnna > div {
+    position: static;
+    font-size: 1rem;
+    align-items: center;
+    transform: translate(0%, 0%);
+  }
+
+  .itsAnna > div > div {
+    display: flex;
+    width: 25rem;
   }
 
   .itsAnna > div > div > span {
-    font-size: 1.3vw;
-    margin-bottom: 1vw;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .itsAnna > div > div {
+    display: flex;
+    width: 20rem;
   }
 
-  .itsAnna > .AnnaRight > div > span {
-    padding-right: 0;
+  .itsAnna > div > div > span {
+    font-size: 0.8rem;
   }
+}
+
+@media screen and (max-width: 500px) {
+  .itsAnna > div > div > span {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .itsAnna > div > div {
+    width: 15rem;
+  }
+
+  .itsAnna > div > div > img {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.expertsImage {
+  justify-content: center;
 }
 
 .contest > div {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
 .contest > div > span {
   color: #000;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -987,6 +941,12 @@
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
+}
+
+.contest {
+  display: flex;
+  flex-direction: column;
+  margin: 3rem 20rem;
 }
 
 .contest > div > .blue {
@@ -1015,49 +975,58 @@
   color: white;
 }
 
-.contest {
-  display: flex;
-  flex-direction: column;
-  margin-top: 3rem;
-  margin-left: 10rem;
-  margin-right: 10rem;
-  margin-bottom: 3rem;
-}
-
 @media screen and (max-width: 1100px) {
   .contest > div > span {
     font-size: 0.9rem;
   }
 
   .contest {
-    margin-top: 1.5rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-bottom: 1.5rem;
+    margin: 2rem 4rem;
   }
 }
 
 @media screen and (max-width: 600px) {
+  .contest {
+    margin: 1.5rem 3rem;
+  }
+
   .contest > div > span {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 460px) {
+  .contest {
+    margin: 1rem 2rem;
+  }
+
   .contest > div > span {
     font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    margin-right: 0.5rem;
   }
 }
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 340px) {
+  .contest {
+    margin: 0.7rem 1.4rem;
+  }
+
   .contest > div > span {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
+  }
+  .contest > div {
+    margin: 0.3rem 0rem;
+  }
+  .contest > div > span {
+    padding: 0.2rem 0.6rem;
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 370px) {
   .contest > div > span {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
   }
 }
 
