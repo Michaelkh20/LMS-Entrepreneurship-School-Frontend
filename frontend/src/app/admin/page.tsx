@@ -5,16 +5,19 @@ import Link from 'next/link';
 const AdminPage: React.FC = () => {
   const rectangles = [
     { text: 'Аккаунты', link: '/admin/accounts' },
-    { text: 'Команды', link: '/teams' },
-    { text: 'Оценки', link: '/grades' },
-    { text: 'Заявки', link: '/applications' },
-    { text: 'Транзакции', link: '/transactions' },
-    { text: 'Лоты', link: '/lots' },
-    { text: 'Темы', link: '/topics' },
-    { text: 'Задания', link: '/tasks' },
-    { text: 'Посещаемость', link: '/attendance' },
-    { text: 'Сданные файлы', link: '/submitted-files' },
-    { text: 'Редактировать формулу оценивания', link: '/edit-grading-formula' },
+    { text: 'Команды', link: '/admin/teams' },
+    { text: 'Оценки', link: '/admin/assessments' },
+    { text: 'Заявки', link: '/admin/applications' },
+    { text: 'Транзакции', link: '/admin/transactions' },
+    { text: 'Лоты', link: '/admin/lots' },
+    { text: 'Темы', link: '/admin/lessons' },
+    { text: 'Задания', link: '/admin/tasks' },
+    { text: 'Посещаемость', link: '/admin/attendance' },
+    { text: 'Сданные файлы', link: '/admin/submitted-files' },
+    {
+      text: 'Редактировать формулу оценивания',
+      link: '/admin/edit-grading-formula',
+    },
   ];
 
   return (
