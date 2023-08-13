@@ -1,14 +1,13 @@
-import {Form, FormProps, Input, Select} from 'antd';
+import {Form, FormProps, Input, InputNumber, Select} from 'antd';
 import formStyles from '../form.module.css';
 import {
-    NameFormItem,
-    EmailFormItem,
-    TeamNumberFormItem,
-    RoleFormItem,
+    LotNumberFormItem,
+    LotTitleFormItem,
+    UserSelectionFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import {FilterWrapper} from '@/components/TableWithFilter/Filter/FilterWrapper';
 
-export function AccountsFilter(
+export function LotFilter(
     {
         onChangeEvent,
         total = 0,
@@ -27,10 +26,9 @@ export function AccountsFilter(
                 onValuesChange={onChangeEvent}
                 className={formStyles.form}
             >
-                <NameFormItem/>
-                <EmailFormItem/>
-                <TeamNumberFormItem/>
-                <RoleFormItem/>
+                <LotNumberFormItem/>
+                <LotTitleFormItem/>
+                <UserSelectionFormItem placeholder={'Исполнитель'} name={'learnerId'}/>
             </Form>
         </FilterWrapper>
     );

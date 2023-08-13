@@ -1,91 +1,98 @@
-import { useEffect, useState } from 'react';
-import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import {useEffect, useMemo, useState} from 'react';
+import {TablePaginationConfig} from 'antd/es/table';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
-import { Table } from 'antd';
-import { AccountsFilter } from '@/components/TableWithFilter/Filter/Filters/AccountsFilter';
-import {
-  DEBOUNCE_DURATION,
-  SORT_ORDER,
-} from '@/components/TableWithFilter/entity';
-import { accountsColumns } from './TableColumns';
+import {Table} from 'antd';
+import {AccountsFilter} from '@/components/TableWithFilter/Filter/Filters/AccountsFilter';
+import {DEBOUNCE_DURATION} from '@/components/TableWithFilter/entity';
+import {SortOrder} from "@/types/common"
+import {accountsColumns} from './TableColumns';
 import tableStyles from './table.module.css';
 
-type AccountsRequestType = {
-  name?: string;
-  email?: string;
-  teamNumber?: string;
-  role?: string;
-  sortProperty?: string;
-  sortOrder?: string;
-  page?: number;
-  pageSize?: number;
-};
-type Props = {
-  columns: ColumnsType<any>;
-};
+import {useGetAccountsQuery} from "@/redux/services/adminApi"
+import {GetAccountsApiArg} from "@/types/requests"
+import {AccountColumnsDataType} from "@/components/TableWithFilter/TableColumns/AccountsColumns";
 
 export function AccountsTableWithFilter() {
-  const [formData, setFormData] = useState<AccountsRequestType>({
-    page: 1,
-    pageSize: 10,
-  });
 
-  const handleTableChange = (
-    pagination: TablePaginationConfig,
-    filters: any,
-    sorter: any
-  ) => {
-    setFormData((prevState) => {
-      return {
-        ...prevState,
-        page: pagination.current,
-        pageSize: pagination.pageSize,
-        sortProperty: sorter.field,
-        sortOrder:
-          sorter.order === 'descend'
-            ? SORT_ORDER.DESCENDING
-            : SORT_ORDER.ASCENDING,
-      };
+
+    const [formData, setFormData] = useState<GetAccountsApiArg>({
+        page: 1,
+        pageSize: 10,
     });
-  };
+    const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
+    const {data, isLoading, isError, isFetching} = useGetAccountsQuery(dataForReq)
+    const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>([])
 
-  const handleFormChanges = (changedValues: any, allValues: any) => {
-    setFormData((prevState) => {
-      return {
-        ...prevState,
-        ...changedValues,
-      };
-    });
-  };
+    const handleTableChange = (
+        pagination: TablePaginationConfig,
+        filters: any,
+        sorter: any
+    ) => {
+        setFormData((prevState): GetAccountsApiArg => {
+            return {
+                ...prevState,
+                page: pagination.current,
+                pageSize: pagination.pageSize,
+                sortProperty: sorter.field,
+                sortOrder:
+                    sorter.order === 'descend'
+                        ? SortOrder.Desc
+                        : SortOrder.Asc,
+            };
+        });
+    };
 
-  useEffect(() => {
-    console.log('FormData:', formData);
-  }, [formData]);
+    const handleFormChanges = (changedValues: any, allValues: any) => {
+        setFormData((prevState): GetAccountsApiArg => {
+            return {
+                ...prevState,
+                ...changedValues,
+            };
+        });
+    };
 
-  const debouncedHandleForm = _debounce(
-    handleFormChanges,
-    DEBOUNCE_DURATION.FORM
-  );
-  const debouncedHandleTable = _debounce(
-    handleTableChange,
-    DEBOUNCE_DURATION.TABLE
-  );
-  const totalData = 0;
+    useEffect(() => {
+        console.log("DATA: ", data)
+        setDataTable(() => {
+            return data ? data.content.map((e): AccountColumnsDataType => {
+                    return {
+                        id: e.id,
+                        name: e.name,
+                        email: e.email,
+                        team: e.teamNumber,
+                        role: e.role,
+                        balance: e.balance
+                    }
+                }
+            ) : []
+        })
+    }, [data]);
 
-  return (
-    <>
-      <AccountsFilter onChangeEvent={debouncedHandleForm}></AccountsFilter>
+    const debounceDataForReq = useMemo(
+        () => _debounce((data: any) => {
+            setDataForReq(data)
+        }, 2000),
+        [])
 
-      <Table
-        columns={accountsColumns}
-        dataSource={[]}
-        onChange={debouncedHandleTable}
-        pagination={{ total: totalData }}
-        className={tableStyles.table}
-        scroll={{ x: true }}
-      ></Table>
-    </>
-  );
+
+    useEffect(() => {
+        debounceDataForReq(formData)
+    }, [formData, debounceDataForReq])
+
+    return (
+        <>
+            <AccountsFilter onChangeEvent={handleFormChanges}></AccountsFilter>
+            <Table
+                columns={accountsColumns}
+                dataSource={dataTable}
+                onChange={handleTableChange}
+                loading={isFetching || isLoading}
+                pagination={{total: data?.pagination.totalElements}}
+                className={tableStyles.table}
+                scroll={{x: true}}
+            ></Table>
+        </>
+    );
 }

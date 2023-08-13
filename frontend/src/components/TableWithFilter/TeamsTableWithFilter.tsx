@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
-import { TablePaginationConfig } from 'antd/es/table';
-import { Table } from 'antd';
-import { TeamsFilter } from '@/components/TableWithFilter/Filter/Filters/TeamsFilter';
+import {useEffect, useState} from 'react';
+import {TablePaginationConfig} from 'antd/es/table';
+import {Table} from 'antd';
+import {TeamsFilter} from '@/components/TableWithFilter/Filter/Filters/TeamsFilter';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
-import {
-  DEBOUNCE_DURATION,
-  SORT_ORDER,
-} from '@/components/TableWithFilter/entity';
-import { teamsColumns } from './TableColumns';
+import {DEBOUNCE_DURATION,} from '@/components/TableWithFilter/entity';
+import {teamsColumns} from './TableColumns';
+import {SortOrder} from "@/types/common"
 
 type TeamsRequestType = {
   teamNumber?: string;
@@ -38,8 +36,8 @@ export function TeamsTableWithFilter() {
         sortProperty: sorter.field,
         sortOrder:
           sorter.order === 'descend'
-            ? SORT_ORDER.DESCENDING
-            : SORT_ORDER.ASCENDING,
+            ? SortOrder.Desc
+            : SortOrder.Asc,
       };
     });
   };

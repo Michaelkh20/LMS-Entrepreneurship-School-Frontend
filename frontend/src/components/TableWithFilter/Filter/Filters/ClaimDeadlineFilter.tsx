@@ -1,14 +1,13 @@
-import {Form, FormProps, Input, Select} from 'antd';
+import {Form, FormProps, Input, InputNumber, Select} from 'antd';
 import formStyles from '../form.module.css';
 import {
-    NameFormItem,
-    EmailFormItem,
-    TeamNumberFormItem,
-    RoleFormItem,
+    ClaimStatusFormItem,
+    UserSelectionFormItem,
+    DatePickerFormItem, TaskSelectionFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import {FilterWrapper} from '@/components/TableWithFilter/Filter/FilterWrapper';
 
-export function AccountsFilter(
+export function ClaimDeadlineFilter(
     {
         onChangeEvent,
         total = 0,
@@ -27,10 +26,11 @@ export function AccountsFilter(
                 onValuesChange={onChangeEvent}
                 className={formStyles.form}
             >
-                <NameFormItem/>
-                <EmailFormItem/>
-                <TeamNumberFormItem/>
-                <RoleFormItem/>
+                <UserSelectionFormItem placeholder={'Студент'} name={'learnerId'}/>
+                <TaskSelectionFormItem placeholder={"Задание"} name={"taskId"}/>
+                <ClaimStatusFormItem/>
+                <DatePickerFormItem placeholder={'Дата от'} name={'dateFrom'}/>
+                <DatePickerFormItem placeholder={'Дата до'} name={'dateTo'}/>
             </Form>
         </FilterWrapper>
     );

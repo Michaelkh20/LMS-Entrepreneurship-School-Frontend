@@ -1,30 +1,28 @@
-import { Form } from 'antd';
-import { TeamFormItem } from '@/components/Forms/FormItems';
-import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
+import {Form} from 'antd';
+import {TeamNumberFormItem} from '@/components/Forms/FormItems/Filters';
+import {FilterWrapper} from '@/components/TableWithFilter/Filter/FilterWrapper';
 import formStyles from '@/components/TableWithFilter/Filter/form.module.css';
 
-export function TeamsFilter({ onChangeEvent }: any) {
-  type formType = {
-    teamNumber: number | string;
-  };
-
-  const [form] = Form.useForm<formType>();
-
-  const handleChanges = (changedValues: any, allValues: any) => {
-    console.log(changedValues, allValues);
-  };
-
-  return (
-    <FilterWrapper total={10}>
-      <Form
-        layout={'inline'}
-        size={'large'}
-        form={form}
-        onValuesChange={onChangeEvent}
-        className={formStyles.form}
-      >
-        <TeamFormItem />
-      </Form>
-    </FilterWrapper>
-  );
+export function TeamsFilter(
+    {
+        onChangeEvent,
+        total = 0,
+    }:
+        {
+            onChangeEvent: any,
+            total?: number
+        }
+) {
+    return (
+        <FilterWrapper total={total}>
+            <Form
+                layout={'inline'}
+                size={'large'}
+                onValuesChange={onChangeEvent}
+                className={formStyles.form}
+            >
+                <TeamNumberFormItem/>
+            </Form>
+        </FilterWrapper>
+    );
 }

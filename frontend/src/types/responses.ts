@@ -409,7 +409,7 @@ export type AttendanceInfo = {
   learners: {
     learner: UserTableItem;
     didCome: boolean;
-    accruedСurrency: Price | null;
+    accruedCurrency: Price | null;
   }[];
 };
 
