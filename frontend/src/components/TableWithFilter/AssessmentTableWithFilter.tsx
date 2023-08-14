@@ -13,6 +13,7 @@ import {useGetAssessmentsQuery} from "@/redux/services/adminApi"
 //todo: del it later:
 import {useAuthMutation} from "@/redux/services/commonApi"
 import {AssessmentColumnsDataType} from "@/components/TableWithFilter/TableColumns/AssessmentColumns";
+import {prepareFormUtil} from "@/components/TableWithFilter/utils";
 
 export function AssessmentTableWithFilter() {
 
@@ -24,7 +25,7 @@ export function AssessmentTableWithFilter() {
 
     const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
 
-    const {data, isLoading, isError, isFetching} = useGetAssessmentsQuery(dataForReq, {})
+    const {data, isLoading, isError, isFetching} = useGetAssessmentsQuery(dataForReq)
     const [dataTable, setDataTable] = useState<AssessmentColumnsDataType[]>([])
 
     //todo delete it later
@@ -42,17 +43,18 @@ export function AssessmentTableWithFilter() {
         })
     };
 
-    const handleFormChanges = (changedValues: GetAssessmentsApiArg, allValues: GetAssessmentsApiArg) => {
+    const handleFormChanges = (_: GetAssessmentsApiArg, allValues: GetAssessmentsApiArg) => {
         setFormData((prevState): GetAssessmentsApiArg => {
             return {
                 ...prevState,
-                ...changedValues
+                ...prepareFormUtil(allValues)
             }
         })
     }
 
     const debounceDataForReq = useMemo(
         () => _debounce((data: any) => {
+            console.log(data)
             setDataForReq(data)
         }, 2000),
         [])

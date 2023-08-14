@@ -1,14 +1,16 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {ColumnsType, TablePaginationConfig} from 'antd/es/table';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 import {Table} from 'antd';
-import {ClaimStatus, ClaimType, Id, LotNumber, SortOrder, TransactionType} from "@/types/common"
+import {ClaimStatus, ClaimType, Id, LotNumber, SortOrder} from "@/types/common"
 import tableStyles from './table.module.css';
 
 import {GetTransactionsApiArg} from "@/types/requests"
 import {TransactionsFilter} from "@/components/TableWithFilter/Filter/Filters/TransactionsFilter";
+import {useGetTransactionsQuery} from "@/redux/services/adminApi";
+import {prepareFormUtil} from "@/components/TableWithFilter/utils";
 
 
 
@@ -33,24 +35,16 @@ const TransactionsColumns: ColumnsType<TransactionsColumnsDataType> = [
     {title: 'Дата', dataIndex: 'dateTime', key: 'dateTime'},
     {title: 'Сумма', dataIndex: 'sum', key: 'sum'},
 ]
-
-const data: TransactionsColumnsDataType[] = [
-    {
-        id: 1,
-        learner: 'Ivan',
-        type: TransactionType.FailedDeadline,
-        dateTime: '22.22.2222',
-        description: "минус",
-        sum: 200
-    }
-];
-
 export function TransactionsTableWithFilter() {
     const [formData, setFormData] = useState<GetTransactionsApiArg>(
         {
         page: 1,
         pageSize: 10,
     });
+
+    const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
+    const {data, isLoading, isError, isFetching} = useGetTransactionsQuery(dataForReq)
+    const [dataTable, setDataTable] = useState<TransactionsColumnsDataType[]>([])
 
     const handleTableChange = (
         pagination: TablePaginationConfig,
@@ -75,7 +69,7 @@ export function TransactionsTableWithFilter() {
         setFormData((prevState) => {
             return {
                 ...prevState,
-                ...changedValues,
+                ...prepareFormUtil(allValues),
             };
         });
     };
@@ -84,7 +78,32 @@ export function TransactionsTableWithFilter() {
         console.log('FormData:', formData);
     }, [formData]);
 
-    const totalData = 0;
+    useEffect(() => {
+        console.log("DATA: ", data)
+        setDataTable(() => {
+            return data ? data.content.map((e): TransactionsColumnsDataType => {
+                    return {
+                        id: e.id,
+                        learner: e.learner.name,
+                        dateTime: e.dateTime,
+                        description: e.description,
+                        sum: e.sum,
+                        type: e.type
+                    }
+                }
+            ) : []
+        })
+    }, [data]);
+
+    const debounceDataForReq = useMemo(
+        () => _debounce((data: any) => {
+            setDataForReq(data)
+        }, 2000),
+        [])
+
+    useEffect(() => {
+        debounceDataForReq(formData)
+    }, [formData, debounceDataForReq])
 
     return (
         <>
@@ -94,10 +113,11 @@ export function TransactionsTableWithFilter() {
 
             <Table
                 columns={TransactionsColumns}
-                dataSource={data}
+                dataSource={dataTable}
                 rowKey={"id"}
                 onChange={handleTableChange}
-                pagination={{total: totalData}}
+                loading={isFetching || isLoading}
+                pagination={{total: data?.pagination.totalElements}}
                 className={tableStyles.table}
                 scroll={{x: true}}
             ></Table>

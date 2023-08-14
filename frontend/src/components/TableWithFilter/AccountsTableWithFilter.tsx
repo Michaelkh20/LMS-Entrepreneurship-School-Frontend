@@ -13,6 +13,7 @@ import tableStyles from './table.module.css';
 import {useGetAccountsQuery} from "@/redux/services/adminApi"
 import {GetAccountsApiArg} from "@/types/requests"
 import {AccountColumnsDataType} from "@/components/TableWithFilter/TableColumns/AccountsColumns";
+import {prepareFormUtil} from "@/components/TableWithFilter/utils";
 
 export function AccountsTableWithFilter() {
 
@@ -48,7 +49,7 @@ export function AccountsTableWithFilter() {
         setFormData((prevState): GetAccountsApiArg => {
             return {
                 ...prevState,
-                ...changedValues,
+                ...prepareFormUtil(allValues),
             };
         });
     };

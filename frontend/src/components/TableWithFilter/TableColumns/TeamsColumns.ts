@@ -1,12 +1,12 @@
 import {ColumnsType} from "antd/es/table";
 
-type ColumnsDataType = {
+export type TeamsColumnsDataType = {
     key: React.Key;
     teamNumber: number;
     theme: string;
 }
 
-export const teamsColumns: ColumnsType<ColumnsDataType> = [
+export const teamsColumns: ColumnsType<TeamsColumnsDataType> = [
     {
         title: '№ Команды',
         dataIndex: 'teamNumber',

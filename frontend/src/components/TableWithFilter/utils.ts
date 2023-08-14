@@ -9,10 +9,11 @@ export function prepareFormUtil(values: any) {
         if (val instanceof dayjs) {
             values[key] = values[key].toISOString()
         }
-        values[key] ??= null
+        // values[key] ??= null
     }
     return values
 }
+
 
 export function handleTableChangeUtil<T>(
     pagination: TablePaginationConfig,

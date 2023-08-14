@@ -26,7 +26,7 @@ export type AttendanceColumnsDataType = {
     cachedAccruedCurrency?: number
 }
 
-const data: AttendanceColumnsDataType[] = [
+const dataD: AttendanceColumnsDataType[] = [
     {
         key: 1,
         learner: "Ivan",
@@ -251,7 +251,7 @@ export function AttendanceTable(
         >
             <div>{lessonId}</div>
             <Table columns={AttendanceColumns}
-                   dataSource={dataTable}
+                   dataSource={dataD}
                    onChange={handleTableChange}
                    pagination={false}
                    loading={isFetching || isLoading}

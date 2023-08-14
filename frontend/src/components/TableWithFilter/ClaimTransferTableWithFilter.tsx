@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {TablePaginationConfig} from 'antd/es/table';
 
 // @ts-ignore
@@ -12,25 +12,27 @@ import {ClaimTransferColumnsDataType} from '@/components/TableWithFilter/TableCo
 
 
 import {GetClaimsApiArg} from "@/types/requests"
+import {prepareFormUtil} from "@/components/TableWithFilter/utils";
+import {useGetClaimsQuery} from "@/redux/services/adminApi";
 
-const data: ClaimTransferColumnsDataType[] = [
-    {
-        key: '1',
-        learner: 'Ivan',
-        receiver: 'Ivan',
-        status: 'Waiting',
-        dateTime: '22.22.2222',
-        sum: 200,
-    },
-    {
-        key: '2',
-        learner: 'Ivan',
-        receiver: 'Ivan',
-        status: 'Declined',
-        dateTime: '22.22.2222',
-        sum: 300,
-    },
-];
+// const data: ClaimTransferColumnsDataType[] = [
+//     {
+//         key: '1',
+//         learner: 'Ivan',
+//         receiver: 'Ivan',
+//         status: 'Waiting',
+//         dateTime: '22.22.2222',
+//         sum: 200,
+//     },
+//     {
+//         key: '2',
+//         learner: 'Ivan',
+//         receiver: 'Ivan',
+//         status: 'Declined',
+//         dateTime: '22.22.2222',
+//         sum: 300,
+//     },
+// ];
 
 export function ClaimTransferTableWithFilter() {
     const [formData, setFormData] = useState<GetClaimsApiArg>({
@@ -38,6 +40,10 @@ export function ClaimTransferTableWithFilter() {
         page: 1,
         pageSize: 10,
     });
+
+    const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
+    const {data, isLoading, isError, isFetching} = useGetClaimsQuery(dataForReq)
+    const [dataTable, setDataTable] = useState<ClaimTransferColumnsDataType[]>([])
 
     const handleTableChange = (
         pagination: TablePaginationConfig,
@@ -62,7 +68,7 @@ export function ClaimTransferTableWithFilter() {
         setFormData((prevState) => {
             return {
                 ...prevState,
-                ...changedValues,
+                ...prepareFormUtil(allValues),
             };
         });
     };
@@ -71,7 +77,33 @@ export function ClaimTransferTableWithFilter() {
         console.log('FormData:', formData);
     }, [formData]);
 
-    const totalData = 0;
+    useEffect(() => {
+        console.log("DATA: ", data)
+        setDataTable(() => {
+            return data ? data.content.map((e): ClaimTransferColumnsDataType => {
+                    return {
+                        key: e.id,
+                        learner: e.learner.name,
+                        receiver: e?.receiver?.name || "",
+                        dateTime: e.dateTime.toString(),
+                        status: e.status,
+                        sum: e?.sum,
+                    }
+                }
+            ) : []
+        })
+    }, [data]);
+
+    const debounceDataForReq = useMemo(
+        () => _debounce((data: any) => {
+            setDataForReq(data)
+        }, 2000),
+        [])
+
+    useEffect(() => {
+        debounceDataForReq(formData)
+    }, [formData, debounceDataForReq])
+
 
     return (
         <>
@@ -81,9 +113,11 @@ export function ClaimTransferTableWithFilter() {
 
             <Table
                 columns={ClaimTransferColumns}
-                dataSource={data}
+                dataSource={dataTable}
                 onChange={handleTableChange}
-                pagination={{total: totalData}}
+                loading={isFetching || isLoading}
+
+                pagination={{total: data?.pagination?.totalElements}}
                 className={tableStyles.table}
                 scroll={{x: true}}
             ></Table>

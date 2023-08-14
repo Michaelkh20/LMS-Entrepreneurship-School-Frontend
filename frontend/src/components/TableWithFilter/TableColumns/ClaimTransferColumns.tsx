@@ -11,7 +11,7 @@ export type ClaimTransferColumnsDataType = {
     receiver: string;
     status: string;
     dateTime: string;
-    sum: number;
+    sum: number | null;
 }
 
 export const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [

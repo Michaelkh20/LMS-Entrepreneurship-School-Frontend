@@ -10,7 +10,7 @@ export function DatePickerFormItem({
 }) {
   return (
     <Form.Item name={name}>
-      <DatePicker placeholder={placeholder} />
+      <DatePicker showTime placeholder={placeholder} />
     </Form.Item>
   );
 }

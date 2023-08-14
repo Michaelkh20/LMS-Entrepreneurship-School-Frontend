@@ -98,7 +98,8 @@ export function ClaimPlacingLotTableWithFilter() {
         setFormData((prevState) => {
             return {
                 ...prevState,
-                ...prepareFormUtil(allValues)
+                ...prepareFormUtil(allValues),
+                lotNumber: 21
             };
         });
     };

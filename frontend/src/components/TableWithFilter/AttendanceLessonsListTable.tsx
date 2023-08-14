@@ -111,7 +111,7 @@ export function AttendanceLessonsListTable() {
                    onChange={handleTableChange}
                    loading={isFetching || isLoading}
                    rowKey={"id"}
-                   pagination={{total: data?.pagination.totalElements || 0}}
+                   pagination={{total: data?.pagination?.totalElements || 0}}
                    onRow={(record, rowIndex) => {
                        return {
                            onClick: (event) => {

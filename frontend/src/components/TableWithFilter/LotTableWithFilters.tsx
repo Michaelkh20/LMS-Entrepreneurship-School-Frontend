@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {ColumnsType, TablePaginationConfig} from 'antd/es/table';
 
 // @ts-ignore
@@ -9,6 +9,8 @@ import tableStyles from './table.module.css';
 
 import {GetLotsApiArg} from "@/types/requests"
 import {LotFilter} from "@/components/TableWithFilter/Filter/Filters/LotFilter";
+import {useGetLotsQuery} from "@/redux/services/adminApi";
+import {ClaimTransferColumnsDataType} from "@/components/TableWithFilter/TableColumns/ClaimTransferColumns";
 
 
 
@@ -16,7 +18,7 @@ type LotColumnsDataType = {
     id: Id,
     number: number,
     title: string,
-    performer: string,
+    performer: string | null,
     price: number
 }
 
@@ -48,6 +50,10 @@ export function LotTableWithFilter() {
         page: 1,
         pageSize: 10,
     });
+
+    const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
+    const {data, isLoading, isError, isFetching} = useGetLotsQuery(dataForReq)
+    const [dataTable, setDataTable] = useState<LotColumnsDataType[]>([])
 
     const handleTableChange = (
         pagination: TablePaginationConfig,
@@ -81,7 +87,32 @@ export function LotTableWithFilter() {
         console.log('FormData:', formData);
     }, [formData]);
 
-    const totalData = 0;
+    useEffect(() => {
+        console.log("DATA: ", data)
+        setDataTable(() => {
+            return data ? data.content.map((e): LotColumnsDataType => {
+                    return {
+                        id: e.id,
+                        number: e.number,
+                        title: e.title,
+                        performer: e.performerUser?.name || e.performerOther,
+                        price: e.price,
+                    }
+                }
+            ) : []
+        })
+    }, [data]);
+
+    const debounceDataForReq = useMemo(
+        () => _debounce((data: any) => {
+            setDataForReq(data)
+        }, 2000),
+        [])
+
+    useEffect(() => {
+        debounceDataForReq(formData)
+    }, [formData, debounceDataForReq])
+
 
     return (
         <>
@@ -91,10 +122,11 @@ export function LotTableWithFilter() {
 
             <Table
                 columns={LotColumns}
-                dataSource={data}
+                dataSource={dataTable}
                 rowKey={"id"}
                 onChange={handleTableChange}
-                pagination={{total: totalData}}
+                loading={isFetching || isLoading}
+                pagination={{total: data?.pagination?.totalElements}}
                 className={tableStyles.table}
                 scroll={{x: true}}
             ></Table>
