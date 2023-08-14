@@ -6,26 +6,7 @@
 }
 
 .grade_props {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
   margin-top: 2.5rem;
-}
-
-.grade_props_component {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.prop_type {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.prop_value {
-  font-size: 1.1rem;
-  font-weight: 600;
 }
 
 .prop_label_container {

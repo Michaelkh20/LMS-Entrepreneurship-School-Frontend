@@ -39,30 +39,33 @@
 .grade_value {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #b8bc00;
+}
+
+.grade_value[data-grade='0'],
+.grade_value[data-grade='1'],
+.grade_value[data-grade='2'],
+.grade_value[data-grade='3'] {
+  color: #ff3b30; /* Red */
+}
+
+.grade_value[data-grade='4'],
+.grade_value[data-grade='5'] {
+  color: #ff9500; /* Orange */
+}
+
+.grade_value[data-grade='6'],
+.grade_value[data-grade='7'] {
+  color: #ffd700; /* Yellowish-Green */
+}
+
+.grade_value[data-grade='8'],
+.grade_value[data-grade='9'],
+.grade_value[data-grade='10'] {
+  color: #4cd964; /* Green */
 }
 
 .grade_props {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
   margin-top: 1.5rem;
-}
-
-.grade_props_component {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.prop_type {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.prop_value {
-  font-size: 1.1rem;
-  font-weight: 600;
 }
 
 .delete_button {

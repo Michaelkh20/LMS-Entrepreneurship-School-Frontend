@@ -1,6 +1,7 @@
 import { Jura } from 'next/font/google';
 import styles from './page.module.css';
 import Link from 'next/link';
+import Prop from '@/components/EntityProps/Prop';
 
 const jura = Jura({
   subsets: ['cyrillic'],
@@ -15,33 +16,25 @@ export default function Page({ params }: { params: { id: string } }) {
       </div>
       <div className={styles.grade_container}>
         <p className={styles.grade}>Оценка: </p>
-        <p className={styles.grade_value}>5</p>
+        <p className={styles.grade_value} data-grade={8}>
+          8
+        </p>
       </div>
 
-      <div className={styles.grade_props}>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Тип</p>
-          <p className={styles.prop_value}>Оц. в ведомость</p>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Ученик</p>
-          <p className={styles.prop_value}>Иванов Иван Иванович</p>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Задание</p>
-          <Link className={styles.prop_value} href={''}>
-            Ссылка_на_ДЗ
-          </Link>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Комментарий</p>
-          <p className={styles.prop_value}>какой-то комментарий</p>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Дата выставления</p>
-          <p className={styles.prop_value}>08.07.2023</p>
-        </div>
-      </div>
+      <Prop.Container className={styles.grade_props}>
+        <Prop label="Тип" value="Оц. в ведомость" />
+        <Prop label="Ученик" value="Иванов Иван Иванович" />
+        <Prop
+          label="Задание"
+          value={(className) => (
+            <Link className={className} href={''}>
+              Ссылка_на_ДЗ
+            </Link>
+          )}
+        />
+        <Prop label="Комментарий" value="какой-то комментарий" />
+        <Prop label="Дата выставления" value="08.07.2023" />
+      </Prop.Container>
 
       <button className={styles.delete_button}> Удалить оценку </button>
     </div>

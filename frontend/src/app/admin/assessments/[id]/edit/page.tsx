@@ -3,6 +3,8 @@ import styles from './page.module.css';
 import React, { useState } from 'react';
 import { Input } from 'antd';
 import { Jura } from 'next/font/google';
+import Prop from '@/components/EntityProps/Prop';
+import Link from 'next/link';
 
 const jura = Jura({
   subsets: ['cyrillic'],
@@ -30,20 +32,18 @@ export default function Page() {
         РЕДАКТИРОВАНИЕ ОЦЕНКИ
       </h1>
 
-      <div className={styles.grade_props}>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Тип</p>
-          <p className={styles.prop_value}>Оц. в ведомость</p>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Ученик</p>
-          <p className={styles.prop_value}>Иванов Иван Иванович</p>
-        </div>
-        <div className={styles.grade_props_component}>
-          <p className={styles.prop_type}>Задание</p>
-          <p className={styles.prop_value}>ДЗ_1</p>
-        </div>
-      </div>
+      <Prop.Container className={styles.grade_props}>
+        <Prop label="Тип" value="Оц. в ведомость" />
+        <Prop label="Ученик" value="Иванов Иван Иванович" />
+        <Prop
+          label="Задание"
+          value={(className) => (
+            <Link className={className} href={''}>
+              Ссылка_на_ДЗ
+            </Link>
+          )}
+        />
+      </Prop.Container>
 
       <div className={styles.input_box}>
         <div className={styles.prop_label_container}>
