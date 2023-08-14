@@ -35,6 +35,9 @@ import {
   ClaimStatus,
   Delay,
   Link,
+  Name,
+  Surname,
+  MiddleName,
 } from './common';
 
 export type Pagination = {
@@ -69,7 +72,9 @@ export type AccountsPage = {
 
 export type UserProfile = {
   id: Id;
-  fullName: FullName;
+  name: Name;
+  surname: Surname;
+  middleName: MiddleName | null;
   email: Email;
   phone: Phone;
   messenger: Messenger;

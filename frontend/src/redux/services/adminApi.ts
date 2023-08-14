@@ -393,6 +393,7 @@ export const adminApi = createApi({
           lotNumber: queryArg.lotNumber,
           lotTitle: queryArg.lotTitle,
           learnerId: queryArg.learnerId,
+          performerOther: queryArg.performerOther,
           sortProperty: queryArg.sortProperty,
           sortOrder: queryArg.sortOrder,
           page: queryArg.page,
