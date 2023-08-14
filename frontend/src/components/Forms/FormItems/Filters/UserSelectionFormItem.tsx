@@ -9,7 +9,7 @@ export function UserSelectionFormItem({
   name: string;
 }) {
   const { data, isFetching } = useGetAccountsForSelectQuery();
-
+  console.log(data);
   return (
     <Form.Item name={name}>
       <Select

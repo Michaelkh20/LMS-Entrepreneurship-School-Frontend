@@ -1,12 +1,15 @@
 'use client';
 import React from 'react';
 import styles from './exitButton.module.css';
-import { ImportOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import icon from '../../../../public/admin/log-out.svg';
+import Link from 'next/link';
 
 export default function ExitButton() {
   return (
-    <button className={styles.button}>
-      Выход <ImportOutlined />
-    </button>
+    <Link href={''} className={styles.button}>
+      <p>Выйти</p>
+      <Image width={16} height={16} src={icon} alt={''}></Image>
+    </Link>
   );
 }
