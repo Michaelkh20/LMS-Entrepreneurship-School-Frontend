@@ -1,62 +1,81 @@
 .title {
-    text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+.redux_button_container {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .buttonRedux {
-    padding: 1rem 1rem;
-    border: none;
-    background-color: #e1f8ff;
-    font-size: 1rem;
-    float: right;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+  padding: 1rem 1.5rem;
+  border: none;
+  background-color: #e1f8ff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  transition: 0.2s ease-in-out;
 }
 
 .buttonRedux:hover {
-    background-color: #c7f1ff;
+  background-color: #c7f1ff;
 }
 
-.value {
-    font-size: 1.25rem;
-    font-weight: 600;
+.grade_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
 }
 
-.bigValue {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #B8BC00
+.grade {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-.param {
-    margin-top: 5rem
+.grade_value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #b8bc00;
 }
 
-.paramName {
-    font-size: 1.25rem;
-    font-weight: 600;
+.grade_props {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1.5rem;
 }
 
-.smallValue {
-    font-size: 1rem;
+.grade_props_component {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.deleteButton {
-    margin-top: 2rem;
-    float: right;
-    padding: 1rem 1rem;
-    font-size: 1rem;
-    background-color: #ff6d6d;
-    color: white;
-    border: none;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    margin-bottom: 8rem;
+.prop_type {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
-.deleteButton:hover {
-    background-color: #ff4f4f;
+.prop_value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.delete_button {
+  float: right;
+  background-color: #ff6d6d;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.8rem 2.5rem;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.delete_button:hover {
+  background-color: #ff4f4f;
 }

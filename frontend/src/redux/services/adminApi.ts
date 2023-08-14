@@ -109,7 +109,7 @@ export const adminApi = createApi({
     }),
 
     getAccountById: build.query<UserProfile, Id>({
-      query: (id) => ({ url: `/accounts/${id}` }),
+      query: (id) => ({ url: `/admin/accounts/${id}` }),
       providesTags: (result, error, id) => errorHandler(error, 'Account', id),
     }),
 

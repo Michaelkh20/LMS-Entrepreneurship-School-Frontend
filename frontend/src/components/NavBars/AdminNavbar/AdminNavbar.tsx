@@ -3,7 +3,6 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import HomeButton from '../../Buttons/HomeButton/HomeButton';
-import AdminIcon from '../../Icons/person-icon';
 import ExitButton from '../../Buttons/ExitButton/ExitButton';
 import styles from './adminNavbar.module.css';
 import { ADMIN_HOME_PAGE } from '../../../../constants';
@@ -19,7 +18,7 @@ export default function AdminNavbar() {
     <nav className={styles.nav}>
       <div className={styles.left}>
         <span className={styles.adminIcon}>
-          <Image src={icon} alt="Profile icon" width={35} height={35} />
+          <Image src={icon} alt="Profile icon" width={40} height={40} />
         </span>
         <span className={styles.adminLabel}>Администратор</span>
       </div>
