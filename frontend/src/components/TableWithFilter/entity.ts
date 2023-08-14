@@ -1,4 +1,5 @@
 export enum DEBOUNCE_DURATION {
   TABLE = 700,
   FORM = 3000,
+  ALL = 1200
 }

@@ -7,13 +7,14 @@ import {Table} from 'antd';
 import {AccountsFilter} from '@/components/TableWithFilter/Filter/Filters/AccountsFilter';
 import {DEBOUNCE_DURATION} from '@/components/TableWithFilter/entity';
 import {SortOrder} from "@/types/common"
+import styles from "./table.module.css"
 import {accountsColumns} from './TableColumns';
-import tableStyles from './table.module.css';
 
 import {useGetAccountsQuery} from "@/redux/services/adminApi"
 import {GetAccountsApiArg} from "@/types/requests"
 import {AccountColumnsDataType} from "@/components/TableWithFilter/TableColumns/AccountsColumns";
 import {prepareFormUtil} from "@/components/TableWithFilter/utils";
+import {useRouter} from "next/navigation";
 
 export function AccountsTableWithFilter() {
 
@@ -25,6 +26,8 @@ export function AccountsTableWithFilter() {
     const [dataForReq, setDataForReq] = useState<typeof formData>(formData)
     const {data, isLoading, isError, isFetching} = useGetAccountsQuery(dataForReq)
     const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>([])
+
+    const {push} = useRouter()
 
     const handleTableChange = (
         pagination: TablePaginationConfig,
@@ -74,7 +77,7 @@ export function AccountsTableWithFilter() {
     const debounceDataForReq = useMemo(
         () => _debounce((data: any) => {
             setDataForReq(data)
-        }, 2000),
+        }, DEBOUNCE_DURATION.ALL),
         [])
 
 
@@ -89,10 +92,19 @@ export function AccountsTableWithFilter() {
                 columns={accountsColumns}
                 dataSource={dataTable}
                 onChange={handleTableChange}
+                rowKey={"id"}
                 loading={isFetching || isLoading}
                 pagination={{total: data?.pagination.totalElements}}
-                className={tableStyles.table}
                 scroll={{x: true}}
+                rowClassName={styles.row_pointer}
+                onRow={(record, rowIndex) => {
+                    return {
+                        onClick: (event) => {
+                            push(`/admin/accounts/${record.id}`)
+
+                        }
+                    };
+                }}
             ></Table>
         </>
     );
