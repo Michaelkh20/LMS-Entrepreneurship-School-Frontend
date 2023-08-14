@@ -4,13 +4,17 @@ import FormComponent from '@/components/Forms/form';
 import UploadButton from '@/components/Buttons/UploadButton/UploadButton';
 import TradeLotCard from '@/components/LotCard/lot-card';
 import Navbar from '@/components/NavBars/Navbar/Navbar';
-import { Form } from 'antd';
+import { DatePicker, DatePickerProps, Form } from 'antd';
 import { UserSelectionFormItem } from '@/components/Forms/FormItems/Filters';
 
 export default function Test() {
   function onValuesChangeHandler(changedValues: any, values: any) {
     console.log(values);
   }
+
+  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date?.toISOString().slice(0, 10), dateString);
+  };
 
   return (
     <main>
@@ -30,6 +34,7 @@ export default function Test() {
           placeholder="Выберите пользователя"
           name="user"
         />
+        <DatePicker onChange={onChange} />
       </Form>
     </main>
   );
