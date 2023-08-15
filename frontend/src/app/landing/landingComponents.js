@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export function Block(props) {
   return (
@@ -32,3 +33,8 @@ export function ContestText(props) {
     return <span className={styles.grey}>{props.text}</span>;
   }
 }
+
+
+
+
+

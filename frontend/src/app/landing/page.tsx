@@ -32,8 +32,8 @@ const LandingPage: React.FC = () => {
             <span>Подать заявку</span>
           </Link>
         </div>
-        <span className={styles.school}>Школа предпринимальства</span>
-        <span className={styles.business}>Бизнес школа трекеров</span>
+        <span className={styles.school}>Школа предпринимательства</span>
+        <span className={styles.business}>Школа бизнес трекеров</span>
         <div className={styles.links}>
           <Link href={'/auth'}>
             <Image
@@ -247,13 +247,13 @@ const LandingPage: React.FC = () => {
 
       <br />
       <div className={styles.expertsImage}>
-      <Image
-        width={1183}
-        height={1066}
-        // layout="responsive"
-        src="./landing/experts.svg"
-        alt=""
-      />
+        <Image
+          width={1183}
+          height={1066}
+          // layout="responsive"
+          src="./landing/experts.svg"
+          alt=""
+        />
       </div>
       <br />
 

@@ -13,79 +13,6 @@
   position: relative;
 }
 
-.links > a > img[alt='lk'] {
-  scale: 0.95;
-}
-
-.links > a > img {
-  width: 3.2vw;
-}
-
-.links > a {
-  margin-right: 2vw;
-}
-
-.links {
-  position: absolute;
-  top: 10%;
-  right: -5%;
-  transform: translate(-50%, -50%);
-}
-
-.apply > a {
-  position: absolute;
-  top: 10%;
-  left: 15%;
-  transform: translate(-50%, -50%);
-  display: inline-flex;
-  padding: 1vw 3vw;
-  align-items: flex-start;
-  border-radius: 10rem;
-  background: var(--unnamed, #0039ca);
-  box-shadow:
-    0px 0.3vw 0.3vw 0px #cfd8e8,
-    0px -0.3vw 0.3vw 0px #fff;
-  font-size: 1.1vw;
-}
-
-.apply > a > span {
-  color: var(--unnamed, #fff);
-}
-
-.school {
-  position: absolute;
-  top: 10%;
-  left: 35%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  padding: 1vw;
-  align-items: flex-start;
-  border-radius: 10rem;
-  border: 0.15vw solid var(--unnamed, #0039ca);
-  background: #fff;
-  box-shadow:
-    0px 0.3vw 0.3vw 0px #cfd8e8,
-    0px -0.3vw 0.3vw 0px #fff;
-  font-size: 1.1vw;
-}
-
-.business {
-  position: absolute;
-  top: 10%;
-  left: 55%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  padding: 1vw;
-  align-items: flex-start;
-  border-radius: 10rem;
-  border: 0.15vw solid var(--unnamed, #bfc4f1);
-  background: #fff;
-  box-shadow:
-    0px 0.3vw 0.3vw 0px #cfd8e8,
-    0px -0.3vw 0.3vw 0px #fff;
-  font-size: 1.1vw;
-}
-
 .upperPanel > img {
   width: 100%;
 }
@@ -101,118 +28,260 @@
   line-height: normal;
 }
 
-/* @media screen and (max-width: 1350px) {
-  .apply > a {
-    padding: 0.7rem 2.1rem;
-    font-size: 0.8rem;
-  }
+.links {
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  transform: translate(-50%, -50%);
+}
 
-  .business {
-    padding: 0.7rem;
-    font-size: 0.8rem;
+.links > a > img[alt='lk'] {
+  scale: 0.95;
+}
+
+.links > a > img {
+  width: 3.2vw;
+}
+
+.links > a {
+  margin-right: 2vw;
+}
+
+.apply > a {
+  display: flex;
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  padding: 1rem 3rem;
+  align-items: center;
+  border-radius: 10rem;
+  background: var(--unnamed, #0039ca);
+  box-shadow:
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1rem;
+  align-self: stretch;
+}
+
+.apply > a > span {
+  color: var(--unnamed, #fff);
+}
+
+.school {
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1rem;
+  align-items: flex-start;
+  border-radius: 10rem;
+  border: 0.15vw solid var(--unnamed, #0039ca);
+  background: #fff;
+  box-shadow:
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1rem;
+  align-self: stretch;
+}
+
+.business {
+  position: absolute;
+  top: 10%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  padding: 1rem;
+  align-items: flex-start;
+  border-radius: 10rem;
+  border: 0.15vw solid var(--unnamed, #bfc4f1);
+  background: #fff;
+  box-shadow:
+    0px 0.3vw 0.3vw 0px #cfd8e8,
+    0px -0.3vw 0.3vw 0px #fff;
+  font-size: 1.1rem;
+  align-self: stretch;
+}
+
+@media screen and (max-width: 1355px) {
+  .apply > a {
+    left: 10%;
   }
 
   .school {
-    padding: 0.7rem;
-    font-size: 0.8rem;
+    left: 32%;
+    white-space: break-spaces;
+  }
+  .business {
+    left: 54%;
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1230px) {
   .apply > a {
-    padding: 0.5rem 1.4rem;
-    font-size: 0.6rem;
-  }
-
-  .business {
-    padding: 0.5rem;
-    font-size: 0.6rem;
+    white-space: break-spaces;
+    padding: 1rem 2rem;
   }
 
   .school {
-    padding: 0.5rem;
-    font-size: 0.6rem;
+    width: 14rem;
+    white-space: break-spaces;
+  }
+  .business {
+    width: 12rem;
+    white-space: break-spaces;
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 960px) {
   .apply > a {
-    font-size: 0.5rem;
-  }
-
-  .business {
-    font-size: 0.5rem;
+    /* width: 15rem; */
+    white-space: break-spaces;
+    padding: 1rem 1.3rem;
+    font-size: 0.9rem;
+    top: 12%;
   }
 
   .school {
-    font-size: 0.5rem;
+    width: 12rem;
+    left: 32%;
+    top: 12%;
+    white-space: break-spaces;
+    font-size: 0.9rem;
+  }
+  .business {
+    width: 9rem;
+    top: 12%;
+    white-space: break-spaces;
+    font-size: 0.9rem;
+    /* padding: 2rem 1.2rem; */
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 780px) {
   .apply > a {
-    font-size: 0.45rem;
-  }
-
-  .business {
-    font-size: 0.45rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    top: 13%;
   }
 
   .school {
-    font-size: 0.45rem;
+    width: 10rem;
+    top: 13%;
+    border-radius: 1.5rem;
+    hyphens: auto;
+    padding: 0.5rem 0.5rem;
+  }
+
+  .business {
+    width: 8rem;
+    top: 13%;
+    font-size: 0.9rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .apply > a {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .school {
+    width: 8rem;
+    top: 15%;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .business {
+    top: 15%;
+    width: 7rem;
+    top: 12%;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .links > a > img {
+    width: 5.5vw;
+  }
+
+  .links {
+    right: -10%;
+  }
+
+  .upperPanel > div > span {
+    font-size: 2vw;
+    right: 75%;
   }
 }
 
 @media screen and (max-width: 550px) {
   .apply > a {
-    padding: 0.35rem 1rem;
-    font-size: 0.35rem;
-  }
-
-  .business {
-    padding: 0.35rem;
-    font-size: 0.35rem;
+    left: 10.5%;
+    padding: 0.4rem 0.4rem;
+    font-size: 0.6rem;
   }
 
   .school {
-    padding: 0.35rem;
-    font-size: 0.35rem;
+    width: 5.5rem;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+  }
+  .business {
+    width: 5.5rem;
+    top: 12%;
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 405px) {
   .apply > a {
-    padding: 0.25rem 0.7rem;
-    font-size: 0.3rem;
-  }
-
-  .business {
-    padding: 0.25rem;
-    font-size: 0.3rem;
+    padding: 0.3rem 0.3rem;
+    font-size: 0.55rem;
   }
 
   .school {
-    padding: 0.25rem;
-    font-size: 0.3rem;
+    width: 5.1rem;
+    font-size: 0.55rem;
+    padding: 0.1rem 0.5rem;
+  }
+  .business {
+    width: 5rem;
+    font-size: 0.55rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .links > a > img {
+    width: 6vw;
+  }
+
+  .upperPanel > div > span {
+    font-size: 2.5vw;
+    right: 74%;
   }
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 370px) {
   .apply > a {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.25rem;
-  }
-
-  .business {
-    padding: 0.15rem;
-    font-size: 0.25rem;
+    padding: 0.3rem 0.2rem;
+    font-size: 0.5rem;
   }
 
   .school {
-    padding: 0.15rem;
-    font-size: 0.25rem;
+    width: 4.1rem;
+    left: 31.5%;
+    font-size: 0.5rem;
+    padding: 0.1rem 0.5rem;
   }
-} */
+  .business {
+    width: 4.6rem;
+    font-size: 0.5rem;
+    padding: 0.1rem 0.4rem;
+  }
+}
 
 .dlitelnost {
   position: relative;
@@ -410,6 +479,10 @@
   .secondPart > .right {
     margin-right: 11rem;
   }
+
+  .secondPart > div > .second {
+    margin-bottom: 1.5rem;
+  }
 }
 
 @media screen and (max-width: 1300px) {
@@ -470,6 +543,10 @@
     width: 25rem;
   }
 
+  .secondPart > div > .first {
+    margin-top: 0.1rem;
+  }
+
   .secondPart > div > span {
     margin-top: 2rem;
   }
@@ -499,10 +576,15 @@
 
   .secondPart > div > .first {
     font-size: 0.6rem;
+    margin-top: -0.3rem;
   }
 
   .secondPart > div > .second {
     font-size: 0.75rem;
+  }
+
+  .secondPart > div > .second {
+    margin-bottom: 1rem;
   }
 }
 
@@ -1162,4 +1244,25 @@
   .faq > div > span > span {
     font-size: 0.5rem;
   }
+}
+
+.linkListContainer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 10px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.linkList.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
