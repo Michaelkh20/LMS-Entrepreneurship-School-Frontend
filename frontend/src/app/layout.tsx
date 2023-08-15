@@ -6,7 +6,7 @@ import StyledComponentsRegistry from '../lib/AntdRegistry';
 import { ReduxProvider } from '@/redux/provider';
 
 const mulish = Mulish({
-  weight: ['300', '500', '700'],
+  weight: ['300', '500', '600', '700'],
   style: 'normal',
   subsets: ['cyrillic', 'latin'],
 });

@@ -69,7 +69,6 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
       columns={columns}
       pagination={false}
       bordered // Добавляем границы ячеек таблицы
-      style={{ margin: '3rem' }} // Добавляем отступ от краев
     />
   );
 };
