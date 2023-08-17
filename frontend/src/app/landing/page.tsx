@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { Jura } from 'next/font/google';
-import { Block, AnnaText, ContestText } from './landingComponents.js';
+import { Block, AnnaText, ContestText } from './landingComponents.tsx';
+import Carousel from './landingComponents.tsx';
 import Image from 'next/image';
 
 const jura = Jura({
@@ -244,18 +245,8 @@ const LandingPage: React.FC = () => {
       <div className={styles.components}>
         <span className={jura.className}>Эксперты программы</span>
       </div>
-
-      <br />
-      <div className={styles.expertsImage}>
-        <Image
-          width={1183}
-          height={1066}
-          // layout="responsive"
-          src="./landing/experts.svg"
-          alt=""
-        />
-      </div>
-      <br />
+    
+    <Carousel/>
 
       <div className={styles.components}>
         <span className={jura.className}>
