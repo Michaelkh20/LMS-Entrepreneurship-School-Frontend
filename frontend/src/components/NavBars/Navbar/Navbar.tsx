@@ -9,6 +9,7 @@ import HomeButton from '../../Buttons/HomeButton/HomeButton';
 import { LEARNER_HOME_PAGE, TRACKER_HOME_PAGE } from '../../../../constants';
 import marketIcon from '../../../../public/market.svg';
 import icon from '../../../../public/icon.svg';
+import { Role } from '@/types/common';
 
 export default function Navbar({
   balance,
@@ -26,7 +27,7 @@ export default function Navbar({
 
   return (
     <nav className={styles.nav}>
-      {!isHomePage && <HomeButton />}
+      {!isHomePage && <HomeButton role={Role.Learner} />}
       <div className={styles.right}>
         {isTrackerPage && <span className={styles.markIcon}>A+</span>}
         <div className={styles.market}>

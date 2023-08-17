@@ -143,3 +143,27 @@ export type FinalGradeFormula = {
   weight: GradeWeight;
   type: FinalGradeType;
 }[];
+
+export function roleTranslate(role: Role | undefined) {
+  switch (role) {
+    case Role.Admin:
+      return 'Администратор';
+    case Role.Learner:
+      return 'Ученик';
+    case Role.Tracker:
+      return 'Трекер';
+    default:
+      return '';
+  }
+}
+
+export function assessmentTypeTranslate(role: AssessmentType | undefined) {
+  switch (role) {
+    case AssessmentType.FinalGrade:
+      return 'Оц. в ведомость';
+    case AssessmentType.TrackerGrade:
+      return 'Оц. трекера';
+    default:
+      return '';
+  }
+}

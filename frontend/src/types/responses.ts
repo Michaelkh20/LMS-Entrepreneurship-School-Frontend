@@ -38,6 +38,7 @@ import {
   Name,
   Surname,
   MiddleName,
+  Comment,
 } from './common';
 
 export type Pagination = {

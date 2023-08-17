@@ -280,6 +280,12 @@ export type AssessmentRequest = {
   comment: Comment;
 };
 
+export type AssessmentUpdateRequest = {
+  id: Id;
+  assessment: Assessment;
+  comment: Comment;
+};
+
 export type BonusRequest = {
   learnerId: Id;
   bonus: Bonus;
