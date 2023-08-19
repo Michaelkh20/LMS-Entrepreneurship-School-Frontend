@@ -40,7 +40,7 @@ const LandingPage: React.FC = () => {
             <Image
               width={35}
               height={50}
-              src="/landing/LK.png"
+              src="/landing/LK.svg"
               layout="intrinsic"
               alt="lk"
             />
@@ -50,7 +50,7 @@ const LandingPage: React.FC = () => {
             <Image
               width={35}
               height={50}
-              src="/landing/VK.png"
+              src="/landing/VK.svg"
               layout="intrinsic"
               alt=""
             />
@@ -63,7 +63,7 @@ const LandingPage: React.FC = () => {
             <Image
               width={35}
               height={50}
-              src="/landing/YT.png"
+              src="/landing/YT.svg"
               layout="intrinsic"
               alt=""
             />
