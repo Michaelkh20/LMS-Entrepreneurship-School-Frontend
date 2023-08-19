@@ -1,5 +1,9 @@
 import { Id } from '@/types/common';
-import { AssessmentRequest, GetSolutionsTrackerApiArg } from '@/types/requests';
+import {
+  AssessmentRequest,
+  AssessmentUpdateRequest,
+  GetSolutionsTrackerApiArg,
+} from '@/types/requests';
 import {
   TrackerSolutionInfo,
   TrackerSolutionsTable,
@@ -20,11 +24,14 @@ const trackerApi = learnerApi.injectEndpoints({
         errorHandler(error, 'Assessment', 'LIST'),
     }),
 
-    updateAssessmentByTracker: build.mutation<undefined, AssessmentRequest>({
+    updateAssessmentByTracker: build.mutation<
+      undefined,
+      { request: AssessmentUpdateRequest; taskId: Id }
+    >({
       query: (assessmentRequest) => ({
         url: `/tracker/assessments`,
         method: 'PUT',
-        body: assessmentRequest,
+        body: assessmentRequest.request,
       }),
       invalidatesTags: (result, error, assessmentRequest) =>
         errorHandler(error, 'Assessment', [assessmentRequest.taskId, 'LIST']),

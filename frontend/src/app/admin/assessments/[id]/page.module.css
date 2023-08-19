@@ -68,17 +68,7 @@
   margin-top: 1.5rem;
 }
 
-.delete_button {
-  float: right;
-  background-color: #ff6d6d;
-  border: none;
-  border-radius: 0.75rem;
-  padding: 0.8rem 2.5rem;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.delete_button:hover {
-  background-color: #ff4f4f;
+.deleteBtnContainer {
+  display: flex;
+  justify-content: flex-end;
 }

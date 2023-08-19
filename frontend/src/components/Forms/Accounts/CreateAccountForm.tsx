@@ -6,11 +6,13 @@ import { AccountRequest } from '@/types/requests';
 import { useCreateAccountMutation } from '@/redux/services/adminApi';
 import { useEffect, useState } from 'react';
 import PhoneNumber from '../FormItems/EntityForms/PhoneNumber';
+import { useRouter } from 'next/navigation';
 
 const { Option } = Select;
 
 export default function CreateAccountForm() {
   const [form] = useForm();
+  const router = useRouter();
   const [createAccount, result] = useCreateAccountMutation();
 
   const [validEmail, setValidEmail] = useState(true);
@@ -61,8 +63,9 @@ export default function CreateAccountForm() {
 
     if (result.isSuccess) {
       message.success('Аккаунт успешно создан');
+      router.push('/admin/accounts');
     }
-  }, [form, result]);
+  }, [form, result, router]);
 
   const onFinish = (values: any) => {
     const request = formValuesToRequest(values);
