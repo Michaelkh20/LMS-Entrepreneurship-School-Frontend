@@ -4,6 +4,7 @@ import {
   AdminClaimRequest,
   AdminLotRequest,
   AssessmentRequest,
+  AssessmentUpdateRequest,
   AttendanceRequest,
   BonusRequest,
   EmailRequest,
@@ -211,7 +212,7 @@ export const adminApi = createApi({
         errorHandler(error, 'Assessment', 'LIST'),
     }),
 
-    updateAssessment: build.mutation<undefined, AssessmentRequest>({
+    updateAssessment: build.mutation<undefined, AssessmentUpdateRequest>({
       query: (assessmentRequest) => ({
         url: `/admin/assessments`,
         method: 'PUT',
@@ -393,6 +394,7 @@ export const adminApi = createApi({
           lotNumber: queryArg.lotNumber,
           lotTitle: queryArg.lotTitle,
           learnerId: queryArg.learnerId,
+          performerOther: queryArg.performerOther,
           sortProperty: queryArg.sortProperty,
           sortOrder: queryArg.sortOrder,
           page: queryArg.page,

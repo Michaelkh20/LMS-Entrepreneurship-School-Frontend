@@ -1,0 +1,7 @@
+.spinnerContainer {
+  width: 100%; /* occupy full width of its parent container */
+  display: flex; /* enables use of flexbox for child alignment */
+  justify-content: center; /* center horizontally */
+  align-items: flex-start; /* align at the top */
+  padding: 1.5rem 0rem; /* space from top of the page */
+}

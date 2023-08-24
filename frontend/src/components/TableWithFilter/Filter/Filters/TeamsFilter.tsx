@@ -1,5 +1,5 @@
 import { Form } from 'antd';
-import { TeamFormItem } from '@/components/Forms/FormItems';
+import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 import formStyles from '@/components/TableWithFilter/Filter/form.module.css';
 
@@ -23,7 +23,7 @@ export function TeamsFilter({ onChangeEvent }: any) {
         onValuesChange={onChangeEvent}
         className={formStyles.form}
       >
-        <TeamFormItem />
+        <TeamNumberFormItem />
       </Form>
     </FilterWrapper>
   );
