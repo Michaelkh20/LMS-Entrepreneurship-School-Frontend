@@ -3,12 +3,12 @@ import formStyles from '../form.module.css';
 import {
   NameFormItem,
   EmailFormItem,
-  TeamFormItem,
+  TeamNumberFormItem,
   RoleFormItem,
-  StatusFormItem,
+  ClaimStatusFormItem,
   UserSelectionFormItem,
   DatePickerFormItem,
-} from '@/components/Forms/FormItems';
+} from '@/components/Forms/FormItems/Filters';
 import { FilterWrapper } from '@/components/TableWithFilter/Filter/FilterWrapper';
 
 export function CurrencyTransferFilter({ onChangeEvent }: any) {
@@ -32,7 +32,7 @@ export function CurrencyTransferFilter({ onChangeEvent }: any) {
       >
         <UserSelectionFormItem placeholder={'Отправитель'} name={'learner'} />
         <UserSelectionFormItem placeholder={'Получатель'} name={'receiver'} />
-        <StatusFormItem />
+        <ClaimStatusFormItem />
         <DatePickerFormItem placeholder={'Дата от'} name={'dateFrom'} />
         <DatePickerFormItem placeholder={'Дата до'} name={'dateTo'} />
       </Form>

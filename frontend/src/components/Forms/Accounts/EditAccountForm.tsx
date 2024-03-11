@@ -1,15 +1,6 @@
 'use client';
 import { Id, Role } from '@/types/common';
-import {
-  Form,
-  Input,
-  Select,
-  Button,
-  Space,
-  message,
-  Spin,
-  Result,
-} from 'antd';
+import { Form, Input, Select, Button, Space, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { AccountRequest } from '@/types/requests';
 import {
@@ -19,11 +10,15 @@ import {
 import { useEffect, useState } from 'react';
 import PhoneNumber from '../FormItems/EntityForms/PhoneNumber';
 import { UserProfile } from '@/types/responses';
+import LoadingErrorWrapper from '@/components/LoadingErrorWrapper/LoadingErrorWrapper';
+import { useRouter } from 'next/navigation';
 
 const { Option } = Select;
 
 export default function EditAccountForm({ id }: { id: Id }) {
   const [form] = useForm();
+  const router = useRouter();
+
   const [updateAccount, updateResult] = useUpdateAccountMutation();
   const { data, isLoading, isError, isSuccess } = useGetAccountByIdQuery(id);
 
@@ -75,8 +70,9 @@ export default function EditAccountForm({ id }: { id: Id }) {
 
     if (updateResult.isSuccess) {
       message.success('Аккаунт успешно изменён');
+      router.push(`/admin/accounts/${id}`);
     }
-  }, [form, updateResult]);
+  }, [form, id, router, updateResult]);
 
   const onFinish = (values: any) => {
     const request = formValuesToRequest(values, id);
@@ -93,14 +89,8 @@ export default function EditAccountForm({ id }: { id: Id }) {
     }
   }
 
-  if (isLoading) {
-    return <Spin size="large"></Spin>;
-  } else if (isError) {
-    return (
-      <Result status="error" title={'Sorry, something went wrong.'}></Result>
-    );
-  } else {
-    return (
+  return (
+    <LoadingErrorWrapper isLoading={isLoading} isError={isError}>
       <Form
         form={form}
         onFinish={onFinish}
@@ -264,8 +254,8 @@ export default function EditAccountForm({ id }: { id: Id }) {
           </Space>
         </Form.Item>
       </Form>
-    );
-  }
+    </LoadingErrorWrapper>
+  );
 }
 
 function formValuesToRequest(values: any, id: Id): AccountRequest {
@@ -284,11 +274,10 @@ function formValuesToRequest(values: any, id: Id): AccountRequest {
 }
 
 function fromResponseToFormValues(data: UserProfile) {
-  const nameSplit = data.fullName.split(' ');
   return {
-    firstName: nameSplit[0],
-    surName: nameSplit[1],
-    middleName: nameSplit?.[2],
+    firstName: data.name,
+    surName: data.surname,
+    middleName: data.middleName || undefined,
     email: data.email,
     phoneNumber: data.phone,
     messenger: data.messenger,

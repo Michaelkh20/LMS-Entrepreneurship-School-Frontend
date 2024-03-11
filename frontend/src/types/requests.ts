@@ -101,6 +101,8 @@ export type GetLotsApiArg = {
   /** Learner id */
   learnerId?: Id;
   /** Property of response to sort by */
+  performerOther?: FullName;
+  /** Property of response to sort by */
   sortProperty?: string;
   /** OSorting order */
   sortOrder?: SortOrder;
@@ -254,7 +256,7 @@ export type AccountRequest = {
   id: Id | null;
   name: Name;
   surname: Surname;
-  middleName: MiddleName;
+  middleName: MiddleName | null;
   email: Email;
   phone: Phone;
   messenger: Messenger;
@@ -275,6 +277,12 @@ export type AssessmentRequest = {
   teamId: Id | null;
   assessment: Assessment;
   taskId: Id;
+  comment: Comment;
+};
+
+export type AssessmentUpdateRequest = {
+  id: Id;
+  assessment: Assessment;
   comment: Comment;
 };
 
