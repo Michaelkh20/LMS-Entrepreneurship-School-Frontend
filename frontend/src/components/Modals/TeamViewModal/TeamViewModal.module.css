@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.property {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.propertyName {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+.propertyTextValue {
+  font-size: 14px;
+  line-height: 18px;
+}

@@ -203,203 +203,488 @@ export namespace dto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    /** Properties of a PersonRequest. */
-    interface IPersonRequest {
-
-        /** PersonRequest id */
-        id?: (number|null);
+    /** Role enum. */
+    enum Role {
+        ADMIN = 0,
+        TRACKER = 1,
+        LEARNER = 2
     }
 
-    /** Represents a PersonRequest. */
-    class PersonRequest implements IPersonRequest {
+    /** Properties of a ProfileResponse. */
+    interface IProfileResponse {
+
+        /** ProfileResponse fullName */
+        fullName?: (string|null);
+
+        /** ProfileResponse role */
+        role?: (dto.Role|null);
+
+        /** ProfileResponse email */
+        email?: (string|null);
+
+        /** ProfileResponse phone */
+        phone?: (string|null);
+
+        /** ProfileResponse messenger */
+        messenger?: (string|null);
+
+        /** ProfileResponse balance */
+        balance?: (number|null);
+
+        /** ProfileResponse team */
+        team?: (dto.ProfileResponse.ITeamShort|null);
+    }
+
+    /** Represents a ProfileResponse. */
+    class ProfileResponse implements IProfileResponse {
 
         /**
-         * Constructs a new PersonRequest.
+         * Constructs a new ProfileResponse.
          * @param [properties] Properties to set
          */
-        constructor(properties?: dto.IPersonRequest);
+        constructor(properties?: dto.IProfileResponse);
 
-        /** PersonRequest id. */
-        public id: number;
+        /** ProfileResponse fullName. */
+        public fullName: string;
+
+        /** ProfileResponse role. */
+        public role: dto.Role;
+
+        /** ProfileResponse email. */
+        public email: string;
+
+        /** ProfileResponse phone. */
+        public phone: string;
+
+        /** ProfileResponse messenger. */
+        public messenger: string;
+
+        /** ProfileResponse balance. */
+        public balance: number;
+
+        /** ProfileResponse team. */
+        public team?: (dto.ProfileResponse.ITeamShort|null);
 
         /**
-         * Creates a new PersonRequest instance using the specified properties.
+         * Creates a new ProfileResponse instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns PersonRequest instance
+         * @returns ProfileResponse instance
          */
-        public static create(properties?: dto.IPersonRequest): dto.PersonRequest;
+        public static create(properties?: dto.IProfileResponse): dto.ProfileResponse;
 
         /**
-         * Encodes the specified PersonRequest message. Does not implicitly {@link dto.PersonRequest.verify|verify} messages.
-         * @param message PersonRequest message or plain object to encode
+         * Encodes the specified ProfileResponse message. Does not implicitly {@link dto.ProfileResponse.verify|verify} messages.
+         * @param message ProfileResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: dto.IPersonRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: dto.IProfileResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified PersonRequest message, length delimited. Does not implicitly {@link dto.PersonRequest.verify|verify} messages.
-         * @param message PersonRequest message or plain object to encode
+         * Encodes the specified ProfileResponse message, length delimited. Does not implicitly {@link dto.ProfileResponse.verify|verify} messages.
+         * @param message ProfileResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: dto.IPersonRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: dto.IProfileResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a PersonRequest message from the specified reader or buffer.
+         * Decodes a ProfileResponse message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns PersonRequest
+         * @returns ProfileResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.PersonRequest;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ProfileResponse;
 
         /**
-         * Decodes a PersonRequest message from the specified reader or buffer, length delimited.
+         * Decodes a ProfileResponse message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns PersonRequest
+         * @returns ProfileResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.PersonRequest;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ProfileResponse;
 
         /**
-         * Verifies a PersonRequest message.
+         * Verifies a ProfileResponse message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a PersonRequest message from a plain object. Also converts values to their respective internal types.
+         * Creates a ProfileResponse message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns PersonRequest
+         * @returns ProfileResponse
          */
-        public static fromObject(object: { [k: string]: any }): dto.PersonRequest;
+        public static fromObject(object: { [k: string]: any }): dto.ProfileResponse;
 
         /**
-         * Creates a plain object from a PersonRequest message. Also converts values to other types if specified.
-         * @param message PersonRequest
+         * Creates a plain object from a ProfileResponse message. Also converts values to other types if specified.
+         * @param message ProfileResponse
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: dto.PersonRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: dto.ProfileResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this PersonRequest to JSON.
+         * Converts this ProfileResponse to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
 
         /**
-         * Gets the default type url for PersonRequest
+         * Gets the default type url for ProfileResponse
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    /** Properties of a PersonResponse. */
-    interface IPersonResponse {
+    namespace ProfileResponse {
 
-        /** PersonResponse name */
-        name?: (string|null);
+        /** Properties of a TeamShort. */
+        interface ITeamShort {
 
-        /** PersonResponse surname */
-        surname?: (string|null);
+            /** TeamShort id */
+            id?: (string|null);
+
+            /** TeamShort number */
+            number?: (string|null);
+        }
+
+        /** Represents a TeamShort. */
+        class TeamShort implements ITeamShort {
+
+            /**
+             * Constructs a new TeamShort.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: dto.ProfileResponse.ITeamShort);
+
+            /** TeamShort id. */
+            public id: string;
+
+            /** TeamShort number. */
+            public number: string;
+
+            /**
+             * Creates a new TeamShort instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns TeamShort instance
+             */
+            public static create(properties?: dto.ProfileResponse.ITeamShort): dto.ProfileResponse.TeamShort;
+
+            /**
+             * Encodes the specified TeamShort message. Does not implicitly {@link dto.ProfileResponse.TeamShort.verify|verify} messages.
+             * @param message TeamShort message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: dto.ProfileResponse.ITeamShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified TeamShort message, length delimited. Does not implicitly {@link dto.ProfileResponse.TeamShort.verify|verify} messages.
+             * @param message TeamShort message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: dto.ProfileResponse.ITeamShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a TeamShort message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns TeamShort
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ProfileResponse.TeamShort;
+
+            /**
+             * Decodes a TeamShort message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns TeamShort
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ProfileResponse.TeamShort;
+
+            /**
+             * Verifies a TeamShort message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a TeamShort message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns TeamShort
+             */
+            public static fromObject(object: { [k: string]: any }): dto.ProfileResponse.TeamShort;
+
+            /**
+             * Creates a plain object from a TeamShort message. Also converts values to other types if specified.
+             * @param message TeamShort
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: dto.ProfileResponse.TeamShort, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this TeamShort to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for TeamShort
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
     }
 
-    /** Represents a PersonResponse. */
-    class PersonResponse implements IPersonResponse {
+    /** Properties of a TeamLearnerResponse. */
+    interface ITeamLearnerResponse {
+
+        /** TeamLearnerResponse id */
+        id?: (string|null);
+
+        /** TeamLearnerResponse teamNumber */
+        teamNumber?: (number|null);
+
+        /** TeamLearnerResponse projectTheme */
+        projectTheme?: (string|null);
+
+        /** TeamLearnerResponse learners */
+        learners?: (dto.TeamLearnerResponse.IPersonShortInfo[]|null);
+
+        /** TeamLearnerResponse trackers */
+        trackers?: (dto.TeamLearnerResponse.IPersonShortInfo[]|null);
+    }
+
+    /** Represents a TeamLearnerResponse. */
+    class TeamLearnerResponse implements ITeamLearnerResponse {
 
         /**
-         * Constructs a new PersonResponse.
+         * Constructs a new TeamLearnerResponse.
          * @param [properties] Properties to set
          */
-        constructor(properties?: dto.IPersonResponse);
+        constructor(properties?: dto.ITeamLearnerResponse);
 
-        /** PersonResponse name. */
-        public name: string;
+        /** TeamLearnerResponse id. */
+        public id: string;
 
-        /** PersonResponse surname. */
-        public surname: string;
+        /** TeamLearnerResponse teamNumber. */
+        public teamNumber: number;
+
+        /** TeamLearnerResponse projectTheme. */
+        public projectTheme: string;
+
+        /** TeamLearnerResponse learners. */
+        public learners: dto.TeamLearnerResponse.IPersonShortInfo[];
+
+        /** TeamLearnerResponse trackers. */
+        public trackers: dto.TeamLearnerResponse.IPersonShortInfo[];
 
         /**
-         * Creates a new PersonResponse instance using the specified properties.
+         * Creates a new TeamLearnerResponse instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns PersonResponse instance
+         * @returns TeamLearnerResponse instance
          */
-        public static create(properties?: dto.IPersonResponse): dto.PersonResponse;
+        public static create(properties?: dto.ITeamLearnerResponse): dto.TeamLearnerResponse;
 
         /**
-         * Encodes the specified PersonResponse message. Does not implicitly {@link dto.PersonResponse.verify|verify} messages.
-         * @param message PersonResponse message or plain object to encode
+         * Encodes the specified TeamLearnerResponse message. Does not implicitly {@link dto.TeamLearnerResponse.verify|verify} messages.
+         * @param message TeamLearnerResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: dto.IPersonResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: dto.ITeamLearnerResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified PersonResponse message, length delimited. Does not implicitly {@link dto.PersonResponse.verify|verify} messages.
-         * @param message PersonResponse message or plain object to encode
+         * Encodes the specified TeamLearnerResponse message, length delimited. Does not implicitly {@link dto.TeamLearnerResponse.verify|verify} messages.
+         * @param message TeamLearnerResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: dto.IPersonResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: dto.ITeamLearnerResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a PersonResponse message from the specified reader or buffer.
+         * Decodes a TeamLearnerResponse message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns PersonResponse
+         * @returns TeamLearnerResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.PersonResponse;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.TeamLearnerResponse;
 
         /**
-         * Decodes a PersonResponse message from the specified reader or buffer, length delimited.
+         * Decodes a TeamLearnerResponse message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns PersonResponse
+         * @returns TeamLearnerResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.PersonResponse;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.TeamLearnerResponse;
 
         /**
-         * Verifies a PersonResponse message.
+         * Verifies a TeamLearnerResponse message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a PersonResponse message from a plain object. Also converts values to their respective internal types.
+         * Creates a TeamLearnerResponse message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns PersonResponse
+         * @returns TeamLearnerResponse
          */
-        public static fromObject(object: { [k: string]: any }): dto.PersonResponse;
+        public static fromObject(object: { [k: string]: any }): dto.TeamLearnerResponse;
 
         /**
-         * Creates a plain object from a PersonResponse message. Also converts values to other types if specified.
-         * @param message PersonResponse
+         * Creates a plain object from a TeamLearnerResponse message. Also converts values to other types if specified.
+         * @param message TeamLearnerResponse
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: dto.PersonResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: dto.TeamLearnerResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this PersonResponse to JSON.
+         * Converts this TeamLearnerResponse to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
 
         /**
-         * Gets the default type url for PersonResponse
+         * Gets the default type url for TeamLearnerResponse
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
         public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace TeamLearnerResponse {
+
+        /** Properties of a PersonShortInfo. */
+        interface IPersonShortInfo {
+
+            /** PersonShortInfo personId */
+            personId?: (string|null);
+
+            /** PersonShortInfo fullName */
+            fullName?: (string|null);
+
+            /** PersonShortInfo email */
+            email?: (string|null);
+
+            /** PersonShortInfo messenger */
+            messenger?: (string|null);
+        }
+
+        /** Represents a PersonShortInfo. */
+        class PersonShortInfo implements IPersonShortInfo {
+
+            /**
+             * Constructs a new PersonShortInfo.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: dto.TeamLearnerResponse.IPersonShortInfo);
+
+            /** PersonShortInfo personId. */
+            public personId: string;
+
+            /** PersonShortInfo fullName. */
+            public fullName: string;
+
+            /** PersonShortInfo email. */
+            public email: string;
+
+            /** PersonShortInfo messenger. */
+            public messenger: string;
+
+            /**
+             * Creates a new PersonShortInfo instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PersonShortInfo instance
+             */
+            public static create(properties?: dto.TeamLearnerResponse.IPersonShortInfo): dto.TeamLearnerResponse.PersonShortInfo;
+
+            /**
+             * Encodes the specified PersonShortInfo message. Does not implicitly {@link dto.TeamLearnerResponse.PersonShortInfo.verify|verify} messages.
+             * @param message PersonShortInfo message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: dto.TeamLearnerResponse.IPersonShortInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified PersonShortInfo message, length delimited. Does not implicitly {@link dto.TeamLearnerResponse.PersonShortInfo.verify|verify} messages.
+             * @param message PersonShortInfo message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: dto.TeamLearnerResponse.IPersonShortInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PersonShortInfo message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns PersonShortInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.TeamLearnerResponse.PersonShortInfo;
+
+            /**
+             * Decodes a PersonShortInfo message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns PersonShortInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.TeamLearnerResponse.PersonShortInfo;
+
+            /**
+             * Verifies a PersonShortInfo message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a PersonShortInfo message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns PersonShortInfo
+             */
+            public static fromObject(object: { [k: string]: any }): dto.TeamLearnerResponse.PersonShortInfo;
+
+            /**
+             * Creates a plain object from a PersonShortInfo message. Also converts values to other types if specified.
+             * @param message PersonShortInfo
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: dto.TeamLearnerResponse.PersonShortInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this PersonShortInfo to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for PersonShortInfo
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
     }
 }
