@@ -1,12 +1,5 @@
-import TableComponent from "@/components/TableOfMark/TableOfMark";
-import { useGetAssessmentsQuery } from "@/redux/services/adminApi";
-
+import React from 'react';
 
 export default function Page() {
-
-    return (
-        <div>
-            Table
-        </div>
-    )
+  return <div>Here will be Assessment page</div>;
 }

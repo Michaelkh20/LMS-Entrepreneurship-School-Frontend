@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package dto;
+
+message PersonRequest {
+  int32 id = 1;
+}
+
+message PersonResponse {
+  string name = 1;
+  string surname = 2;
+}
