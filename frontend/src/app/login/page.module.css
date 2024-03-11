@@ -1,0 +1,23 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.LogInButton {
+  width: 100%;
+}
+
+.LoginForm {
+  width: 100%;
+  max-width: 300px;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+}

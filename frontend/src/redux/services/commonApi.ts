@@ -1,6 +1,12 @@
-import { AuthRequest } from '@/types/requests';
-import { AuthResponse } from '@/types/responses';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+import { dto } from '@dto';
+import PersonRequest = dto.PersonRequest;
+import IPersonRequest = dto.IPersonRequest;
+import PersonResponse = dto.PersonResponse;
+import AuthRequest = dto.AuthRequest;
+import IAuthRequest = dto.IAuthRequest;
+import AuthResponse = dto.AuthResponse;
 
 export const commonApi = createApi({
   reducerPath: 'commonAPI',
@@ -8,11 +14,18 @@ export const commonApi = createApi({
     baseUrl: '/api',
   }),
   endpoints: (build) => ({
-    auth: build.mutation<AuthResponse, AuthRequest>({
+    auth: build.mutation<AuthResponse, IAuthRequest>({
       query: (authRequest) => ({
         url: `/auth`,
         method: 'POST',
-        body: authRequest,
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: AuthRequest.encode(authRequest).finish(),
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          return AuthResponse.decode(new Uint8Array(buffer));
+        },
       }),
     }),
     logOut: build.mutation<undefined, void>({
@@ -21,7 +34,22 @@ export const commonApi = createApi({
         method: 'POST',
       }),
     }),
+    person: build.mutation<PersonResponse, IPersonRequest>({
+      query: (personRequest) => ({
+        url: `/person`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: PersonRequest.encode(personRequest).finish(),
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          return PersonResponse.decode(new Uint8Array(buffer));
+        },
+      }),
+    }),
   }),
 });
 
-export const { useAuthMutation, useLogOutMutation } = commonApi;
+export const { useAuthMutation, useLogOutMutation, usePersonMutation } =
+  commonApi;
