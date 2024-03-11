@@ -1,0 +1,104 @@
+.container {
+  max-width: 800px;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  gap: 1rem;
+
+  padding: 1.5rem 1rem 0;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+  background-color: white;
+  padding: 1rem 1.5rem;
+}
+
+.profileCard {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(127, 199, 255, 1) 100%
+  );
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+  padding: 1rem 1.5rem;
+}
+
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+}
+
+.role {
+  font-size: 16px;
+  line-height: 19px;
+  color: #1677ff;
+}
+
+.balance {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 17px;
+}
+
+.balanceNumber {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+  color: #1677ff;
+  margin-inline-start: 8px;
+}
+
+.content {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  gap: 1rem;
+
+  margin-top: 1.5rem;
+}
+
+.propertiesContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.property {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.propertyTitle {
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.propertyValue {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+}
+
+.teamValue {
+  text-decoration: underline;
+  cursor: pointer;
+}

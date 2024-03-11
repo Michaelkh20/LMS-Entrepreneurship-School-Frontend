@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package dto;
+
+enum Role { ADMIN = 0; TRACKER = 1; LEARNER = 2; }
+
+message ProfileResponse {
+  message TeamShort {
+    string id = 1;
+    string number = 2;
+  }
+
+  string fullName = 1;
+  Role role = 2;
+  string email = 3;
+  string phone = 4;
+  string messenger = 5;
+  int32 balance = 6;  
+  TeamShort team = 7;
+}
