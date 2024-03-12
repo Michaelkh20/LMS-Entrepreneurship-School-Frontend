@@ -24,6 +24,10 @@ import {
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { errorHandler, providesList } from './helpers/tagHelpers';
 
+import { dto } from '@dto';
+import ProfileResponse = dto.ProfileResponse;
+import TeamLearnerResponse = dto.TeamLearnerResponse;
+
 export const learnerApi = createApi({
   reducerPath: 'learnerAPI',
   baseQuery: fetchBaseQuery({
@@ -32,9 +36,29 @@ export const learnerApi = createApi({
   tagTypes: ['Balance', 'Claim', 'Transaction', 'Solution', 'Assessment'],
   keepUnusedDataFor: 180,
   endpoints: (build) => ({
-    getProfile: build.query<UserProfile, void>({
-      query: () => ({ url: `/accounts/profile` }),
-      providesTags: ['Balance'],
+    getProfile: build.query<ProfileResponse, string>({
+      query: (accountId) => ({
+        url: `/profile`,
+        method: 'GET',
+        params: { accountId },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = ProfileResponse.decode(new Uint8Array(buffer));
+          return ProfileResponse.toObject(decoded);
+        },
+      }),
+    }),
+    getTeam: build.query<TeamLearnerResponse, string>({
+      query: (teamId) => ({
+        url: `/team-learner`,
+        method: 'GET',
+        params: { teamId },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = TeamLearnerResponse.decode(new Uint8Array(buffer));
+          return TeamLearnerResponse.toObject(decoded);
+        },
+      }),
     }),
 
     getUserBalance: build.query<UserBalance, void>({
@@ -180,4 +204,5 @@ export const {
   useGetSolutionsLearnerQuery,
   useGetSolutionByTaskIdLearnerQuery,
   useGetFinalGradeFormulaQuery,
+  useGetTeamQuery,
 } = learnerApi;
