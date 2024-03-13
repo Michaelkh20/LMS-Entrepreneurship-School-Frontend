@@ -21,6 +21,7 @@ const ContentLayoutStyles: CSSProperties = {
 const ContentStyles: CSSProperties = {
   padding: '1rem',
   flex: '1 0 auto',
+  backgroundColor: '#fff',
 };
 
 export default function AdminLayout({
@@ -39,14 +40,14 @@ export default function AdminLayout({
   }, []);
 
   return (
-    <Layout hasSider>
+    <Layout hasSider className={styles.wrapper}>
       <Sider width="256px" style={SiderStyles}>
         <AdminMenu />
       </Sider>
       <Layout style={ContentLayoutStyles}>
         <Header style={{ backgroundColor: '#fff' }}>Here will be header</Header>
         <Content style={ContentStyles}>{children}</Content>
-        <Footer>Here will be footer</Footer>
+        <Footer style={{ backgroundColor: '#fff' }}>Here will be footer</Footer>
       </Layout>
     </Layout>
   );

@@ -1,26 +1,30 @@
+import { BasicTableWithFilter, FilledExampleBasicTableWithFilter, FilledExample2BasicTableWithFilter } from '@/components/TableWithFilter/NewBasic';
 import { AccountsTableWithFilter } from '@/components/TableWithFilter/AccountsTableWithFilter';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import addIcon from '../../../../public/add.svg';
 import styles from './page.module.css';
-import { Jura } from 'next/font/google';
 
-const jura = Jura({
-  subsets: ['cyrillic'],
-});
+
+
 
 export default function Accounts() {
   return (
     <>
-      <h1 className={`${styles.title} ${jura.className}`}>Аккаунты</h1>
       <div className={styles.container}>
-        <div className={styles.createContainer}>
-          <Link href={'/admin/accounts/create'} className={styles.createButton}>
-            <Image src={addIcon} height={25} width={25} alt="create icon" />
-            Создать
-          </Link>
-        </div>
-        <AccountsTableWithFilter />
+      <div style={{
+        display:'flex',
+        gap: '1rem',
+        alignItems: 'center',
+        paddingLeft: '1rem'
+      }}>
+        <h2>Аккаунты</h2>
+        <Button icon={<PlusOutlined height={10}/>} size='large' type='primary'>Создать</Button>
+      </div>
+        {/* <AccountsTableWithFilter /> */}
+        <FilledExampleBasicTableWithFilter></FilledExampleBasicTableWithFilter>
+        <FilledExample2BasicTableWithFilter lessonId={123}/>
       </div>
     </>
   );

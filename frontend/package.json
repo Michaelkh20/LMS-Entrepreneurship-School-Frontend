@@ -15,7 +15,7 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
-    "antd": "^5.7.0",
+    "antd": "^5.15.2",
     "classnames": "^2.5.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.10",
