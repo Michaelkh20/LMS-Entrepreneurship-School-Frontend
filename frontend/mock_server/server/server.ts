@@ -1,14 +1,17 @@
 import express from 'express';
-import { dto } from '@dto';
 
+import { dto } from '@dto';
 import AuthRequest = dto.AuthRequest;
 import AuthResponse = dto.AuthResponse;
 import ProfileResponse = dto.ProfileResponse;
 import Role = dto.Role;
 import TeamLearnerResponse = dto.TeamLearnerResponse;
+import LotsShortResponse = dto.LotsShortResponse;
+
+import lots from '../data/lots';
 
 const app = express();
-const port = 3030;
+const port = 3031;
 
 app.use(express.raw({ type: 'application/x-protobuf' }));
 
@@ -116,6 +119,22 @@ app.get('/team-learner', (req, res) => {
   }).finish();
 
   res.status(200).type('application/x-protobuf').send(teamLearnerResponse);
+});
+
+app.get('/lots-short', (req, res) => {
+  const shortLots = lots.map((lot) => ({
+    id: lot.id,
+    number: lot.number,
+    title: lot.title,
+    performer: lot.performer,
+    price: lot.price,
+  }));
+
+  const lotsShortResponse = LotsShortResponse.encode({
+    lots: shortLots,
+  }).finish();
+
+  res.status(200).type('application/x-protobuf').send(lotsShortResponse);
 });
 
 app.listen(port, () => {

@@ -8,19 +8,39 @@ import LearnerMenu from '@/components/Menu/LearnerMenu.tsx';
 const { Header, Content, Footer, Sider } = Layout;
 
 const SiderStyles: CSSProperties = {
+  position: 'sticky',
   backgroundColor: '#fff',
   overflow: 'auto',
   height: '100vh',
+  top: 0,
 };
 
-const ContentLayoutStyles: CSSProperties = {
+const OuterLayoutStyles: CSSProperties = {
   height: '100vh',
   overflowY: 'auto',
-  backgroundColor: 'white',
+  justifyContent: 'center',
+  backgroundColor: '#fff',
+};
+
+const InnerLayoutStyles: CSSProperties = {
+  maxWidth: 'calc(1920px - 256px)',
+  backgroundColor: '#fff',
+};
+
+const HeaderStyles: CSSProperties = {
+  backgroundColor: '#fff',
+  borderBottom: '1px solid #f0f0f0',
 };
 
 const ContentStyles: CSSProperties = {
+  padding: '1.5rem 1.5rem 1.5rem 1rem',
   flex: '1 0 auto',
+  maxWidth: '1440px',
+};
+
+const FooterStyles: CSSProperties = {
+  backgroundColor: '#fff',
+  borderTop: '1px solid #f0f0f0',
 };
 
 export default function LearnerLayout({
@@ -39,14 +59,14 @@ export default function LearnerLayout({
   }, []);
 
   return (
-    <Layout hasSider>
+    <Layout hasSider style={OuterLayoutStyles}>
       <Sider width="256px" style={SiderStyles}>
         <LearnerMenu />
       </Sider>
-      <Layout style={ContentLayoutStyles}>
-        <Header style={{ backgroundColor: '#fff' }}>Here will be header</Header>
+      <Layout style={InnerLayoutStyles}>
+        <Header style={HeaderStyles}>Here will be header</Header>
         <Content style={ContentStyles}>{children}</Content>
-        <Footer>Here will be footer</Footer>
+        <Footer style={FooterStyles}>Here will be footer</Footer>
       </Layout>
     </Layout>
   );

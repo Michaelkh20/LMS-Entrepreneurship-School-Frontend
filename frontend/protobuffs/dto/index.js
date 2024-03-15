@@ -447,6 +447,954 @@ export const dto = $root.dto = (() => {
     })();
 
     /**
+     * LotStatus enum.
+     * @name dto.LotStatus
+     * @enum {number}
+     * @property {number} APPROVAL=0 APPROVAL value
+     * @property {number} ACTIVE=1 ACTIVE value
+     * @property {number} INACTIVE=2 INACTIVE value
+     */
+    dto.LotStatus = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "APPROVAL"] = 0;
+        values[valuesById[1] = "ACTIVE"] = 1;
+        values[valuesById[2] = "INACTIVE"] = 2;
+        return values;
+    })();
+
+    dto.Lot = (function() {
+
+        /**
+         * Properties of a Lot.
+         * @memberof dto
+         * @interface ILot
+         * @property {number|null} [id] Lot id
+         * @property {string|null} [number] Lot number
+         * @property {string|null} [title] Lot title
+         * @property {string|null} [description] Lot description
+         * @property {string|null} [terms] Lot terms
+         * @property {number|null} [price] Lot price
+         * @property {dto.LotStatus|null} [status] Lot status
+         * @property {string|null} [performer] Lot performer
+         * @property {string|null} [date] Lot date
+         */
+
+        /**
+         * Constructs a new Lot.
+         * @memberof dto
+         * @classdesc Represents a Lot.
+         * @implements ILot
+         * @constructor
+         * @param {dto.ILot=} [properties] Properties to set
+         */
+        function Lot(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Lot id.
+         * @member {number} id
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.id = 0;
+
+        /**
+         * Lot number.
+         * @member {string} number
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.number = "";
+
+        /**
+         * Lot title.
+         * @member {string} title
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.title = "";
+
+        /**
+         * Lot description.
+         * @member {string} description
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.description = "";
+
+        /**
+         * Lot terms.
+         * @member {string} terms
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.terms = "";
+
+        /**
+         * Lot price.
+         * @member {number} price
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.price = 0;
+
+        /**
+         * Lot status.
+         * @member {dto.LotStatus} status
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.status = 0;
+
+        /**
+         * Lot performer.
+         * @member {string} performer
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.performer = "";
+
+        /**
+         * Lot date.
+         * @member {string} date
+         * @memberof dto.Lot
+         * @instance
+         */
+        Lot.prototype.date = "";
+
+        /**
+         * Creates a new Lot instance using the specified properties.
+         * @function create
+         * @memberof dto.Lot
+         * @static
+         * @param {dto.ILot=} [properties] Properties to set
+         * @returns {dto.Lot} Lot instance
+         */
+        Lot.create = function create(properties) {
+            return new Lot(properties);
+        };
+
+        /**
+         * Encodes the specified Lot message. Does not implicitly {@link dto.Lot.verify|verify} messages.
+         * @function encode
+         * @memberof dto.Lot
+         * @static
+         * @param {dto.ILot} message Lot message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Lot.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+            if (message.number != null && Object.hasOwnProperty.call(message, "number"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.number);
+            if (message.title != null && Object.hasOwnProperty.call(message, "title"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.title);
+            if (message.description != null && Object.hasOwnProperty.call(message, "description"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.description);
+            if (message.terms != null && Object.hasOwnProperty.call(message, "terms"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.terms);
+            if (message.price != null && Object.hasOwnProperty.call(message, "price"))
+                writer.uint32(/* id 6, wireType 1 =*/49).double(message.price);
+            if (message.status != null && Object.hasOwnProperty.call(message, "status"))
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.status);
+            if (message.performer != null && Object.hasOwnProperty.call(message, "performer"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.performer);
+            if (message.date != null && Object.hasOwnProperty.call(message, "date"))
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.date);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Lot message, length delimited. Does not implicitly {@link dto.Lot.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof dto.Lot
+         * @static
+         * @param {dto.ILot} message Lot message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Lot.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Lot message from the specified reader or buffer.
+         * @function decode
+         * @memberof dto.Lot
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {dto.Lot} Lot
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Lot.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.Lot();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.number = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.title = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.description = reader.string();
+                        break;
+                    }
+                case 5: {
+                        message.terms = reader.string();
+                        break;
+                    }
+                case 6: {
+                        message.price = reader.double();
+                        break;
+                    }
+                case 7: {
+                        message.status = reader.int32();
+                        break;
+                    }
+                case 8: {
+                        message.performer = reader.string();
+                        break;
+                    }
+                case 9: {
+                        message.date = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Lot message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof dto.Lot
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {dto.Lot} Lot
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Lot.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Lot message.
+         * @function verify
+         * @memberof dto.Lot
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Lot.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isInteger(message.id))
+                    return "id: integer expected";
+            if (message.number != null && message.hasOwnProperty("number"))
+                if (!$util.isString(message.number))
+                    return "number: string expected";
+            if (message.title != null && message.hasOwnProperty("title"))
+                if (!$util.isString(message.title))
+                    return "title: string expected";
+            if (message.description != null && message.hasOwnProperty("description"))
+                if (!$util.isString(message.description))
+                    return "description: string expected";
+            if (message.terms != null && message.hasOwnProperty("terms"))
+                if (!$util.isString(message.terms))
+                    return "terms: string expected";
+            if (message.price != null && message.hasOwnProperty("price"))
+                if (typeof message.price !== "number")
+                    return "price: number expected";
+            if (message.status != null && message.hasOwnProperty("status"))
+                switch (message.status) {
+                default:
+                    return "status: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.performer != null && message.hasOwnProperty("performer"))
+                if (!$util.isString(message.performer))
+                    return "performer: string expected";
+            if (message.date != null && message.hasOwnProperty("date"))
+                if (!$util.isString(message.date))
+                    return "date: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a Lot message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof dto.Lot
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {dto.Lot} Lot
+         */
+        Lot.fromObject = function fromObject(object) {
+            if (object instanceof $root.dto.Lot)
+                return object;
+            let message = new $root.dto.Lot();
+            if (object.id != null)
+                message.id = object.id | 0;
+            if (object.number != null)
+                message.number = String(object.number);
+            if (object.title != null)
+                message.title = String(object.title);
+            if (object.description != null)
+                message.description = String(object.description);
+            if (object.terms != null)
+                message.terms = String(object.terms);
+            if (object.price != null)
+                message.price = Number(object.price);
+            switch (object.status) {
+            default:
+                if (typeof object.status === "number") {
+                    message.status = object.status;
+                    break;
+                }
+                break;
+            case "APPROVAL":
+            case 0:
+                message.status = 0;
+                break;
+            case "ACTIVE":
+            case 1:
+                message.status = 1;
+                break;
+            case "INACTIVE":
+            case 2:
+                message.status = 2;
+                break;
+            }
+            if (object.performer != null)
+                message.performer = String(object.performer);
+            if (object.date != null)
+                message.date = String(object.date);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Lot message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof dto.Lot
+         * @static
+         * @param {dto.Lot} message Lot
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Lot.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = 0;
+                object.number = "";
+                object.title = "";
+                object.description = "";
+                object.terms = "";
+                object.price = 0;
+                object.status = options.enums === String ? "APPROVAL" : 0;
+                object.performer = "";
+                object.date = "";
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.number != null && message.hasOwnProperty("number"))
+                object.number = message.number;
+            if (message.title != null && message.hasOwnProperty("title"))
+                object.title = message.title;
+            if (message.description != null && message.hasOwnProperty("description"))
+                object.description = message.description;
+            if (message.terms != null && message.hasOwnProperty("terms"))
+                object.terms = message.terms;
+            if (message.price != null && message.hasOwnProperty("price"))
+                object.price = options.json && !isFinite(message.price) ? String(message.price) : message.price;
+            if (message.status != null && message.hasOwnProperty("status"))
+                object.status = options.enums === String ? $root.dto.LotStatus[message.status] === undefined ? message.status : $root.dto.LotStatus[message.status] : message.status;
+            if (message.performer != null && message.hasOwnProperty("performer"))
+                object.performer = message.performer;
+            if (message.date != null && message.hasOwnProperty("date"))
+                object.date = message.date;
+            return object;
+        };
+
+        /**
+         * Converts this Lot to JSON.
+         * @function toJSON
+         * @memberof dto.Lot
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Lot.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Lot
+         * @function getTypeUrl
+         * @memberof dto.Lot
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Lot.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/dto.Lot";
+        };
+
+        return Lot;
+    })();
+
+    dto.LotShort = (function() {
+
+        /**
+         * Properties of a LotShort.
+         * @memberof dto
+         * @interface ILotShort
+         * @property {number|null} [id] LotShort id
+         * @property {string|null} [number] LotShort number
+         * @property {string|null} [title] LotShort title
+         * @property {string|null} [performer] LotShort performer
+         * @property {number|null} [price] LotShort price
+         */
+
+        /**
+         * Constructs a new LotShort.
+         * @memberof dto
+         * @classdesc Represents a LotShort.
+         * @implements ILotShort
+         * @constructor
+         * @param {dto.ILotShort=} [properties] Properties to set
+         */
+        function LotShort(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * LotShort id.
+         * @member {number} id
+         * @memberof dto.LotShort
+         * @instance
+         */
+        LotShort.prototype.id = 0;
+
+        /**
+         * LotShort number.
+         * @member {string} number
+         * @memberof dto.LotShort
+         * @instance
+         */
+        LotShort.prototype.number = "";
+
+        /**
+         * LotShort title.
+         * @member {string} title
+         * @memberof dto.LotShort
+         * @instance
+         */
+        LotShort.prototype.title = "";
+
+        /**
+         * LotShort performer.
+         * @member {string} performer
+         * @memberof dto.LotShort
+         * @instance
+         */
+        LotShort.prototype.performer = "";
+
+        /**
+         * LotShort price.
+         * @member {number} price
+         * @memberof dto.LotShort
+         * @instance
+         */
+        LotShort.prototype.price = 0;
+
+        /**
+         * Creates a new LotShort instance using the specified properties.
+         * @function create
+         * @memberof dto.LotShort
+         * @static
+         * @param {dto.ILotShort=} [properties] Properties to set
+         * @returns {dto.LotShort} LotShort instance
+         */
+        LotShort.create = function create(properties) {
+            return new LotShort(properties);
+        };
+
+        /**
+         * Encodes the specified LotShort message. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @function encode
+         * @memberof dto.LotShort
+         * @static
+         * @param {dto.ILotShort} message LotShort message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LotShort.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+            if (message.number != null && Object.hasOwnProperty.call(message, "number"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.number);
+            if (message.title != null && Object.hasOwnProperty.call(message, "title"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.title);
+            if (message.performer != null && Object.hasOwnProperty.call(message, "performer"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.performer);
+            if (message.price != null && Object.hasOwnProperty.call(message, "price"))
+                writer.uint32(/* id 5, wireType 1 =*/41).double(message.price);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified LotShort message, length delimited. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof dto.LotShort
+         * @static
+         * @param {dto.ILotShort} message LotShort message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LotShort.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer.
+         * @function decode
+         * @memberof dto.LotShort
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {dto.LotShort} LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LotShort.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.LotShort();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.number = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.title = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.performer = reader.string();
+                        break;
+                    }
+                case 5: {
+                        message.price = reader.double();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof dto.LotShort
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {dto.LotShort} LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LotShort.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a LotShort message.
+         * @function verify
+         * @memberof dto.LotShort
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        LotShort.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isInteger(message.id))
+                    return "id: integer expected";
+            if (message.number != null && message.hasOwnProperty("number"))
+                if (!$util.isString(message.number))
+                    return "number: string expected";
+            if (message.title != null && message.hasOwnProperty("title"))
+                if (!$util.isString(message.title))
+                    return "title: string expected";
+            if (message.performer != null && message.hasOwnProperty("performer"))
+                if (!$util.isString(message.performer))
+                    return "performer: string expected";
+            if (message.price != null && message.hasOwnProperty("price"))
+                if (typeof message.price !== "number")
+                    return "price: number expected";
+            return null;
+        };
+
+        /**
+         * Creates a LotShort message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof dto.LotShort
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {dto.LotShort} LotShort
+         */
+        LotShort.fromObject = function fromObject(object) {
+            if (object instanceof $root.dto.LotShort)
+                return object;
+            let message = new $root.dto.LotShort();
+            if (object.id != null)
+                message.id = object.id | 0;
+            if (object.number != null)
+                message.number = String(object.number);
+            if (object.title != null)
+                message.title = String(object.title);
+            if (object.performer != null)
+                message.performer = String(object.performer);
+            if (object.price != null)
+                message.price = Number(object.price);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a LotShort message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof dto.LotShort
+         * @static
+         * @param {dto.LotShort} message LotShort
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        LotShort.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = 0;
+                object.number = "";
+                object.title = "";
+                object.performer = "";
+                object.price = 0;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.number != null && message.hasOwnProperty("number"))
+                object.number = message.number;
+            if (message.title != null && message.hasOwnProperty("title"))
+                object.title = message.title;
+            if (message.performer != null && message.hasOwnProperty("performer"))
+                object.performer = message.performer;
+            if (message.price != null && message.hasOwnProperty("price"))
+                object.price = options.json && !isFinite(message.price) ? String(message.price) : message.price;
+            return object;
+        };
+
+        /**
+         * Converts this LotShort to JSON.
+         * @function toJSON
+         * @memberof dto.LotShort
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        LotShort.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for LotShort
+         * @function getTypeUrl
+         * @memberof dto.LotShort
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        LotShort.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/dto.LotShort";
+        };
+
+        return LotShort;
+    })();
+
+    dto.LotsShortResponse = (function() {
+
+        /**
+         * Properties of a LotsShortResponse.
+         * @memberof dto
+         * @interface ILotsShortResponse
+         * @property {Array.<dto.ILotShort>|null} [lots] LotsShortResponse lots
+         */
+
+        /**
+         * Constructs a new LotsShortResponse.
+         * @memberof dto
+         * @classdesc Represents a LotsShortResponse.
+         * @implements ILotsShortResponse
+         * @constructor
+         * @param {dto.ILotsShortResponse=} [properties] Properties to set
+         */
+        function LotsShortResponse(properties) {
+            this.lots = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * LotsShortResponse lots.
+         * @member {Array.<dto.ILotShort>} lots
+         * @memberof dto.LotsShortResponse
+         * @instance
+         */
+        LotsShortResponse.prototype.lots = $util.emptyArray;
+
+        /**
+         * Creates a new LotsShortResponse instance using the specified properties.
+         * @function create
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {dto.ILotsShortResponse=} [properties] Properties to set
+         * @returns {dto.LotsShortResponse} LotsShortResponse instance
+         */
+        LotsShortResponse.create = function create(properties) {
+            return new LotsShortResponse(properties);
+        };
+
+        /**
+         * Encodes the specified LotsShortResponse message. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @function encode
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {dto.ILotsShortResponse} message LotsShortResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LotsShortResponse.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.lots != null && message.lots.length)
+                for (let i = 0; i < message.lots.length; ++i)
+                    $root.dto.LotShort.encode(message.lots[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified LotsShortResponse message, length delimited. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {dto.ILotsShortResponse} message LotsShortResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LotsShortResponse.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer.
+         * @function decode
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {dto.LotsShortResponse} LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LotsShortResponse.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.LotsShortResponse();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        if (!(message.lots && message.lots.length))
+                            message.lots = [];
+                        message.lots.push($root.dto.LotShort.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {dto.LotsShortResponse} LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LotsShortResponse.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a LotsShortResponse message.
+         * @function verify
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        LotsShortResponse.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.lots != null && message.hasOwnProperty("lots")) {
+                if (!Array.isArray(message.lots))
+                    return "lots: array expected";
+                for (let i = 0; i < message.lots.length; ++i) {
+                    let error = $root.dto.LotShort.verify(message.lots[i]);
+                    if (error)
+                        return "lots." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a LotsShortResponse message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {dto.LotsShortResponse} LotsShortResponse
+         */
+        LotsShortResponse.fromObject = function fromObject(object) {
+            if (object instanceof $root.dto.LotsShortResponse)
+                return object;
+            let message = new $root.dto.LotsShortResponse();
+            if (object.lots) {
+                if (!Array.isArray(object.lots))
+                    throw TypeError(".dto.LotsShortResponse.lots: array expected");
+                message.lots = [];
+                for (let i = 0; i < object.lots.length; ++i) {
+                    if (typeof object.lots[i] !== "object")
+                        throw TypeError(".dto.LotsShortResponse.lots: object expected");
+                    message.lots[i] = $root.dto.LotShort.fromObject(object.lots[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a LotsShortResponse message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {dto.LotsShortResponse} message LotsShortResponse
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        LotsShortResponse.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.lots = [];
+            if (message.lots && message.lots.length) {
+                object.lots = [];
+                for (let j = 0; j < message.lots.length; ++j)
+                    object.lots[j] = $root.dto.LotShort.toObject(message.lots[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this LotsShortResponse to JSON.
+         * @function toJSON
+         * @memberof dto.LotsShortResponse
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        LotsShortResponse.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for LotsShortResponse
+         * @function getTypeUrl
+         * @memberof dto.LotsShortResponse
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        LotsShortResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/dto.LotsShortResponse";
+        };
+
+        return LotsShortResponse;
+    })();
+
+    /**
      * Role enum.
      * @name dto.Role
      * @enum {number}

@@ -1,16 +1,20 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-
-    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "esnext", // Компиляция кода в последнюю версию JavaScript
+    "module": "CommonJS", // Использование ES модулей
+    "moduleResolution": "node", // Разрешение модулей в стиле Node.js
+    "esModuleInterop": true, // Разрешить default импорт из модулей без ES модульной структуры
+    "resolveJsonModule": true, // Разрешить импорт JSON файлов
+    "outDir": "./dist", // Каталог для вывода скомпилированных файлов
+    "rootDir": ".", // Каталог, содержащий исходные файлы
+    "strict": true, // Включение всех строгих проверок типов
+    "forceConsistentCasingInFileNames": true, // Большая чувствительность к регистру в именах файлов
+    "skipLibCheck": true,
     "allowJs": true,
-    "module": "commonjs" /* Specify what module code is generated. */,
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": true /* Enable all strict type-checking options. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
-      "@dto": ["../protobuffs/dto"]
+      "@dto": ["../protobuffs/dto"],
+      "@data": ["./data"]
     }
   },
   "include": ["**/*.ts"],

@@ -55,11 +55,11 @@ const menuItems: MenuProps['items'] = [
   },
   {
     key: 'transactions',
-    label: <Link href="/admin/transactions">Транзакции</Link>,
+    label: <Link href="/learner/transactions">Транзакции</Link>,
   },
   {
     key: 'HW',
-    label: <Link href="/admin/homeworks">ДЗ</Link>,
+    label: <Link href="/learner/homeworks">ДЗ</Link>,
   },
 ];
 

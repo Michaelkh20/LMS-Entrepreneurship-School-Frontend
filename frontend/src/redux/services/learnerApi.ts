@@ -27,6 +27,7 @@ import { errorHandler, providesList } from './helpers/tagHelpers';
 import { dto } from '@dto';
 import ProfileResponse = dto.ProfileResponse;
 import TeamLearnerResponse = dto.TeamLearnerResponse;
+import LotsShortResponse = dto.LotsShortResponse;
 
 export const learnerApi = createApi({
   reducerPath: 'learnerAPI',
@@ -57,6 +58,17 @@ export const learnerApi = createApi({
           const buffer = await response.arrayBuffer();
           const decoded = TeamLearnerResponse.decode(new Uint8Array(buffer));
           return TeamLearnerResponse.toObject(decoded);
+        },
+      }),
+    }),
+    getLotsShort: build.query<LotsShortResponse, void>({
+      query: () => ({
+        url: `/lots-short`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = LotsShortResponse.decode(new Uint8Array(buffer));
+          return LotsShortResponse.toObject(decoded);
         },
       }),
     }),
@@ -205,4 +217,5 @@ export const {
   useGetSolutionByTaskIdLearnerQuery,
   useGetFinalGradeFormulaQuery,
   useGetTeamQuery,
+  useGetLotsShortQuery,
 } = learnerApi;

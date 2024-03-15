@@ -8,14 +8,22 @@ import AdminMenu from '@/components/Menu/AdminMenu';
 const { Header, Content, Footer, Sider } = Layout;
 
 const SiderStyles: CSSProperties = {
+  position: 'sticky',
   backgroundColor: '#fff',
   overflow: 'auto',
   height: '100vh',
+  left: 0,
 };
 
-const ContentLayoutStyles: CSSProperties = {
+const OuterLayoutStyles: CSSProperties = {
   height: '100vh',
   overflowY: 'auto',
+  justifyContent: 'center',
+  backgroundColor: '#fff',
+};
+
+const InnerLayoutStyles: CSSProperties = {
+  maxWidth: 'calc(1920px - 256px)',
 };
 
 const ContentStyles: CSSProperties = {
@@ -39,11 +47,11 @@ export default function AdminLayout({
   }, []);
 
   return (
-    <Layout hasSider>
+    <Layout hasSider style={OuterLayoutStyles}>
       <Sider width="256px" style={SiderStyles}>
         <AdminMenu />
       </Sider>
-      <Layout style={ContentLayoutStyles}>
+      <Layout style={InnerLayoutStyles}>
         <Header style={{ backgroundColor: '#fff' }}>Here will be header</Header>
         <Content style={ContentStyles}>{children}</Content>
         <Footer>Here will be footer</Footer>

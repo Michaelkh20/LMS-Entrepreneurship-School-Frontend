@@ -203,6 +203,376 @@ export namespace dto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** LotStatus enum. */
+    enum LotStatus {
+        APPROVAL = 0,
+        ACTIVE = 1,
+        INACTIVE = 2
+    }
+
+    /** Properties of a Lot. */
+    interface ILot {
+
+        /** Lot id */
+        id?: (number|null);
+
+        /** Lot number */
+        number?: (string|null);
+
+        /** Lot title */
+        title?: (string|null);
+
+        /** Lot description */
+        description?: (string|null);
+
+        /** Lot terms */
+        terms?: (string|null);
+
+        /** Lot price */
+        price?: (number|null);
+
+        /** Lot status */
+        status?: (dto.LotStatus|null);
+
+        /** Lot performer */
+        performer?: (string|null);
+
+        /** Lot date */
+        date?: (string|null);
+    }
+
+    /** Represents a Lot. */
+    class Lot implements ILot {
+
+        /**
+         * Constructs a new Lot.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILot);
+
+        /** Lot id. */
+        public id: number;
+
+        /** Lot number. */
+        public number: string;
+
+        /** Lot title. */
+        public title: string;
+
+        /** Lot description. */
+        public description: string;
+
+        /** Lot terms. */
+        public terms: string;
+
+        /** Lot price. */
+        public price: number;
+
+        /** Lot status. */
+        public status: dto.LotStatus;
+
+        /** Lot performer. */
+        public performer: string;
+
+        /** Lot date. */
+        public date: string;
+
+        /**
+         * Creates a new Lot instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Lot instance
+         */
+        public static create(properties?: dto.ILot): dto.Lot;
+
+        /**
+         * Encodes the specified Lot message. Does not implicitly {@link dto.Lot.verify|verify} messages.
+         * @param message Lot message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILot, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Lot message, length delimited. Does not implicitly {@link dto.Lot.verify|verify} messages.
+         * @param message Lot message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILot, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Lot message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Lot
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.Lot;
+
+        /**
+         * Decodes a Lot message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Lot
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.Lot;
+
+        /**
+         * Verifies a Lot message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Lot message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Lot
+         */
+        public static fromObject(object: { [k: string]: any }): dto.Lot;
+
+        /**
+         * Creates a plain object from a Lot message. Also converts values to other types if specified.
+         * @param message Lot
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.Lot, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Lot to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for Lot
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a LotShort. */
+    interface ILotShort {
+
+        /** LotShort id */
+        id?: (number|null);
+
+        /** LotShort number */
+        number?: (string|null);
+
+        /** LotShort title */
+        title?: (string|null);
+
+        /** LotShort performer */
+        performer?: (string|null);
+
+        /** LotShort price */
+        price?: (number|null);
+    }
+
+    /** Represents a LotShort. */
+    class LotShort implements ILotShort {
+
+        /**
+         * Constructs a new LotShort.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILotShort);
+
+        /** LotShort id. */
+        public id: number;
+
+        /** LotShort number. */
+        public number: string;
+
+        /** LotShort title. */
+        public title: string;
+
+        /** LotShort performer. */
+        public performer: string;
+
+        /** LotShort price. */
+        public price: number;
+
+        /**
+         * Creates a new LotShort instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LotShort instance
+         */
+        public static create(properties?: dto.ILotShort): dto.LotShort;
+
+        /**
+         * Encodes the specified LotShort message. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @param message LotShort message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LotShort message, length delimited. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @param message LotShort message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotShort;
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotShort;
+
+        /**
+         * Verifies a LotShort message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LotShort message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LotShort
+         */
+        public static fromObject(object: { [k: string]: any }): dto.LotShort;
+
+        /**
+         * Creates a plain object from a LotShort message. Also converts values to other types if specified.
+         * @param message LotShort
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.LotShort, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LotShort to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LotShort
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a LotsShortResponse. */
+    interface ILotsShortResponse {
+
+        /** LotsShortResponse lots */
+        lots?: (dto.ILotShort[]|null);
+    }
+
+    /** Represents a LotsShortResponse. */
+    class LotsShortResponse implements ILotsShortResponse {
+
+        /**
+         * Constructs a new LotsShortResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILotsShortResponse);
+
+        /** LotsShortResponse lots. */
+        public lots: dto.ILotShort[];
+
+        /**
+         * Creates a new LotsShortResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LotsShortResponse instance
+         */
+        public static create(properties?: dto.ILotsShortResponse): dto.LotsShortResponse;
+
+        /**
+         * Encodes the specified LotsShortResponse message. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @param message LotsShortResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LotsShortResponse message, length delimited. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @param message LotsShortResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotsShortResponse;
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotsShortResponse;
+
+        /**
+         * Verifies a LotsShortResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LotsShortResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LotsShortResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.LotsShortResponse;
+
+        /**
+         * Creates a plain object from a LotsShortResponse message. Also converts values to other types if specified.
+         * @param message LotsShortResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.LotsShortResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LotsShortResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LotsShortResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Role enum. */
     enum Role {
         ADMIN = 0,
