@@ -6,7 +6,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import { FilledExampleBasicTableWithFilter, FilledExample2BasicTableWithFilter } from '@/components/TableWithFilterNew/NewBasicExamples';
 
-import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
+import { AccountsTableWithFilter, ClaimBuyingLotTableWithFilter, TeamTableWithFilter } from '@/components/TableWithFilterNew';
 import { AttendanceTable } from '@/components/TableWithFilterNew';
 
 export default function Accounts() {
@@ -22,11 +22,10 @@ export default function Accounts() {
         <h2>Аккаунты</h2>
         <Button icon={<PlusOutlined height={10}/>} size='large' type='primary'>Создать</Button>
       </div>
+        <ClaimBuyingLotTableWithFilter/>
         <AccountsTableWithFilter />
         <AttendanceTable lessonId={123}/>
-        {/* <AttendanceTable lessonId={1123}/>
-        <FilledExampleBasicTableWithFilter />
-        <FilledExample2BasicTableWithFilter lessonId={123}/> */}
+        <TeamTableWithFilter/>
       </div>
     </>
   );

@@ -4,6 +4,8 @@ import { ColumnsType } from 'antd/es/table';
 import { SorterResult } from 'antd/es/table/interface';
 import { SetStateAction, useMemo, useEffect } from 'react';
 
+import { prepareFormUtil } from './utils';
+
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 
@@ -81,7 +83,8 @@ export function BasicTableWithFilter<T>({
     setFormData((prevState: T) => {
       return {
         ...prevState,
-        ...changedValues,
+        ...prepareFormUtil(changedValues),
+        // ...prepareFormUtil(allValues),
       };
     });
   };
