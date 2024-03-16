@@ -1,14 +1,14 @@
 'use client';
 
 import { Key, useEffect, useState } from 'react';
-import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import { ColumnsType } from 'antd/es/table';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 import { Button, ConfigProvider, InputNumber, Space, Table } from 'antd';
 import { DEBOUNCE_DURATION } from '@/components/TableWithFilter/entity';
 import { LessonNumber } from '@/types/common';
-import tableStyles from './table.module.css';
+import tableStyles from '../table.module.css';
 
 import {
   useGetAttendanceQuery,
@@ -112,22 +112,6 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
   const [trigger, { isLoading: isL, isSuccess: isS }] =
     useUpdateAttendanceMutation();
 
-  // useEffect(() => {
-  //     console.log("DATA: ", data)
-  //     setDataTable(() => {
-  //         return data ? data.learners.map((e): AttendanceColumnsDataType => {
-  //                 return {
-  //                     key: e.learner.id,
-  //                     learner: e.learner.name,
-  //                     didCome: e.didCome,
-  //                     email: e.learner.email,
-  //                     accruedCurrency: e.accruedCurrency
-  //                 }
-  //             }
-  //         ) : []
-  //     })
-  // }, [data]);
-
   const AttendanceColumns: ColumnsType<AttendanceColumnsDataType> = [
     {
       title: 'Имя',
@@ -172,18 +156,6 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
     },
   ];
 
-  const handleTableChange = (
-    pagination: TablePaginationConfig,
-    filters: any,
-    sorter: any
-  ) => {
-    /* setFormData(prevState => {
-             return {
-                 ...prevState
-             }
-         })*/
-  };
-
   useEffect(() => {
     console.log('FormData:', formData);
   }, [formData]);
@@ -205,7 +177,6 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
   }, [dataTable]);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>(() => {
-    // const students: number[] = [];
     const students = dataTable.filter((e) => e.didCome).map((e) => e.key);
     console.log('students did come:', students);
     return students;
@@ -243,17 +214,16 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
       theme={{
         components: {
           Table: {
-            controlItemBgActive: '#f4faff',
+            controlItemBgActive: '#fafafa',
             controlItemBgActiveHover: '#e6f4ff',
           },
         },
       }}
     >
-      <div>{lessonId}</div>
+      <div>Lesson ID: {lessonId}</div>
       <Table
         columns={AttendanceColumns}
         dataSource={dataTable}
-        onChange={handleTableChange}
         pagination={false}
         loading={isFetching || isLoading}
         className={tableStyles.table}

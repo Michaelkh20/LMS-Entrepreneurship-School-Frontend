@@ -1,6 +1,6 @@
 import { Key, SetStateAction, useEffect, useState } from 'react';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
-import { InputNumber } from 'antd';
+import { Checkbox, InputNumber } from 'antd';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
