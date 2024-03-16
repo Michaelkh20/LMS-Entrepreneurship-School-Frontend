@@ -1,8 +1,6 @@
 'use client';
 
 import {
-  NameFormItem,
-  EmailFormItem,
   TeamNumberFormItem
 } from '@/components/Forms/FormItems/Filters';
 import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
@@ -10,6 +8,25 @@ import { useGetTeamsQuery } from '@/redux/services/adminApi';
 import { GetTeamsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
+import { ColumnsType } from 'antd/es/table';
+
+type TeamsColumnsDataType = {
+    key: React.Key;
+    teamNumber: number;
+    theme: string;
+}
+
+const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
+    {
+        title: '№ Команды',
+        dataIndex: 'teamNumber',
+        key: 'teamNumber',
+        defaultSortOrder: "ascend",
+        sorter: true,
+        width: 200
+    },
+    {title: 'Тема', dataIndex: 'theme', key: 'theme'}
+]
 
 export function TeamTableWithFilter() {
   const [formData, setFormData] = useState<GetTeamsApiArg>({
@@ -18,7 +35,7 @@ export function TeamTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<(typeof accountsColumns)[]>([]);
+  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>([]);
   const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {
@@ -35,7 +52,7 @@ export function TeamTableWithFilter() {
         }
         tableProps={{
           scroll: { x: true },
-          columns: accountsColumns,
+          columns: TeamsColumns,
           pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',

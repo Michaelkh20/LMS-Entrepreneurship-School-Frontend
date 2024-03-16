@@ -13,28 +13,23 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { Name, Email, TeamNumber, Role, Balance, Id } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
 
+import type { AssessmentTableItem } from '@/types/responses';
 
-type AssessmentColumnsDataType = {
-    id: Id;
-    name: Name;
-    email: Email;
-    team: TeamNumber[];
-    role: Role;
-    balance: Balance
-  }
+
+//todo: 
   
-const AssessmentColumns: ColumnsType<AssessmentColumnsDataType> = [
-    {
-        title: 'Имя',
-        dataIndex: 'name',
-        key: 'name',
-        defaultSortOrder: "ascend",
-        sorter: true
-    },
-    {title: 'Email', dataIndex: 'email', key: 'email'},
-    {title: 'Команда', dataIndex: 'team', key: 'team'},
-    {title: 'Роль', dataIndex: 'role', key: 'role'},
-    {title: 'Баланс', dataIndex: 'balance', key: 'balance'}
+const AssessmentColumns: ColumnsType<AssessmentTableItem> = [
+    // {
+    //     title: 'Имя',
+    //     dataIndex: 'name',
+    //     key: 'name',
+    //     defaultSortOrder: "ascend",
+    //     sorter: true
+    // },
+    // {title: 'Email', dataIndex: 'email', key: 'email'},
+    // {title: 'Команда', dataIndex: 'team', key: 'team'},
+    // {title: 'Роль', dataIndex: 'role', key: 'role'},
+    // {title: 'Баланс', dataIndex: 'balance', key: 'balance'}
   ]
 
 
@@ -46,7 +41,7 @@ export function AssessmentTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<(typeof accountsColumns)[]>([]);
+  const [dataTable, setDataTable] = useState<AssessmentTableItem[]>([]);
   const { data, isLoading, isError, isFetching } = useGetAssessmentsQuery(dataForReq);
 
   //   useEffect(() => {
@@ -63,7 +58,7 @@ export function AssessmentTableWithFilter() {
         }
         tableProps={{
           scroll: { x: true },
-          columns: accountsColumns,
+          columns: AssessmentColumns,
           pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
