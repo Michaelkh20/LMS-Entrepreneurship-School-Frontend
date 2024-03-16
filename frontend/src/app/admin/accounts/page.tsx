@@ -16,6 +16,7 @@ import {
   ClaimPlacingLotTableWithFilter,
   ClaimTransferTableWithFilter,
   TeamTableWithFilter,
+  TransactionsTableWithFilters,
 } from '@/components/TableWithFilterNew';
 import { AttendanceTable } from '@/components/TableWithFilterNew';
 
@@ -40,6 +41,7 @@ export default function Accounts() {
             Создать
           </Button>
         </div>
+        <TransactionsTableWithFilters />
         <ClaimTransferTableWithFilter />
         <ClaimPlacingLotTableWithFilter />
         <ClaimDeadlineTableWithFilter />

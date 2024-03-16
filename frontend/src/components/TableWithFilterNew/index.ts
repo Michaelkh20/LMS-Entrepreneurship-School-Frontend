@@ -7,4 +7,7 @@ export {ClaimDeadlineTableWithFilter} from './Components/ClaimDeadlineTableWithF
 export {ClaimPlacingLotTableWithFilter} from './Components/ClaimPlacingLotTableWithFilter'
 export {ClaimTransferTableWithFilter} from './Components/ClaimTransferTableWithFilter'
 
+export {TransactionsTableWithFilters} from './Components/TransactionsTableWithFilters'
+
+
 
