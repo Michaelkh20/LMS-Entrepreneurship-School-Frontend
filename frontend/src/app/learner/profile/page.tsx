@@ -1,5 +1,5 @@
-import LearnerProfile from '@/components/LearnerProfile';
+import AccountProfile from '@/components/AccountProfile';
 
 export default function Home() {
-  return <LearnerProfile />;
+  return <AccountProfile id="1" />;
 }

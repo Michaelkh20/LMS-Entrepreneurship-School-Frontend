@@ -1,0 +1,73 @@
+.LotCard {
+  display: flex;
+  flex-direction: column;
+
+  width: 450px;
+  background: linear-gradient(
+    143.86deg,
+    rgba(255, 255, 255, 1) 40.68%,
+    rgba(249, 248, 255, 1) 97.97%
+  );
+
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+.LotNumber {
+  padding: 1rem 1.5rem;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: bold;
+  border-bottom: 1px solid #f0f0f0;
+
+  flex: 0 0 auto;
+}
+
+.LotContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  padding: 1.5rem;
+
+  flex: 1 0 auto;
+}
+
+.Property {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.LotTitle,
+.PropertyTitle {
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: bold;
+}
+
+.PropertyValue {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: normal;
+}
+
+.Price {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: bold;
+  color: #1677ff;
+}
+
+.Actions {
+  display: flex;
+  justify-content: flex-end;
+
+  flex: 0 0 auto;
+
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f0f0f0;
+}

@@ -18,3 +18,43 @@ message ProfileResponse {
   int32 balance = 6;  
   TeamShort team = 7;
 }
+
+message AccountGetResponse {
+  string id = 1;
+  string name = 2;
+  string surname = 3;
+  string lastName = 4;
+  string email = 5;
+  string phone = 6;
+  string messenger = 7;
+  Role role = 8;
+}
+
+message AccountCreateRequest {
+  string name = 1;
+  string surname = 2;
+  string lastName = 3;
+  string email = 4;
+  string phone = 5;
+  string messenger = 6;
+  Role role = 7;
+  string password = 8;
+}
+
+message AccountEditRequest {
+  string name = 1;
+  string surname = 2;
+  string lastName = 3;
+  string email = 4;
+  string phone = 5;
+  string messenger = 6;
+}
+
+message AccountChangeSuccessResponse {
+  string id = 1;
+}
+
+message AccountChangeErrorResponse {
+  bool email = 1;
+  bool phone = 2;
+}

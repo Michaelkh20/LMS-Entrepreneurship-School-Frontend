@@ -1,137 +1,52 @@
 .wrapper {
-  width: 100%;
-  padding: 0;
-  margin: 0 auto;
-  max-width: 90rem;
-  min-width: 56.25rem;
-}
-
-.page_label {
-  color: #2d2d2d;
-  text-align: center;
-  font-size: 2.625rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.lots_container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.875rem;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-top: 3.75rem;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  padding: 1.5rem 1.5rem 0 1rem;
+
+  height: 100%;
 }
 
-.lot {
-  box-sizing: border-box;
-  width: 3.01875rem;
-  min-width: 18.75rem;
-  border-radius: 1.125rem;
-  border: 1px solid var(--unnamed, #bfc4f1);
-  padding: 2.8125rem 1.5625rem 1.625rem 4.375rem;
-  background: #f8f5ff;
+.pageLabel {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: capitalize;
+  margin-left: 1rem;
 }
 
-.lot_name {
-  color: #0039ca;
-  font-size: 1.75rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.lot_content {
-  color: #2d2d2d;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-  margin-top: 0.9375rem;
-  margin-bottom: 1.875rem;
-}
-
-.lot_holder {
-  color: #f26097;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  margin: 0.3125rem 0;
-}
-
-.lot_holder_name {
-  margin: 0;
-  color: #2d2d2d;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-}
-
-.lot_price_container {
+.content {
   display: flex;
-  height: 2.4375rem;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.9375rem;
-  margin-top: 1.875rem;
+
+  flex-grow: 1;
 }
 
-.lot_price {
-  color: #2d2d2d;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-  margin: 0;
+.lotsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
-.lot_price_count {
-  color: #0039ca;
-  font-size: 1.625rem;
-  font-style: normal;
-  font-weight: 700;
-  margin: 0;
+.filtersMock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  max-width: 1400px;
+  height: 124px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  background-color: #fafafa;
+
+  font-size: 20px;
+  text-transform: uppercase;
 }
 
-.lot_condition {
-  color: #0039ca;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-}
-
-.lot_condition_value {
-  word-wrap: break-word;
-  color: #2d2d2d;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  margin-top: 0.9375rem;
-  margin-bottom: 1.875rem;
-}
-
-.application_lot_button {
-  width: 9.6875rem;
-  height: 2.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid #bfc4f1;
-  background: white;
-  float: right;
-  color: #0039ca;
-  text-align: center;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
-  font-family: inherit;
-  transition-duration: 0.4s;
-}
-
-.application_lot_button:hover {
-  color: white;
-  background: #8497ff;
+.paginationContainer {
+  padding-top: 1.5rem;
 }
