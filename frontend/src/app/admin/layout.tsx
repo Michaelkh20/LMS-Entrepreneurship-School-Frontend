@@ -24,11 +24,22 @@ const OuterLayoutStyles: CSSProperties = {
 
 const InnerLayoutStyles: CSSProperties = {
   maxWidth: 'calc(1920px - 256px)',
+  backgroundColor: '#fff',
+};
+
+const HeaderStyles: CSSProperties = {
+  backgroundColor: '#fff',
+  borderBottom: '1px solid #f0f0f0',
 };
 
 const ContentStyles: CSSProperties = {
-  padding: '1rem',
   flex: '1 0 auto',
+  maxWidth: '1440px',
+};
+
+const FooterStyles: CSSProperties = {
+  backgroundColor: '#fff',
+  borderTop: '1px solid #f0f0f0',
 };
 
 export default function AdminLayout({
@@ -52,9 +63,9 @@ export default function AdminLayout({
         <AdminMenu />
       </Sider>
       <Layout style={InnerLayoutStyles}>
-        <Header style={{ backgroundColor: '#fff' }}>Here will be header</Header>
+        <Header style={HeaderStyles}>Here will be header</Header>
         <Content style={ContentStyles}>{children}</Content>
-        <Footer>Here will be footer</Footer>
+        <Footer style={FooterStyles}>Here will be footer</Footer>
       </Layout>
     </Layout>
   );

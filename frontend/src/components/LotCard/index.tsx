@@ -1,13 +1,15 @@
 'use client';
 
-import React from 'react';
-import { Button, Tooltip } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { Button, message } from 'antd';
 import cn from 'classnames/bind';
-import { PRICE_DESC_TEXT } from './constants';
 import styles from './LotCard.module.css';
+import LotViewModal from '../Modals/LotViewModal';
+import PriceQuestionTooltip from './components/QuestionTooltip';
+import { useCreateBuyLotClaimMutation } from '@/redux/services/learnerApi';
 
 type LotCardProps = {
+  id: number;
   number: string;
   title: string;
   performer: string;
@@ -17,13 +19,46 @@ type LotCardProps = {
 const cx = cn.bind(styles);
 
 export default function LotCard({
+  id,
   number,
   title,
   performer,
   price,
 }: LotCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createBuyLotClaim, { isError, isLoading, isSuccess }] =
+    useCreateBuyLotClaimMutation();
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const handleLotClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalCancel: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
+
+  const handleCreateClaimClick: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    createBuyLotClaim(id);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      messageApi.success('Заявка успешно подана');
+      setIsModalOpen(false);
+    }
+
+    if (isError) {
+      messageApi.error('Не удалось подать заявку. Недостаточно средств');
+      setIsModalOpen(false);
+    }
+  }, [isSuccess, isError]);
+
   return (
-    <div className={cx('LotCard')}>
+    <div className={cx('LotCard')} onClick={handleLotClick}>
       <div className={cx('LotNumber')}>{`Лот №${number}`}</div>
       <div className={cx('LotContent')}>
         <p className={cx('LotTitle')}>{title}</p>
@@ -35,26 +70,27 @@ export default function LotCard({
           <p className={cx('PropertyTitle')}>Цена</p>
           <p className={cx('PropertyValue', 'Price')}>
             от {price} ШП
-            <QuestionTooltip />
+            <PriceQuestionTooltip />
           </p>
         </div>
       </div>
       <div className={cx('Actions')}>
-        <Button size="large">Подать заявку</Button>
+        <Button
+          size="large"
+          onClick={handleCreateClaimClick}
+          loading={isLoading}
+        >
+          Подать заявку
+        </Button>
       </div>
-    </div>
-  );
-}
-
-function QuestionTooltip() {
-  return (
-    <Tooltip title={PRICE_DESC_TEXT}>
-      <QuestionCircleOutlined
-        style={{
-          fontSize: '14px',
-          color: 'grey',
-        }}
+      <LotViewModal
+        lotId={id}
+        isOpen={isModalOpen}
+        onCancel={handleModalCancel}
+        onOk={handleCreateClaimClick}
+        isClaimLoading={isLoading}
       />
-    </Tooltip>
+      {contextHolder}
+    </div>
   );
 }

@@ -10,7 +10,7 @@ enum LotStatus {
 }
 
 // Основная структура лота
-message Lot {
+message LotResponse {
   int32 id = 1; // Уникальный идентификатор лота
   string number = 2; // Номер лота
   string title = 3; // Название лота
@@ -32,5 +32,6 @@ message LotShort {
 
 // Сообщение, содержащее список лотов
 message LotsShortResponse {
-  repeated LotShort lots = 1; // Массив лотов
+  int32 totalLotsNumber = 1; // Общее количество лотов
+  repeated LotShort lots = 2; // Массив лотов
 }

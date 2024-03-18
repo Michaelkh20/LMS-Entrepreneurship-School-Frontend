@@ -4,8 +4,8 @@ import React from 'react';
 import { Button, Skeleton, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import cn from 'classnames/bind';
-import { PRICE_DESC_TEXT } from './constants';
-import styles from './LotCard.module.css';
+import { PRICE_DESC_TEXT } from '../../constants';
+import styles from '../../LotCard.module.css';
 
 const cx = cn.bind(styles);
 

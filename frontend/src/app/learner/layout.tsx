@@ -33,7 +33,6 @@ const HeaderStyles: CSSProperties = {
 };
 
 const ContentStyles: CSSProperties = {
-  padding: '1.5rem 1.5rem 1.5rem 1rem',
   flex: '1 0 auto',
   maxWidth: '1440px',
 };

@@ -210,145 +210,145 @@ export namespace dto {
         INACTIVE = 2
     }
 
-    /** Properties of a Lot. */
-    interface ILot {
+    /** Properties of a LotResponse. */
+    interface ILotResponse {
 
-        /** Lot id */
+        /** LotResponse id */
         id?: (number|null);
 
-        /** Lot number */
+        /** LotResponse number */
         number?: (string|null);
 
-        /** Lot title */
+        /** LotResponse title */
         title?: (string|null);
 
-        /** Lot description */
+        /** LotResponse description */
         description?: (string|null);
 
-        /** Lot terms */
+        /** LotResponse terms */
         terms?: (string|null);
 
-        /** Lot price */
+        /** LotResponse price */
         price?: (number|null);
 
-        /** Lot status */
+        /** LotResponse status */
         status?: (dto.LotStatus|null);
 
-        /** Lot performer */
+        /** LotResponse performer */
         performer?: (string|null);
 
-        /** Lot date */
+        /** LotResponse date */
         date?: (string|null);
     }
 
-    /** Represents a Lot. */
-    class Lot implements ILot {
+    /** Represents a LotResponse. */
+    class LotResponse implements ILotResponse {
 
         /**
-         * Constructs a new Lot.
+         * Constructs a new LotResponse.
          * @param [properties] Properties to set
          */
-        constructor(properties?: dto.ILot);
+        constructor(properties?: dto.ILotResponse);
 
-        /** Lot id. */
+        /** LotResponse id. */
         public id: number;
 
-        /** Lot number. */
+        /** LotResponse number. */
         public number: string;
 
-        /** Lot title. */
+        /** LotResponse title. */
         public title: string;
 
-        /** Lot description. */
+        /** LotResponse description. */
         public description: string;
 
-        /** Lot terms. */
+        /** LotResponse terms. */
         public terms: string;
 
-        /** Lot price. */
+        /** LotResponse price. */
         public price: number;
 
-        /** Lot status. */
+        /** LotResponse status. */
         public status: dto.LotStatus;
 
-        /** Lot performer. */
+        /** LotResponse performer. */
         public performer: string;
 
-        /** Lot date. */
+        /** LotResponse date. */
         public date: string;
 
         /**
-         * Creates a new Lot instance using the specified properties.
+         * Creates a new LotResponse instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns Lot instance
+         * @returns LotResponse instance
          */
-        public static create(properties?: dto.ILot): dto.Lot;
+        public static create(properties?: dto.ILotResponse): dto.LotResponse;
 
         /**
-         * Encodes the specified Lot message. Does not implicitly {@link dto.Lot.verify|verify} messages.
-         * @param message Lot message or plain object to encode
+         * Encodes the specified LotResponse message. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
+         * @param message LotResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: dto.ILot, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified Lot message, length delimited. Does not implicitly {@link dto.Lot.verify|verify} messages.
-         * @param message Lot message or plain object to encode
+         * Encodes the specified LotResponse message, length delimited. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
+         * @param message LotResponse message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: dto.ILot, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a Lot message from the specified reader or buffer.
+         * Decodes a LotResponse message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns Lot
+         * @returns LotResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.Lot;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotResponse;
 
         /**
-         * Decodes a Lot message from the specified reader or buffer, length delimited.
+         * Decodes a LotResponse message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns Lot
+         * @returns LotResponse
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.Lot;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotResponse;
 
         /**
-         * Verifies a Lot message.
+         * Verifies a LotResponse message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a Lot message from a plain object. Also converts values to their respective internal types.
+         * Creates a LotResponse message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns Lot
+         * @returns LotResponse
          */
-        public static fromObject(object: { [k: string]: any }): dto.Lot;
+        public static fromObject(object: { [k: string]: any }): dto.LotResponse;
 
         /**
-         * Creates a plain object from a Lot message. Also converts values to other types if specified.
-         * @param message Lot
+         * Creates a plain object from a LotResponse message. Also converts values to other types if specified.
+         * @param message LotResponse
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: dto.Lot, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: dto.LotResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this Lot to JSON.
+         * Converts this LotResponse to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
 
         /**
-         * Gets the default type url for Lot
+         * Gets the default type url for LotResponse
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -479,6 +479,9 @@ export namespace dto {
     /** Properties of a LotsShortResponse. */
     interface ILotsShortResponse {
 
+        /** LotsShortResponse totalLotsNumber */
+        totalLotsNumber?: (number|null);
+
         /** LotsShortResponse lots */
         lots?: (dto.ILotShort[]|null);
     }
@@ -491,6 +494,9 @@ export namespace dto {
          * @param [properties] Properties to set
          */
         constructor(properties?: dto.ILotsShortResponse);
+
+        /** LotsShortResponse totalLotsNumber. */
+        public totalLotsNumber: number;
 
         /** LotsShortResponse lots. */
         public lots: dto.ILotShort[];
@@ -817,6 +823,611 @@ export namespace dto {
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
+    }
+
+    /** Properties of an AccountGetResponse. */
+    interface IAccountGetResponse {
+
+        /** AccountGetResponse id */
+        id?: (string|null);
+
+        /** AccountGetResponse name */
+        name?: (string|null);
+
+        /** AccountGetResponse surname */
+        surname?: (string|null);
+
+        /** AccountGetResponse lastName */
+        lastName?: (string|null);
+
+        /** AccountGetResponse email */
+        email?: (string|null);
+
+        /** AccountGetResponse phone */
+        phone?: (string|null);
+
+        /** AccountGetResponse messenger */
+        messenger?: (string|null);
+
+        /** AccountGetResponse role */
+        role?: (dto.Role|null);
+    }
+
+    /** Represents an AccountGetResponse. */
+    class AccountGetResponse implements IAccountGetResponse {
+
+        /**
+         * Constructs a new AccountGetResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IAccountGetResponse);
+
+        /** AccountGetResponse id. */
+        public id: string;
+
+        /** AccountGetResponse name. */
+        public name: string;
+
+        /** AccountGetResponse surname. */
+        public surname: string;
+
+        /** AccountGetResponse lastName. */
+        public lastName: string;
+
+        /** AccountGetResponse email. */
+        public email: string;
+
+        /** AccountGetResponse phone. */
+        public phone: string;
+
+        /** AccountGetResponse messenger. */
+        public messenger: string;
+
+        /** AccountGetResponse role. */
+        public role: dto.Role;
+
+        /**
+         * Creates a new AccountGetResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AccountGetResponse instance
+         */
+        public static create(properties?: dto.IAccountGetResponse): dto.AccountGetResponse;
+
+        /**
+         * Encodes the specified AccountGetResponse message. Does not implicitly {@link dto.AccountGetResponse.verify|verify} messages.
+         * @param message AccountGetResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IAccountGetResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AccountGetResponse message, length delimited. Does not implicitly {@link dto.AccountGetResponse.verify|verify} messages.
+         * @param message AccountGetResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IAccountGetResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AccountGetResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AccountGetResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.AccountGetResponse;
+
+        /**
+         * Decodes an AccountGetResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AccountGetResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.AccountGetResponse;
+
+        /**
+         * Verifies an AccountGetResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AccountGetResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AccountGetResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.AccountGetResponse;
+
+        /**
+         * Creates a plain object from an AccountGetResponse message. Also converts values to other types if specified.
+         * @param message AccountGetResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.AccountGetResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AccountGetResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for AccountGetResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an AccountCreateRequest. */
+    interface IAccountCreateRequest {
+
+        /** AccountCreateRequest name */
+        name?: (string|null);
+
+        /** AccountCreateRequest surname */
+        surname?: (string|null);
+
+        /** AccountCreateRequest lastName */
+        lastName?: (string|null);
+
+        /** AccountCreateRequest email */
+        email?: (string|null);
+
+        /** AccountCreateRequest phone */
+        phone?: (string|null);
+
+        /** AccountCreateRequest messenger */
+        messenger?: (string|null);
+
+        /** AccountCreateRequest role */
+        role?: (dto.Role|null);
+
+        /** AccountCreateRequest password */
+        password?: (string|null);
+    }
+
+    /** Represents an AccountCreateRequest. */
+    class AccountCreateRequest implements IAccountCreateRequest {
+
+        /**
+         * Constructs a new AccountCreateRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IAccountCreateRequest);
+
+        /** AccountCreateRequest name. */
+        public name: string;
+
+        /** AccountCreateRequest surname. */
+        public surname: string;
+
+        /** AccountCreateRequest lastName. */
+        public lastName: string;
+
+        /** AccountCreateRequest email. */
+        public email: string;
+
+        /** AccountCreateRequest phone. */
+        public phone: string;
+
+        /** AccountCreateRequest messenger. */
+        public messenger: string;
+
+        /** AccountCreateRequest role. */
+        public role: dto.Role;
+
+        /** AccountCreateRequest password. */
+        public password: string;
+
+        /**
+         * Creates a new AccountCreateRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AccountCreateRequest instance
+         */
+        public static create(properties?: dto.IAccountCreateRequest): dto.AccountCreateRequest;
+
+        /**
+         * Encodes the specified AccountCreateRequest message. Does not implicitly {@link dto.AccountCreateRequest.verify|verify} messages.
+         * @param message AccountCreateRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IAccountCreateRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AccountCreateRequest message, length delimited. Does not implicitly {@link dto.AccountCreateRequest.verify|verify} messages.
+         * @param message AccountCreateRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IAccountCreateRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AccountCreateRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AccountCreateRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.AccountCreateRequest;
+
+        /**
+         * Decodes an AccountCreateRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AccountCreateRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.AccountCreateRequest;
+
+        /**
+         * Verifies an AccountCreateRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AccountCreateRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AccountCreateRequest
+         */
+        public static fromObject(object: { [k: string]: any }): dto.AccountCreateRequest;
+
+        /**
+         * Creates a plain object from an AccountCreateRequest message. Also converts values to other types if specified.
+         * @param message AccountCreateRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.AccountCreateRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AccountCreateRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for AccountCreateRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an AccountEditRequest. */
+    interface IAccountEditRequest {
+
+        /** AccountEditRequest name */
+        name?: (string|null);
+
+        /** AccountEditRequest surname */
+        surname?: (string|null);
+
+        /** AccountEditRequest lastName */
+        lastName?: (string|null);
+
+        /** AccountEditRequest email */
+        email?: (string|null);
+
+        /** AccountEditRequest phone */
+        phone?: (string|null);
+
+        /** AccountEditRequest messenger */
+        messenger?: (string|null);
+    }
+
+    /** Represents an AccountEditRequest. */
+    class AccountEditRequest implements IAccountEditRequest {
+
+        /**
+         * Constructs a new AccountEditRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IAccountEditRequest);
+
+        /** AccountEditRequest name. */
+        public name: string;
+
+        /** AccountEditRequest surname. */
+        public surname: string;
+
+        /** AccountEditRequest lastName. */
+        public lastName: string;
+
+        /** AccountEditRequest email. */
+        public email: string;
+
+        /** AccountEditRequest phone. */
+        public phone: string;
+
+        /** AccountEditRequest messenger. */
+        public messenger: string;
+
+        /**
+         * Creates a new AccountEditRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AccountEditRequest instance
+         */
+        public static create(properties?: dto.IAccountEditRequest): dto.AccountEditRequest;
+
+        /**
+         * Encodes the specified AccountEditRequest message. Does not implicitly {@link dto.AccountEditRequest.verify|verify} messages.
+         * @param message AccountEditRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IAccountEditRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AccountEditRequest message, length delimited. Does not implicitly {@link dto.AccountEditRequest.verify|verify} messages.
+         * @param message AccountEditRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IAccountEditRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AccountEditRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AccountEditRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.AccountEditRequest;
+
+        /**
+         * Decodes an AccountEditRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AccountEditRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.AccountEditRequest;
+
+        /**
+         * Verifies an AccountEditRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AccountEditRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AccountEditRequest
+         */
+        public static fromObject(object: { [k: string]: any }): dto.AccountEditRequest;
+
+        /**
+         * Creates a plain object from an AccountEditRequest message. Also converts values to other types if specified.
+         * @param message AccountEditRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.AccountEditRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AccountEditRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for AccountEditRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an AccountChangeSuccessResponse. */
+    interface IAccountChangeSuccessResponse {
+
+        /** AccountChangeSuccessResponse id */
+        id?: (string|null);
+    }
+
+    /** Represents an AccountChangeSuccessResponse. */
+    class AccountChangeSuccessResponse implements IAccountChangeSuccessResponse {
+
+        /**
+         * Constructs a new AccountChangeSuccessResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IAccountChangeSuccessResponse);
+
+        /** AccountChangeSuccessResponse id. */
+        public id: string;
+
+        /**
+         * Creates a new AccountChangeSuccessResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AccountChangeSuccessResponse instance
+         */
+        public static create(properties?: dto.IAccountChangeSuccessResponse): dto.AccountChangeSuccessResponse;
+
+        /**
+         * Encodes the specified AccountChangeSuccessResponse message. Does not implicitly {@link dto.AccountChangeSuccessResponse.verify|verify} messages.
+         * @param message AccountChangeSuccessResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IAccountChangeSuccessResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AccountChangeSuccessResponse message, length delimited. Does not implicitly {@link dto.AccountChangeSuccessResponse.verify|verify} messages.
+         * @param message AccountChangeSuccessResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IAccountChangeSuccessResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AccountChangeSuccessResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AccountChangeSuccessResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.AccountChangeSuccessResponse;
+
+        /**
+         * Decodes an AccountChangeSuccessResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AccountChangeSuccessResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.AccountChangeSuccessResponse;
+
+        /**
+         * Verifies an AccountChangeSuccessResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AccountChangeSuccessResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AccountChangeSuccessResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.AccountChangeSuccessResponse;
+
+        /**
+         * Creates a plain object from an AccountChangeSuccessResponse message. Also converts values to other types if specified.
+         * @param message AccountChangeSuccessResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.AccountChangeSuccessResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AccountChangeSuccessResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for AccountChangeSuccessResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an AccountChangeErrorResponse. */
+    interface IAccountChangeErrorResponse {
+
+        /** AccountChangeErrorResponse email */
+        email?: (boolean|null);
+
+        /** AccountChangeErrorResponse phone */
+        phone?: (boolean|null);
+    }
+
+    /** Represents an AccountChangeErrorResponse. */
+    class AccountChangeErrorResponse implements IAccountChangeErrorResponse {
+
+        /**
+         * Constructs a new AccountChangeErrorResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IAccountChangeErrorResponse);
+
+        /** AccountChangeErrorResponse email. */
+        public email: boolean;
+
+        /** AccountChangeErrorResponse phone. */
+        public phone: boolean;
+
+        /**
+         * Creates a new AccountChangeErrorResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AccountChangeErrorResponse instance
+         */
+        public static create(properties?: dto.IAccountChangeErrorResponse): dto.AccountChangeErrorResponse;
+
+        /**
+         * Encodes the specified AccountChangeErrorResponse message. Does not implicitly {@link dto.AccountChangeErrorResponse.verify|verify} messages.
+         * @param message AccountChangeErrorResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IAccountChangeErrorResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AccountChangeErrorResponse message, length delimited. Does not implicitly {@link dto.AccountChangeErrorResponse.verify|verify} messages.
+         * @param message AccountChangeErrorResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IAccountChangeErrorResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AccountChangeErrorResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AccountChangeErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.AccountChangeErrorResponse;
+
+        /**
+         * Decodes an AccountChangeErrorResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AccountChangeErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.AccountChangeErrorResponse;
+
+        /**
+         * Verifies an AccountChangeErrorResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AccountChangeErrorResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AccountChangeErrorResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.AccountChangeErrorResponse;
+
+        /**
+         * Creates a plain object from an AccountChangeErrorResponse message. Also converts values to other types if specified.
+         * @param message AccountChangeErrorResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.AccountChangeErrorResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AccountChangeErrorResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for AccountChangeErrorResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a TeamLearnerResponse. */

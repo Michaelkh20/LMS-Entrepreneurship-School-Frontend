@@ -38,6 +38,11 @@ import {
   Link,
 } from './common';
 
+export type LotsShortRequest = {
+  pageNumber: number;
+  pageSize: number;
+};
+
 export type GetAccountsApiArg = {
   name?: ShortName;
   email?: Email;

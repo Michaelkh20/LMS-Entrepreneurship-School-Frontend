@@ -6,22 +6,43 @@ import { useGetProfileQuery } from '@/redux/services/learnerApi';
 import cn from 'classnames/bind';
 import { getRoleString } from './helpers';
 import TeamViewModal from '../Modals/TeamViewModal';
+import { Button } from 'antd';
+import {
+  ArrowUpOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 
 const cx = cn.bind(styles);
 
-export default function LearnerProfile() {
-  const { data } = useGetProfileQuery('1');
+type Props = {
+  id: string;
+  isEditable?: boolean;
+};
+
+export default function AccountProfile({ id, isEditable = false }: Props) {
+  const { data } = useGetProfileQuery(id);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleTeamClick = () => {
     setIsModalOpen(true);
   };
 
-  console.log(data);
-
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Профиль</h1>
+      <div className={styles.titleContainer}>
+        <h1 className={styles.title}>Профиль</h1>
+        {isEditable && (
+          <Button
+            size="large"
+            type="default"
+            icon={<EditOutlined />}
+            href={`/admin/accounts/${id}/edit`}
+          >
+            Редактировать
+          </Button>
+        )}
+      </div>
       <div className={styles.profileCard}>
         <div className={styles.header}>
           <div>
@@ -56,17 +77,37 @@ export default function LearnerProfile() {
               <p className={styles.propertyTitle}>Мессенджер</p>
               <p className={styles.propertyValue}>{data?.messenger}</p>
             </div>
+            {isEditable && (
+              <div className={styles.deleteBtnContainer}>
+                <Button
+                  size="large"
+                  type="primary"
+                  danger
+                  icon={<DeleteOutlined />}
+                >
+                  Удалить
+                </Button>
+              </div>
+            )}
           </div>
-          <div>Здесь будет таблица с итоговыми оценками</div>
+          <div className={styles.finalGradeContainer}>
+            <div>Здесь будет таблица с итоговыми оценками</div>
+            {isEditable && (
+              <div className={styles.riseBtnContainer}>
+                <Button size="large" type="default" icon={<ArrowUpOutlined />}>
+                  Повысить итоговую
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      {data?.team?.id && (
-        <TeamViewModal
-          open={isModalOpen}
-          setModalOpen={setIsModalOpen}
-          teamId={data.team.id}
-        />
-      )}
+
+      <TeamViewModal
+        isOpen={isModalOpen}
+        setModalOpen={setIsModalOpen}
+        teamId={data?.team?.id}
+      />
     </div>
   );
 }
