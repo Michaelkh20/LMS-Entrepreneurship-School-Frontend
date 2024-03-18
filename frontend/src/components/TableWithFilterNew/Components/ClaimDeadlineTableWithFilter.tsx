@@ -3,18 +3,15 @@
 import {
   ClaimStatusFormItem,
   UserSelectionFormItem,
-  LotNumberFormItem,
-  DatePickerFormItem,
+  TaskSelectionFormItem,
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 import { useGetClaimsQuery } from '@/redux/services/adminApi';
 import type { GetClaimsApiArg } from '@/types/requests';
 import type {
   AdminClaimTableItem,
-  LotSelectionItem,
   TaskSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+  UserSelectionItem} from '@/types/responses';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
@@ -98,14 +95,12 @@ export function ClaimDeadlineTableWithFilter() {
       <BasicTableWithFilter
         filterFormItems={
           <>
-            <LotNumberFormItem />
             <UserSelectionFormItem
-              placeholder={'Покупатель'}
-              name={'receiverId'}
+              placeholder={'Ученик'}
+              name={'learnerId'}
             />
+            <TaskSelectionFormItem placeholder={'Задание'} name={'taskId'} />
             <ClaimStatusFormItem />
-            <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
-            <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
           </>
         }
         tableProps={{

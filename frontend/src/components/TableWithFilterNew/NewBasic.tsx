@@ -85,8 +85,6 @@ export function BasicTableWithFilter<T, T1>({
         pageSize: pagination.pageSize,
         sortProperty: (sorter as SorterResult<any>).field,
         sortOrder:  (sorter as SorterResult<any>).order === 'descend' ? SortOrder.Desc : SortOrder.Asc,
-        // sortProperty: sorter.field,
-        // sortOrder: sorter.order === 'descend' ? SortOrder.Desc : SortOrder.Asc,
       };
     });
   };
@@ -95,7 +93,8 @@ export function BasicTableWithFilter<T, T1>({
     setFormData((prevState: T) => {
       return {
         ...prevState,
-        ...changedValues,
+        // ...changedValues,
+        // ...prepare
       };
     });
   };
@@ -118,8 +117,6 @@ export function BasicTableWithFilter<T, T1>({
         {filterFormItems}
       </BasicFilter>
       <Table
-        // columns={tableColumns || attendanceTableColumns?.(setDataTable)}
-        // dataSource={dataTable}
         className={tableStyles.table}
         scroll={{ x: true }}
         onChange={handleTableChange}

@@ -74,27 +74,43 @@ const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
     dataIndex: '',
     key: 'x',
     render: (_: any, record: ClaimTransferColumnsDataType) => {
-        return (
-            <>
-                {(record.claimStatus === ClaimStatus.Waiting) && <ConfirmButtons record={record}/>}
-            </>
-        )
-    }
-},
+      return (
+        <>
+          {record.claimStatus === ClaimStatus.Waiting && (
+            <ConfirmButtons record={record} />
+          )}
+        </>
+      );
+    },
+  },
 ];
 
-const ConfirmButtons = ({record}: { record: ClaimTransferColumnsDataType }) => {
+const ConfirmButtons = ({
+  record,
+}: {
+  record: ClaimTransferColumnsDataType;
+}) => {
   return (
-      <Space>
-          <Popconfirm title={"Одобрить заявку?"} onConfirm={() => console.log("Approve", record.id, record.sum)}>
-              <Button>Да</Button>
-          </Popconfirm>
-          <Popconfirm title={"Отклонить заявку?"} onConfirm={() => console.log("Reject", record.id, record.sum)}>
-              <Button>Нет</Button>
-          </Popconfirm>
-      </Space>
-  )
-}
+    <Space>
+      <Popconfirm
+        cancelText="Нет"
+        okText="Да"
+        title={'Отклонить заявку?'}
+        onConfirm={() => console.log('Reject', record.id, record.sum)}
+      >
+        <Button>Нет</Button>
+      </Popconfirm> 
+      <Popconfirm
+        title={'Одобрить заявку?'}
+        cancelText="Нет"
+        okText="Да"
+        onConfirm={() => console.log('Approve', record.id, record.sum)}
+      >
+        <Button>Да</Button>
+      </Popconfirm>
+    </Space>
+  );
+};
 
 const mockData: ClaimTransferColumnsDataType[] = [
   {
@@ -114,7 +130,7 @@ const mockData: ClaimTransferColumnsDataType[] = [
     sum: 5000,
   },
   {
-    id: 12234345,
+    id: 1234,
     claimStatus: ClaimStatus.Declined,
     learner: 'Иван Обучающийся',
     receiver: 'Иван Получающий',
@@ -145,9 +161,13 @@ export function ClaimTransferTableWithFilter() {
       <BasicTableWithFilter
         filterFormItems={
           <>
-            <LotNumberFormItem />
+  
             <UserSelectionFormItem
-              placeholder={'Покупатель'}
+              placeholder={'Отправитель'}
+              name={'learnerId'}
+            />
+            <UserSelectionFormItem
+              placeholder={'Получатель'}
               name={'receiverId'}
             />
             <ClaimStatusFormItem />

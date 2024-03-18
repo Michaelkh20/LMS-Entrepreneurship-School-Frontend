@@ -1,31 +1,54 @@
 'use client';
 
-import {
-  TeamNumberFormItem
-} from '@/components/Forms/FormItems/Filters';
-import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
+// TODO: themeSelectionFormItem
+
+import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
 import { useGetTeamsQuery } from '@/redux/services/adminApi';
-import { GetTeamsApiArg } from '@/types/requests';
+import type { GetTeamsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ColumnsType } from 'antd/es/table';
+import type { ColumnsType } from 'antd/es/table';
+import { Id } from '@/types/common';
 
 type TeamsColumnsDataType = {
-    key: React.Key;
-    teamNumber: number;
-    theme: string;
-}
+  id: Id;
+  teamNumber: number;
+  theme: string;
+};
 
 const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
-    {
-        title: '№ Команды',
-        dataIndex: 'teamNumber',
-        key: 'teamNumber',
-        defaultSortOrder: "ascend",
-        sorter: true,
-        width: 200
+  {
+    title: '№ Команды',
+    dataIndex: 'teamNumber',
+    key: 'teamNumber',
+    defaultSortOrder: 'ascend',
+    sorter: true,
+    width: 200,
+    render(value, record, index) {
+      return (
+        <div>№ {value}</div>
+      )
     },
-    {title: 'Тема', dataIndex: 'theme', key: 'theme'}
+  },
+  { title: 'Тема', dataIndex: 'theme', key: 'theme' },
+];
+
+const mockData: TeamsColumnsDataType[] = [
+  {
+    id: 1,
+    teamNumber: 1,
+    theme: "Выпечка"
+  },
+  {
+    id: 2,
+    teamNumber: 2,
+    theme: "Булочки"
+  },
+  {
+    id: 3,
+    teamNumber: 3,
+    theme: "Чаёчек"
+  }
 ]
 
 export function TeamTableWithFilter() {
@@ -35,7 +58,7 @@ export function TeamTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>([]);
+  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(mockData || []);
   const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {

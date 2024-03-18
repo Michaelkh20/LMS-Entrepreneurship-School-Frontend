@@ -2,7 +2,8 @@
 
 import {
   NameFormItem,
-  EmailFormItem,
+  TeamNumberFormItem,
+  RoleFormItem
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 import { useGetAccountsQuery } from '@/redux/services/adminApi';
@@ -87,7 +88,8 @@ export function AccountsTableWithFilter() {
         filterFormItems={
           <>
             <NameFormItem />
-            <EmailFormItem />
+            <TeamNumberFormItem />
+            <RoleFormItem />
           </>
         }
         tableProps={{

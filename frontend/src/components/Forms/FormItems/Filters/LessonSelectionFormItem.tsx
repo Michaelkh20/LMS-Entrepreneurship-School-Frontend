@@ -7,9 +7,11 @@ import { Form, Select } from 'antd';
 export function LessonSelectionFormItem({
   placeholder,
   name,
+  width
 }: {
   placeholder: string;
   name: string;
+  width?: number
 }) {
   const { data, isFetching } = useGetLessonsForSelectQuery();
 
@@ -28,6 +30,7 @@ export function LessonSelectionFormItem({
         filterOption={(input, option) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
         }
+        style={{width: width}}
       />
     </Form.Item>
   );

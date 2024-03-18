@@ -85,7 +85,7 @@ const mockData: ClaimPlacingLotColumnsDataType[] = [
 
 export function ClaimPlacingLotTableWithFilter() {
   const [formData, setFormData] = useState<GetClaimsApiArg>({
-    claimType: ClaimType.FailedDeadline,
+    claimType: ClaimType.PlacingLot,
     page: 1,
     pageSize: 10,
   });

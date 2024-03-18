@@ -19,8 +19,12 @@ import {
   TransactionsTableWithFilters,
 } from '@/components/TableWithFilterNew';
 import { AttendanceTable } from '@/components/TableWithFilterNew';
+import { AssessmentTableWithFilter } from '@/components/TableWithFilterNew/Components/AssessmentTableWithFilter';
+import { AssessmentAllTasksTableWithFilter } from '@/components/TableWithFilterNew/Components/AssessmentAllTasksTableWithFilter';
 
 export default function Accounts() {
+
+
   return (
     <>
       <div className={styles.container}>
@@ -41,14 +45,20 @@ export default function Accounts() {
             Создать
           </Button>
         </div>
-        <TransactionsTableWithFilters />
+        <ClaimTransferTableWithFilter />
+        {/* <AssessmentAllTasksTableWithFilter /> */}
+        {/* <AssessmentTableWithFilter /> */}
+        {/* <ClaimDeadlineTableWithFilter /> */}
+        {/* <TeamTableWithFilter />  */}
+        {/* <AccountsTableWithFilter /> */}
+        {/* <TransactionsTableWithFilters />
         <ClaimTransferTableWithFilter />
         <ClaimPlacingLotTableWithFilter />
         <ClaimDeadlineTableWithFilter />
         <ClaimBuyingLotTableWithFilter />
         <AccountsTableWithFilter />
         <AttendanceTable lessonId={123} />
-        <TeamTableWithFilter />
+        */}
       </div>
     </>
   );
