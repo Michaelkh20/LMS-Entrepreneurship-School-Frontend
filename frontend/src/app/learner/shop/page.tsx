@@ -1,47 +1,57 @@
-import styles from './page.module.css';
-import { Jura } from 'next/font/google';
-import TradeLotCard from '@/components/LotCard/lot-card';
-import LotApplication from '@/components/LotClaimLearner/LotClaimLearner';
+'use client';
 
-const jura = Jura({
-  subsets: ['cyrillic'],
-});
+import styles from './page.module.css';
+import TradeLotCard from '@/components/LotCard';
+import LotCardSkeleton from '@/components/LotCard/components/LotCardSkeleton';
+import { useGetLotsShortQuery } from '@/redux/services/learnerApi';
+import { Pagination } from 'antd';
+import { useState } from 'react';
+import { pageSizes, pageSizesPostfix } from './constants';
 
 export default function Home() {
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(pageSizes[0]);
+  const { data, isLoading } = useGetLotsShortQuery({ pageNumber, pageSize });
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPageNumber(page);
+    setPageSize(pageSize);
+  };
+
   return (
     <div className={styles.wrapper}>
-      <h1 className={`${styles.page_label} ${jura.className}`}>МАГАЗИН</h1>
-      <div className={styles.lots_container}>
-        <TradeLotCard
-          number={12345}
-          description="Торговый лот описания"
-          performer="Имя исполнителя"
-          price={200}
-          conditions="Условия торгового лота"
-        />
-        <TradeLotCard
-          number={12345}
-          description="Торговый лот описания"
-          performer="Имя исполнителя"
-          price={200}
-          conditions="Условия торгового лота"
-        />
-        <TradeLotCard
-          number={12345}
-          description="Торговый лот описания"
-          performer="Имя исполнителя"
-          price={200}
-          conditions="Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота "
-        />
-        <TradeLotCard
-          number={12345}
-          description="Торговый лот описания"
-          performer="Имя исполнителя"
-          price={200}
-          conditions="Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота Условия торгового лота "
-        />
+      <h1 className={styles.pageLabel}>Магазин</h1>
+      <div className={styles.filtersMock}>Здесь будут фильтры</div>
+      <div className={styles.content}>
+        <div className={styles.lotsContainer}>
+          {data &&
+            data.lots.map((lot) => (
+              <TradeLotCard
+                id={lot.id!}
+                title={lot.title!}
+                number={lot.number!}
+                performer={lot.performer!}
+                price={lot.price!}
+                key={lot.id!}
+              />
+            ))}
+          {isLoading &&
+            Array(pageSize)
+              .fill(0)
+              .map((_, index) => <LotCardSkeleton key={index} />)}
+        </div>
+        <div className={styles.paginationContainer}>
+          <Pagination
+            current={pageNumber}
+            pageSize={pageSize}
+            pageSizeOptions={pageSizes}
+            showSizeChanger
+            total={data?.totalLotsNumber}
+            onChange={handlePageChange}
+            locale={{ items_per_page: pageSizesPostfix }}
+          />
+        </div>
       </div>
-      <LotApplication />
     </div>
   );
 }

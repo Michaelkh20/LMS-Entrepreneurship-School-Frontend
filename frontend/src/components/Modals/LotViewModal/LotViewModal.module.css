@@ -1,0 +1,62 @@
+.PropertyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.PropertyTitle {
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: bold;
+}
+
+.PropertyValue {
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: normal;
+}
+
+.ModalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.FirstRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.Price {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: bold;
+  color: #1677ff;
+}
+
+.StatusApproval {
+  color: #1677ff;
+}
+
+.StatusActive {
+  color: #52c41a;
+}
+
+.StatusInactive {
+  color: #ff4d4f;
+}
+
+.Actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.5rem;
+
+  padding-top: 0.75rem;
+}

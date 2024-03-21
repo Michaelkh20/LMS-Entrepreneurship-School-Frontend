@@ -1,41 +1,45 @@
 'use client';
-import { Id, Role } from '@/types/common';
+
 import { Form, Input, Select, Button, Space, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { AccountRequest } from '@/types/requests';
 import {
-  useGetAccountByIdQuery,
-  useUpdateAccountMutation,
+  useEditAccountMutation,
+  useGetAccountQuery,
 } from '@/redux/services/adminApi';
 import { useEffect, useState } from 'react';
-import PhoneNumber from '../FormItems/EntityForms/PhoneNumber';
-import { UserProfile } from '@/types/responses';
+import PhoneNumber from '../../FormItems/EntityForms/PhoneNumber';
 import LoadingErrorWrapper from '@/components/LoadingErrorWrapper/LoadingErrorWrapper';
 import { useRouter } from 'next/navigation';
 
+import { dto } from '@dto';
+import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
+import Role = dto.Role;
+import { formValuesToRequest, fromResponseToFormValues } from './helpers';
+import { EditAccountFormType } from '@/types/forms';
+
 const { Option } = Select;
 
-export default function EditAccountForm({ id }: { id: Id }) {
-  const [form] = useForm();
+export default function EditAccountForm({ id }: { id: string }) {
+  const [form] = useForm<EditAccountFormType>();
   const router = useRouter();
 
-  const [updateAccount, updateResult] = useUpdateAccountMutation();
-  const { data, isLoading, isError, isSuccess } = useGetAccountByIdQuery(id);
+  const [updateAccount, updateResult] = useEditAccountMutation();
+  const { data, isLoading, isError } = useGetAccountQuery(id);
 
   const [validEmail, setValidEmail] = useState(true);
   const [validPhone, setValidPhone] = useState(true);
 
   useEffect(() => {
     if (updateResult.isError) {
-      console.log(updateResult.error);
       const errorDetails = updateResult.error; // Assuming error details are in result.error
 
       // Check if the response status is 409
       if ('status' in errorDetails && errorDetails.status === 409) {
+        const data = errorDetails.data as AccountChangeErrorResponse;
         let fieldsError = [];
 
         // Based on the message you get, update the appropriate field's error
-        if ((errorDetails.data as string[]).includes('email')) {
+        if (data.email) {
           fieldsError.push({
             name: 'email',
             errors: ['Пользователь с таким email уже существует'],
@@ -44,9 +48,9 @@ export default function EditAccountForm({ id }: { id: Id }) {
           message.error('Пользователь с таким email уже существует', 5);
         }
 
-        if ((errorDetails.data as string[]).includes('phone')) {
+        if (data.phone) {
           fieldsError.push({
-            name: 'phoneNumber',
+            name: 'phone',
             errors: ['Пользователь с таким номером телефона уже существует'],
           });
           setValidPhone(false);
@@ -74,29 +78,27 @@ export default function EditAccountForm({ id }: { id: Id }) {
     }
   }, [form, id, router, updateResult]);
 
-  const onFinish = (values: any) => {
-    const request = formValuesToRequest(values, id);
-    console.log(values, request);
-    updateAccount(request);
+  const onFinish = (values: EditAccountFormType) => {
+    const request = formValuesToRequest(values);
+    updateAccount({ id, body: request });
   };
 
-  function onValuesChange(changedValues: any, allValues: any) {
+  const onValuesChange = (changedValues: any) => {
     if (changedValues.email) {
       setValidEmail(true);
     }
-    if (changedValues.phoneNumber) {
+    if (changedValues.phone) {
       setValidPhone(true);
     }
-  }
+  };
 
   return (
     <LoadingErrorWrapper isLoading={isLoading} isError={isError}>
-      <Form
+      <Form<EditAccountFormType>
         form={form}
         onFinish={onFinish}
         onValuesChange={onValuesChange}
         layout="vertical"
-        style={{ padding: '2rem' }}
         initialValues={data && fromResponseToFormValues(data)}
       >
         <Form.Item
@@ -141,7 +143,7 @@ export default function EditAccountForm({ id }: { id: Id }) {
         </Form.Item>
         <Form.Item
           label="Отчество"
-          name="middleName"
+          name="lastName"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 8 }}
           rules={[
@@ -163,21 +165,8 @@ export default function EditAccountForm({ id }: { id: Id }) {
           hasFeedback
         >
           <Select>
-            <Option value={Role.Learner}>Ученик</Option>
-            <Option value={Role.Tracker}>Трекер</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          label="Пол"
-          name="gender"
-          rules={[{ required: true, message: 'Выберите гендер' }]}
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 4 }}
-          hasFeedback
-        >
-          <Select>
-            <Option value={true}>Мужчина</Option>
-            <Option value={false}>Женщина</Option>
+            <Option value={Role.LEARNER}>Ученик</Option>
+            <Option value={Role.TRACKER}>Трекер</Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -192,7 +181,7 @@ export default function EditAccountForm({ id }: { id: Id }) {
         </Form.Item>
         <Form.Item
           label="Телефон"
-          name="phoneNumber"
+          name="phone"
           rules={[
             { required: true, message: 'Введите номер телефона' },
             {
@@ -225,27 +214,12 @@ export default function EditAccountForm({ id }: { id: Id }) {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Пароль"
-          name="password"
-          rules={[
-            { required: true, message: 'Введите пароль' },
-            {
-              min: 6,
-              message: 'Пароль должен иметь длину не менее 6 символов',
-            },
-          ]}
-          wrapperCol={{ span: 6 }}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
         <Form.Item>
           <Space>
             <Button
               type="primary"
               htmlType="submit"
-              style={{ backgroundColor: '#198754', marginTop: '1rem' }}
+              style={{ marginTop: '1rem' }}
               disabled={!validEmail || !validPhone}
               loading={updateResult.isLoading}
             >
@@ -256,33 +230,4 @@ export default function EditAccountForm({ id }: { id: Id }) {
       </Form>
     </LoadingErrorWrapper>
   );
-}
-
-function formValuesToRequest(values: any, id: Id): AccountRequest {
-  return {
-    id: id,
-    name: values.firstName,
-    surname: values.surName,
-    middleName: values.middleName || null,
-    email: values.email,
-    phone: values.phoneNumber.replace(/\D/g, ''),
-    messenger: values.messenger,
-    gender: values.gender,
-    role: values.role,
-    password: values.password,
-  };
-}
-
-function fromResponseToFormValues(data: UserProfile) {
-  return {
-    firstName: data.name,
-    surName: data.surname,
-    middleName: data.middleName || undefined,
-    email: data.email,
-    phoneNumber: data.phone,
-    messenger: data.messenger,
-    gender: data.gender,
-    role: data.role,
-    password: undefined,
-  };
 }

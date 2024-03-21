@@ -1,22 +1,15 @@
-import style from './page.module.css';
-import { Jura } from 'next/font/google';
-import EditAccountForm from '@/components/Forms/Accounts/EditAccountForm';
-
-const jura = Jura({
-  subsets: ['cyrillic'],
-});
+import styles from './page.module.css';
+import EditAccountForm from '@/components/Forms/Accounts/Edit';
 
 export default function EditAccountPage({
   params: { id },
 }: {
-  params: { id: number };
+  params: { id: string };
 }) {
   return (
-    <>
-      <h1 className={`${style.title} ${jura.className}`}>
-        РЕДАКТИРОВАНИЕ ПРОФИЛЯ
-      </h1>
+    <div className={styles.wrapper}>
+      <h1 className={styles.title}>Редактирование аккаунта</h1>
       <EditAccountForm id={id} />
-    </>
+    </div>
   );
 }

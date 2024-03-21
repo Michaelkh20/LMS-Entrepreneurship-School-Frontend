@@ -2,20 +2,21 @@ import React from 'react';
 import { Modal } from 'antd';
 import { useGetTeamQuery } from '@/redux/services/learnerApi';
 import styles from './TeamViewModal.module.css';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 type TeamViewModalProps = {
-  open: boolean;
-  teamId: string;
+  isOpen: boolean;
+  teamId?: string | null;
   setModalOpen: (open: boolean) => void;
 };
 
 //TODO: Добавить таблицы с учениками и трекерами
 export default function TeamViewModal({
-  open,
+  isOpen,
   teamId,
   setModalOpen,
 }: TeamViewModalProps) {
-  const { data } = useGetTeamQuery(teamId);
+  const { data } = useGetTeamQuery(teamId && isOpen ? teamId : skipToken);
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -24,7 +25,7 @@ export default function TeamViewModal({
   return (
     <Modal
       title={`Команда №${data?.teamNumber}`}
-      open={open}
+      open={isOpen}
       onCancel={handleCancel}
       footer={null}
       centered

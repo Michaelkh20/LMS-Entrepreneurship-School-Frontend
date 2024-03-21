@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect } from 'react';
 import BaseDeleteButton from '../BaseDeleteButton';
 import { useDeleteAccountByIdMutation } from '@/redux/services/adminApi';

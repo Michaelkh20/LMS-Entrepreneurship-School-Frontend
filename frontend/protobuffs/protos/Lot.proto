@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package dto;
+
+// Enum для статуса лота
+enum LotStatus {
+  APPROVAL = 0;
+  ACTIVE = 1;
+  INACTIVE = 2;
+}
+
+// Основная структура лота
+message LotResponse {
+  int32 id = 1; // Уникальный идентификатор лота
+  string number = 2; // Номер лота
+  string title = 3; // Название лота
+  string description = 4; // Описание лота
+  string terms = 5; // Условия лота
+  double price = 6; // Цена лота
+  LotStatus status = 7; // Статус лота
+  string performer = 8; // Исполнитель лота
+  string date = 9; // Дата лота
+}
+
+message LotShort {
+  int32 id = 1; // Уникальный идентификатор лота
+  string number = 2; // Номер лота
+  string title = 3; // Название лота
+  string performer = 4; // Исполнитель лота
+  double price = 5; // Цена лота
+}
+
+// Сообщение, содержащее список лотов
+message LotsShortResponse {
+  int32 totalLotsNumber = 1; // Общее количество лотов
+  repeated LotShort lots = 2; // Массив лотов
+}

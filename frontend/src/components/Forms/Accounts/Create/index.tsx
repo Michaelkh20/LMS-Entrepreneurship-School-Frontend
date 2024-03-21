@@ -5,13 +5,18 @@ import { useForm } from 'antd/lib/form/Form';
 import { AccountRequest } from '@/types/requests';
 import { useCreateAccountMutation } from '@/redux/services/adminApi';
 import { useEffect, useState } from 'react';
-import PhoneNumber from '../FormItems/EntityForms/PhoneNumber';
+import PhoneNumber from '../../FormItems/EntityForms/PhoneNumber';
 import { useRouter } from 'next/navigation';
+
+import { dto } from '@dto';
+import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
+import { CreateAccountFormType } from '@/types/forms';
+import { formValuesToRequest } from './helpers';
 
 const { Option } = Select;
 
 export default function CreateAccountForm() {
-  const [form] = useForm();
+  const [form] = useForm<CreateAccountFormType>();
   const router = useRouter();
   const [createAccount, result] = useCreateAccountMutation();
 
@@ -25,10 +30,11 @@ export default function CreateAccountForm() {
 
       // Check if the response status is 409
       if ('status' in errorDetails && errorDetails.status === 409) {
+        const data = errorDetails.data as AccountChangeErrorResponse;
         let fieldsError = [];
 
         // Based on the message you get, update the appropriate field's error
-        if ((errorDetails.data as string[]).includes('email')) {
+        if (data.email) {
           fieldsError.push({
             name: 'email',
             errors: ['Пользователь с таким email уже существует'],
@@ -37,9 +43,9 @@ export default function CreateAccountForm() {
           message.error('Пользователь с таким email уже существует', 5);
         }
 
-        if ((errorDetails.data as string[]).includes('phone')) {
+        if (data.phone) {
           fieldsError.push({
-            name: 'phoneNumber',
+            name: 'phone',
             errors: ['Пользователь с таким номером телефона уже существует'],
           });
           setValidPhone(false);
@@ -67,13 +73,12 @@ export default function CreateAccountForm() {
     }
   }, [form, result, router]);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: CreateAccountFormType) => {
     const request = formValuesToRequest(values);
-    console.log(values, request);
     createAccount(request);
   };
 
-  function onValuesChange(changedValues: any, allValues: any) {
+  function onValuesChange(changedValues: any) {
     if (changedValues.email) {
       setValidEmail(true);
     }
@@ -83,12 +88,11 @@ export default function CreateAccountForm() {
   }
 
   return (
-    <Form
+    <Form<CreateAccountFormType>
       form={form}
       onFinish={onFinish}
       onValuesChange={onValuesChange}
       layout="vertical"
-      style={{ padding: '2rem' }}
     >
       <Form.Item
         label="Имя"
@@ -132,7 +136,7 @@ export default function CreateAccountForm() {
       </Form.Item>
       <Form.Item
         label="Отчество"
-        name="middleName"
+        name="lastName"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 8 }}
         rules={[
@@ -159,19 +163,6 @@ export default function CreateAccountForm() {
         </Select>
       </Form.Item>
       <Form.Item
-        label="Пол"
-        name="gender"
-        rules={[{ required: true, message: 'Выберите гендер' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 4 }}
-        hasFeedback
-      >
-        <Select>
-          <Option value={true}>Мужчина</Option>
-          <Option value={false}>Женщина</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item
         label="Мессенджер"
         name="messenger"
         labelCol={{ span: 6 }}
@@ -183,7 +174,7 @@ export default function CreateAccountForm() {
       </Form.Item>
       <Form.Item
         label="Телефон"
-        name="phoneNumber"
+        name="phone"
         rules={[
           { required: true, message: 'Введите номер телефона' },
           {
@@ -231,7 +222,7 @@ export default function CreateAccountForm() {
           <Button
             type="primary"
             htmlType="submit"
-            style={{ backgroundColor: '#198754', marginTop: '1rem' }}
+            style={{ marginTop: '1rem' }}
             disabled={!validEmail || !validPhone}
             loading={result.isLoading}
           >
@@ -241,19 +232,4 @@ export default function CreateAccountForm() {
       </Form.Item>
     </Form>
   );
-}
-
-function formValuesToRequest(values: any): AccountRequest {
-  return {
-    id: null,
-    name: values.firstName,
-    surname: values.surName,
-    middleName: values.middleName || null,
-    email: values.email,
-    phone: values.phoneNumber.replace(/\D/g, ''),
-    messenger: values.messenger,
-    gender: values.gender,
-    role: values.role,
-    password: values.password,
-  };
 }
