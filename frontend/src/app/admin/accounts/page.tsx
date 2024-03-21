@@ -2,6 +2,10 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from '../main.module.css';
 
+import {
+  useGetAccountsListQuery,
+  useGetAccountsShortListQuery,
+} from '@/redux/services/adminApi';
 import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
 
 export default function Accounts() {
@@ -22,7 +26,6 @@ export default function Accounts() {
             Создать
           </Button>
         </div>
-
         <AccountsTableWithFilter />
       </div>
     </>
