@@ -1,5 +1,7 @@
-import { useGetTasksForSelectQuery } from '@/redux/services/adminApi';
+// import { useGetTasksForSelectQuery } from '@/redux/services/adminApi';
 import { Form, Select } from 'antd';
+
+//TODO: Hook
 
 export function TaskSelectionFormItem({
   placeholder,
@@ -8,7 +10,14 @@ export function TaskSelectionFormItem({
   placeholder: string;
   name: string;
 }) {
-  const { data, isFetching } = useGetTasksForSelectQuery();
+  // const { data, isFetching } = useGetTasksForSelectQuery();
+  const { data, isFetching } = {data: [
+    {
+      id: 12,
+      title: "Title"
+    }
+  ], isFetching: false};
+
 
   return (
     <Form.Item name={name}>

@@ -1,48 +1,181 @@
-import { ColumnsType } from 'antd/es/table';
-import { Button, Input, Checkbox } from 'antd';
+import { Key, SetStateAction, useEffect, useState } from 'react';
+import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import { Checkbox, InputNumber } from 'antd';
+
+// @ts-ignore
+import _debounce from 'lodash.debounce';
 
 export type AttendanceColumnsDataType = {
-  key: React.Key;
+  key: number;
   learner: string;
   email: string;
   didCome: boolean;
+  accruedCurrency?: number | null;
+  cachedAccruedCurrency?: number;
 };
 
-export const AttendanceColumns: ColumnsType<AttendanceColumnsDataType> = [
+export const AttendanceColumnsDataMock: AttendanceColumnsDataType[] = [
   {
-    title: '',
-    dataIndex: '',
-    key: 'w',
-    render: (_, record: AttendanceColumnsDataType, rowIndex) => {
-      return (
-        <>
-          <Checkbox
-            checked={record.didCome}
-            onChange={() => {
-              record.didCome = !record.didCome;
-            }}
-          />
-        </>
-      );
-    },
+    key: 1,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
   },
   {
-    title: 'Имя',
-    dataIndex: 'learner',
-    key: 'learner',
+    key: 22,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: true,
+    accruedCurrency: 300,
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
+    key: 2,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
   },
   {
-    title: 'Начислить ШП',
-    dataIndex: '',
-    key: 'x',
-    width: 150,
-    render: (_, record: AttendanceColumnsDataType) => {
-      return <>{record.didCome && <Input placeholder={'ШП'}></Input>}</>;
-    },
+    key: 33,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: true,
+    accruedCurrency: 300,
+  },
+  {
+    key: 3,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
+  },
+  {
+    key: 44,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: true,
+    accruedCurrency: 300,
+  },
+  {
+    key: 5,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
+  },
+  {
+    key: 55,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: true,
+    accruedCurrency: 300,
+  },
+  {
+    key: 6,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
+  },
+  {
+    key: 66,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: true,
+    accruedCurrency: 300,
+  },
+  {
+    key: 7,
+    learner: 'Ivan',
+    email: 'Ivan@email.com',
+    didCome: false,
   },
 ];
+
+export const AttendanceColumnsNew = ({
+  setDataTable,
+}: {
+  setDataTable: React.Dispatch<SetStateAction<AttendanceColumnsDataType[]>>;
+}) => {
+  return [
+    {
+      title: 'Имя',
+      dataIndex: 'learner',
+      key: 'learner',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Начислить ШП',
+      dataIndex: '',
+      key: 'x',
+      width: 150,
+      render: (_: any, record: AttendanceColumnsDataType) => {
+        return (
+          <>
+            {record.didCome && (
+              <InputNumber
+                placeholder={`${record.accruedCurrency} ШП`}
+                defaultValue={record.accruedCurrency || undefined}
+                onChange={_debounce((value: number) => {
+                  if (value) {
+                    record.accruedCurrency = value;
+                  } else {
+                    record.accruedCurrency = 0;
+                  }
+                  setDataTable((prevState: any[]) => [
+                    ...prevState.map((student) =>
+                      student.key === record.key ? record : student
+                    ),
+                  ]);
+                }, 600)}
+              ></InputNumber>
+            )}
+          </>
+        );
+      },
+    },
+  ];
+};
+
+// const AttendanceColumns: ColumnsType<AttendanceColumnsDataType> = [
+//   {
+//     title: 'Имя',
+//     dataIndex: 'learner',
+//     key: 'learner',
+//   },
+//   {
+//     title: 'Email',
+//     dataIndex: 'email',
+//     key: 'email',
+//   },
+//   {
+//     title: 'Начислить ШП',
+//     dataIndex: '',
+//     key: 'x',
+//     width: 150,
+//     render: (_, record: AttendanceColumnsDataType) => {
+//       return (
+//         <>
+//           {record.didCome && (
+//             <InputNumber
+//               placeholder={`${record.accruedCurrency} ШП`}
+//               defaultValue={record.accruedCurrency || undefined}
+//               onChange={_debounce((value: number) => {
+//                 if (value) {
+//                   record.accruedCurrency = value;
+//                 } else {
+//                   record.accruedCurrency = 0;
+//                 }
+//                 setDataTable((prevState) => [
+//                   ...prevState.map((student) =>
+//                     student.key === record.key ? record : student
+//                   ),
+//                 ]);
+//               }, 600)}
+//             ></InputNumber>
+//           )}
+//         </>
+//       );
+//     },
+//   },
+// ];

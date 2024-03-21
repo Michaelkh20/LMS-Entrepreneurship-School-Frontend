@@ -370,7 +370,7 @@ export type AttendanceRequest = {
   lessonId: Id;
   learners: {
     learnerId: Id;
-    accruedСurrency: Price | null;
+    accruedCurrency: Price | null;
   }[];
 };
 

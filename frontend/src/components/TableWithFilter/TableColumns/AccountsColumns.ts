@@ -15,10 +15,21 @@ export const accountsColumns: ColumnsType<ColumnsDataType> = [
     dataIndex: 'name',
     key: 'name',
     defaultSortOrder: 'ascend',
-    sorter: (a, b) => a.name.localeCompare(b.name),
+    sorter: true
   },
   { title: 'Email', dataIndex: 'email', key: 'email' },
   { title: 'Команда', dataIndex: 'team', key: 'team' },
   { title: 'Роль', dataIndex: 'role', key: 'role' },
   { title: 'Баланс', dataIndex: 'balance', key: 'balance' },
 ];
+
+const mockData:ColumnsDataType[] = [
+  { 
+    key: "123123", 
+    name: "ivan",
+    email: "ivan",
+    team: "#1",
+    role: "BABY",
+    balance: 100,
+  }
+]
