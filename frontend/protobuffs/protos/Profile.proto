@@ -4,12 +4,12 @@ package dto;
 
 enum Role { ADMIN = 0; TRACKER = 1; LEARNER = 2; }
 
-message ProfileResponse {
-  message TeamShort {
-    string id = 1;
-    string number = 2;
-  }
+message TeamShort {
+  string id = 1;
+  int32 number = 2;
+}
 
+message ProfileResponse {
   string fullName = 1;
   Role role = 2;
   string email = 3;
@@ -57,4 +57,27 @@ message AccountChangeSuccessResponse {
 message AccountChangeErrorResponse {
   bool email = 1;
   bool phone = 2;
+}
+
+message AccountListElem {
+  string id = 1;
+  string partName = 2;
+  string email = 3;
+  TeamShort teamShort = 4;
+  Role role = 5;
+  int32 balance = 6;
+}
+
+message AccountListResponse {
+  int32 totalElems = 1;
+  repeated AccountListElem accountList = 2;
+}
+
+message AccountShortListElem {
+  string id = 1;
+  string fullName = 2;
+}
+
+message AccountShortListResponse {
+  repeated AccountShortListElem accountShortList = 1;
 }

@@ -12,8 +12,8 @@ import LoadingErrorWrapper from '@/components/LoadingErrorWrapper/LoadingErrorWr
 import { useRouter } from 'next/navigation';
 
 import { dto } from '@dto';
-import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
 import Role = dto.Role;
+import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
 import { formValuesToRequest, fromResponseToFormValues } from './helpers';
 import { EditAccountFormType } from '@/types/forms';
 

@@ -1,6 +1,6 @@
 {
   "ignore": [".git", "node_modules"],
-  "watch": ["./server"],
-  "exec": "node -r tsconfig-paths/register -r ts-node/register ./server/server.ts",
+  "watch": ["./"],
+  "exec": "vite-node ./server/server.ts",
   "ext": "ts, js"
 }

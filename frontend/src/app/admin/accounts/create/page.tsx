@@ -1,4 +1,3 @@
-import { Jura } from 'next/font/google';
 import styles from './page.module.css';
 import CreateAccountForm from '@/components/Forms/Accounts/Create';
 

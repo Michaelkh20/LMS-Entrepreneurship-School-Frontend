@@ -2,11 +2,13 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from '../main.module.css';
 
-import {
-  AccountsTableWithFilter,
-} from '@/components/TableWithFilterNew';
+import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
 
 export default function Accounts() {
+  const { data: accountsList } = useGetAccountsListQuery();
+  const { data: accountsShortList } = useGetAccountsShortListQuery();
+  console.log('Account list', accountsList);
+  console.log('Account short list', accountsShortList);
   return (
     <>
       <div className={styles.container}>

@@ -1,19 +1,7 @@
-import { dto } from '@dto';
+import { dto } from '../../protobuffs/dto/index.js';
 import LotStatus = dto.LotStatus;
 
-type Lot = {
-  id: number;
-  number: string;
-  title: string;
-  description: string;
-  terms: string;
-  price: number;
-  status: LotStatus;
-  performer: string;
-  date: string;
-};
-
-const lots: Lot[] = [
+const lots = [
   {
     id: 1,
     number: '1',
