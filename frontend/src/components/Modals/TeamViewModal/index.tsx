@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from 'antd';
-import { useGetTeamQuery } from '@/redux/services/learnerApi';
 import styles from './TeamViewModal.module.css';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { useGetTeamProfileViewQuery } from '@/redux/services/commonApi';
 
 type TeamViewModalProps = {
   isOpen: boolean;
@@ -16,7 +16,10 @@ export default function TeamViewModal({
   teamId,
   setModalOpen,
 }: TeamViewModalProps) {
-  const { data } = useGetTeamQuery(teamId && isOpen ? teamId : skipToken);
+  const { data } = useGetTeamProfileViewQuery(
+    teamId && isOpen ? teamId : skipToken
+  );
+  console.log(data);
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -24,7 +27,7 @@ export default function TeamViewModal({
 
   return (
     <Modal
-      title={`Команда №${data?.teamNumber}`}
+      title={`Команда №${data?.number}`}
       open={isOpen}
       onCancel={handleCancel}
       footer={null}
@@ -33,7 +36,7 @@ export default function TeamViewModal({
       <div className={styles.container}>
         <div className={styles.property}>
           <p className={styles.propertyName}>Тема проекта</p>
-          <p className={styles.propertyTextValue}>{data?.projectTheme}</p>
+          <p className={styles.propertyTextValue}>{data?.theme}</p>
         </div>
         <div className={styles.property}>
           <p className={styles.propertyName}>Ученики</p>

@@ -1,15 +1,24 @@
-import { AccountsTableWithFilter } from '@/components/TableWithFilter/AccountsTableWithFilter';
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import addIcon from '../../../../public/add.svg';
 import styles from './page.module.css';
 import { Jura } from 'next/font/google';
+import {
+  useGetAccountsListQuery,
+  useGetAccountsShortListQuery,
+} from '@/redux/services/adminApi';
 
 const jura = Jura({
   subsets: ['cyrillic'],
 });
 
 export default function Accounts() {
+  const { data: accountsList } = useGetAccountsListQuery();
+  const { data: accountsShortList } = useGetAccountsShortListQuery();
+  console.log('Account list', accountsList);
+  console.log('Account short list', accountsShortList);
   return (
     <>
       <h1 className={`${styles.title} ${jura.className}`}>Аккаунты</h1>
@@ -20,7 +29,7 @@ export default function Accounts() {
             Создать
           </Link>
         </div>
-        <AccountsTableWithFilter />
+        {/* <AccountsTableWithFilter /> */}
       </div>
     </>
   );

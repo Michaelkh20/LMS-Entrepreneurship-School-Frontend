@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     "target": "esnext", // Компиляция кода в последнюю версию JavaScript
-    "module": "CommonJS", // Использование ES модулей
+    "module": "ESNext", // Использование ES модулей
     "moduleResolution": "node", // Разрешение модулей в стиле Node.js
     "esModuleInterop": true, // Разрешить default импорт из модулей без ES модульной структуры
     "resolveJsonModule": true, // Разрешить импорт JSON файлов
@@ -11,11 +11,7 @@
     "strict": true, // Включение всех строгих проверок типов
     "forceConsistentCasingInFileNames": true, // Большая чувствительность к регистру в именах файлов
     "skipLibCheck": true,
-    "allowJs": true,
-    "paths": {
-      "@dto": ["../protobuffs/dto"],
-      "@data": ["./data"]
-    }
+    "allowJs": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]

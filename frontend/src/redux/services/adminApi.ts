@@ -8,6 +8,14 @@ import AccountCreateRequest = dto.AccountCreateRequest;
 import IAccountCreateRequest = dto.IAccountCreateRequest;
 import AccountChangeSuccessResponse = dto.AccountChangeSuccessResponse;
 import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
+import AccountListResponse = dto.AccountListResponse;
+import AccountShortListResponse = dto.AccountShortListResponse;
+
+import TeamResponse = dto.TeamResponse;
+import ITeamCreateRequest = dto.ITeamCreateRequest;
+import TeamCreateRequest = dto.TeamCreateRequest;
+import TeamChangeErrorResponse = dto.TeamChangeErrorResponse;
+import TeamCreateSuccessResponse = dto.TeamCreateSuccessResponse;
 
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
@@ -106,6 +114,77 @@ export const adminApi = createApi({
         },
       }),
     }),
+
+    getAccountsList: build.query<AccountListResponse, void>({
+      query: () => ({
+        url: `accounts/list`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = AccountListResponse.decode(new Uint8Array(buffer));
+          return AccountListResponse.toObject(decoded);
+        },
+      }),
+    }),
+
+    getAccountsShortList: build.query<AccountShortListResponse, void>({
+      query: () => ({
+        url: `accounts/list-short`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = AccountShortListResponse.decode(
+            new Uint8Array(buffer)
+          );
+          return AccountShortListResponse.toObject(decoded);
+        },
+      }),
+    }),
+
+    getTeam: build.query<TeamResponse, string>({
+      query: (teamId) => ({
+        url: `/teams/${teamId}`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = TeamResponse.decode(new Uint8Array(buffer));
+          return TeamResponse.toObject(decoded);
+        },
+      }),
+    }),
+
+    createTeam: build.mutation<
+      TeamCreateSuccessResponse | TeamChangeErrorResponse,
+      ITeamCreateRequest
+    >({
+      query: (request) => ({
+        url: `teams`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: TeamCreateRequest.encode(request).finish(),
+        async responseHandler(response) {
+          if (response.status === 200) {
+            const buffer = await response.arrayBuffer();
+            const decoded = TeamCreateSuccessResponse.decode(
+              new Uint8Array(buffer)
+            );
+            return TeamCreateSuccessResponse.toObject(decoded);
+          }
+
+          if (response.status === 409) {
+            const buffer = await response.arrayBuffer();
+            const decoded = TeamChangeErrorResponse.decode(
+              new Uint8Array(buffer)
+            );
+            return TeamChangeErrorResponse.toObject(decoded);
+          }
+
+          return undefined;
+        },
+      }),
+    }),
   }),
 });
 
@@ -113,4 +192,8 @@ export const {
   useGetAccountQuery,
   useEditAccountMutation,
   useCreateAccountMutation,
+  useGetAccountsListQuery,
+  useGetAccountsShortListQuery,
+  useGetTeamQuery,
+  useCreateTeamMutation,
 } = adminApi;
