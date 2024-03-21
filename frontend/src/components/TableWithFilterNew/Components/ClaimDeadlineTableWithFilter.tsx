@@ -6,7 +6,7 @@ import {
   TaskSelectionFormItem,
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-import { useGetClaimsQuery } from '@/redux/services/adminApi';
+// import { useGetClaimsQuery } from '@/redux/services/adminApi';
 import type { GetClaimsApiArg } from '@/types/requests';
 import type {
   AdminClaimTableItem,
@@ -83,8 +83,8 @@ export function ClaimDeadlineTableWithFilter() {
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] =
     useState<ClaimDeadlineColumnsDataType[]>(mockData);
-  const { data, isLoading, isError, isFetching } =
-    useGetClaimsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetClaimsQuery(dataForReq);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -106,7 +106,7 @@ export function ClaimDeadlineTableWithFilter() {
         tableProps={{
           scroll: { x: true },
           columns: ClaimDeadlineColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
         }}

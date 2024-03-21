@@ -3,7 +3,7 @@
 // TODO: themeSelectionFormItem
 
 import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
-import { useGetTeamsQuery } from '@/redux/services/adminApi';
+// import { useGetTeamsQuery } from '@/redux/services/adminApi';
 import type { GetTeamsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -59,7 +59,7 @@ export function TeamTableWithFilter() {
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(mockData || []);
-  const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {
   //     console.log('FormData1:', formData);
@@ -76,7 +76,7 @@ export function TeamTableWithFilter() {
         tableProps={{
           scroll: { x: true },
           columns: TeamsColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
         }}

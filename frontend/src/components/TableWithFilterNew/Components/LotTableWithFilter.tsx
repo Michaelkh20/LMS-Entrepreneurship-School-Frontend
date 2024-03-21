@@ -8,7 +8,7 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetClaimsApiArg } from '@/types/requests';
+import type { GetLotsApiArg } from '@/types/requests';
 import type {
   AdminClaimTableItem,
   LotSelectionItem,
@@ -20,16 +20,16 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
 
-type ClaimPlacingLotColumnsDataType = {
+type LotColumnsDataType = {
   id: AdminClaimTableItem['id'];
-  claimStatus: AdminClaimTableItem['status'];
+  status: string;
   date: AdminClaimTableItem['dateTime'];
-  receiver: UserSelectionItem['name'];
+  user: UserSelectionItem['name'];
   lot: LotSelectionItem['number'];
-  sum: AdminClaimTableItem['sum'];
+  price: number;
 };
 
-const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
+const LotColumns: ColumnsType<LotColumnsDataType> = [
   {
     title: 'Лот',
     dataIndex: 'lot',
@@ -37,62 +37,61 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
     defaultSortOrder: 'ascend',
     sorter: true,
   },
-  { title: 'Покупатель', dataIndex: 'receiver', key: 'receiver' },
+  { title: 'Владелец', dataIndex: 'user', key: 'user' },
   { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
-    dataIndex: 'claimStatus',
-    key: 'claimStatus',
-    render: (_, record: ClaimPlacingLotColumnsDataType) => {
-      return (
-        <>
-          {record.claimStatus === ClaimStatus.Waiting && <p style={{color: 'var(--color-primary)'}}>Ожидание</p>}
-          {record.claimStatus === ClaimStatus.Declined && <p style={{color: 'var(--color-error)'}}>Отклонено</p>}
-          {record.claimStatus === ClaimStatus.Approved && <p style={{color: 'var(--color-success)'}}>Одобрено</p>}
-        </>
-      );
-    },
+    dataIndex: 'status',
+    key: 'status',
+    // render: (_, record: LotColumnsDataType) => {
+    //   return (
+    //     <>
+    //       {record.claimStatus === ClaimStatus.Waiting && <p style={{color: 'var(--color-primary)'}}>Ожидание</p>}
+    //       {record.claimStatus === ClaimStatus.Declined && <p style={{color: 'var(--color-error)'}}>Отклонено</p>}
+    //       {record.claimStatus === ClaimStatus.Approved && <p style={{color: 'var(--color-success)'}}>Одобрено</p>}
+    //     </>
+    //   );
+    // },
   },
-  { title: 'Стоимость', dataIndex: 'sum', key: 'sum' },
+  { title: 'Стоимость', dataIndex: 'price', key: 'price' },
 ];
 
-const mockData: ClaimPlacingLotColumnsDataType[] = [
+const mockData: LotColumnsDataType[] = [
   {
     id: 12,
     lot: 5,
-    claimStatus: ClaimStatus.Approved,
-    receiver: 'Иван Обучающийся',
+    status: ClaimStatus.Approved,
+    user: 'Иван Обучающийся',
     date: '123123',
-    sum: 5000,
+    price: 5000,
   },
   {
     id: 122,
     lot: 6,
-    claimStatus: ClaimStatus.Declined,
-    receiver: 'Иван Обучающийся',
+    status: ClaimStatus.Declined,
+    user: 'Иван Обучающийся',
     date: '123123',
-    sum: 5000,
+    price: 5000,
   },
   {
     id: 13,
     lot: 7,
-    claimStatus: ClaimStatus.Waiting,
-    receiver: 'Иван Обучающийся',
+    status: ClaimStatus.Waiting,
+    user: 'Иван Обучающийся',
     date: '222',
-    sum: 300,
+    price: 300,
   },
 ];
 
-export function ClaimPlacingLotTableWithFilter() {
-  const [formData, setFormData] = useState<GetClaimsApiArg>({
-    claimType: ClaimType.PlacingLot,
+export function LotTableWithFilter() {
+  const [formData, setFormData] = useState<GetLotsApiArg>({
     page: 1,
     pageSize: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] =
-    useState<ClaimPlacingLotColumnsDataType[]>(mockData);
+    useState<LotColumnsDataType[]>(mockData);
   // const { data, isLoading, isError, isFetching } =
   //   useGetClaimsQuery(dataForReq);
 
@@ -117,7 +116,7 @@ export function ClaimPlacingLotTableWithFilter() {
         }
         tableProps={{
           scroll: { x: true },
-          columns: ClaimPlacingLotColumns,
+          columns: LotColumns,
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',

@@ -4,7 +4,7 @@ import {
   TeamNumberFormItem,
   NameFormItem,
 } from '@/components/Forms/FormItems/Filters';
-import { useGetAssessmentsQuery } from '@/redux/services/adminApi';
+// import { useGetAssessmentsQuery } from '@/redux/services/adminApi';
 import type { GetAssessmentsApiArg } from '@/types/requests';
 import { useEffect, useState } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -68,8 +68,8 @@ export function AssessmentTableWithFilter({}: {}) {
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] = useState<AssessmentTableItem[]>([]);
-  const { data, isLoading, isError, isFetching } =
-    useGetAssessmentsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetAssessmentsQuery(dataForReq);
 
   useEffect(() => {
     console.log('dataForReq:', dataForReq);
@@ -107,7 +107,7 @@ export function AssessmentTableWithFilter({}: {}) {
         tableProps={{
           scroll: { x: true },
           columns: AssessmentColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
         }}

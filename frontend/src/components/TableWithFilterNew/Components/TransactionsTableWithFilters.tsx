@@ -5,7 +5,7 @@ import {
   EmailFormItem,
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-import { useGetTransactionsQuery } from '@/redux/services/adminApi';
+// import { useGetTransactionsQuery } from '@/redux/services/adminApi';
 import type { GetTransactionsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -84,8 +84,8 @@ export function TransactionsTableWithFilters() {
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] =
     useState<TransactionsColumnsDataType[]>(mockData);
-  const { data, isLoading, isError, isFetching } =
-    useGetTransactionsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetTransactionsQuery(dataForReq);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -103,7 +103,7 @@ export function TransactionsTableWithFilters() {
         tableProps={{
           scroll: { x: true },
           columns: TransactionsColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
         }}

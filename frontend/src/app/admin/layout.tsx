@@ -35,6 +35,7 @@ const HeaderStyles: CSSProperties = {
 const ContentStyles: CSSProperties = {
   flex: '1 0 auto',
   maxWidth: '1440px',
+  // padding: '24px 16px 16px 16px'
 };
 
 const FooterStyles: CSSProperties = {
@@ -65,7 +66,7 @@ export default function AdminLayout({
       <Layout style={InnerLayoutStyles}>
         <Header style={HeaderStyles}>Here will be header</Header>
         <Content style={ContentStyles}>{children}</Content>
-        <Footer style={FooterStyles}>Here will be footer</Footer>
+        {/* <Footer style={FooterStyles}>Here will be footer</Footer> */}
       </Layout>
     </Layout>
   );

@@ -1,7 +1,7 @@
-import {
-  useGetLessonsForSelectQuery,
-  useGetTeamsForSelectQuery,
-} from '@/redux/services/adminApi';
+// import {
+//   useGetLessonsForSelectQuery,
+//   useGetTeamsForSelectQuery,
+// } from '@/redux/services/adminApi';
 import { Form, Select } from 'antd';
 
 export function LessonSelectionFormItem({
@@ -13,7 +13,7 @@ export function LessonSelectionFormItem({
   name: string;
   width?: number
 }) {
-  const { data, isFetching } = useGetLessonsForSelectQuery();
+  // const { data, isFetching } = useGetLessonsForSelectQuery();
 
   return (
     <Form.Item name={name}>
@@ -21,15 +21,15 @@ export function LessonSelectionFormItem({
         showSearch
         allowClear
         placeholder={placeholder}
-        loading={isFetching}
-        options={data?.map((lesson) => ({
-          label: 'Тема №' + lesson.number,
-          value: lesson.id,
-        }))}
+        // loading={isFetching}
+        // options={data?.map((lesson) => ({
+        //   label: 'Тема №' + lesson.number,
+        //   value: lesson.id,
+        // }))}
         optionFilterProp="label"
-        filterOption={(input, option) =>
-          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-        }
+        // filterOption={(input, option) =>
+        //   (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        // }
         style={{width: width}}
       />
     </Form.Item>

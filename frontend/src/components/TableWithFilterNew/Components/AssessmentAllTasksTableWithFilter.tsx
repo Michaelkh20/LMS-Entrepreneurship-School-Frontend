@@ -6,7 +6,7 @@ import {
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-import { useGetTasksQuery } from '@/redux/services/adminApi';
+// import { useGetTasksQuery } from '@/redux/services/adminApi';
 import type { GetTasksApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -84,7 +84,7 @@ export function AssessmentAllTasksTableWithFilter({
   const [dataTable, setDataTable] = useState<AssessmentAllTasksTableItem[]>(
     mockData || []
   );
-  const { data, isLoading, isError, isFetching } = useGetTasksQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } = useGetTasksQuery(dataForReq);
 
   useEffect(() => {
     console.log('dataForReq:', dataForReq);
@@ -110,7 +110,7 @@ export function AssessmentAllTasksTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: AssessmentAllTasksColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
           onRow: (record, rowIndex) => {

@@ -10,10 +10,10 @@ import { DEBOUNCE_DURATION } from '@/components/TableWithFilter/entity';
 import { LessonNumber } from '@/types/common';
 import tableStyles from '../table.module.css';
 
-import {
-  useGetAttendanceQuery,
-  useUpdateAttendanceMutation,
-} from '@/redux/services/adminApi';
+// import {
+//   useGetAttendanceQuery,
+//   useUpdateAttendanceMutation,
+// } from '@/redux/services/adminApi';
 
 import { AttendanceRequest } from '@/types/requests';
 
@@ -105,12 +105,13 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
     lessonId: 123,
     learners: [],
   });
-  const { data, isLoading, isError, isFetching } =
-    useGetAttendanceQuery(lessonId);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetAttendanceQuery(lessonId);
+
   const [dataTable, setDataTable] =
     useState<AttendanceColumnsDataType[]>(dataD);
-  const [trigger, { isLoading: isL, isSuccess: isS }] =
-    useUpdateAttendanceMutation();
+  // const [trigger, { isLoading: isL, isSuccess: isS }] =
+  //   useUpdateAttendanceMutation();
 
   const AttendanceColumns: ColumnsType<AttendanceColumnsDataType> = [
     {
@@ -225,7 +226,7 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
         columns={AttendanceColumns}
         dataSource={dataTable}
         pagination={false}
-        loading={isFetching || isLoading}
+        // loading={isFetching || isLoading}
         className={tableStyles.table}
         rowClassName={tableStyles.row}
         scroll={{ x: true }}
@@ -245,7 +246,8 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
       >
         <Space size={32}>
           <div>Выбрано: {selectedRowKeys.length}</div>
-          <Button size={'large'} onClick={() => trigger(formData)}>
+          {/* <Button size={'large'} onClick={() => trigger(formData)}> */}
+          <Button size={'large'} onClick={() =>{}}>
             Подтвердить
           </Button>
         </Space>

@@ -6,7 +6,7 @@ import {
   RoleFormItem
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-import { useGetAccountsQuery } from '@/redux/services/adminApi';
+// import { useGetAccountsQuery } from '@/redux/services/adminApi';
 import { GetAccountsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -75,8 +75,8 @@ export function AccountsTableWithFilter() {
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>(mockData);
-  const { data, isLoading, isError, isFetching } =
-    useGetAccountsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetAccountsQuery(dataForReq);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -95,7 +95,7 @@ export function AccountsTableWithFilter() {
         tableProps={{
           scroll: { x: true },
           columns: AccountsColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: "id"
         }}
