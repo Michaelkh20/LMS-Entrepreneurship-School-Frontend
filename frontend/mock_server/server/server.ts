@@ -1,26 +1,20 @@
 import express from 'express';
 
-import { dto } from '@dto';
+import { dto } from '../../protobuffs/dto/index.js';
 import AuthRequest = dto.AuthRequest;
 import AuthResponse = dto.AuthResponse;
 import ProfileResponse = dto.ProfileResponse;
 import Role = dto.Role;
-import TeamLearnerResponse = dto.TeamLearnerResponse;
 import LotsShortResponse = dto.LotsShortResponse;
 import LotResponse = dto.LotResponse;
 
-import AccountResponse = dto.AccountGetResponse;
-import AccountEditRequest = dto.AccountEditRequest;
-import IAccountEditRequest = dto.IAccountEditRequest;
-import AccountCreateRequest = dto.AccountCreateRequest;
-import IAccountCreateRequest = dto.IAccountCreateRequest;
-import AccountChangeSuccessResponse = dto.AccountChangeSuccessResponse;
-import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
-
-import lots from '../data/lots';
-import { accounts } from './../data/accounts';
+import injectAccountsEndpoints from './endpoints/accounts';
+import DB from '../db';
+import injectTeamsEndpoints from './endpoints/teams.js';
+import lots from '../init_data/lots.js';
 
 const app = express();
+const db = new DB();
 const port = 3032;
 
 app.use(express.raw({ type: 'application/x-protobuf' }));
@@ -28,111 +22,24 @@ app.use(express.raw({ type: 'application/x-protobuf' }));
 app.post('/auth', (req, res) => {
   const authRequest = AuthRequest.decode(req.body);
 
-  const isSuccessful = accounts.some(
-    (account) =>
-      account.email === authRequest.login &&
-      account.password === authRequest.password
+  const account = db.accountsModule.auth(
+    authRequest.login,
+    authRequest.password
   );
 
-  if (isSuccessful) {
+  if (account) {
     res
       .status(200)
       .type('application/x-protobuf')
       .send(
         AuthResponse.encode({
-          result: 'Successfully authenticated',
+          role: account.role,
+          id: account.id,
         }).finish()
       );
   } else {
     res.status(401).send();
   }
-});
-
-app.get('/profile', (req, res) => {
-  const { accountId } = req.query;
-
-  if (accountId !== '1') {
-    res.status(404).send();
-    return;
-  }
-
-  const profileResponse = ProfileResponse.encode({
-    fullName: 'John Doe',
-    role: Role.LEARNER,
-    email: 'someemail@gmail.com',
-    team: {
-      id: '1',
-      number: '1',
-    },
-    phone: '+7 (123) 456 78 90',
-    messenger: 'tg:@ivan',
-    balance: 100,
-  }).finish();
-
-  res.status(200).type('application/x-protobuf').send(profileResponse);
-});
-
-app.get('/team-learner', (req, res) => {
-  const { teamId } = req.query;
-
-  if (teamId !== '1') {
-    res.status(404).send();
-    return;
-  }
-
-  const teamLearnerResponse = TeamLearnerResponse.encode({
-    id: '1',
-    teamNumber: 1,
-    projectTheme: 'Some theme',
-    learners: [
-      {
-        personId: '1',
-        fullName: 'John Doe',
-        email: 'someemail@gmail.com',
-        messenger: 'tg:@ivan',
-      },
-      {
-        personId: '2',
-        fullName: 'Jane Smith',
-        email: 'janesmith@gmail.com',
-        messenger: 'tg:@jane',
-      },
-      {
-        personId: '3',
-        fullName: 'Mike Johnson',
-        email: 'mikejohnson@gmail.com',
-        messenger: 'tg:@mike',
-      },
-      {
-        personId: '4',
-        fullName: 'Sarah Williams',
-        email: 'sarahwilliams@gmail.com',
-        messenger: 'tg:@sarah',
-      },
-    ],
-    trackers: [
-      {
-        personId: '5',
-        fullName: 'Jane Smith',
-        email: 'janesmith@gmail.com',
-        messenger: 'tg:@jane',
-      },
-      {
-        personId: '6',
-        fullName: 'Mike Johnson',
-        email: 'mikejohnson@gmail.com',
-        messenger: 'tg:@mike',
-      },
-      {
-        personId: '7',
-        fullName: 'Sarah Williams',
-        email: 'sarahwilliams@gmail.com',
-        messenger: 'tg:@sarah',
-      },
-    ],
-  }).finish();
-
-  res.status(200).type('application/x-protobuf').send(teamLearnerResponse);
 });
 
 app.get('/lots-short', (req, res) => {
@@ -184,82 +91,8 @@ app.post('/learner/claims/buy-lot', (req, res) => {
   }
 });
 
-app.get('/admin/accounts/:id', (req, res) => {
-  const id = req.params.id;
-
-  const account = accounts.find((account) => account.id === id);
-
-  if (!account) {
-    res.status(404).send();
-    return;
-  }
-
-  const accountResponse = AccountResponse.encode(account).finish();
-
-  res.status(200).type('application/x-protobuf').send(accountResponse);
-});
-
-app.post('/admin/accounts', (req, res) => {
-  const newAccount = AccountCreateRequest.decode(req.body);
-
-  const hasSamePhone = accounts.some(
-    (account) => account.phone === newAccount.phone
-  );
-  const hasSameEmail = accounts.some(
-    (account) => account.email === newAccount.email
-  );
-
-  if (hasSamePhone || hasSameEmail) {
-    const errorResponse = AccountChangeErrorResponse.encode({
-      email: hasSameEmail,
-      phone: hasSamePhone,
-    }).finish();
-
-    res.status(409).type('application/x-protobuf').send(errorResponse);
-    return;
-  }
-
-  const accountSuccessResponse = AccountChangeSuccessResponse.encode({
-    id: '1',
-  }).finish();
-
-  res.status(200).type('application/x-protobuf').send(accountSuccessResponse);
-});
-
-app.put('/admin/accounts/:id', (req, res) => {
-  const editedAccount = AccountEditRequest.decode(req.body);
-  const id = req.params.id;
-
-  const hasThisAccount = accounts.some((account) => account.id === id);
-
-  if (!hasThisAccount) {
-    res.status(404).send();
-    return;
-  }
-
-  const hasSamePhone = accounts.some(
-    (account) => account.id !== id && account.phone === editedAccount.phone
-  );
-  const hasSameEmail = accounts.some(
-    (account) => account.id !== id && account.email === editedAccount.email
-  );
-
-  if (hasSamePhone || hasSameEmail) {
-    const errorResponse = AccountChangeErrorResponse.encode({
-      email: hasSameEmail,
-      phone: hasSamePhone,
-    }).finish();
-
-    res.status(409).type('application/x-protobuf').send(errorResponse);
-    return;
-  }
-
-  const accountSuccessResponse = AccountChangeSuccessResponse.encode({
-    id,
-  }).finish();
-
-  res.status(200).type('application/x-protobuf').send(accountSuccessResponse);
-});
+injectAccountsEndpoints(app, db);
+injectTeamsEndpoints(app, db);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

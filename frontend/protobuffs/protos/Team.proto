@@ -2,17 +2,67 @@ syntax = "proto3";
 
 package dto;
 
-message TeamLearnerResponse {
+message TeamModalResponse {
   message PersonShortInfo {
-    string person_id = 1;
-    string full_name = 2;
+    string id = 1;
+    string partName = 2;
     string email = 3;
     string messenger = 4;
+  } 
+
+  string id = 1;
+  int32 number = 2;
+  string theme = 3;
+  repeated PersonShortInfo learners = 4;
+  repeated PersonShortInfo trackers = 5;
+}
+
+message TeamListElement {
+  string id = 1;
+  int32 number = 2;
+  string theme = 3;
+}
+
+message TeamListResponse {
+  repeated TeamListElement teams = 1;
+}
+
+
+message TeamResponse {
+  message PersonShortInfo {
+    string id = 1;
+    string partName = 2;
+    string email = 3;
+    int32 balance = 4;
   }
 
   string id = 1;
-  int32 team_number = 2;
-  string project_theme = 3;
+  int32 number = 2;
+  string theme = 3;
   repeated PersonShortInfo learners = 4;
   repeated PersonShortInfo trackers = 5;
+}
+
+message TeamCreateRequest {
+  int32 number = 1;
+  string theme = 2;
+  repeated string learnersIds = 3;
+  repeated string trackersIds = 4;
+}
+
+message TeamEditRequest {
+  int32 number = 1;
+  string theme = 2;
+  repeated string learnersIds = 3;
+  repeated string trackersIds = 4;
+}
+
+message TeamChangeErrorResponse {
+  bool number = 1;
+  repeated string learnersIds = 3;
+  repeated string trackersIds = 4;
+}
+
+message TeamCreateSuccessResponse {
+  string id = 1;
 }

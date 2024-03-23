@@ -1,16 +1,20 @@
 import { Dropdown, Space, Button, Flex, Avatar } from 'antd';
 import { LogoutOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <a>Выйти</a>,
-    icon: <LogoutOutlined />,
-  },
-];
+import { useRouter } from 'next/navigation';
 
 export default function UserDropdown() {
+  const router = useRouter();
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <a>Выйти</a>,
+      icon: <LogoutOutlined />,
+      onClick: () => router.push('/login'),
+    },
+  ];
+
   return (
     <>
       <Dropdown menu={{ items }}>
@@ -27,7 +31,9 @@ export default function UserDropdown() {
           }}
         >
           <Space>
-            <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>U</Avatar>
+            <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>
+              U
+            </Avatar>
             Администратор
           </Space>
 

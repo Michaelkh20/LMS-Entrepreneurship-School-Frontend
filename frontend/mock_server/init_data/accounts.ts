@@ -1,19 +1,9 @@
-import { dto } from '@dto';
+import AccountClass from '../db/entities/account';
+
+import { dto } from '../../protobuffs/dto/index.js';
 import Role = dto.Role;
 
-type Account = {
-  id: string;
-  name: string;
-  surname: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  messenger: string;
-  role: Role;
-  password: string;
-};
-
-export const accounts: Account[] = [
+const accounts = [
   {
     id: '79974e29-daa7-404d-9144-3b081bef4423',
     name: 'Екатерина',
@@ -24,6 +14,20 @@ export const accounts: Account[] = [
     messenger: '@safonovapelageja',
     role: Role.LEARNER,
     password: 'learner',
+    balance: 10000,
+    teamId: '1',
+  },
+  {
+    id: '1',
+    name: 'Екатерина',
+    surname: 'Богданова',
+    lastName: 'Тимофеевна',
+    email: 'admin',
+    phone: '+75974813531',
+    messenger: 'admin',
+    role: Role.ADMIN,
+    password: 'admin',
+    balance: 10000,
   },
   {
     id: 'e545e26a-19c4-4b92-9aa7-b7d9eede56b9',
@@ -35,6 +39,8 @@ export const accounts: Account[] = [
     messenger: '@bkolobova',
     role: Role.LEARNER,
     password: '&9H2Bt)wT3',
+    balance: 100,
+    teamId: '1',
   },
   {
     id: '2ff3a1fe-a155-4098-89d4-bedbf79123c1',
@@ -46,6 +52,8 @@ export const accounts: Account[] = [
     messenger: '@osip74',
     role: Role.LEARNER,
     password: '@HYxC))BC6',
+    balance: 103,
+    teamId: '1',
   },
   {
     id: '129ada0b-0c3f-45d4-80b4-6dbabcb300a9',
@@ -57,6 +65,8 @@ export const accounts: Account[] = [
     messenger: '@taras_2024',
     role: Role.LEARNER,
     password: 'X$5RKptCG$',
+    balance: 20,
+    teamId: '1',
   },
   {
     id: '3b0e016b-26b5-406f-84ec-4a52ba888d89',
@@ -68,6 +78,8 @@ export const accounts: Account[] = [
     messenger: '@melnikovgerman',
     role: Role.LEARNER,
     password: '^w7+H(2mVH',
+    balance: 112,
+    teamId: '2',
   },
   {
     id: '32a17501-3973-48bd-a5f3-fa948dc2b52a',
@@ -79,6 +91,8 @@ export const accounts: Account[] = [
     messenger: '@mvolkova',
     role: Role.LEARNER,
     password: '%n5m_)KwYs',
+    balance: 37,
+    teamId: '2',
   },
   {
     id: 'c4ce5ffb-1899-4043-ab66-61e381f71a4d',
@@ -90,6 +104,8 @@ export const accounts: Account[] = [
     messenger: '@ubeljakov',
     role: Role.LEARNER,
     password: 'ra@Kb7$s!2',
+    balance: 67,
+    teamId: '2',
   },
   {
     id: '06c0cb95-1f81-4b3a-8ccb-84187920e716',
@@ -101,6 +117,8 @@ export const accounts: Account[] = [
     messenger: '@vatslav_07',
     role: Role.LEARNER,
     password: 'dJr0dlHi!w',
+    balance: 155,
+    teamId: '2',
   },
   {
     id: '90676f1d-39a9-44e4-9597-0f400add4f4f',
@@ -112,6 +130,8 @@ export const accounts: Account[] = [
     messenger: '@spartak1974',
     role: Role.TRACKER,
     password: '+pHuivP!j3',
+    balance: 230,
+    teamId: '1',
   },
   {
     id: 'af38bb2f-cf65-4195-b21c-221e4e2395e1',
@@ -123,5 +143,25 @@ export const accounts: Account[] = [
     messenger: '@qkulagin',
     role: Role.TRACKER,
     password: 'H4OgWVYm#o',
+    balance: 133,
+    teamId: '2',
   },
 ];
+
+const accountsInit = accounts.map(
+  (account) =>
+    new AccountClass(
+      account.name,
+      account.surname,
+      account.lastName,
+      account.email,
+      account.phone,
+      account.messenger,
+      account.role,
+      account.password,
+      account.balance,
+      account.teamId
+    )
+);
+
+export default accountsInit;

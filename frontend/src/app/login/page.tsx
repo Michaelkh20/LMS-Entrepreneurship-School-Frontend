@@ -6,6 +6,9 @@ import { useAuthMutation } from '@/redux/services/commonApi';
 import { useRouter } from 'next/navigation';
 import { use, useEffect } from 'react';
 
+import { dto } from '@dto';
+import Role = dto.Role;
+
 type AuthFormValues = {
   login: string;
   password: string;
@@ -34,7 +37,11 @@ export default function Home() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push('/admin');
+      router.push(
+        data?.role === Role.ADMIN
+          ? '/admin/accounts'
+          : `/learner/profile/${data?.id}`
+      );
     }
   }, [isSuccess, router]);
 

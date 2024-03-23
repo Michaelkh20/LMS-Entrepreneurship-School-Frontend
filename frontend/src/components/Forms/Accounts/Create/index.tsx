@@ -1,15 +1,15 @@
 'use client';
-import { Role } from '@/types/common';
 import { Form, Input, Select, Button, Space, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { AccountRequest } from '@/types/requests';
 import { useCreateAccountMutation } from '@/redux/services/adminApi';
 import { useEffect, useState } from 'react';
 import PhoneNumber from '../../FormItems/EntityForms/PhoneNumber';
 import { useRouter } from 'next/navigation';
 
 import { dto } from '@dto';
+import Role = dto.Role;
 import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
+import AccountChangeSuccessResponse = dto.AccountChangeSuccessResponse;
 import { CreateAccountFormType } from '@/types/forms';
 import { formValuesToRequest } from './helpers';
 
@@ -68,8 +68,9 @@ export default function CreateAccountForm() {
     }
 
     if (result.isSuccess) {
+      const data = result.data as AccountChangeSuccessResponse;
       message.success('Аккаунт успешно создан');
-      router.push('/admin/accounts');
+      router.push(`/admin/accounts/${data.id}`);
     }
   }, [form, result, router]);
 
@@ -158,8 +159,8 @@ export default function CreateAccountForm() {
         hasFeedback
       >
         <Select>
-          <Option value={Role.Learner}>Ученик</Option>
-          <Option value={Role.Tracker}>Трекер</Option>
+          <Option value={Role.LEARNER}>Ученик</Option>
+          <Option value={Role.TRACKER}>Трекер</Option>
         </Select>
       </Form.Item>
       <Form.Item
@@ -223,7 +224,6 @@ export default function CreateAccountForm() {
             type="primary"
             htmlType="submit"
             style={{ marginTop: '1rem' }}
-            disabled={!validEmail || !validPhone}
             loading={result.isLoading}
           >
             Создать аккаунт
