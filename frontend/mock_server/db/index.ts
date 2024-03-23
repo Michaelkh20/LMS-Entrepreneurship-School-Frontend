@@ -40,13 +40,76 @@ export default class DB {
     return accountWithTeam;
   }
 
-  getAccountsList() {
-    const accountsWithPartName = this.accountsModule.getAccountsWithPartName();
-    const accountsWithTeam = accountsWithPartName.map((account) =>
+  getAccountsList({
+    name,
+    teamNumber,
+    role,
+    sortProperty,
+    sortOrder,
+    page = '1',
+    pageSize = '10',
+  }: {
+    name?: string;
+    teamNumber?: string;
+    role?: string;
+    sortProperty?: string;
+    sortOrder?: string;
+    page?: string;
+    pageSize?: string;
+  }) {
+    const accountsWithPartNmae = this.accountsModule.getAccountsWithPartName();
+    let accounts = accountsWithPartNmae.map((account) =>
       this.teamsModule.populateAccountWithTeam(account)
     );
 
-    return accountsWithTeam;
+    if (name) {
+      accounts = accounts.filter((account) =>
+        account.partName.toLowerCase().includes(name.toLowerCase())
+      );
+    }
+
+    if (teamNumber && !Number.isNaN(Number(teamNumber))) {
+      const teamNumberParsed = Number(teamNumber);
+      accounts = accounts.filter(
+        (account) => account.team?.number === teamNumberParsed
+      );
+    }
+
+    accounts = accounts.filter((account) => account.role !== Role.ADMIN);
+
+    let roleParsed: Role | undefined = undefined;
+    if (role === '1') {
+      roleParsed = Role.TRACKER;
+    } else if (role === '2') {
+      roleParsed = Role.LEARNER;
+    }
+
+    if (roleParsed) {
+      accounts = accounts.filter((account) => account.role === roleParsed);
+    }
+
+    if (sortProperty === 'name') {
+      if (sortOrder === 'asc') {
+        accounts = accounts.sort((a, b) =>
+          a.partName.localeCompare(b.partName)
+        );
+      } else {
+        accounts = accounts.sort((a, b) =>
+          b.partName.localeCompare(a.partName)
+        );
+      }
+    }
+
+    let parsedPage = Number(page);
+    let parsedPageSize = Number(pageSize);
+
+    const start = (parsedPage - 1) * parsedPageSize;
+    const end = start + parsedPageSize;
+
+    const totalElems = accounts.length;
+    accounts = accounts.slice(start, end);
+
+    return { accounts, totalElems };
   }
 
   getAccountsShortList() {

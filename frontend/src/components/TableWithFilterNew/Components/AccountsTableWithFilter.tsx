@@ -1,20 +1,19 @@
-'use client'
+'use client';
 
 import {
   NameFormItem,
   TeamNumberFormItem,
-  RoleFormItem
+  RoleFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetAccountsQuery } from '@/redux/services/adminApi';
 import { GetAccountsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { Name, Email, TeamNumber, Role, Balance, Id } from '@/types/common';
+import { Name, Email, TeamNumber, Balance, Id } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
-
-
-
+import { useGetAccountsListQuery } from '@/redux/services/adminApi';
+import roleToString from '@/util/roleToString';
+import { dto } from '@dto';
+import Role = dto.Role;
 
 type AccountColumnsDataType = {
   id: Id;
@@ -22,50 +21,22 @@ type AccountColumnsDataType = {
   email: Email;
   team: TeamNumber[];
   role: Role;
-  balance: Balance
-}
+  balance: Balance;
+};
 
 const AccountsColumns: ColumnsType<AccountColumnsDataType> = [
   {
-      title: 'Имя',
-      dataIndex: 'name',
-      key: 'name',
-      defaultSortOrder: "ascend",
-      sorter: true
+    title: 'Имя',
+    dataIndex: 'name',
+    key: 'name',
+    defaultSortOrder: 'ascend',
+    sorter: true,
   },
-  {title: 'Email', dataIndex: 'email', key: 'email'},
-  {title: 'Команда', dataIndex: 'team', key: 'team'},
-  {title: 'Роль', dataIndex: 'role', key: 'role'},
-  {title: 'Баланс', dataIndex: 'balance', key: 'balance'}
-]
-
-const mockData = [
-  {
-    id: 12,
-    name: 'ivan',
-    email: 'ivan',
-    team: [1],
-    role: Role.Learner,
-    balance: 100,
-  },
-  {
-    id: 122,
-    name: 'ivan',
-    email: 'ivan',
-    team: [2],
-    role: Role.Learner,
-    balance: 10000,
-  },
-  {
-    id: 1221,
-    name: 'ivan',
-    email: 'ivan',
-    team: [2, 2],
-    role: Role.Tracker,
-    balance: 10000,
-  },
-]
-
+  { title: 'Email', dataIndex: 'email', key: 'email' },
+  { title: 'Команда', dataIndex: 'team', key: 'team' },
+  { title: 'Роль', dataIndex: 'role', key: 'role' },
+  { title: 'Баланс', dataIndex: 'balance', key: 'balance' },
+];
 
 export function AccountsTableWithFilter() {
   const [formData, setFormData] = useState<GetAccountsApiArg>({
@@ -74,13 +45,24 @@ export function AccountsTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetAccountsQuery(dataForReq);
+  const { data } = useGetAccountsListQuery(dataForReq);
+
+  console.log(data);
+
+  const dataForTable = data?.accountList.map((item) => {
+    return {
+      id: item.id,
+      name: item.partName,
+      email: item.email,
+      team: item.teamShort?.number ? [item.teamShort?.number] : [],
+      role: roleToString(item.role),
+      balance: item.balance,
+    };
+  });
 
   useEffect(() => {
-    console.log('FormData1:', formData);
-  }, [formData]);
+    console.log('FormData1:', dataForReq);
+  }, [dataForReq]);
 
   return (
     <>
@@ -95,9 +77,9 @@ export function AccountsTableWithFilter() {
         tableProps={{
           scroll: { x: true },
           columns: AccountsColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
-          rowKey: "id"
+          pagination: { total: data?.totalElems },
+          dataSource: dataForTable,
+          rowKey: 'id',
         }}
         formData={formData}
         setFormData={setFormData}
@@ -106,6 +88,3 @@ export function AccountsTableWithFilter() {
     </>
   );
 }
-
-
-

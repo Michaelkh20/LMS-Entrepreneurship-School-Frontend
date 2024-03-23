@@ -2,6 +2,7 @@ import express from 'express';
 import DB from '../../db';
 
 import { dto } from '../../../protobuffs/dto/index.js';
+import Role = dto.Role;
 import ProfileResponse = dto.ProfileResponse;
 import AccountResponse = dto.AccountGetResponse;
 import AccountCreateRequest = dto.AccountCreateRequest;
@@ -31,14 +32,37 @@ export default function injectAccountsEndpoints(
   });
 
   app.get('/admin/accounts/list', (req, res) => {
-    const result = db.getAccountsList();
+    const { name, teamNumber, role, sortProperty, sortOrder, page, pageSize } =
+      req.query;
+    if (
+      (name && typeof name !== 'string') ||
+      (teamNumber && typeof teamNumber !== 'string') ||
+      (role && typeof role !== 'string') ||
+      (sortProperty && typeof sortProperty !== 'string') ||
+      (sortOrder && typeof sortOrder !== 'string') ||
+      (page && typeof page !== 'string') ||
+      (pageSize && typeof pageSize !== 'string')
+    ) {
+      res.status(400).send();
+      return;
+    }
+
+    const { accounts, totalElems } = db.getAccountsList({
+      name,
+      teamNumber,
+      role,
+      sortProperty,
+      sortOrder,
+      page,
+      pageSize,
+    });
 
     const accountListResponse = AccountListResponse.encode({
-      accountList: result.map((account) => ({
+      accountList: accounts.map((account) => ({
         ...account,
         teamShort: account.team || null,
       })),
-      totalElems: result.length,
+      totalElems,
     }).finish();
 
     res.status(200).type('application/x-protobuf').send(accountListResponse);

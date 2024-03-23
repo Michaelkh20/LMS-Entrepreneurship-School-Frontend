@@ -16,6 +16,7 @@ import ITeamCreateRequest = dto.ITeamCreateRequest;
 import TeamCreateRequest = dto.TeamCreateRequest;
 import TeamChangeErrorResponse = dto.TeamChangeErrorResponse;
 import TeamCreateSuccessResponse = dto.TeamCreateSuccessResponse;
+import { GetAccountsApiArg } from '@/types/requests';
 
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
@@ -47,6 +48,7 @@ export const adminApi = createApi({
           return AccountResponse.toObject(decoded);
         },
       }),
+      providesTags: ['Account'],
     }),
 
     editAccount: build.mutation<
@@ -80,6 +82,7 @@ export const adminApi = createApi({
           return undefined;
         },
       }),
+      invalidatesTags: ['Account'],
     }),
 
     createAccount: build.mutation<
@@ -113,18 +116,21 @@ export const adminApi = createApi({
           return undefined;
         },
       }),
+      invalidatesTags: ['Account'],
     }),
 
-    getAccountsList: build.query<AccountListResponse, void>({
-      query: () => ({
+    getAccountsList: build.query<AccountListResponse, GetAccountsApiArg>({
+      query: (params) => ({
         url: `accounts/list`,
         method: 'GET',
+        params,
         async responseHandler(response) {
           const buffer = await response.arrayBuffer();
           const decoded = AccountListResponse.decode(new Uint8Array(buffer));
-          return AccountListResponse.toObject(decoded);
+          return AccountListResponse.toObject(decoded, { arrays: true });
         },
       }),
+      providesTags: ['Account'],
     }),
 
     getAccountsShortList: build.query<AccountShortListResponse, void>({
@@ -139,6 +145,7 @@ export const adminApi = createApi({
           return AccountShortListResponse.toObject(decoded);
         },
       }),
+      providesTags: ['Account'],
     }),
 
     getTeam: build.query<TeamResponse, string>({

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from '../main.module.css';
@@ -7,12 +9,15 @@ import {
   useGetAccountsShortListQuery,
 } from '@/redux/services/adminApi';
 import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
+import { useRouter } from 'next/navigation';
 
 export default function Accounts() {
-  const { data: accountsList } = useGetAccountsListQuery();
-  const { data: accountsShortList } = useGetAccountsShortListQuery();
-  console.log('Account list', accountsList);
-  console.log('Account short list', accountsShortList);
+  const router = useRouter();
+
+  const handleCreateClick = () => {
+    router.push('/admin/accounts/create');
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -22,6 +27,7 @@ export default function Accounts() {
             icon={<PlusOutlined height={10} />}
             size="large"
             type="primary"
+            onClick={handleCreateClick}
           >
             Создать
           </Button>

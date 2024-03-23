@@ -224,7 +224,6 @@ export default function CreateAccountForm() {
             type="primary"
             htmlType="submit"
             style={{ marginTop: '1rem' }}
-            disabled={!validEmail || !validPhone}
             loading={result.isLoading}
           >
             Создать аккаунт

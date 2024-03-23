@@ -16,436 +16,6 @@ export const dto = $root.dto = (() => {
      */
     const dto = {};
 
-    dto.AuthRequest = (function() {
-
-        /**
-         * Properties of an AuthRequest.
-         * @memberof dto
-         * @interface IAuthRequest
-         * @property {string|null} [login] AuthRequest login
-         * @property {string|null} [password] AuthRequest password
-         */
-
-        /**
-         * Constructs a new AuthRequest.
-         * @memberof dto
-         * @classdesc Represents an AuthRequest.
-         * @implements IAuthRequest
-         * @constructor
-         * @param {dto.IAuthRequest=} [properties] Properties to set
-         */
-        function AuthRequest(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AuthRequest login.
-         * @member {string} login
-         * @memberof dto.AuthRequest
-         * @instance
-         */
-        AuthRequest.prototype.login = "";
-
-        /**
-         * AuthRequest password.
-         * @member {string} password
-         * @memberof dto.AuthRequest
-         * @instance
-         */
-        AuthRequest.prototype.password = "";
-
-        /**
-         * Creates a new AuthRequest instance using the specified properties.
-         * @function create
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {dto.IAuthRequest=} [properties] Properties to set
-         * @returns {dto.AuthRequest} AuthRequest instance
-         */
-        AuthRequest.create = function create(properties) {
-            return new AuthRequest(properties);
-        };
-
-        /**
-         * Encodes the specified AuthRequest message. Does not implicitly {@link dto.AuthRequest.verify|verify} messages.
-         * @function encode
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {dto.IAuthRequest} message AuthRequest message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AuthRequest.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.login != null && Object.hasOwnProperty.call(message, "login"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.login);
-            if (message.password != null && Object.hasOwnProperty.call(message, "password"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AuthRequest message, length delimited. Does not implicitly {@link dto.AuthRequest.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {dto.IAuthRequest} message AuthRequest message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AuthRequest.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AuthRequest message from the specified reader or buffer.
-         * @function decode
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {dto.AuthRequest} AuthRequest
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AuthRequest.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.AuthRequest();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.login = reader.string();
-                        break;
-                    }
-                case 2: {
-                        message.password = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AuthRequest message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {dto.AuthRequest} AuthRequest
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AuthRequest.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AuthRequest message.
-         * @function verify
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AuthRequest.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.login != null && message.hasOwnProperty("login"))
-                if (!$util.isString(message.login))
-                    return "login: string expected";
-            if (message.password != null && message.hasOwnProperty("password"))
-                if (!$util.isString(message.password))
-                    return "password: string expected";
-            return null;
-        };
-
-        /**
-         * Creates an AuthRequest message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {dto.AuthRequest} AuthRequest
-         */
-        AuthRequest.fromObject = function fromObject(object) {
-            if (object instanceof $root.dto.AuthRequest)
-                return object;
-            let message = new $root.dto.AuthRequest();
-            if (object.login != null)
-                message.login = String(object.login);
-            if (object.password != null)
-                message.password = String(object.password);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AuthRequest message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {dto.AuthRequest} message AuthRequest
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AuthRequest.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.login = "";
-                object.password = "";
-            }
-            if (message.login != null && message.hasOwnProperty("login"))
-                object.login = message.login;
-            if (message.password != null && message.hasOwnProperty("password"))
-                object.password = message.password;
-            return object;
-        };
-
-        /**
-         * Converts this AuthRequest to JSON.
-         * @function toJSON
-         * @memberof dto.AuthRequest
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AuthRequest.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for AuthRequest
-         * @function getTypeUrl
-         * @memberof dto.AuthRequest
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        AuthRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/dto.AuthRequest";
-        };
-
-        return AuthRequest;
-    })();
-
-    dto.AuthResponse = (function() {
-
-        /**
-         * Properties of an AuthResponse.
-         * @memberof dto
-         * @interface IAuthResponse
-         * @property {string|null} [result] AuthResponse result
-         */
-
-        /**
-         * Constructs a new AuthResponse.
-         * @memberof dto
-         * @classdesc Represents an AuthResponse.
-         * @implements IAuthResponse
-         * @constructor
-         * @param {dto.IAuthResponse=} [properties] Properties to set
-         */
-        function AuthResponse(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AuthResponse result.
-         * @member {string} result
-         * @memberof dto.AuthResponse
-         * @instance
-         */
-        AuthResponse.prototype.result = "";
-
-        /**
-         * Creates a new AuthResponse instance using the specified properties.
-         * @function create
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {dto.IAuthResponse=} [properties] Properties to set
-         * @returns {dto.AuthResponse} AuthResponse instance
-         */
-        AuthResponse.create = function create(properties) {
-            return new AuthResponse(properties);
-        };
-
-        /**
-         * Encodes the specified AuthResponse message. Does not implicitly {@link dto.AuthResponse.verify|verify} messages.
-         * @function encode
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {dto.IAuthResponse} message AuthResponse message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AuthResponse.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.result != null && Object.hasOwnProperty.call(message, "result"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.result);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AuthResponse message, length delimited. Does not implicitly {@link dto.AuthResponse.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {dto.IAuthResponse} message AuthResponse message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AuthResponse.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AuthResponse message from the specified reader or buffer.
-         * @function decode
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {dto.AuthResponse} AuthResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AuthResponse.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.AuthResponse();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.result = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AuthResponse message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {dto.AuthResponse} AuthResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AuthResponse.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AuthResponse message.
-         * @function verify
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AuthResponse.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.result != null && message.hasOwnProperty("result"))
-                if (!$util.isString(message.result))
-                    return "result: string expected";
-            return null;
-        };
-
-        /**
-         * Creates an AuthResponse message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {dto.AuthResponse} AuthResponse
-         */
-        AuthResponse.fromObject = function fromObject(object) {
-            if (object instanceof $root.dto.AuthResponse)
-                return object;
-            let message = new $root.dto.AuthResponse();
-            if (object.result != null)
-                message.result = String(object.result);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AuthResponse message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {dto.AuthResponse} message AuthResponse
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AuthResponse.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.result = "";
-            if (message.result != null && message.hasOwnProperty("result"))
-                object.result = message.result;
-            return object;
-        };
-
-        /**
-         * Converts this AuthResponse to JSON.
-         * @function toJSON
-         * @memberof dto.AuthResponse
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AuthResponse.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for AuthResponse
-         * @function getTypeUrl
-         * @memberof dto.AuthResponse
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        AuthResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/dto.AuthResponse";
-        };
-
-        return AuthResponse;
-    })();
-
     /**
      * LotStatus enum.
      * @name dto.LotStatus
@@ -4604,6 +4174,484 @@ export const dto = $root.dto = (() => {
         };
 
         return AccountShortListResponse;
+    })();
+
+    dto.AuthRequest = (function() {
+
+        /**
+         * Properties of an AuthRequest.
+         * @memberof dto
+         * @interface IAuthRequest
+         * @property {string|null} [login] AuthRequest login
+         * @property {string|null} [password] AuthRequest password
+         */
+
+        /**
+         * Constructs a new AuthRequest.
+         * @memberof dto
+         * @classdesc Represents an AuthRequest.
+         * @implements IAuthRequest
+         * @constructor
+         * @param {dto.IAuthRequest=} [properties] Properties to set
+         */
+        function AuthRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AuthRequest login.
+         * @member {string} login
+         * @memberof dto.AuthRequest
+         * @instance
+         */
+        AuthRequest.prototype.login = "";
+
+        /**
+         * AuthRequest password.
+         * @member {string} password
+         * @memberof dto.AuthRequest
+         * @instance
+         */
+        AuthRequest.prototype.password = "";
+
+        /**
+         * Creates a new AuthRequest instance using the specified properties.
+         * @function create
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {dto.IAuthRequest=} [properties] Properties to set
+         * @returns {dto.AuthRequest} AuthRequest instance
+         */
+        AuthRequest.create = function create(properties) {
+            return new AuthRequest(properties);
+        };
+
+        /**
+         * Encodes the specified AuthRequest message. Does not implicitly {@link dto.AuthRequest.verify|verify} messages.
+         * @function encode
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {dto.IAuthRequest} message AuthRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AuthRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.login != null && Object.hasOwnProperty.call(message, "login"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.login);
+            if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AuthRequest message, length delimited. Does not implicitly {@link dto.AuthRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {dto.IAuthRequest} message AuthRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AuthRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AuthRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {dto.AuthRequest} AuthRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AuthRequest.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.AuthRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.login = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.password = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AuthRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {dto.AuthRequest} AuthRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AuthRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AuthRequest message.
+         * @function verify
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AuthRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.login != null && message.hasOwnProperty("login"))
+                if (!$util.isString(message.login))
+                    return "login: string expected";
+            if (message.password != null && message.hasOwnProperty("password"))
+                if (!$util.isString(message.password))
+                    return "password: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an AuthRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {dto.AuthRequest} AuthRequest
+         */
+        AuthRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.dto.AuthRequest)
+                return object;
+            let message = new $root.dto.AuthRequest();
+            if (object.login != null)
+                message.login = String(object.login);
+            if (object.password != null)
+                message.password = String(object.password);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AuthRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {dto.AuthRequest} message AuthRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AuthRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.login = "";
+                object.password = "";
+            }
+            if (message.login != null && message.hasOwnProperty("login"))
+                object.login = message.login;
+            if (message.password != null && message.hasOwnProperty("password"))
+                object.password = message.password;
+            return object;
+        };
+
+        /**
+         * Converts this AuthRequest to JSON.
+         * @function toJSON
+         * @memberof dto.AuthRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AuthRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for AuthRequest
+         * @function getTypeUrl
+         * @memberof dto.AuthRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        AuthRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/dto.AuthRequest";
+        };
+
+        return AuthRequest;
+    })();
+
+    dto.AuthResponse = (function() {
+
+        /**
+         * Properties of an AuthResponse.
+         * @memberof dto
+         * @interface IAuthResponse
+         * @property {string|null} [id] AuthResponse id
+         * @property {dto.Role|null} [role] AuthResponse role
+         */
+
+        /**
+         * Constructs a new AuthResponse.
+         * @memberof dto
+         * @classdesc Represents an AuthResponse.
+         * @implements IAuthResponse
+         * @constructor
+         * @param {dto.IAuthResponse=} [properties] Properties to set
+         */
+        function AuthResponse(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AuthResponse id.
+         * @member {string} id
+         * @memberof dto.AuthResponse
+         * @instance
+         */
+        AuthResponse.prototype.id = "";
+
+        /**
+         * AuthResponse role.
+         * @member {dto.Role} role
+         * @memberof dto.AuthResponse
+         * @instance
+         */
+        AuthResponse.prototype.role = 0;
+
+        /**
+         * Creates a new AuthResponse instance using the specified properties.
+         * @function create
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {dto.IAuthResponse=} [properties] Properties to set
+         * @returns {dto.AuthResponse} AuthResponse instance
+         */
+        AuthResponse.create = function create(properties) {
+            return new AuthResponse(properties);
+        };
+
+        /**
+         * Encodes the specified AuthResponse message. Does not implicitly {@link dto.AuthResponse.verify|verify} messages.
+         * @function encode
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {dto.IAuthResponse} message AuthResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AuthResponse.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.role != null && Object.hasOwnProperty.call(message, "role"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.role);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AuthResponse message, length delimited. Does not implicitly {@link dto.AuthResponse.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {dto.IAuthResponse} message AuthResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AuthResponse.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AuthResponse message from the specified reader or buffer.
+         * @function decode
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {dto.AuthResponse} AuthResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AuthResponse.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.dto.AuthResponse();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.role = reader.int32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AuthResponse message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {dto.AuthResponse} AuthResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AuthResponse.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AuthResponse message.
+         * @function verify
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AuthResponse.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            if (message.role != null && message.hasOwnProperty("role"))
+                switch (message.role) {
+                default:
+                    return "role: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            return null;
+        };
+
+        /**
+         * Creates an AuthResponse message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {dto.AuthResponse} AuthResponse
+         */
+        AuthResponse.fromObject = function fromObject(object) {
+            if (object instanceof $root.dto.AuthResponse)
+                return object;
+            let message = new $root.dto.AuthResponse();
+            if (object.id != null)
+                message.id = String(object.id);
+            switch (object.role) {
+            default:
+                if (typeof object.role === "number") {
+                    message.role = object.role;
+                    break;
+                }
+                break;
+            case "ADMIN":
+            case 0:
+                message.role = 0;
+                break;
+            case "TRACKER":
+            case 1:
+                message.role = 1;
+                break;
+            case "LEARNER":
+            case 2:
+                message.role = 2;
+                break;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AuthResponse message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {dto.AuthResponse} message AuthResponse
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AuthResponse.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.role = options.enums === String ? "ADMIN" : 0;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.role != null && message.hasOwnProperty("role"))
+                object.role = options.enums === String ? $root.dto.Role[message.role] === undefined ? message.role : $root.dto.Role[message.role] : message.role;
+            return object;
+        };
+
+        /**
+         * Converts this AuthResponse to JSON.
+         * @function toJSON
+         * @memberof dto.AuthResponse
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AuthResponse.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for AuthResponse
+         * @function getTypeUrl
+         * @memberof dto.AuthResponse
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        AuthResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/dto.AuthResponse";
+        };
+
+        return AuthResponse;
     })();
 
     dto.TeamModalResponse = (function() {

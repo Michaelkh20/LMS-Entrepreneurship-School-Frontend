@@ -13,8 +13,8 @@ interface WithAccounts {
 export class AccountsModule<T extends WithAccounts> {
   constructor(private db: Low<T>) {}
 
-  auth(login: string, password: string): boolean {
-    return this.db.data.accounts.some(
+  auth(login: string, password: string) {
+    return this.db.data.accounts.find(
       (account) => account.email === login && account.password === password
     );
   }

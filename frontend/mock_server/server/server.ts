@@ -11,6 +11,7 @@ import LotResponse = dto.LotResponse;
 import injectAccountsEndpoints from './endpoints/accounts';
 import DB from '../db';
 import injectTeamsEndpoints from './endpoints/teams.js';
+import lots from '../init_data/lots.js';
 
 const app = express();
 const db = new DB();
@@ -21,18 +22,19 @@ app.use(express.raw({ type: 'application/x-protobuf' }));
 app.post('/auth', (req, res) => {
   const authRequest = AuthRequest.decode(req.body);
 
-  const isSuccessful = db.accountsModule.auth(
+  const account = db.accountsModule.auth(
     authRequest.login,
     authRequest.password
   );
 
-  if (isSuccessful) {
+  if (account) {
     res
       .status(200)
       .type('application/x-protobuf')
       .send(
         AuthResponse.encode({
-          result: 'Successfully authenticated',
+          role: account.role,
+          id: account.id,
         }).finish()
       );
   } else {
@@ -40,42 +42,42 @@ app.post('/auth', (req, res) => {
   }
 });
 
-// app.get('/lots-short', (req, res) => {
-//   const pageNumber = Number(req.query.pageNumber);
-//   const pageSize = Number(req.query.pageSize);
+app.get('/lots-short', (req, res) => {
+  const pageNumber = Number(req.query.pageNumber);
+  const pageSize = Number(req.query.pageSize);
 
-//   const shortLots = lots
-//     .map((lot) => ({
-//       id: lot.id,
-//       number: lot.number,
-//       title: lot.title,
-//       performer: lot.performer,
-//       price: lot.price,
-//     }))
-//     .slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+  const shortLots = lots
+    .map((lot) => ({
+      id: lot.id,
+      number: lot.number,
+      title: lot.title,
+      performer: lot.performer,
+      price: lot.price,
+    }))
+    .slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 
-//   const lotsShortResponse = LotsShortResponse.encode({
-//     totalLotsNumber: lots.length,
-//     lots: shortLots,
-//   }).finish();
+  const lotsShortResponse = LotsShortResponse.encode({
+    totalLotsNumber: lots.length,
+    lots: shortLots,
+  }).finish();
 
-//   res.status(200).type('application/x-protobuf').send(lotsShortResponse);
-// });
+  res.status(200).type('application/x-protobuf').send(lotsShortResponse);
+});
 
-// app.get('/lot', (req, res) => {
-//   const id = Number(req.query.id);
+app.get('/lot', (req, res) => {
+  const id = Number(req.query.id);
 
-//   const lot = lots.find((lot) => lot.id === id);
+  const lot = lots.find((lot) => lot.id === id);
 
-//   if (!lot) {
-//     res.status(404).send();
-//     return;
-//   }
+  if (!lot) {
+    res.status(404).send();
+    return;
+  }
 
-//   const lotResponse = LotResponse.encode(lot).finish();
+  const lotResponse = LotResponse.encode(lot).finish();
 
-//   res.status(200).type('application/x-protobuf').send(lotResponse);
-// });
+  res.status(200).type('application/x-protobuf').send(lotResponse);
+});
 
 app.post('/learner/claims/buy-lot', (req, res) => {
   const id = Number(req.query.id);

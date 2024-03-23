@@ -18,6 +18,18 @@ const accounts = [
     teamId: '1',
   },
   {
+    id: '1',
+    name: 'Екатерина',
+    surname: 'Богданова',
+    lastName: 'Тимофеевна',
+    email: 'admin',
+    phone: '+75974813531',
+    messenger: 'admin',
+    role: Role.ADMIN,
+    password: 'admin',
+    balance: 10000,
+  },
+  {
     id: 'e545e26a-19c4-4b92-9aa7-b7d9eede56b9',
     name: 'Платон',
     surname: 'Стрелков',
