@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
 
-import styles from '../main.module.css';
+import styles from '@/app/admin/main.module.css';
 
 export default function TeamsPage() {
   return (

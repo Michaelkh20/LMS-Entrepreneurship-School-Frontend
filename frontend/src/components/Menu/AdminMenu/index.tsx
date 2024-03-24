@@ -1,6 +1,6 @@
 import UserDropdown from '@/components/Dropdowns/UserDropdown';
 import { TeamOutlined, UserOutlined } from '@ant-design/icons';
-import { Menu, MenuProps } from 'antd';
+import { ConfigProvider, Menu, MenuProps } from 'antd';
 import Link from 'next/link';
 import React from 'react';
 
@@ -106,10 +106,22 @@ const menuItems: MenuProps['items'] = [
 
 export default function AdminMenu() {
   return (
-    <>
-      <UserDropdown/>
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            activeBarBorderWidth: 0,
+          },
+        },
+      }}
+    >
+      <UserDropdown
+        props={{
+          name: undefined,
+        }}
+      />
       {/* <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} /> */}
       <Menu mode="inline" items={menuItems} />
-    </>
+    </ConfigProvider>
   );
 }

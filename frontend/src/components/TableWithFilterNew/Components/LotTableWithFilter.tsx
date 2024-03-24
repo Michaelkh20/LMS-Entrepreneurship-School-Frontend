@@ -34,7 +34,6 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
     title: 'Лот',
     dataIndex: 'lot',
     key: 'lot',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Владелец', dataIndex: 'user', key: 'user' },
@@ -90,8 +89,7 @@ export function LotTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<LotColumnsDataType[]>(mockData);
+  const [dataTable, setDataTable] = useState<LotColumnsDataType[]>(mockData);
   // const { data, isLoading, isError, isFetching } =
   //   useGetClaimsQuery(dataForReq);
 
@@ -102,6 +100,7 @@ export function LotTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LotNumberFormItem />

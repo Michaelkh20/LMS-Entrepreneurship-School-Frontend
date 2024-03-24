@@ -34,7 +34,6 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
     title: 'Урок',
     dataIndex: 'lessonNumber',
     key: 'lessonNumber',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Тема', dataIndex: 'lessonTheme', key: 'lessonTheme' },
@@ -81,6 +80,7 @@ export function LessonsTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LessonNumberFormItem />

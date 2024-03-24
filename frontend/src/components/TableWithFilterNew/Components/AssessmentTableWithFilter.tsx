@@ -28,7 +28,6 @@ const AssessmentColumns: ColumnsType<AssessmentTableItem> = [
     title: 'Имя',
     dataIndex: 'learner',
     key: 'learner',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Команда', dataIndex: 'team', key: 'team' },
@@ -98,6 +97,7 @@ export function AssessmentTableWithFilter({}: {}) {
   return (
     <>
       <BasicTableWithFilter
+      // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <NameFormItem name="learnerId" />

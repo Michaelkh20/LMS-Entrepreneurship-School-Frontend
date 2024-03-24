@@ -39,7 +39,6 @@ const TransactionsColumns: ColumnsType<TransactionsColumnsDataType> = [
     title: 'Имя',
     dataIndex: 'user',
     key: 'user',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Тип', dataIndex: 'type', key: 'type' },
@@ -94,6 +93,7 @@ export function TransactionsTableWithFilters() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <NameFormItem />

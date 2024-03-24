@@ -52,12 +52,14 @@ export function BasicTableWithFilter<T>({
   formData,
   setFormData,
   setDataForReq,
+  totalNumber,
 }: {
   filterFormItems: React.ReactElement;
   tableProps: TableProps;
   formData: T;
   setFormData: React.Dispatch<SetStateAction<T>>;
   setDataForReq: React.Dispatch<SetStateAction<T>>;
+  totalNumber?: number;
 }) {
   const handleTableChange: TableProps<any>['onChange'] = (
     pagination,
@@ -71,12 +73,20 @@ export function BasicTableWithFilter<T>({
         page: pagination.current,
         pageSize: pagination.pageSize,
         sortProperty: (sorter as SorterResult<any>).field,
-        sortOrder:
-          (sorter as SorterResult<any>).order === 'descend'
-            ? SortOrder.Desc
-            : SortOrder.Asc,
+        sortOrder: checkSorter(sorter as SorterResult<any>),
       };
     });
+  };
+
+  const checkSorter = (sorter: SorterResult<any>) => {
+    switch (sorter.order) {
+      case 'descend':
+        return SortOrder.Desc;
+      case 'ascend':
+        return SortOrder.Asc;
+      default:
+        return undefined;
+    }
   };
 
   const handleFilterChanges = (changedValues: any, allValues: any) => {
@@ -93,6 +103,7 @@ export function BasicTableWithFilter<T>({
     () =>
       _debounce((data: any) => {
         setDataForReq(data);
+        console.log("REQ: ", data)
       }, 700),
     []
   );
@@ -103,7 +114,7 @@ export function BasicTableWithFilter<T>({
 
   return (
     <>
-      <BasicFilter onChangeEvent={handleFilterChanges}>
+      <BasicFilter onChangeEvent={handleFilterChanges} total={totalNumber}>
         {filterFormItems}
       </BasicFilter>
       <Table

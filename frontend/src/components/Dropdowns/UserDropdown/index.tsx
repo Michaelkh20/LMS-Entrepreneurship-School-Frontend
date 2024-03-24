@@ -3,7 +3,13 @@ import { LogoutOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default function UserDropdown() {
+export default function UserDropdown(
+  {
+    props: { name = 'Администратор' },
+  }: {
+    props: { name?: string };
+  }
+) {
   const router = useRouter();
 
   const items: MenuProps['items'] = [
@@ -34,7 +40,7 @@ export default function UserDropdown() {
             <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>
               U
             </Avatar>
-            Администратор
+            {name}
           </Space>
 
           <DownOutlined />

@@ -10,22 +10,34 @@ import icon from '../../../../public/icon.svg';
 import Image from 'next/image';
 import { Role } from '@/types/common';
 
+import { ConfigProvider } from 'antd';
+
 export default function AdminNavbar() {
   const path = usePathname();
   const isHomePage = path === ADMIN_HOME_PAGE;
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.left}>
-        <span className={styles.adminIcon}>
-          <Image src={icon} alt="Profile icon" width={40} height={40} />
-        </span>
-        <span className={styles.adminLabel}>Администратор</span>
-      </div>
-      <div className={styles.right}>
-        {!isHomePage && <HomeButton role={Role.Admin} />}
-        <ExitButton />
-      </div>
-    </nav>
+    <ConfigProvider
+      theme={{
+        components:{
+          Menu:{
+            activeBarBorderWidth: 0
+          }
+        }
+      }}
+    >
+      <nav className={styles.nav} >
+        <div className={styles.left}>
+          <span className={styles.adminIcon}>
+            <Image src={icon} alt="Profile icon" width={40} height={40} />
+          </span>
+          <span className={styles.adminLabel}>Администратор</span>
+        </div>
+        <div className={styles.right}>
+          {!isHomePage && <HomeButton role={Role.Admin} />}
+          <ExitButton />
+        </div>
+      </nav>
+    </ConfigProvider>
   );
 }

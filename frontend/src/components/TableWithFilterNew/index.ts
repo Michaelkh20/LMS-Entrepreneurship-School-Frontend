@@ -11,3 +11,12 @@ export {TransactionsTableWithFilters} from './Components/TransactionsTableWithFi
 
 
 
+
+
+
+
+
+export {FinalGradeTable} from './Tables/FinalGradeTable'
+
+
+

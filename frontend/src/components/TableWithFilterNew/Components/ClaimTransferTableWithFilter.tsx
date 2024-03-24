@@ -35,14 +35,12 @@ const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
     title: 'Отправитель',
     dataIndex: 'learner',
     key: 'learner',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   {
     title: 'Получатель',
     dataIndex: 'receiver',
     key: 'receiver',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Дата', dataIndex: 'date', key: 'date' },
@@ -99,7 +97,7 @@ const ConfirmButtons = ({
         onConfirm={() => console.log('Reject', record.id, record.sum)}
       >
         <Button>Нет</Button>
-      </Popconfirm> 
+      </Popconfirm>
       <Popconfirm
         title={'Одобрить заявку?'}
         cancelText="Нет"
@@ -159,9 +157,9 @@ export function ClaimTransferTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
-  
             <UserSelectionFormItem
               placeholder={'Отправитель'}
               name={'learnerId'}
