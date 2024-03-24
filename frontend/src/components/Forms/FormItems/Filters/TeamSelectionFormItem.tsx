@@ -1,5 +1,8 @@
-import { useGetTeamsForSelectQuery } from '@/redux/services/adminApi';
+// import { useGetTeamsForSelectQuery } from '@/redux/services/adminApi';
+import { TeamTableItem, TeamsPage } from '@/types/responses';
 import { Form, Select } from 'antd';
+
+//TODO: hooks
 
 export function TeamSelectionFormItem({
   placeholder,
@@ -8,7 +11,17 @@ export function TeamSelectionFormItem({
   placeholder: string;
   name: string;
 }) {
-  const { data, isFetching } = useGetTeamsForSelectQuery();
+  // const { data, isFetching } = useGetTeamsForSelectQuery();
+  const { data, isFetching } = {
+    data: [
+      {
+        teamNumber: 1,
+        id: 1,
+        projectTheme: 'ASD',
+      },
+    ] as TeamTableItem[],
+    isFetching: false,
+  };
 
   return (
     <Form.Item name={name}>
@@ -18,7 +31,8 @@ export function TeamSelectionFormItem({
         placeholder={placeholder}
         loading={isFetching}
         options={data?.map((team) => ({
-          label: 'Команда №' + team.number,
+          // label: 'Команда №' + team.number,
+          label: 'Команда №' + team.teamNumber,
           value: team.id,
         }))}
         optionFilterProp="label"

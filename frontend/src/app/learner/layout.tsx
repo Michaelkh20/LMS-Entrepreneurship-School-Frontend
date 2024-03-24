@@ -13,6 +13,7 @@ const SiderStyles: CSSProperties = {
   overflow: 'auto',
   height: '100vh',
   top: 0,
+  borderInlineEnd: '1px solid #f0f0f0' 
 };
 
 const OuterLayoutStyles: CSSProperties = {

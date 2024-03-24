@@ -1,68 +1,104 @@
-import { Menu, MenuProps } from 'antd';
+import UserDropdown from '@/components/Dropdowns/UserDropdown';
+import { DollarOutlined } from '@ant-design/icons';
+import { ConfigProvider, Menu, MenuProps } from 'antd';
 import Link from 'next/link';
 import React from 'react';
 
 const menuItems: MenuProps['items'] = [
   {
-    key: 'shop',
-    label: <Link href="/learner/shop">Магазин</Link>,
-  },
-  {
-    key: 'lessons',
-    label: <Link href="/learner/lessons">Уроки</Link>,
-  },
-  {
-    key: 'assessments',
-    label: <Link href="/learner/assessments">Оценки</Link>,
-  },
-  {
-    key: 'lots',
-    label: 'Лоты',
+    label: 'Страницы',
+    key: 'Pages_divider',
+    type: 'group',
     children: [
       {
-        key: 'lots:buy',
-        label: <Link href="/learner/lots/buy">Я купил</Link>,
+        key: 'shop',
+        label: <Link href="/learner/shop">Магазин</Link>,
       },
       {
-        key: 'lots:sell',
-        label: <Link href="/learner/lots/sell">Я продаю</Link>,
+        key: 'lessons',
+        label: <Link href="/learner/lessons">Уроки</Link>,
+      },
+      {
+        key: 'assessments',
+        label: <Link href="/learner/assessments">Оценки</Link>,
+      },
+      {
+        key: 'lots',
+        label: 'Лоты',
+        children: [
+          {
+            key: 'lots:buy',
+            label: <Link href="/learner/lots/buy">Я купил</Link>,
+          },
+          {
+            key: 'lots:sell',
+            label: <Link href="/learner/lots/sell">Я продаю</Link>,
+          },
+        ],
+      },
+      {
+        key: 'claims',
+        label: 'Заявки',
+        children: [
+          {
+            key: 'claims:lots-purchase-sale',
+            label: (
+              <Link href="/learner/claims/lots-purchase-sale">
+                Купля-Продажа лотов
+              </Link>
+            ),
+          },
+          {
+            key: 'claims:lots-listing',
+            label: (
+              <Link href="/learner/claims/lots-listing">Размещение лотов</Link>
+            ),
+          },
+          {
+            key: 'claims:transfers',
+            label: <Link href="/learner/claims/transfers">Переводы ШПрот</Link>,
+          },
+        ],
+      },
+      {
+        key: 'transactions',
+        label: <Link href="/learner/transactions">Транзакции</Link>,
+      },
+      {
+        key: 'HW',
+        label: <Link href="/learner/homeworks">ДЗ</Link>,
       },
     ],
-  },
-  {
-    key: 'claims',
-    label: 'Заявки',
-    children: [
-      {
-        key: 'claims:lots-purchase-sale',
-        label: (
-          <Link href="/learner/claims/lots-purchase-sale">
-            Купля-Продажа лотов
-          </Link>
-        ),
-      },
-      {
-        key: 'claims:lots-listing',
-        label: (
-          <Link href="/learner/claims/lots-listing">Размещение лотов</Link>
-        ),
-      },
-      {
-        key: 'claims:transfers',
-        label: <Link href="/learner/claims/transfers">Переводы ШПрот</Link>,
-      },
-    ],
-  },
-  {
-    key: 'transactions',
-    label: <Link href="/learner/transactions">Транзакции</Link>,
-  },
-  {
-    key: 'HW',
-    label: <Link href="/learner/homeworks">ДЗ</Link>,
   },
 ];
 
 export default function LearnerMenu() {
-  return <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} />;
+  return (
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            activeBarBorderWidth: 0,
+          },
+        },
+      }}
+    >
+      <UserDropdown
+        props={{
+          name: 'Иван Иванов',
+        }}
+      />
+      <div
+        style={{
+          padding: '12px 16px 12px 16px',
+          fontSize: '1rem',
+          fontWeight: 'bold',
+          
+        }}
+      >
+        <DollarOutlined /> 100 ШП
+      </div>
+      <Menu mode="inline" items={menuItems} />
+    </ConfigProvider>
+  );
 }
