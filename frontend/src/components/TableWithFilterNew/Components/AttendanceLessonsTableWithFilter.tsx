@@ -32,7 +32,6 @@ const AttendanceLessonsColumns: ColumnsType<AttendanceLessonsColumnsDataType> =
       title: 'Урок',
       dataIndex: 'lessonNumber',
       key: 'lessonNumber',
-      defaultSortOrder: 'ascend',
       sorter: true,
     },
     { title: 'Тема', dataIndex: 'lessonTheme', key: 'lessonTheme' },

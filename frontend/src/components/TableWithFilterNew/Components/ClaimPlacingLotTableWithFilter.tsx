@@ -34,7 +34,6 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
     title: 'Лот',
     dataIndex: 'lot',
     key: 'lot',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Покупатель', dataIndex: 'receiver', key: 'receiver' },
@@ -46,9 +45,15 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
     render: (_, record: ClaimPlacingLotColumnsDataType) => {
       return (
         <>
-          {record.claimStatus === ClaimStatus.Waiting && <p style={{color: 'var(--color-primary)'}}>Ожидание</p>}
-          {record.claimStatus === ClaimStatus.Declined && <p style={{color: 'var(--color-error)'}}>Отклонено</p>}
-          {record.claimStatus === ClaimStatus.Approved && <p style={{color: 'var(--color-success)'}}>Одобрено</p>}
+          {record.claimStatus === ClaimStatus.Waiting && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
+          )}
+          {record.claimStatus === ClaimStatus.Declined && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
+          )}
+          {record.claimStatus === ClaimStatus.Approved && (
+            <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
+          )}
         </>
       );
     },
@@ -103,6 +108,7 @@ export function ClaimPlacingLotTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LotNumberFormItem />

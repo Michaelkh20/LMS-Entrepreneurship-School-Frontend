@@ -12,6 +12,7 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons';
+import { FinalGradeTable } from '../TableWithFilterNew';
 
 const cx = cn.bind(styles);
 
@@ -91,7 +92,7 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
             )}
           </div>
           <div className={styles.finalGradeContainer}>
-            <div>Здесь будет таблица с итоговыми оценками</div>
+            <FinalGradeTable />
             {isEditable && (
               <div className={styles.riseBtnContainer}>
                 <Button size="large" type="default" icon={<ArrowUpOutlined />}>

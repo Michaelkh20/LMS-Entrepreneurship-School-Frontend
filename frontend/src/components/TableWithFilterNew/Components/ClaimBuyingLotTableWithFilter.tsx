@@ -42,7 +42,6 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     title: 'Лот',
     dataIndex: 'lot',
     key: 'lot',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Покупатель', dataIndex: 'receiver', key: 'receiver' },
@@ -54,9 +53,15 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     render: (_, record: ClaimBuyingLotColumnsDataType) => {
       return (
         <>
-          {record.claimStatus === ClaimStatus.Waiting && <p style={{color: 'var(--color-primary)'}}>Ожидание</p>}
-          {record.claimStatus === ClaimStatus.Declined && <p style={{color: 'var(--color-error)'}}>Отклонено</p>}
-          {record.claimStatus === ClaimStatus.Approved && <p style={{color: 'var(--color-success)'}}>Одобрено</p>}
+          {record.claimStatus === ClaimStatus.Waiting && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
+          )}
+          {record.claimStatus === ClaimStatus.Declined && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
+          )}
+          {record.claimStatus === ClaimStatus.Approved && (
+            <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
+          )}
         </>
       );
     },
@@ -111,6 +116,7 @@ export function ClaimBuyingLotTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LotNumberFormItem />

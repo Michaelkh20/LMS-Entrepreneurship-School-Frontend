@@ -44,7 +44,6 @@ const TasksColumns: ColumnsType<TasksColumnsDataType> = [
     title: 'Задание',
     dataIndex: 'taskTitle',
     key: 'taskTitle',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Тип', dataIndex: 'taskType', key: 'taskType' },
@@ -95,6 +94,7 @@ export function TasksTableWithFilter({ taskType }: { taskType?: TaskType }) {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LessonNumberFormItem />

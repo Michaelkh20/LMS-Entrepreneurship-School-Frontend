@@ -13,7 +13,7 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { Id, TaskType, DateTime } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
 
-import { NextRouter, useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 type AssessmentAllTasksTableItem = {
@@ -32,7 +32,6 @@ const AssessmentAllTasksColumns: ColumnsType<AssessmentAllTasksTableItem> = [
     title: 'Задание',
     dataIndex: 'taskTitle',
     key: 'taskTitle',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Урок', dataIndex: 'lesson', key: 'lesson' },
@@ -66,13 +65,10 @@ const mockData: AssessmentAllTasksTableItem[] = [
 
 export function AssessmentAllTasksTableWithFilter({
   taskType,
-  nextRouter
 }: {
   taskType?: TaskType;
-  nextRouter?: NextRouter
 }) {
-
-  
+  const router = useRouter();
 
   const [formData, setFormData] = useState<GetTasksApiArg>({
     taskType: taskType,
@@ -95,6 +91,7 @@ export function AssessmentAllTasksTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <LessonSelectionFormItem
@@ -115,7 +112,9 @@ export function AssessmentAllTasksTableWithFilter({
           rowKey: 'id',
           onRow: (record, rowIndex) => {
             return {
-              // onClick: (ev) => {() => nextRouter.push('/teams')},
+              onClick: (ev) => {
+                router.push(`/admin/assessments/${record.id}`);
+              },
             };
           },
         }}

@@ -21,13 +21,10 @@ const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
     title: '№ Команды',
     dataIndex: 'teamNumber',
     key: 'teamNumber',
-    defaultSortOrder: 'ascend',
     sorter: true,
     width: 200,
     render(value, record, index) {
-      return (
-        <div>№ {value}</div>
-      )
+      return <div>№ {value}</div>;
     },
   },
   { title: 'Тема', dataIndex: 'theme', key: 'theme' },
@@ -37,19 +34,19 @@ const mockData: TeamsColumnsDataType[] = [
   {
     id: 1,
     teamNumber: 1,
-    theme: "Выпечка"
+    theme: 'Выпечка',
   },
   {
     id: 2,
     teamNumber: 2,
-    theme: "Булочки"
+    theme: 'Булочки',
   },
   {
     id: 3,
     teamNumber: 3,
-    theme: "Чаёчек"
-  }
-]
+    theme: 'Чаёчек',
+  },
+];
 
 export function TeamTableWithFilter() {
   const [formData, setFormData] = useState<GetTeamsApiArg>({
@@ -58,7 +55,9 @@ export function TeamTableWithFilter() {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(mockData || []);
+  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(
+    mockData || []
+  );
   // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {
@@ -68,6 +67,7 @@ export function TeamTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <TeamNumberFormItem />

@@ -11,7 +11,8 @@ import type { GetClaimsApiArg } from '@/types/requests';
 import type {
   AdminClaimTableItem,
   TaskSelectionItem,
-  UserSelectionItem} from '@/types/responses';
+  UserSelectionItem,
+} from '@/types/responses';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
@@ -32,7 +33,6 @@ const ClaimDeadlineColumns: ColumnsType<ClaimDeadlineColumnsDataType> = [
     title: 'Ученик',
     dataIndex: 'learner',
     key: 'learner',
-    defaultSortOrder: 'ascend',
     sorter: true,
   },
   { title: 'Задание', dataIndex: 'task', key: 'task' },
@@ -93,12 +93,10 @@ export function ClaimDeadlineTableWithFilter() {
   return (
     <>
       <BasicTableWithFilter
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
-            <UserSelectionFormItem
-              placeholder={'Ученик'}
-              name={'learnerId'}
-            />
+            <UserSelectionFormItem placeholder={'Ученик'} name={'learnerId'} />
             <TaskSelectionFormItem placeholder={'Задание'} name={'taskId'} />
             <ClaimStatusFormItem />
           </>

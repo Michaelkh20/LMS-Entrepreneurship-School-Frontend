@@ -3,7 +3,30 @@
   overflow: hidden;
 }
 
-.wrapper{
+.wrapper {
   max-width: 1920px;
   margin: 0 auto;
+}
+
+.wrapper_page {
+  height: 100vh;
+  overflow-y: auto;
+  justify-content: center;
+  background: #fff;
+}
+
+.wrapper_header {
+}
+.wrapper_content {
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  background-color: #fff;
+}
+
+.content {
+  /* max-width: calc(1920px - 256px); */
+
+  /* flex: 1 0 auto; */
 }
