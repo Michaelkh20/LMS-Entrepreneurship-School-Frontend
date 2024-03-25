@@ -27,6 +27,11 @@ import {
   ClaimStatus,
 } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
+import { useGetBuyLotClaimsListQuery } from '@/redux/services/adminApi';
+
+import { dto } from '@dto';
+import BuyLotClaimStatus = dto.BuyLotClaimStatus;
+import dateToFormatString from '@/util/dateToFormatString';
 
 type ClaimBuyingLotColumnsDataType = {
   id: AdminClaimTableItem['id'];
@@ -97,17 +102,35 @@ const mockData: ClaimBuyingLotColumnsDataType[] = [
 ];
 
 export function ClaimBuyingLotTableWithFilter() {
-  const [formData, setFormData] = useState<GetClaimsApiArg>({
+  const [formData, setFormData] = useState({
     claimType: ClaimType.BuyingLot,
     page: 1,
     pageSize: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<ClaimBuyingLotColumnsDataType[]>(mockData);
+  // const [dataTable, setDataTable] =
+  //   useState<ClaimBuyingLotColumnsDataType[]>(mockData);
   // const { data, isLoading, isError, isFetching } =
   //   useGetClaimsQuery(dataForReq);
+
+  const { data } = useGetBuyLotClaimsListQuery(dataForReq);
+
+  console.log(data);
+
+  const dataTable = data?.claimBuyLotList.map((item) => ({
+    id: item.id,
+    lot: item.lotNumber,
+    claimStatus:
+      BuyLotClaimStatus.APPROVED === item.status
+        ? ClaimStatus.Approved
+        : BuyLotClaimStatus.WAITING === item.status
+        ? ClaimStatus.Waiting
+        : ClaimStatus.Declined,
+    receiver: item.buyer,
+    date: dateToFormatString(item.date || undefined),
+    sum: item.price,
+  }));
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -132,7 +155,7 @@ export function ClaimBuyingLotTableWithFilter() {
         tableProps={{
           scroll: { x: true },
           columns: ClaimBuyingLotColumns,
-          // pagination: { total: data?.pagination?.totalElements },
+          pagination: { total: data?.totalElems },
           dataSource: dataTable,
           rowKey: 'id',
         }}

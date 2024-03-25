@@ -1,5 +1,6 @@
 import { dto } from '../../protobuffs/dto/index.js';
 import LotStatus = dto.LotStatus;
+import Lot from '../db/entities/lot.js';
 
 const lots = [
   {
@@ -11,9 +12,9 @@ const lots = [
     terms:
       'нужно написать о желании получить консультацию куратору конкурсов Писать нужно заблаговременно (желательно за 2-3 дня до созвона + учитывать время подачи зачвки на конкурс/олимпиаду)',
     price: 100,
-    status: LotStatus.APPROVAL,
-    performer: 'Иванов Иван',
-    date: '29.02.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '79974e29-daa7-404d-9144-3b081bef4423',
+    date: new Date(2024, 2, 1),
   },
   {
     id: 2,
@@ -24,8 +25,8 @@ const lots = [
       'Предоставление 3 вариантов логотипа, возможность внесения двух раундов правок',
     price: 300,
     status: LotStatus.ACTIVE,
-    performer: 'Петрова Александра',
-    date: '15.03.2024',
+    performerId: '79974e29-daa7-404d-9144-3b081bef4423',
+    date: new Date(2024, 3, 11),
   },
   {
     id: 3,
@@ -35,9 +36,9 @@ const lots = [
       'Обучение основам программирования на языке Python для начинающих',
     terms: 'Длительность курса 4 недели, занятия по вечерам 2 раза в неделю',
     price: 500,
-    status: LotStatus.APPROVAL,
-    performer: 'Семенов Семен',
-    date: '01.04.2024',
+    status: LotStatus.ACTIVE,
+    performerId: 'e545e26a-19c4-4b92-9aa7-b7d9eede56b9',
+    date: new Date(2024, 3, 23),
   },
   {
     id: 4,
@@ -47,9 +48,9 @@ const lots = [
       'Подготовка и проведение корпоративного мероприятия для вашей компании',
     terms: 'Подбор места, кейтеринг, развлекательная программа',
     price: 2000,
-    status: LotStatus.INACTIVE,
-    performer: 'Михайлов Михаил',
-    date: '20.05.2024',
+    status: LotStatus.ACTIVE,
+    performerId: 'e545e26a-19c4-4b92-9aa7-b7d9eede56b9',
+    date: new Date(2024, 1, 12),
   },
   {
     id: 5,
@@ -60,8 +61,8 @@ const lots = [
       'Длительность съемки до 2 часов, предоставление 20 обработанных фотографий',
     price: 150,
     status: LotStatus.ACTIVE,
-    performer: 'Васильева Екатерина',
-    date: '10.04.2024',
+    performerId: '2ff3a1fe-a155-4098-89d4-bedbf79123c1',
+    date: new Date(2024, 3, 11),
   },
   {
     id: 6,
@@ -72,8 +73,8 @@ const lots = [
     terms: 'Срок выполнения - до 3 рабочих дней, стоимость указана за страницу',
     price: 50,
     status: LotStatus.ACTIVE,
-    performer: 'Захарова Мария',
-    date: '05.04.2024',
+    performerId: '2ff3a1fe-a155-4098-89d4-bedbf79123c1',
+    date: new Date(2024, 2, 25),
   },
   {
     id: 7,
@@ -84,9 +85,9 @@ const lots = [
     terms:
       'Аудит сайта, подбор ключевых слов, внутренняя оптимизация, мониторинг позиций',
     price: 1200,
-    status: LotStatus.APPROVAL,
-    performer: 'Кузнецов Артем',
-    date: '25.04.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '129ada0b-0c3f-45d4-80b4-6dbabcb300a9',
+    date: new Date(2024, 3, 17),
   },
   {
     id: 8,
@@ -97,8 +98,8 @@ const lots = [
     terms: '8 занятий в месяц, длительность одного занятия 1 час',
     price: 400,
     status: LotStatus.ACTIVE,
-    performer: 'Гордеева Елена',
-    date: '15.04.2024',
+    performerId: '129ada0b-0c3f-45d4-80b4-6dbabcb300a9',
+    date: new Date(2024, 2, 13),
   },
   {
     id: 9,
@@ -108,9 +109,9 @@ const lots = [
     terms:
       'Создание ТЗ, дизайн, программирование, тестирование и запуск приложения',
     price: 5000,
-    status: LotStatus.APPROVAL,
-    performer: 'Лебедев Константин',
-    date: '30.06.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '3b0e016b-26b5-406f-84ec-4a52ba888d89',
+    date: new Date(2024, 3, 18),
   },
   {
     id: 10,
@@ -119,9 +120,9 @@ const lots = [
     description: 'Разработка концепции, съемка и монтаж рекламного видеоролика',
     terms: 'Создание сценария, подбор актеров, съемка, монтаж и цветокоррекция',
     price: 2500,
-    status: LotStatus.INACTIVE,
-    performer: 'Тарасова Анна',
-    date: '01.07.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '3b0e016b-26b5-406f-84ec-4a52ba888d89',
+    date: new Date(2024, 2, 7),
   },
   {
     id: 11,
@@ -133,8 +134,8 @@ const lots = [
       'Анализ текущего состояния аккаунта, подбор стратегии, рекомендации по контент-плану',
     price: 250,
     status: LotStatus.ACTIVE,
-    performer: 'Кузнецова Мария',
-    date: '05.04.2024',
+    performerId: '32a17501-3973-48bd-a5f3-fa948dc2b52a',
+    date: new Date(2024, 3, 16),
   },
   {
     id: 12,
@@ -144,9 +145,9 @@ const lots = [
     terms:
       'Разработка концепта, дизайна, программирование, тестирование, запуск в продакшн',
     price: 10000,
-    status: LotStatus.APPROVAL,
-    performer: 'Алексеев Алексей',
-    date: '30.06.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '32a17501-3973-48bd-a5f3-fa948dc2b52a',
+    date: new Date(2024, 3, 18),
   },
   {
     id: 13,
@@ -157,9 +158,9 @@ const lots = [
     terms:
       'Перевод технической, научной и художественной литературы. Работа с большими объемами.',
     price: 50,
-    status: LotStatus.INACTIVE,
-    performer: 'Дмитриев Дмитрий',
-    date: '15.04.2024',
+    status: LotStatus.ACTIVE,
+    performerId: 'c4ce5ffb-1899-4043-ab66-61e381f71a4d',
+    date: new Date(2024, 3, 14),
   },
   {
     id: 14,
@@ -170,8 +171,8 @@ const lots = [
       'Проектирование, дизайн, программирование сайта, SEO-оптимизация, контекстная реклама',
     price: 5000,
     status: LotStatus.ACTIVE,
-    performer: 'Николаева Наталья',
-    date: '25.05.2024',
+    performerId: 'c4ce5ffb-1899-4043-ab66-61e381f71a4d',
+    date: new Date(2024, 1, 9),
   },
   {
     id: 15,
@@ -182,10 +183,24 @@ const lots = [
     terms:
       'Разучивание аккордов, мелодий, работа над чувством ритма, подбор индивидуальной программы',
     price: 200,
-    status: LotStatus.APPROVAL,
-    performer: 'Чернов Антон',
-    date: '12.04.2024',
+    status: LotStatus.ACTIVE,
+    performerId: '06c0cb95-1f81-4b3a-8ccb-84187920e716',
+    date: new Date(2024, 3, 19),
   },
 ];
 
-export default lots;
+const mappedLots = lots.map(
+  (lot) =>
+    new Lot(
+      lot.number,
+      lot.title,
+      lot.description,
+      lot.terms,
+      lot.price,
+      lot.status,
+      lot.performerId,
+      lot.date
+    )
+);
+
+export default mappedLots;

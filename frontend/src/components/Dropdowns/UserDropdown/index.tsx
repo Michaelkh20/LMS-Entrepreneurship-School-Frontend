@@ -2,6 +2,7 @@ import { Dropdown, Space, Button, Flex, Avatar } from 'antd';
 import { LogoutOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/redux/features/authSlice';
 
 export default function UserDropdown(
   {
@@ -11,13 +12,19 @@ export default function UserDropdown(
   }
 ) {
   const router = useRouter();
+  const [_, { logOut }] = useAuth();
+
+  const handleLogOutClick = () => {
+    logOut();
+    router.push('/login');
+  };
 
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: <a>Выйти</a>,
       icon: <LogoutOutlined />,
-      onClick: () => router.push('/login'),
+      onClick: handleLogOutClick,
     },
   ];
 

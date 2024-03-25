@@ -4,7 +4,8 @@ import styles from './page.module.css';
 import { Button, Form, Input } from 'antd';
 import { useAuthMutation } from '@/redux/services/commonApi';
 import { useRouter } from 'next/navigation';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useAuth } from '@/redux/features/authSlice';
 
 import { dto } from '@dto';
 import Role = dto.Role;
@@ -18,6 +19,7 @@ export default function Home() {
   const router = useRouter();
   const [form] = Form.useForm<AuthFormValues>();
   const [auth, { data, isLoading, isError, isSuccess }] = useAuthMutation();
+  const [authState, { logIn }] = useAuth();
 
   function onFinish(values: AuthFormValues) {
     const { login, password } = values;
@@ -36,14 +38,22 @@ export default function Home() {
   }, [form, isError]);
 
   useEffect(() => {
-    if (isSuccess) {
-      router.push(
-        data?.role === Role.ADMIN
-          ? '/admin/accounts'
-          : `/learner/profile/${data?.id}`
-      );
+    if (isSuccess && data) {
+      logIn(data.role, data.id);
     }
-  }, [isSuccess, router]);
+  }, [data, isSuccess, logIn]);
+
+  useEffect(() => {
+    if (authState.role === Role.ADMIN) {
+      router.push(`/admin/accounts`);
+      return;
+    }
+
+    if (authState.role === Role.LEARNER || authState.role === Role.TRACKER) {
+      router.push(`/learner/profile`);
+      return;
+    }
+  }, [authState.role, router]);
 
   return (
     <div className={styles.main}>

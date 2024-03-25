@@ -16,7 +16,12 @@ import ITeamCreateRequest = dto.ITeamCreateRequest;
 import TeamCreateRequest = dto.TeamCreateRequest;
 import TeamChangeErrorResponse = dto.TeamChangeErrorResponse;
 import TeamCreateSuccessResponse = dto.TeamCreateSuccessResponse;
-import { GetAccountsApiArg } from '@/types/requests';
+import ClaimBuyLotListResponse = dto.ClaimBuyLotListResponse;
+import ClaimBuyLotListRequest = dto.ClaimBuyLotListRequest;
+import {
+  ClaimBuyLotListRequestArgs,
+  GetAccountsApiArg,
+} from '@/types/requests';
 
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
@@ -192,6 +197,28 @@ export const adminApi = createApi({
         },
       }),
     }),
+
+    getBuyLotClaimsList: build.query<
+      ClaimBuyLotListResponse,
+      ClaimBuyLotListRequestArgs
+    >({
+      query: (params) => ({
+        url: `/claims/buy-lot/list`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: ClaimBuyLotListRequest.encode(params).finish(),
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = ClaimBuyLotListResponse.decode(
+            new Uint8Array(buffer)
+          );
+          return ClaimBuyLotListResponse.toObject(decoded, { arrays: true });
+        },
+      }),
+      providesTags: ['Claim'],
+    }),
   }),
 });
 
@@ -203,4 +230,5 @@ export const {
   useGetAccountsShortListQuery,
   useGetTeamQuery,
   useCreateTeamMutation,
+  useGetBuyLotClaimsListQuery,
 } = adminApi;

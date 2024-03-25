@@ -43,6 +43,16 @@ export type LotsShortRequest = {
   pageSize: number;
 };
 
+export type CreateBuyLotClaimRequestArgs = {
+  lotId: string;
+  buyerId: string;
+};
+
+export type ClaimBuyLotListRequestArgs = {
+  page: number;
+  pageSize: number;
+};
+
 export type GetAccountsApiArg = {
   name?: ShortName;
   email?: Email;

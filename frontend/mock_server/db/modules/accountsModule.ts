@@ -123,4 +123,39 @@ export class AccountsModule<T extends WithAccounts> {
     account.teamId = teamId;
     return true;
   }
+
+  populateLotWithPerformer<T extends { performerId: string }>(lot: T) {
+    let performer = this.db.data.accounts.find(
+      (account) => account.id === lot.performerId
+    );
+
+    performer?.addPartName();
+
+    return {
+      ...lot,
+      performer,
+    };
+  }
+
+  populateLotWithPerformerString<T extends { performerId: string }>(lot: T) {
+    let performer = this.db.data.accounts.find(
+      (account) => account.id === lot.performerId
+    );
+
+    return {
+      ...lot,
+      performer: performer?.getPartName(),
+    };
+  }
+
+  populateBuyLotClaimWithBuyer<T extends { buyerId: string }>(lot: T) {
+    const buyer = this.db.data.accounts.find(
+      (account) => account.id === lot.buyerId
+    );
+
+    return {
+      ...lot,
+      buyer,
+    };
+  }
 }
