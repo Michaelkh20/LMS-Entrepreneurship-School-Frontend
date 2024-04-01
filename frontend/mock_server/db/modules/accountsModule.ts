@@ -149,9 +149,9 @@ export class AccountsModule<T extends WithAccounts> {
   }
 
   populateBuyLotClaimWithBuyer<T extends { buyerId: string }>(lot: T) {
-    const buyer = this.db.data.accounts.find(
-      (account) => account.id === lot.buyerId
-    );
+    const buyer = this.db.data.accounts
+      .find((account) => account.id === lot.buyerId)
+      ?.addPartName();
 
     return {
       ...lot,

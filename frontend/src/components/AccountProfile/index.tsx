@@ -67,12 +67,14 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
                 onClick={handleTeamClick}
                 className={cx('propertyValue', 'teamValue')}
               >
-                №{data?.team?.number}
+                {data?.team?.number ? '№' + data.team.number : 'Не в команде'}
               </p>
             </div>
             <div className={styles.property}>
               <p className={styles.propertyTitle}>Телефон</p>
-              <p className={styles.propertyValue}>{data?.phone}</p>
+              <p className={styles.propertyValue}>
+                {data?.phone ? '+7' + data?.phone : ''}
+              </p>
             </div>
             <div className={styles.property}>
               <p className={styles.propertyTitle}>Мессенджер</p>

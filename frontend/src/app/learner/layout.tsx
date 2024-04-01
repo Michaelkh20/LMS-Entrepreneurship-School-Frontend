@@ -3,7 +3,7 @@
 import React, { CSSProperties, useEffect } from 'react';
 import styles from './layout.module.css';
 import { Layout } from 'antd';
-import LearnerMenu from '@/components/Menu/LearnerMenu.tsx';
+import LearnerMenu from '../../components/Menu/LearnerMenu';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -13,7 +13,7 @@ const SiderStyles: CSSProperties = {
   overflow: 'auto',
   height: '100vh',
   top: 0,
-  borderInlineEnd: '1px solid #f0f0f0' 
+  borderInlineEnd: '1px solid #f0f0f0',
 };
 
 const OuterLayoutStyles: CSSProperties = {
@@ -64,9 +64,9 @@ export default function LearnerLayout({
         <LearnerMenu />
       </Sider>
       <Layout style={InnerLayoutStyles}>
-        <Header style={HeaderStyles}>Here will be header</Header>
+        <Header style={HeaderStyles}></Header>
         <Content style={ContentStyles}>{children}</Content>
-        <Footer style={FooterStyles}>Here will be footer</Footer>
+        <Footer style={FooterStyles}></Footer>
       </Layout>
     </Layout>
   );

@@ -11,6 +11,7 @@ import { dto } from '../../protobuffs/dto/index.js';
 import Role = dto.Role;
 import TeamCreateRequest = dto.TeamCreateRequest;
 import LotStatus = dto.LotStatus;
+import BuyLotClaimStatus = dto.BuyLotClaimStatus;
 import { LotsModule } from './modules/lotsModule';
 import Lot from './entities/lot';
 import BuyLotClaim from './entities/buyLotClaim';
@@ -288,5 +289,90 @@ export default class DB {
       totalElems: claims.length,
       claimBuyLotList: claimsSliced,
     };
+  }
+
+  getBuyLotClaimById(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+    console.log(claim);
+
+    if (!claim) {
+      return null;
+    }
+
+    const lot = this.getLotWithPerformerById(claim.lotId);
+    console.log(lot);
+
+    if (!lot) {
+      return null;
+    }
+
+    const claimWithBuyer =
+      this.accountsModule.populateBuyLotClaimWithBuyer(claim);
+
+    return {
+      ...claimWithBuyer,
+      lot: {
+        ...lot,
+        date: lot.date.toISOString(),
+      },
+      date: claim.date.toISOString(),
+    };
+  }
+
+  async approveBuyLotClaim(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+
+    if (!claim) {
+      return false;
+    }
+
+    const lot = this.lotsModule.getLotById(claim.lotId);
+
+    if (!lot) {
+      return false;
+    }
+
+    const performer = this.accountsModule.getAccountById(lot.performerId);
+
+    if (!performer) {
+      return false;
+    }
+
+    performer.balance += lot.price;
+    claim.status = BuyLotClaimStatus.APPROVED;
+
+    await this.db.write();
+
+    return true;
+  }
+
+  async declineBuyLotClaim(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+    console.log(claim);
+
+    if (!claim) {
+      return false;
+    }
+
+    const lot = this.lotsModule.getLotById(claim.lotId);
+    console.log(lot);
+
+    if (!lot) {
+      return false;
+    }
+
+    const buyer = this.accountsModule.getAccountById(claim.buyerId);
+    console.log(buyer);
+
+    if (!buyer) {
+      return false;
+    }
+
+    buyer.balance += lot.price;
+    claim.status = BuyLotClaimStatus.DENIED;
+
+    await this.db.write();
+
+    return true;
   }
 }

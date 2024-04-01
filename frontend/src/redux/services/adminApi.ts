@@ -18,6 +18,7 @@ import TeamChangeErrorResponse = dto.TeamChangeErrorResponse;
 import TeamCreateSuccessResponse = dto.TeamCreateSuccessResponse;
 import ClaimBuyLotListResponse = dto.ClaimBuyLotListResponse;
 import ClaimBuyLotListRequest = dto.ClaimBuyLotListRequest;
+import ClaimBuyLotResponse = dto.ClaimBuyLotResponse;
 import {
   ClaimBuyLotListRequestArgs,
   GetAccountsApiArg,
@@ -218,6 +219,36 @@ export const adminApi = createApi({
         },
       }),
       providesTags: ['Claim'],
+      keepUnusedDataFor: 30,
+    }),
+
+    getBuyLotClaimById: build.query<ClaimBuyLotResponse, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/${claimId}`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = ClaimBuyLotResponse.decode(new Uint8Array(buffer));
+          return ClaimBuyLotResponse.toObject(decoded, { arrays: true });
+        },
+      }),
+      providesTags: ['Claim'],
+    }),
+
+    approveClaim: build.mutation<void, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/approve/${claimId}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['Claim'],
+    }),
+
+    declineClaim: build.mutation<void, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/decline/${claimId}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['Claim'],
     }),
   }),
 });
@@ -231,4 +262,7 @@ export const {
   useGetTeamQuery,
   useCreateTeamMutation,
   useGetBuyLotClaimsListQuery,
+  useGetBuyLotClaimByIdQuery,
+  useApproveClaimMutation,
+  useDeclineClaimMutation,
 } = adminApi;

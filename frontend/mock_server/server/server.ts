@@ -17,7 +17,7 @@ import injectClaimsEndpoints from './endpoints/claims.js';
 
 const app = express();
 const db = new DB();
-const port = 3031;
+const port = 3032;
 
 app.use(express.raw({ type: 'application/x-protobuf' }));
 

@@ -101,7 +101,11 @@ const mockData: ClaimBuyingLotColumnsDataType[] = [
   },
 ];
 
-export function ClaimBuyingLotTableWithFilter() {
+export function ClaimBuyingLotTableWithFilter({
+  onRowClick,
+}: {
+  onRowClick?: (id: string) => void;
+}) {
   const [formData, setFormData] = useState({
     claimType: ClaimType.BuyingLot,
     page: 1,
@@ -158,6 +162,13 @@ export function ClaimBuyingLotTableWithFilter() {
           pagination: { total: data?.totalElems },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: (record) => {
+            return {
+              onClick: () => {
+                onRowClick?.(record.id);
+              },
+            };
+          },
         }}
         formData={formData}
         setFormData={setFormData}

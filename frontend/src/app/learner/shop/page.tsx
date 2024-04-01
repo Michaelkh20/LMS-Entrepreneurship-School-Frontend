@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageLabel}>Магазин</h1>
-      <div className={styles.filtersMock}>Здесь будут фильтры</div>
+      {/* <div className={styles.filtersMock}>Здесь будут фильтры</div> */}
       <div className={styles.content}>
         <div className={styles.lotsContainer}>
           {data &&
