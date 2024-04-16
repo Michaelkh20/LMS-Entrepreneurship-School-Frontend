@@ -1,0 +1,3594 @@
+openapi: '3.0.2'
+
+info:
+  title: 'LMS Entrepreneurship School API'
+  description: "API for interaction with LMS backend. \n\n Путь без роли доступны всем. \n\n /admin - доступ только Admin. \n\n /learner - доступ Learner и Tracker. \n\n /tracker - доступ только Tracker. \n\n Во всех requests и responses неиспользуемые поля должны содержать null. \n\n Response 404 возвращается для Learner и Tracker при попытке доступа к Admin."
+  version: '2.0.0'
+
+servers:
+  - url: https://localhost:3000/api/v1
+
+paths:
+  /auth/login:
+    get:
+      tags:
+        - Authentication
+      summary: Authenticate user
+      description: Authenticate user
+      operationId: Auth
+      parameters:
+        - name: login
+          in: query
+          description: User login
+          required: true
+          schema:
+            type: string
+            example: 'all@edu.hse.ru'
+        - name: password
+          in: query
+          description: User password
+          required: true
+          schema:
+            type: string
+            example: 'qwerty'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users:
+    post:
+      tags:
+        - Accounts
+      summary: Create account
+      description: Create account
+      operationId: createAccount
+      requestBody:
+        description: User to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/list:
+    get:
+      tags:
+        - Accounts
+      summary: Get list of accounts by filter and sort
+      description: Get list of accounts by filter and sort
+      operationId: getAccounts
+      parameters:
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/email'
+        - $ref: '#/components/parameters/teamNumber'
+        - $ref: '#/components/parameters/role'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersPage'
+        401:
+          $ref: '#/components/responses/401'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/{id}:
+    get:
+      tags:
+        - Accounts
+      summary: Get account profile by id
+      description: Get account profile by id
+      operationId: getAccountById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    patch:
+      tags:
+        - Accounts
+      summary: Update account
+      description: Update account
+      operationId: updateAccount
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: User to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Accounts
+      summary: Delete account by id
+      description: Delete account by id
+      operationId: deleteAccountById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/{id}/balance:
+    get:
+      tags:
+        - Accounts
+      summary: Get user balance and name
+      description: Get user balance and name
+      operationId: getUserBalanceById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: string
+                    example: '100'
+        401:
+          $ref: '#/components/responses/401'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/snippets:
+    get:
+      tags:
+        - Accounts
+      summary: Get list of shorted accounts for select element by filter
+      description: Get list of shorted accounts for select element by filter
+      operationId: getAccountsForSelect
+      parameters:
+        - $ref: '#/components/parameters/role'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSnippetList'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /teams/list:
+    get:
+      tags:
+        - Teams
+      summary: Get list of teams by filter and sort
+      description: Get list of teams by filter and sort
+      operationId: getTeams
+      parameters:
+        - $ref: '#/components/parameters/teamNumber'
+        - $ref: '#/components/parameters/teamProjectTheme'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /teams:
+    post:
+      tags:
+        - Teams
+      summary: Create team
+      description: Create team
+      operationId: createTeam
+      requestBody:
+        description: Team to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+  /teams/{id}:
+    put:
+      tags:
+        - Teams
+      summary: Update team
+      description: Update team
+      operationId: updateTeam
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Team to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    get:
+      tags:
+        - Teams
+      summary: Get team profile by id
+      description: Get team profile by id
+      operationId: getTeamById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Teams
+      summary: Delete team by id
+      description: Delete team by id
+      operationId: deleteTeamById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /teams/public/{id}:
+    get:
+      tags:
+        - Teams
+      summary: Get public team profile by id
+      description: Get public team profile by id
+      operationId: getTeamByIdLearner
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPublicProfile'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /teams/snippets:
+    get:
+      tags:
+        - Teams
+      summary: Get list of shorted teams for select element by filter
+      description: Get list of shorted teams for select element by filter
+      operationId: getTeamsForSelect
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamSnippetList'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assessments/list:
+    get:
+      tags:
+        - Assessments
+      summary: Get list of assessments by filter and sort
+      description: Get list of assessments by filter and sort
+      operationId: getAssessments
+      parameters:
+        - $ref: '#/components/parameters/learnerId'
+        - $ref: '#/components/parameters/teamId'
+        - $ref: '#/components/parameters/assignmentId'
+        - $ref: '#/components/parameters/assessmentType'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assessments:
+    post:
+      tags:
+        - Assessments
+      summary: Create assessment
+      description: Create assessment
+      operationId: createAssessment
+      requestBody:
+        description: Assessment to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assessments/{id}:
+    put:
+      tags:
+        - Assessments
+      summary: Update assessment
+      description: Update assessment
+      operationId: updateAssessment
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Assessment to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentCreateUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Assessments
+      summary: Delete assessment by id
+      description: Delete assessment by id
+      operationId: deleteAssessmentById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/{id}/final-grades:
+    get:
+      tags:
+        - Accounts
+      summary: Get final grades of learner
+      description: Get final grades of learner
+      operationId: getFinalGradesByLearnerId
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinalGrades'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assessments/formula:
+    get:
+      tags:
+        - Assessments
+      summary: Get final grade formula
+      description: Get final grade formula
+      operationId: getFinalGradeFormula
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinalGradeFormula'
+        401:
+          $ref: '#/components/responses/401'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Assessments
+      summary: Update final grade formula
+      description: Update final grade formula
+      operationId: updateFinalGradeFormula
+      requestBody:
+        description: Final grade formula
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinalGradeFormula'
+      responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assessments/increase-final-grade:
+    post:
+      tags:
+        - Assessments
+      summary: Increase the final grade of a certain student
+      description: Increase the final grade of a certain student
+      operationId: increaseFinalGrade
+      requestBody:
+        description: Bonus value
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetBonusRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/homework/list:
+    get:
+      tags:
+        - Assignments
+      summary: Get list of homeworks by filter and sort
+      description: Get list of homeworks by filter and sort
+      operationId: getHWList
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/lessonId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HWPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/homework:
+    post:
+      tags:
+        - Assignments
+      summary: Create HW
+      description: Create HW
+      operationId: createHW
+      requestBody:
+        description: Assignment to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HWCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/homework/{id}:
+    get:
+      tags:
+        - Assignments
+      summary: Get HW info by id
+      description: Get HW info by id
+      operationId: getHWById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HW'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Assignments
+      summary: Update HW
+      description: Update HW
+      operationId: updateHW
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Assignment to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HWCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Assignments
+      summary: Delete HW by id
+      description: Delete HW by id
+      operationId: deleteHWById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/test/list:
+    get:
+      tags:
+        - Assignments
+      summary: Get list of tests by filter and sort
+      description: Get list of tests by filter and sort
+      operationId: getTestList
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/lessonId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/test:
+    post:
+      tags:
+        - Assignments
+      summary: Create test
+      description: Create test
+      operationId: createTest
+      requestBody:
+        description: Test to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/test/{id}:
+    get:
+      tags:
+        - Assignments
+      summary: Get test info by id
+      description: Get test info by id
+      operationId: getTestById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Assignments
+      summary: Update test
+      description: Update test
+      operationId: updateTest
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Test to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Assignments
+      summary: Delete test by id
+      description: Delete test by id
+      operationId: deleteTestById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/other/list:
+    get:
+      tags:
+        - Assignments
+      summary: Get list of exams and competitions by filter and sort
+      description: Get list of exams and competitions by filter and sort
+      operationId: getOtherAssignmentList
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/assignmentType'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtherAssignmentsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/other:
+    post:
+      tags:
+        - Assignments
+      summary: Create exam or competition
+      description: Create exam or competition
+      operationId: createOtherAssignment
+      requestBody:
+        description: Other assignment to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtherAssignmentCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/other/{id}:
+    get:
+      tags:
+        - Assignments
+      summary: Get exam or competition info by id
+      description: Get exam or competition info by id
+      operationId: getOtherAssignmentById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtherAssignment'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Assignments
+      summary: Update exam or competition
+      description: Update exam or competition
+      operationId: updateOtherAssignment
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Other assignment to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtherAssignmentCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Assignments
+      summary: Delete exam or competition by id
+      description: Delete exam or competition by id
+      operationId: deleteOtherAssignmentById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /assignments/snippets:
+    get:
+      tags:
+        - Assignments
+      summary: Get list of test snippets for select element
+      description: Get list of test snippets for select element
+      operationId: getAssignmentSnippets
+      parameters:
+        - $ref: '#/components/parameters/assignmentType'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentSnippetList'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lessons/list:
+    get:
+      tags:
+        - Lessons
+      summary: Get list of lessons by filter and sort
+      description: Get list of lessons by filter and sort
+      operationId: getLessons
+      parameters:
+        - $ref: '#/components/parameters/lessonNumber'
+        - $ref: '#/components/parameters/lessonTheme'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonsPage'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lessons:
+    post:
+      tags:
+        - Lessons
+      summary: Create lesson
+      description: Create lesson
+      operationId: createLesson
+      requestBody:
+        description: Lesson to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lessons/{id}:
+    # TODO: дз и тесты списком и в виде сниппетов
+    get:
+      tags:
+        - Lessons
+      summary: Get lesson info by id
+      description: Get lesson info by id
+      operationId: getLessonById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Lessons
+      summary: Update lesson
+      description: Update lesson
+      operationId: updateLesson
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Lesson to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        409:
+          $ref: '#/components/responses/409'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Lessons
+      summary: Delete lesson by id
+      description: Delete lesson by id
+      operationId: deleteLessonById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lessons/snippets:
+    get:
+      tags:
+        - Lessons
+      summary: Get list of lessons' snippets
+      description: Get list of lessons' snippets
+      operationId: getLessonsSnippets
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonSnippetList'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        500:
+          $ref: '#/components/responses/500'
+
+  /marketplace:
+    get:
+      tags:
+        - Lots
+      summary: Get list of lots by filter and sort for marketplace
+      description: Get list of lots by filter and sort for marketplace
+      operationId: getLotsForMarketPlace
+      parameters:
+        - $ref: '#/components/parameters/lotNumber'
+        - $ref: '#/components/parameters/lotTitle'
+        - $ref: '#/components/parameters/performerId'
+        - $ref: '#/components/parameters/performerName'
+        - $ref: '#/components/parameters/priceFrom'
+        - $ref: '#/components/parameters/priceTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lots/list:
+    get:
+      tags:
+        - Lots
+      summary: Get list of lots by filter and sort
+      description: Get list of lots by filter and sort
+      operationId: getLots
+      parameters:
+        - $ref: '#/components/parameters/lotNumber'
+        - $ref: '#/components/parameters/lotTitle'
+        - $ref: '#/components/parameters/performerId'
+        - $ref: '#/components/parameters/performerName'
+        - $ref: '#/components/parameters/lotStatus'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lots:
+    post:
+      tags:
+        - Lots
+      summary: Create lot
+      description: Создавать лоты мо
+      operationId: createLot
+      requestBody:
+        description: Lot to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LotCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lots/{id}:
+    get:
+      tags:
+        - Lots
+      summary: Get lot info by id
+      description: Get lot info by id
+      operationId: getLotById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lot'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Lots
+      summary: Update lot
+      description: Update lot
+      operationId: updateLot
+      requestBody:
+        description: Lot to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LotCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+        - Lots
+      summary: Withdraw lot from sale by id
+      description: Withdraw lot from sale by id
+      operationId: deleteLotById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /transactions:
+    get:
+      tags:
+        - Transactions
+      summary: Get list of transactions by filter and sort
+      description: "Get list of transactions by filter and sort. \n\n If learner makes request, system should return only this learner's transactions. In this case query parameter learnerId is not used."
+      operationId: getTransactions
+      parameters:
+        - $ref: '#/components/parameters/learnerId'
+        - $ref: '#/components/parameters/transactionType'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsPage'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        500:
+          $ref: '#/components/responses/500'
+
+  /transactions/manual-accrual:
+    post:
+      tags:
+        - Transactions
+      summary: Create manual transaction
+      description: Create manual transaction
+      operationId: createManualTransaction
+      requestBody:
+        description: Manual transaction to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualAccrualRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        500:
+          $ref: '#/components/responses/500'
+
+  /transactions/{id}:
+    get:
+      tags:
+        - Transactions
+      summary: Get transaction info by id
+      description: Get transaction info by id
+      operationId: getTransactionById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/buy-lot:
+    get:
+      tags:
+        - Claims
+      summary: Get list of buy lot claims by filter and sort
+      description: Get list of claims by filter and sort
+      operationId: getBuyLotClaims
+      parameters:
+        - $ref: '#/components/parameters/twoSidedClaimStatus'
+        - $ref: '#/components/parameters/lotNumber'
+        - $ref: '#/components/parameters/buyerId'
+        - $ref: '#/components/parameters/sellerId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyLotClaimsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    post:
+      tags:
+        - Claims
+      summary: Create claim by user
+      description: a
+      operationId: createBuyLotClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyLotRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          description: 'Not enough money'
+        404:
+          description: 'Lot or reciever not found'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/buy-lot/{id}:
+    get:
+      tags:
+        - Claims
+      summary: Get buy lot claim info by id
+      description: Get buy lot claim info by id
+      operationId: getBuyLotClaimById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyLotClaim'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/list-lot:
+    get:
+      tags:
+        - Claims
+      summary: Get list of listing lot claims by filter and sort
+      description: Get list of listing lot claims by filter and sort
+      operationId: getListLotClaims
+      parameters:
+        - $ref: '#/components/parameters/twoSidedClaimStatus'
+        - $ref: '#/components/parameters/performerId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLotClaimsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    post:
+      tags:
+        - Claims
+      summary: Create claim by user
+      description: a
+      operationId: createListLotClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListLotRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          description: 'Not enough money'
+        404:
+          description: 'Lot or reciever not found'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/list-lot/{id}:
+    get:
+      tags:
+        - Claims
+      summary: Get listing lot claim info by id
+      description: Get listing lot claim info by id
+      operationId: getListLotClaimById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLotClaim'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/failed-deadline:
+    get:
+      tags:
+        - Claims
+      summary: Get list of failed deadline claims by filter and sort
+      description: Get list of failed deadline claims by filter and sort
+      operationId: getFailedDeadlineClaims
+      parameters:
+        - $ref: '#/components/parameters/claimStatus'
+        - $ref: '#/components/parameters/learnerId'
+        - $ref: '#/components/parameters/assignmentId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedDeadlineClaimsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/failed-deadline/{id}:
+    get:
+      tags:
+        - Claims
+      summary: Get failed deadline claim info by id
+      description: Get failed deadline claim info by id
+      operationId: getFailedDeadlineClaimById
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedDeadlineClaim'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/transfer:
+    get:
+      tags:
+        - Claims
+      summary: Get list of transfer claims by filter and sort
+      description: Get list of transfer claims by filter and sort
+      operationId: getTransferClaims
+      parameters:
+        - $ref: '#/components/parameters/claimStatus'
+        - $ref: '#/components/parameters/senderId'
+        - $ref: '#/components/parameters/receiverId'
+        - $ref: '#/components/parameters/dateFrom'
+        - $ref: '#/components/parameters/dateTo'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferClaimsPage'
+        401:
+          $ref: '#/components/responses/401'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    post:
+      tags:
+        - Claims
+      summary: Create claim by user
+      description: a
+      operationId: createTransferClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          description: 'Not enough money'
+        404:
+          description: 'Lot or reciever not found'
+        500:
+          $ref: '#/components/responses/500'
+
+  /claims/approve-reject:
+    put:
+      tags:
+        - Claims
+      summary: Approve/reject claim
+      description: Approve/reject claim
+      operationId: ApproveRejectClaim
+      requestBody:
+        description: "Поле fine заполняется только при типе заявки = DeadlineFailed и поле action = Approve. \n\n Поле newPrice заполняется только для заявок покупки и размещения лотов."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveRejectClaimRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /lessons/{id}/attendance:
+    get:
+      tags:
+        - Lessons
+      summary: Get attendance by lesson id
+      description: Get attendance by lesson id
+      operationId: getAttendance
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: 'Ответ содержит информацию об уроке в поле lesson и список learners вообще всех зарегистрированных учеников, с полем didCome = true и возможно accruedСurrency у тех, кто пришёл.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceInfo'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+        - Lessons
+      summary: Update attendance
+      description: Update attendance
+      operationId: updateAttendance
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: Attendance to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /solutions/list:
+    get:
+      tags:
+        - Solutions
+      summary: Get list of solutions by filter and sort
+      description: 'Get list of solutions by filter and sort.'
+      operationId: getSolutions
+      parameters:
+        - $ref: '#/components/parameters/assignmentId'
+        - $ref: '#/components/parameters/learnerId'
+        - $ref: '#/components/parameters/teamId'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionsPage'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /solutions/{id}:
+    get:
+      tags:
+        - Solutions
+      summary: Get solution
+      description: Get solution
+      operationId: getSolution
+      parameters:
+        - $ref: '#/components/parameters/idPath'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /solutions:
+    get:
+      tags:
+        - Solutions
+      summary: Get solution by assignment id and learner id
+      description: Get solution by assignment id and learner id. if learner makes request, system should return only this learner's solutions. In this case query parameter learnerId is not used.
+      operationId: getSolutionByAssignmentIdAndLearnerId
+      parameters:
+        - $ref: '#/components/parameters/assignmentId'
+        - $ref: '#/components/parameters/learnerId'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solution'
+        400:
+          $ref: '#/components/responses/IncorrectParameters'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+    post:
+      tags:
+        - Solutions
+      summary: Upload solution
+      description: Upload solution
+      operationId: createSolution
+      requestBody:
+        description: Solution to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionCreateUpdateRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+  /mail:
+    post:
+      tags:
+        - Mail
+      summary: Create e-mail
+      description: Create e-mail
+      operationId: createEmail
+      requestBody:
+        description: E-mail to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        400:
+          $ref: '#/components/responses/NotSpecified'
+        401:
+          $ref: '#/components/responses/401'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+components:
+  parameters:
+    idPath:
+      name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+    learnerId:
+      name: learnerId
+      in: query
+      description: Learner id
+      schema:
+        $ref: '#/components/schemas/id'
+    buyerId:
+      name: buyerId
+      in: query
+      description: Buyer id
+      schema:
+        $ref: '#/components/schemas/id'
+    sellerId:
+      name: sellerId
+      in: query
+      description: Seller id
+      schema:
+        $ref: '#/components/schemas/id'
+    performerId:
+      name: performerId
+      in: query
+      description: Owner id
+      schema:
+        $ref: '#/components/schemas/id'
+    performerName:
+      name: performerName
+      in: query
+      description: Performer name
+      schema:
+        type: string
+        example: 'Иванов Иван Иванович'
+    lotStatus:
+      name: lotStatus
+      in: query
+      description: Search lot status
+      schema:
+        $ref: '#/components/schemas/lotStatus'
+    assignmentId:
+      name: assignmentId
+      in: query
+      description: Assignment id
+      schema:
+        $ref: '#/components/schemas/id'
+    assignmentIdPath:
+      name: assignmentId
+      in: path
+      required: true
+      description: Assignment id
+      schema:
+        $ref: '#/components/schemas/id'
+    assignmentIdRequired:
+      name: assignmentId
+      in: query
+      required: true
+      description: Assignment id
+      schema:
+        $ref: '#/components/schemas/id'
+    lessonId:
+      name: lessonId
+      in: query
+      description: Lesson id
+      schema:
+        $ref: '#/components/schemas/id'
+    teamId:
+      name: teamId
+      in: query
+      description: Team id
+      schema:
+        $ref: '#/components/schemas/id'
+    lessonIdRequired:
+      name: lessonId
+      in: query
+      description: Lesson id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+    senderId:
+      name: senderId
+      in: query
+      description: Sender id
+      schema:
+        $ref: '#/components/schemas/id'
+    receiverId:
+      name: receiverId
+      in: query
+      description: Receiver id
+      schema:
+        $ref: '#/components/schemas/id'
+    name:
+      name: name
+      in: query
+      description: Search name
+      schema:
+        $ref: '#/components/schemas/shortName'
+    email:
+      name: email
+      in: query
+      description: Search email
+      schema:
+        $ref: '#/components/schemas/email'
+    teamNumber:
+      name: teamNumber
+      in: query
+      description: Search team number
+      schema:
+        $ref: '#/components/schemas/teamNumber'
+    teamProjectTheme:
+      name: teamProjectTheme
+      in: query
+      description: Search team project theme
+      schema:
+        type: string
+        example: 'Тема проекта'
+    lessonNumber:
+      name: lessonNumber
+      in: query
+      description: Search lesson number
+      schema:
+        $ref: '#/components/schemas/lessonNumber'
+    lessonTheme:
+      name: lessonTheme
+      in: query
+      description: Search lesson title
+      schema:
+        $ref: '#/components/schemas/lessonTheme'
+    lotNumber:
+      name: lotNumber
+      in: query
+      description: Search lot number
+      schema:
+        $ref: '#/components/schemas/lotNumber'
+    lotTitle:
+      name: lotTitle
+      in: query
+      description: Search lot title
+      schema:
+        $ref: '#/components/schemas/lotTitle'
+    title:
+      name: title
+      in: query
+      description: Search title
+      schema:
+        type: string
+        example: 'Какое-то название'
+    role:
+      name: role
+      in: query
+      description: Search role
+      schema:
+        $ref: '#/components/schemas/role'
+    assessmentType:
+      name: assessmentType
+      in: query
+      description: Search assessment type
+      schema:
+        $ref: '#/components/schemas/assessmentType'
+    dateFrom:
+      name: dateFrom
+      in: query
+      description: The beginning of the desired interval
+      schema:
+        $ref: '#/components/schemas/date'
+    dateTo:
+      name: dateTo
+      in: query
+      description: The end of the desired interval
+      schema:
+        $ref: '#/components/schemas/date'
+    priceFrom:
+      name: priceFrom
+      in: query
+      description: The beginning of the desired interval
+      schema:
+        $ref: '#/components/schemas/price'
+    priceTo:
+      name: priceTo
+      in: query
+      description: The end of the desired interval
+      schema:
+        $ref: '#/components/schemas/price'
+    assignmentType:
+      name: assignmentType
+      in: query
+      description: Search assignment type
+      schema:
+        $ref: '#/components/schemas/assignmentType'
+    transactionType:
+      name: transactionType
+      in: query
+      description: Search transaction type
+      schema:
+        $ref: '#/components/schemas/transactionType'
+    claimType:
+      name: claimType
+      in: query
+      description: Search claim type
+      schema:
+        $ref: '#/components/schemas/claimType'
+    claimTypeRequired:
+      name: claimType
+      in: query
+      required: true
+      description: Search claim type
+      schema:
+        $ref: '#/components/schemas/claimType'
+    claimStatus:
+      name: claimStatus
+      in: query
+      description: Search claim status
+      schema:
+        $ref: '#/components/schemas/claimStatus'
+    twoSidedClaimStatus:
+      name: twoSidedClaimStatus
+      in: query
+      description: Search two-sided claim status
+      schema:
+        $ref: '#/components/schemas/twoSidedClaimStatus'
+    sort:
+      name: sort
+      in: query
+      description: Sorting order in format 'sortProperty,sortOrder'
+      schema:
+        type: string
+        example: 'name,asc'
+    sortProperty:
+      name: sortProperty
+      in: query
+      description: Property of response to sort by
+      schema:
+        type: string
+        example: name
+    sortOrder:
+      name: sortOrder
+      in: query
+      description: OSorting order
+      schema:
+        $ref: '#/components/schemas/sortOrder'
+    page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        $ref: '#/components/schemas/pageNumber'
+    pageSize:
+      name: pageSize
+      in: query
+      description: The size of the page to be returned
+      schema:
+        $ref: '#/components/schemas/pageSize'
+    pageable:
+      name: pageable
+      in: query
+      description: 'Если false, то без pagination.'
+      schema:
+        type: boolean
+        default: true
+
+  responses:
+    200:
+      description: Successful response
+    NotSpecified:
+      description: Bad Request. Some of the crucial properties have not been specified
+    IncorrectParameters:
+      description: Bad Request. Incorrect parameters.
+    401:
+      description: Unauthorized
+    403:
+      description: Forbidden
+    404:
+      description: Not found.
+    409:
+      description: Key properties of entity already in use.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['firstProperty', 'secondProperty']
+    500:
+      description: Internal server error
+
+  schemas:
+    id:
+      type: string
+      example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+    email:
+      type: string
+      format: email
+      example: 'all@edu.hse.ru'
+    password:
+      type: string
+      format: password
+      example: '123456'
+    name:
+      type: string
+      example: 'Иван'
+    surname:
+      type: string
+      example: 'Иванов'
+    patronymic:
+      type: string
+      example: 'Иванович'
+    shortName:
+      type: string
+      example: 'Иванов Иван'
+    fullName:
+      type: string
+      example: 'Иванов Иван Иванович'
+    date:
+      type: string
+      format: date-time
+      example: '13.07.2023'
+    dateTime:
+      type: string
+      format: date-time
+      example: '13.07.2023 12:13:44'
+    teamNumber:
+      type: integer
+      example: 1
+      minimum: 1
+    role:
+      type: string
+      enum: ['NOT_INITIALISED', 'STUDENT', 'TRACKER', 'ADMIN']
+      example: 'STUDENT'
+    balance:
+      type: integer
+      example: 120
+    phone:
+      type: string
+      format: phone
+      example: +79157777777
+    messenger:
+      type: string
+      example: 'tg:@ivan'
+    sex:
+      type: string
+      enum: ['NOT_INITIALISED', 'MALE', 'FEMALE']
+      example: 'MALE'
+    projectTheme:
+      type: string
+      example: 'Тема проекта'
+    assessmentType:
+      type: string
+      enum: ['AdminGrade', 'TrackerGrade']
+      example: 'FAdminGrade'
+    assessment:
+      type: integer
+      minimum: 0
+      maximum: 10
+      example: 8
+    comment:
+      type: string
+      example: 'Some comment'
+    finalGradeType:
+      type: string
+      enum: ['HW', 'Testing', 'Competitions', 'Exams', 'Attendance']
+    gradeWeight:
+      type: number
+      minimum: 0
+      maximum: 1
+      example: 0.3
+    bonus:
+      type: number
+      example: 1.2
+    assignmentType:
+      type: string
+      enum: ['HW', 'Test', 'Competition', 'Exam']
+      example: 'HW'
+    assignmentTitle:
+      type: string
+      example: 'ДЗ_1'
+    description:
+      type: string
+      example: 'Some description'
+    criteria:
+      type: string
+      example: 'Some criteria'
+    link:
+      type: string
+      example: 'https://editor.swagger.io/'
+    lessonNumber:
+      type: integer
+      minimum: 1
+      example: 7
+    lessonTheme:
+      type: string
+      minimum: 1
+      example: 'Тема о чём-то'
+    lotTitle:
+      type: string
+      minimum: 1
+      example: 'Какой-то лот'
+    lotNumber:
+      type: integer
+      minimum: 1
+      example: 7
+    price:
+      type: integer
+      minimum: 0
+      example: 150
+    transactionType:
+      type: string
+      enum:
+        [
+          'Activity',
+          'SellLot',
+          'AdminIncome',
+          'TransferIncome',
+          'FailedDeadline',
+          'BuyLot',
+          'AdminOutcome',
+          'TransferOutcome',
+        ]
+      example: 'Activity'
+    sum:
+      type: integer
+      minimum: 1
+      example: 150
+    delay:
+      type: integer
+      minimum: 1
+      example: 100000
+      description: Разница между датой сдачи и дедлайном в мс.
+    claimType:
+      type: string
+      enum: ['BuyingLot', 'FailedDeadline', 'PlacingLot', 'Transfer']
+      example: 'BuyingLot'
+    claimStatus:
+      type: string
+      enum: ['Waiting', 'Approved', 'Declined']
+      example: 'Waiting'
+    twoSidedClaimStatus:
+      type: string
+      enum:
+        [
+          'WaitingAdmin',
+          'Approved',
+          'WaitingLearner',
+          'DeclinedAdmin',
+          'DeclinedLearner',
+        ]
+      example: 'WaitingAdmin'
+    lotStatus:
+      type: string
+      enum: ['Approval', 'OnSale', 'Withdrawn']
+    claimTitle:
+      type: string
+      minimum: 1
+      example: 'Какая-то заявка'
+    claimAction:
+      type: string
+      enum: ['Approve', 'Reject', 'ApproveWithNewPrice']
+      example: 'Approve'
+    emailGroupingTypes:
+      type: string
+      enum: ['All', 'Learners', 'Trackers']
+    sortOrder:
+      type: string
+      enum: ['asc', 'desc']
+      example: 'asc'
+    pageNumber:
+      type: integer
+      default: 1
+      example: 1
+      minimum: 1
+    pageSize:
+      type: integer
+      example: 10
+      minimum: 1
+      default: 10
+      description: The size of the page to be returned
+    totalPages:
+      type: integer
+      example: 10
+      minimum: 1
+      description: Total amount of pages
+    totalElements:
+      type: integer
+      example: 100
+      minimum: 0
+      description: Total amount of elements found
+
+    AuthRequest:
+      type: object
+      properties:
+        login:
+          type: string
+          example: 'all@edu.hse.ru'
+        password:
+          type: string
+          example: 'qwerty'
+
+    AuthResponse:
+      type: object
+      properties:
+        user_id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        role:
+          $ref: '#/components/schemas/role'
+
+    Pagination:
+      type: object
+      properties:
+        total_pages:
+          type: integer
+          format: int32
+          example: 10
+        total_elements:
+          type: integer
+          format: int64
+          example: 100
+
+    UserSnippet:
+      type: object
+      properties:
+        id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        name:
+          type: string
+          example: 'Иван'
+        surname:
+          type: string
+          example: 'Иван'
+        patronymic:
+          type: string
+          example: 'Иванович'
+          nullable: true
+
+    UserSnippetWithEmail:
+      type: object
+      properties:
+        id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        name:
+          type: string
+          example: 'Иванов Иван'
+        email:
+          type: string
+          format: email
+          example: 'example@gmail.com'
+
+    PerformerSnippet:
+      type: object
+      properties:
+        id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+          nullable: true
+        name:
+          type: string
+          example: 'Иванов Иван'
+
+    UserSnippetList:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSnippet'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        name:
+          type: string
+          example: 'Иван'
+        surname:
+          type: string
+          example: 'Иванов'
+        patronymic:
+          type: string
+          example: 'Иванович'
+          nullable: true
+        email:
+          type: string
+          format: email
+          example: 'all@edu.hse.ru'
+        phone_number:
+          type: string
+          format: phone
+          example: '+79157777777'
+          nullable: true
+        messenger:
+          type: string
+          example: 'tg:@ivan'
+          nullable: true
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamSnippet'
+        sex:
+          $ref: '#/components/schemas/sex'
+        role:
+          $ref: '#/components/schemas/role'
+        balance:
+          type: string
+          example: '1000'
+
+    PublicUserProfile:
+      type: object
+      properties:
+        id:
+          type: 'string'
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        name:
+          type: string
+          example: 'Иван'
+        surname:
+          type: string
+          example: 'Иванов'
+        patronymic:
+          type: string
+          example: 'Иванович'
+          nullable: true
+        email:
+          type: string
+          format: email
+          example: 'all@edu.hse.ru'
+        messenger:
+          type: string
+          example: 'tg:@ivan'
+          nullable: true
+        role:
+          $ref: '#/components/schemas/role'
+
+    UserCreateUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Иван'
+        surname:
+          type: string
+          example: 'Иванов'
+        patronymic:
+          type: string
+          example: 'Иванович'
+          nullable: true
+        email:
+          type: string
+          format: email
+          example: 'all@edu.hse.ru'
+        phone_number:
+          type: string
+          format: phone
+          example: '+79157777777'
+          nullable: true
+        messenger:
+          type: string
+          example: 'tg:@ivan'
+          nullable: true
+        sex:
+          $ref: '#/components/schemas/sex'
+        role:
+          $ref: '#/components/schemas/role'
+
+    UsersPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    TeamSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+
+    TeamSnippetList:
+      type: object
+      properties:
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamSnippet'
+
+    TeamTableSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        project_theme:
+          type: string
+          example: 'Тема проекта'
+
+    TeamsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamTableSnippet'
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        project_theme:
+          type: string
+          example: 'Тема проекта'
+        learners:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        trackers:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    TeamPublicProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        project_theme:
+          type: string
+          example: 'Тема проекта'
+        learners:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUserProfile'
+        trackers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUserProfile'
+
+    TeamCreateUpdateRequest:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+          example: 1
+        project_theme:
+          type: string
+          example: 'Тема проекта'
+        learners:
+          type: array
+          items:
+            type: string
+            example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        trackers:
+          type: array
+          items:
+            type: string
+            example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+
+    Assessment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        learner:
+          $ref: '#/components/schemas/UserSnippet'
+        assignment:
+          $ref: '#/components/schemas/AssignmentSnippet'
+        solutionId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        issueDate:
+          type: string
+          format: date
+          example: '13.07.2023'
+        assessmentType:
+          $ref: '#/components/schemas/assessmentType'
+        assessment:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 10
+          example: 8
+        comment:
+          type: string
+          example: 'Some comment'
+
+    AssessmentTableSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        learner:
+          $ref: '#/components/schemas/UserSnippet'
+        assignment:
+          $ref: '#/components/schemas/AssignmentSnippet'
+        assessmentType:
+          $ref: '#/components/schemas/assessmentType'
+        assessment:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 10
+          example: 8
+
+    AssessmentsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssessmentTableSnippet'
+
+    AssessmentCreateUpdateRequest:
+      type: object
+      properties:
+        solutionId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        assessment:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 10
+          example: 8
+        comment:
+          type: string
+          example: 'Some comment'
+
+    FinalGradeFormula:
+      type: object
+      properties:
+        HWs:
+          type: number
+          example: 0.3
+        Tests:
+          type: number
+          example: 0.2
+        Competitions:
+          type: number
+          example: 0.2
+        Exams:
+          type: number
+          example: 0.3
+
+    FinalGrades:
+      type: object
+      properties:
+        HWs:
+          type: number
+          example: 8
+        Tests:
+          type: number
+          example: 7
+        Competitions:
+          type: number
+          example: 6
+        Exams:
+          type: number
+          example: 5
+        Bonus:
+          type: number
+          example: 1.2
+
+    SetBonusRequest:
+      type: object
+      properties:
+        learnerId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        bonus:
+          type: number
+          example: 1.2
+
+    HW:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'ДЗ_1'
+        lesson:
+          $ref: '#/components/schemas/LessonSnippet'
+        description:
+          type: string
+          example: 'Some description'
+        criteria:
+          type: string
+          example: 'Some criteria'
+        isTeamWork:
+          type: boolean
+          example: true
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    AssignmentSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'ДЗ_1'
+
+    AssignmentSnippetList:
+      type: object
+      properties:
+        HWs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignmentSnippet'
+
+    HWTableSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'ДЗ_1'
+        lesson:
+          $ref: '#/components/schemas/LessonSnippet'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    HWSnippetWithDeadline:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'ДЗ_1'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    HWCreateUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'ДЗ_1'
+        lessonId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+          nullable: true
+        description:
+          type: string
+          example: 'Some description'
+        criteria:
+          type: string
+          example: 'Some criteria'
+        isTeamWork:
+          type: boolean
+          example: true
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    HWPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/HWTableSnippet'
+
+    Test:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'Тест_1'
+        lesson:
+          $ref: '#/components/schemas/LessonSnippet'
+        link:
+          type: string
+          example: 'Some link'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    TestCreateUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Тест_1'
+        lessonId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+          nullable: true
+        link:
+          type: string
+          example: 'Some link'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+
+    TestsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'
+
+    OtherAssignment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'Тест_1'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+        assignmentType:
+          $ref: '#/components/schemas/assignmentType'
+
+    OtherAssignmentsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/OtherAssignment'
+
+    OtherAssignmentCreateUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Тест_1'
+        deadline:
+          type: string
+          format: date-time
+          example: '13.07.2023 12:13:44'
+        assignmentType:
+          $ref: '#/components/schemas/assignmentType'
+
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        theme:
+          type: string
+          example: 'Тема о чём-то'
+        description:
+          type: string
+          example: 'Some description'
+        date:
+          type: string
+          format: date
+          example: '13.07.2023'
+        presLinks:
+          type: array
+          items:
+            type: string
+            example: 'https://editor.swagger.io/'
+        videoLinks:
+          type: array
+          items:
+            type: string
+            example: 'https://editor.swagger.io/'
+        homeworkId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+          nullable: true
+        testId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+          nullable: true
+
+    LessonTableSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        theme:
+          type: string
+          example: 'Тема о чём-то'
+        date:
+          type: string
+          format: date
+          example: '13.07.2023'
+
+    LessonSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+        theme:
+          type: string
+          example: 'Тема о чём-то'
+
+    LessonCreateUpdateRequest:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+          example: 1
+        theme:
+          type: string
+          example: 'Тема о чём-то'
+        description:
+          type: string
+          example: 'Some description'
+        date:
+          type: string
+          format: date
+          example: '13.07.2023'
+        presLinks:
+          type: array
+          items:
+            type: string
+            example: 'https://editor.swagger.io/'
+        videoLinks:
+          type: array
+          items:
+            type: string
+            example: 'https://editor.swagger.io/'
+
+    LessonsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonTableSnippet'
+
+    LessonSnippetList:
+      type: object
+      properties:
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonSnippet'
+
+    LotSnippetForClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        title:
+          type: string
+          example: 'Какой-то лот'
+        description:
+          type: string
+          example: 'Some description'
+        terms:
+          type: string
+          example: 'Some criteria'
+        price:
+          type: integer
+          format: int32
+          example: 150
+        performer:
+          $ref: '#/components/schemas/UserSnippet'
+
+    LotSnippet:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+          example: 1
+          nullable: true
+        title:
+          type: string
+          example: 'Какой-то лот'
+        price:
+          type: integer
+          format: int32
+          example: 150
+        performer:
+          $ref: '#/components/schemas/UserSnippet'
+
+    Lot:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+          nullable: true
+        status:
+          $ref: '#/components/schemas/lotStatus'
+        title:
+          type: string
+          example: 'Какой-то лот'
+        description:
+          type: string
+          example: 'Some description'
+        terms:
+          type: string
+          example: 'Some criteria'
+        price:
+          type: integer
+          format: int32
+          example: 150
+        performer:
+          $ref: '#/components/schemas/PerformerSnippet'
+        listingDate:
+          type: string
+          format: date
+          example: '13.07.2023'
+          nullable: true
+
+    LotSnippetForTable:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        number:
+          type: integer
+          format: int32
+          example: 1
+          nullable: true
+        status:
+          $ref: '#/components/schemas/lotStatus'
+        listingDate:
+          type: string
+          format: date
+          example: '13.07.2023'
+          nullable: true
+        price:
+          type: integer
+          format: int32
+          example: 150
+        performer:
+          $ref: '#/components/schemas/PerformerSnippet'
+
+    LotCreateUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Какой-то лот'
+        description:
+          type: string
+          example: 'Some description'
+        terms:
+          type: string
+          example: 'Some criteria'
+        performer:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+              nullable: true
+            name:
+              type: string
+              example: 'Иванов Иван'
+              nullable: true
+        price:
+          type: integer
+          format: int32
+          example: 150
+
+    LotsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        lots:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotSnippetForTable'
+
+    MarketplacePage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        lots:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotSnippet'
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        learner:
+          $ref: '#/components/schemas/UserSnippet'
+        type:
+          $ref: '#/components/schemas/transactionType'
+        description:
+          type: string
+          example: 'some description'
+          nullable: true
+        date:
+          type: string
+          format: 'date'
+        sum:
+          type: integer
+          format: int32
+          example: 120
+        # calim:
+        #   $ref: '#/components/schemas/ClaimSelectionItem'
+
+    ManualAccrualRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        description:
+          type: string
+          example: 'some description'
+          nullable: true
+        sum:
+          type: integer
+          format: int32
+          example: 120
+
+    TransactionsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+
+    BuyLotClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        status:
+          $ref: '#/components/schemas/twoSidedClaimStatus'
+        buyer:
+          $ref: '#/components/schemas/UserSnippet'
+        date:
+          type: string
+          format: 'date'
+          example: '13.07.2023'
+        lot:
+          $ref: '#/components/schemas/LotSnippetForClaim'
+
+    BuyLotClaimSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        status:
+          $ref: '#/components/schemas/twoSidedClaimStatus'
+        buyer:
+          $ref: '#/components/schemas/UserSnippet'
+        date:
+          type: string
+          format: 'date'
+          example: '13.07.2023'
+        lot:
+          $ref: '#/components/schemas/LotSnippet'
+
+    ListLotClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        status:
+          $ref: '#/components/schemas/twoSidedClaimStatus'
+        date:
+          type: string
+          format: 'date'
+          example: '13.07.2023'
+        lot:
+          $ref: '#/components/schemas/LotSnippetForClaim'
+
+    ListLotClaimSnippet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        status:
+          $ref: '#/components/schemas/twoSidedClaimStatus'
+        date:
+          type: string
+          format: 'date'
+          example: '13.07.2023'
+        lot:
+          $ref: '#/components/schemas/LotSnippet'
+
+    FailedDeadlineClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        status:
+          $ref: '#/components/schemas/claimStatus'
+        learner:
+          $ref: '#/components/schemas/UserSnippet'
+        completeDate:
+          type: string
+          format: 'date-time'
+          example: '13.07.2023 12:31:89'
+        delay:
+          type: integer
+          example: '20'
+          description: Разница между моментом сдачи и дедлайном в минутах.
+        assignment:
+          $ref: '#/components/schemas/HWSnippetWithDeadline'
+
+    TransferClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        sender:
+          $ref: '#/components/schemas/UserSnippet'
+        receiver:
+          $ref: '#/components/schemas/UserSnippet'
+        sum:
+          type: integer
+          format: int32
+          example: 120
+
+    ApproveRejectClaimRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        action:
+          $ref: '#/components/schemas/claimAction'
+        fine:
+          type: integer
+          format: int32
+          nullable: true
+          example: 120
+        newPrice:
+          type: integer
+          format: int32
+          nullable: true
+          example: 120
+
+    BuyLotRequest:
+      type: object
+      properties:
+        lotId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+
+    ListLotRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Какой-то лот'
+        description:
+          type: string
+          example: 'Some description'
+        terms:
+          type: string
+          example: 'Some criteria'
+        price:
+          type: integer
+          format: int32
+          example: 150
+
+    TransferRequest:
+      type: object
+      properties:
+        receiverId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        sum:
+          type: integer
+          format: int32
+          example: 120
+
+    BuyLotClaimsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyLotClaimSnippet'
+
+    ListLotClaimsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListLotClaimSnippet'
+
+    FailedDeadlineClaimsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedDeadlineClaim'
+
+    TransferClaimsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferClaim'
+
+    AttendanceInfo:
+      type: object
+      properties:
+        lesson:
+          $ref: '#/components/schemas/LessonTableSnippet'
+        learners:
+          type: array
+          items:
+            type: object
+            properties:
+              learner:
+                $ref: '#/components/schemas/UserSnippetWithEmail'
+              hasCome:
+                type: boolean
+                example: true
+              accruedСurrency:
+                type: integer
+                format: int32
+                example: 100
+                nullable: true
+
+    AttendanceUpdateRequest:
+      type: object
+      properties:
+        lessonId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        learners:
+          type: array
+          items:
+            type: object
+            properties:
+              learnerId:
+                type: string
+                example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+              accruedСurrency:
+                type: integer
+                format: int32
+                example: 100
+                nullable: true
+
+    Solution:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        learner:
+          $ref: '#/components/schemas/UserSnippet'
+        uploader:
+          $ref: '#/components/schemas/UserSnippet'
+        team:
+          $ref: '#/components/schemas/TeamSnippet'
+        HW:
+          $ref: '#/components/schemas/HWTableSnippet'
+        completeDateTime:
+          type: string
+          format: 'date-time'
+          example: '13.07.2023 12:13:44'
+        fileUrl:
+          type: string
+          example: 'https://editor.swagger.io/'
+
+    SolutionCreateUpdateRequest:
+      type: object
+      properties:
+        HWId:
+          type: string
+          example: '2c8e4ae6-cfbc-469c-909d-2beb22243328'
+        fileUrl:
+          type: string
+          example: 'https://editor.swagger.io/'
+
+    SolutionsPage:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+
+    EmailRequest:
+      type: object
+      properties:
+        grouping:
+          type: array
+          items:
+            $ref: '#/components/schemas/emailGroupingTypes'
+        learnersIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/id'
+        teamsIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/id'
+        title:
+          type: string
+          example: 'Some title'
+        content:
+          $ref: '#/components/schemas/description'
+
+tags:
+  - name: Authentication
+  - name: Accounts
+  - name: Teams
+  - name: Assessments
+  - name: Claims
+  - name: Transactions
+  - name: Lots
+  - name: Lessons
+  - name: Assignments
+  - name: Solutions
+  - name: Mail
