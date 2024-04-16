@@ -4,7 +4,12 @@ import { dto } from '@dto';
 import ProfileResponse = dto.ProfileResponse;
 import LotsShortResponse = dto.LotsShortResponse;
 import LotResponse = dto.LotResponse;
-import { LotsShortRequest } from '@/types/requests';
+import NameAndBalanceResponse = dto.NameAndBalanceResponse;
+import ClaimBuyLotRequest = dto.ClaimBuyLotRequest;
+import {
+  CreateBuyLotClaimRequestArgs,
+  LotsShortRequest,
+} from '@/types/requests';
 
 export const learnerApi = createApi({
   reducerPath: 'learnerAPI',
@@ -24,6 +29,20 @@ export const learnerApi = createApi({
           return ProfileResponse.toObject(decoded);
         },
       }),
+      providesTags: ['Balance'],
+    }),
+
+    getNameAndBalance: build.query<NameAndBalanceResponse, string>({
+      query: (accountId) => ({
+        url: `/profile/name-and-balance/${accountId}`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = NameAndBalanceResponse.decode(new Uint8Array(buffer));
+          return NameAndBalanceResponse.toObject(decoded);
+        },
+      }),
+      providesTags: ['Balance'],
     }),
 
     getLotsShort: build.query<LotsShortResponse, LotsShortRequest>({
@@ -38,11 +57,10 @@ export const learnerApi = createApi({
         },
       }),
     }),
-    getLot: build.query<LotResponse, number>({
+    getLot: build.query<LotResponse, string>({
       query: (lotId) => ({
-        url: `/lot`,
+        url: `/lot/${lotId}`,
         method: 'GET',
-        params: { id: lotId },
         async responseHandler(response) {
           const buffer = await response.arrayBuffer();
           const decoded = LotResponse.decode(new Uint8Array(buffer));
@@ -50,12 +68,16 @@ export const learnerApi = createApi({
         },
       }),
     }),
-    createBuyLotClaim: build.mutation<void, number>({
-      query: (lotId) => ({
+    createBuyLotClaim: build.mutation<void, CreateBuyLotClaimRequestArgs>({
+      query: (args) => ({
         url: `/learner/claims/buy-lot`,
         method: 'POST',
-        params: { id: lotId },
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: ClaimBuyLotRequest.encode(args).finish(),
       }),
+      invalidatesTags: ['Balance'],
     }),
   }),
 });
@@ -65,4 +87,5 @@ export const {
   useGetLotsShortQuery,
   useGetLotQuery,
   useCreateBuyLotClaimMutation,
+  useGetNameAndBalanceQuery,
 } = learnerApi;

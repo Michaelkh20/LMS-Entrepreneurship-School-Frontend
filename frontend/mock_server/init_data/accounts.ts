@@ -160,7 +160,8 @@ const accountsInit = accounts.map(
       account.role,
       account.password,
       account.balance,
-      account.teamId
+      account.teamId,
+      account.id
     )
 );
 

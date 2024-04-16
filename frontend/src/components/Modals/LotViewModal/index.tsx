@@ -13,9 +13,11 @@ import LotStatus = dto.LotStatus;
 
 import lotStatusToString from '@/util/lotStatusToString';
 import { EditOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+import dateToFormatString from '@/util/dateToFormatString';
 
 type Props = {
-  lotId?: number | null;
+  lotId?: string | null;
   isOpen: boolean;
   onCancel: MouseEventHandler;
   onOk: MouseEventHandler;
@@ -66,8 +68,11 @@ export default function LotViewModal({
         <Property title="Название" value={data?.title || ''} />
         <Property title="Описание" value={data?.description || ''} />
         <Property title="Условия" value={data?.terms || ''} />
-        <Property title="Исполнитель" value={data?.performer || ''} />
-        <Property title="Дата размещения" value={data?.date || ''} />
+        <Property title="Исполнитель" value={data?.performer?.partName || ''} />
+        <Property
+          title="Дата размещения"
+          value={dateToFormatString(data?.date)}
+        />
       </div>
       <div className={styles.Actions}>
         <Button size="large" type="default" onClick={onCancel}>

@@ -3,382 +3,6 @@ import Long = require("long");
 /** Namespace dto. */
 export namespace dto {
 
-    /** LotStatus enum. */
-    enum LotStatus {
-        APPROVAL = 0,
-        ACTIVE = 1,
-        INACTIVE = 2
-    }
-
-    /** Properties of a LotResponse. */
-    interface ILotResponse {
-
-        /** LotResponse id */
-        id?: (number|null);
-
-        /** LotResponse number */
-        number?: (string|null);
-
-        /** LotResponse title */
-        title?: (string|null);
-
-        /** LotResponse description */
-        description?: (string|null);
-
-        /** LotResponse terms */
-        terms?: (string|null);
-
-        /** LotResponse price */
-        price?: (number|null);
-
-        /** LotResponse status */
-        status?: (dto.LotStatus|null);
-
-        /** LotResponse performer */
-        performer?: (string|null);
-
-        /** LotResponse date */
-        date?: (string|null);
-    }
-
-    /** Represents a LotResponse. */
-    class LotResponse implements ILotResponse {
-
-        /**
-         * Constructs a new LotResponse.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: dto.ILotResponse);
-
-        /** LotResponse id. */
-        public id: number;
-
-        /** LotResponse number. */
-        public number: string;
-
-        /** LotResponse title. */
-        public title: string;
-
-        /** LotResponse description. */
-        public description: string;
-
-        /** LotResponse terms. */
-        public terms: string;
-
-        /** LotResponse price. */
-        public price: number;
-
-        /** LotResponse status. */
-        public status: dto.LotStatus;
-
-        /** LotResponse performer. */
-        public performer: string;
-
-        /** LotResponse date. */
-        public date: string;
-
-        /**
-         * Creates a new LotResponse instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns LotResponse instance
-         */
-        public static create(properties?: dto.ILotResponse): dto.LotResponse;
-
-        /**
-         * Encodes the specified LotResponse message. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
-         * @param message LotResponse message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified LotResponse message, length delimited. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
-         * @param message LotResponse message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a LotResponse message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns LotResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotResponse;
-
-        /**
-         * Decodes a LotResponse message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns LotResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotResponse;
-
-        /**
-         * Verifies a LotResponse message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a LotResponse message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns LotResponse
-         */
-        public static fromObject(object: { [k: string]: any }): dto.LotResponse;
-
-        /**
-         * Creates a plain object from a LotResponse message. Also converts values to other types if specified.
-         * @param message LotResponse
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: dto.LotResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this LotResponse to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for LotResponse
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a LotShort. */
-    interface ILotShort {
-
-        /** LotShort id */
-        id?: (number|null);
-
-        /** LotShort number */
-        number?: (string|null);
-
-        /** LotShort title */
-        title?: (string|null);
-
-        /** LotShort performer */
-        performer?: (string|null);
-
-        /** LotShort price */
-        price?: (number|null);
-    }
-
-    /** Represents a LotShort. */
-    class LotShort implements ILotShort {
-
-        /**
-         * Constructs a new LotShort.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: dto.ILotShort);
-
-        /** LotShort id. */
-        public id: number;
-
-        /** LotShort number. */
-        public number: string;
-
-        /** LotShort title. */
-        public title: string;
-
-        /** LotShort performer. */
-        public performer: string;
-
-        /** LotShort price. */
-        public price: number;
-
-        /**
-         * Creates a new LotShort instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns LotShort instance
-         */
-        public static create(properties?: dto.ILotShort): dto.LotShort;
-
-        /**
-         * Encodes the specified LotShort message. Does not implicitly {@link dto.LotShort.verify|verify} messages.
-         * @param message LotShort message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified LotShort message, length delimited. Does not implicitly {@link dto.LotShort.verify|verify} messages.
-         * @param message LotShort message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a LotShort message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns LotShort
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotShort;
-
-        /**
-         * Decodes a LotShort message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns LotShort
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotShort;
-
-        /**
-         * Verifies a LotShort message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a LotShort message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns LotShort
-         */
-        public static fromObject(object: { [k: string]: any }): dto.LotShort;
-
-        /**
-         * Creates a plain object from a LotShort message. Also converts values to other types if specified.
-         * @param message LotShort
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: dto.LotShort, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this LotShort to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for LotShort
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a LotsShortResponse. */
-    interface ILotsShortResponse {
-
-        /** LotsShortResponse totalLotsNumber */
-        totalLotsNumber?: (number|null);
-
-        /** LotsShortResponse lots */
-        lots?: (dto.ILotShort[]|null);
-    }
-
-    /** Represents a LotsShortResponse. */
-    class LotsShortResponse implements ILotsShortResponse {
-
-        /**
-         * Constructs a new LotsShortResponse.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: dto.ILotsShortResponse);
-
-        /** LotsShortResponse totalLotsNumber. */
-        public totalLotsNumber: number;
-
-        /** LotsShortResponse lots. */
-        public lots: dto.ILotShort[];
-
-        /**
-         * Creates a new LotsShortResponse instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns LotsShortResponse instance
-         */
-        public static create(properties?: dto.ILotsShortResponse): dto.LotsShortResponse;
-
-        /**
-         * Encodes the specified LotsShortResponse message. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
-         * @param message LotsShortResponse message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified LotsShortResponse message, length delimited. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
-         * @param message LotsShortResponse message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a LotsShortResponse message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns LotsShortResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotsShortResponse;
-
-        /**
-         * Decodes a LotsShortResponse message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns LotsShortResponse
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotsShortResponse;
-
-        /**
-         * Verifies a LotsShortResponse message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a LotsShortResponse message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns LotsShortResponse
-         */
-        public static fromObject(object: { [k: string]: any }): dto.LotsShortResponse;
-
-        /**
-         * Creates a plain object from a LotsShortResponse message. Also converts values to other types if specified.
-         * @param message LotsShortResponse
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: dto.LotsShortResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this LotsShortResponse to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for LotsShortResponse
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
     /** Role enum. */
     enum Role {
         ADMIN = 0,
@@ -1463,8 +1087,8 @@ export namespace dto {
         /** AccountShortListElem id */
         id?: (string|null);
 
-        /** AccountShortListElem fullName */
-        fullName?: (string|null);
+        /** AccountShortListElem partName */
+        partName?: (string|null);
     }
 
     /** Represents an AccountShortListElem. */
@@ -1479,8 +1103,8 @@ export namespace dto {
         /** AccountShortListElem id. */
         public id: string;
 
-        /** AccountShortListElem fullName. */
-        public fullName: string;
+        /** AccountShortListElem partName. */
+        public partName: string;
 
         /**
          * Creates a new AccountShortListElem instance using the specified properties.
@@ -1857,6 +1481,1049 @@ export namespace dto {
 
         /**
          * Gets the default type url for AuthResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a NameAndBalanceResponse. */
+    interface INameAndBalanceResponse {
+
+        /** NameAndBalanceResponse name */
+        name?: (string|null);
+
+        /** NameAndBalanceResponse balance */
+        balance?: (number|null);
+    }
+
+    /** Represents a NameAndBalanceResponse. */
+    class NameAndBalanceResponse implements INameAndBalanceResponse {
+
+        /**
+         * Constructs a new NameAndBalanceResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.INameAndBalanceResponse);
+
+        /** NameAndBalanceResponse name. */
+        public name: string;
+
+        /** NameAndBalanceResponse balance. */
+        public balance: number;
+
+        /**
+         * Creates a new NameAndBalanceResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns NameAndBalanceResponse instance
+         */
+        public static create(properties?: dto.INameAndBalanceResponse): dto.NameAndBalanceResponse;
+
+        /**
+         * Encodes the specified NameAndBalanceResponse message. Does not implicitly {@link dto.NameAndBalanceResponse.verify|verify} messages.
+         * @param message NameAndBalanceResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.INameAndBalanceResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified NameAndBalanceResponse message, length delimited. Does not implicitly {@link dto.NameAndBalanceResponse.verify|verify} messages.
+         * @param message NameAndBalanceResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.INameAndBalanceResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a NameAndBalanceResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns NameAndBalanceResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.NameAndBalanceResponse;
+
+        /**
+         * Decodes a NameAndBalanceResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns NameAndBalanceResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.NameAndBalanceResponse;
+
+        /**
+         * Verifies a NameAndBalanceResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a NameAndBalanceResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns NameAndBalanceResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.NameAndBalanceResponse;
+
+        /**
+         * Creates a plain object from a NameAndBalanceResponse message. Also converts values to other types if specified.
+         * @param message NameAndBalanceResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.NameAndBalanceResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this NameAndBalanceResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for NameAndBalanceResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** LotStatus enum. */
+    enum LotStatus {
+        APPROVAL = 0,
+        ACTIVE = 1,
+        INACTIVE = 2
+    }
+
+    /** Properties of a LotResponse. */
+    interface ILotResponse {
+
+        /** LotResponse id */
+        id?: (string|null);
+
+        /** LotResponse number */
+        number?: (string|null);
+
+        /** LotResponse title */
+        title?: (string|null);
+
+        /** LotResponse description */
+        description?: (string|null);
+
+        /** LotResponse terms */
+        terms?: (string|null);
+
+        /** LotResponse price */
+        price?: (number|null);
+
+        /** LotResponse status */
+        status?: (dto.LotStatus|null);
+
+        /** LotResponse performer */
+        performer?: (dto.IAccountShortListElem|null);
+
+        /** LotResponse date */
+        date?: (string|null);
+    }
+
+    /** Represents a LotResponse. */
+    class LotResponse implements ILotResponse {
+
+        /**
+         * Constructs a new LotResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILotResponse);
+
+        /** LotResponse id. */
+        public id: string;
+
+        /** LotResponse number. */
+        public number: string;
+
+        /** LotResponse title. */
+        public title: string;
+
+        /** LotResponse description. */
+        public description: string;
+
+        /** LotResponse terms. */
+        public terms: string;
+
+        /** LotResponse price. */
+        public price: number;
+
+        /** LotResponse status. */
+        public status: dto.LotStatus;
+
+        /** LotResponse performer. */
+        public performer?: (dto.IAccountShortListElem|null);
+
+        /** LotResponse date. */
+        public date: string;
+
+        /**
+         * Creates a new LotResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LotResponse instance
+         */
+        public static create(properties?: dto.ILotResponse): dto.LotResponse;
+
+        /**
+         * Encodes the specified LotResponse message. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
+         * @param message LotResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LotResponse message, length delimited. Does not implicitly {@link dto.LotResponse.verify|verify} messages.
+         * @param message LotResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LotResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns LotResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotResponse;
+
+        /**
+         * Decodes a LotResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns LotResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotResponse;
+
+        /**
+         * Verifies a LotResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LotResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LotResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.LotResponse;
+
+        /**
+         * Creates a plain object from a LotResponse message. Also converts values to other types if specified.
+         * @param message LotResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.LotResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LotResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LotResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a LotShort. */
+    interface ILotShort {
+
+        /** LotShort id */
+        id?: (string|null);
+
+        /** LotShort number */
+        number?: (string|null);
+
+        /** LotShort title */
+        title?: (string|null);
+
+        /** LotShort performer */
+        performer?: (string|null);
+
+        /** LotShort price */
+        price?: (number|null);
+    }
+
+    /** Represents a LotShort. */
+    class LotShort implements ILotShort {
+
+        /**
+         * Constructs a new LotShort.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILotShort);
+
+        /** LotShort id. */
+        public id: string;
+
+        /** LotShort number. */
+        public number: string;
+
+        /** LotShort title. */
+        public title: string;
+
+        /** LotShort performer. */
+        public performer: string;
+
+        /** LotShort price. */
+        public price: number;
+
+        /**
+         * Creates a new LotShort instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LotShort instance
+         */
+        public static create(properties?: dto.ILotShort): dto.LotShort;
+
+        /**
+         * Encodes the specified LotShort message. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @param message LotShort message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LotShort message, length delimited. Does not implicitly {@link dto.LotShort.verify|verify} messages.
+         * @param message LotShort message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILotShort, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotShort;
+
+        /**
+         * Decodes a LotShort message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns LotShort
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotShort;
+
+        /**
+         * Verifies a LotShort message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LotShort message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LotShort
+         */
+        public static fromObject(object: { [k: string]: any }): dto.LotShort;
+
+        /**
+         * Creates a plain object from a LotShort message. Also converts values to other types if specified.
+         * @param message LotShort
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.LotShort, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LotShort to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LotShort
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a LotsShortResponse. */
+    interface ILotsShortResponse {
+
+        /** LotsShortResponse totalLotsNumber */
+        totalLotsNumber?: (number|null);
+
+        /** LotsShortResponse lots */
+        lots?: (dto.ILotShort[]|null);
+    }
+
+    /** Represents a LotsShortResponse. */
+    class LotsShortResponse implements ILotsShortResponse {
+
+        /**
+         * Constructs a new LotsShortResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.ILotsShortResponse);
+
+        /** LotsShortResponse totalLotsNumber. */
+        public totalLotsNumber: number;
+
+        /** LotsShortResponse lots. */
+        public lots: dto.ILotShort[];
+
+        /**
+         * Creates a new LotsShortResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LotsShortResponse instance
+         */
+        public static create(properties?: dto.ILotsShortResponse): dto.LotsShortResponse;
+
+        /**
+         * Encodes the specified LotsShortResponse message. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @param message LotsShortResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LotsShortResponse message, length delimited. Does not implicitly {@link dto.LotsShortResponse.verify|verify} messages.
+         * @param message LotsShortResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.ILotsShortResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.LotsShortResponse;
+
+        /**
+         * Decodes a LotsShortResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns LotsShortResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.LotsShortResponse;
+
+        /**
+         * Verifies a LotsShortResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LotsShortResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LotsShortResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.LotsShortResponse;
+
+        /**
+         * Creates a plain object from a LotsShortResponse message. Also converts values to other types if specified.
+         * @param message LotsShortResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.LotsShortResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LotsShortResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LotsShortResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** BuyLotClaimStatus enum. */
+    enum BuyLotClaimStatus {
+        WAITING = 0,
+        APPROVED = 1,
+        DENIED = 2
+    }
+
+    /** Properties of a ClaimBuyLotResponse. */
+    interface IClaimBuyLotResponse {
+
+        /** ClaimBuyLotResponse id */
+        id?: (string|null);
+
+        /** ClaimBuyLotResponse status */
+        status?: (dto.BuyLotClaimStatus|null);
+
+        /** ClaimBuyLotResponse buyer */
+        buyer?: (dto.IAccountShortListElem|null);
+
+        /** ClaimBuyLotResponse lot */
+        lot?: (dto.ILotResponse|null);
+
+        /** ClaimBuyLotResponse date */
+        date?: (string|null);
+    }
+
+    /** Represents a ClaimBuyLotResponse. */
+    class ClaimBuyLotResponse implements IClaimBuyLotResponse {
+
+        /**
+         * Constructs a new ClaimBuyLotResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IClaimBuyLotResponse);
+
+        /** ClaimBuyLotResponse id. */
+        public id: string;
+
+        /** ClaimBuyLotResponse status. */
+        public status: dto.BuyLotClaimStatus;
+
+        /** ClaimBuyLotResponse buyer. */
+        public buyer?: (dto.IAccountShortListElem|null);
+
+        /** ClaimBuyLotResponse lot. */
+        public lot?: (dto.ILotResponse|null);
+
+        /** ClaimBuyLotResponse date. */
+        public date: string;
+
+        /**
+         * Creates a new ClaimBuyLotResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ClaimBuyLotResponse instance
+         */
+        public static create(properties?: dto.IClaimBuyLotResponse): dto.ClaimBuyLotResponse;
+
+        /**
+         * Encodes the specified ClaimBuyLotResponse message. Does not implicitly {@link dto.ClaimBuyLotResponse.verify|verify} messages.
+         * @param message ClaimBuyLotResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IClaimBuyLotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ClaimBuyLotResponse message, length delimited. Does not implicitly {@link dto.ClaimBuyLotResponse.verify|verify} messages.
+         * @param message ClaimBuyLotResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IClaimBuyLotResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ClaimBuyLotResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ClaimBuyLotResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ClaimBuyLotResponse;
+
+        /**
+         * Decodes a ClaimBuyLotResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ClaimBuyLotResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ClaimBuyLotResponse;
+
+        /**
+         * Verifies a ClaimBuyLotResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ClaimBuyLotResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ClaimBuyLotResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.ClaimBuyLotResponse;
+
+        /**
+         * Creates a plain object from a ClaimBuyLotResponse message. Also converts values to other types if specified.
+         * @param message ClaimBuyLotResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.ClaimBuyLotResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ClaimBuyLotResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ClaimBuyLotResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ClaimBuyLotRequest. */
+    interface IClaimBuyLotRequest {
+
+        /** ClaimBuyLotRequest buyerId */
+        buyerId?: (string|null);
+
+        /** ClaimBuyLotRequest lotId */
+        lotId?: (string|null);
+    }
+
+    /** Represents a ClaimBuyLotRequest. */
+    class ClaimBuyLotRequest implements IClaimBuyLotRequest {
+
+        /**
+         * Constructs a new ClaimBuyLotRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IClaimBuyLotRequest);
+
+        /** ClaimBuyLotRequest buyerId. */
+        public buyerId: string;
+
+        /** ClaimBuyLotRequest lotId. */
+        public lotId: string;
+
+        /**
+         * Creates a new ClaimBuyLotRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ClaimBuyLotRequest instance
+         */
+        public static create(properties?: dto.IClaimBuyLotRequest): dto.ClaimBuyLotRequest;
+
+        /**
+         * Encodes the specified ClaimBuyLotRequest message. Does not implicitly {@link dto.ClaimBuyLotRequest.verify|verify} messages.
+         * @param message ClaimBuyLotRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IClaimBuyLotRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ClaimBuyLotRequest message, length delimited. Does not implicitly {@link dto.ClaimBuyLotRequest.verify|verify} messages.
+         * @param message ClaimBuyLotRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IClaimBuyLotRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ClaimBuyLotRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ClaimBuyLotRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ClaimBuyLotRequest;
+
+        /**
+         * Decodes a ClaimBuyLotRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ClaimBuyLotRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ClaimBuyLotRequest;
+
+        /**
+         * Verifies a ClaimBuyLotRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ClaimBuyLotRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ClaimBuyLotRequest
+         */
+        public static fromObject(object: { [k: string]: any }): dto.ClaimBuyLotRequest;
+
+        /**
+         * Creates a plain object from a ClaimBuyLotRequest message. Also converts values to other types if specified.
+         * @param message ClaimBuyLotRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.ClaimBuyLotRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ClaimBuyLotRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ClaimBuyLotRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ClaimBuyLotListElem. */
+    interface IClaimBuyLotListElem {
+
+        /** ClaimBuyLotListElem id */
+        id?: (string|null);
+
+        /** ClaimBuyLotListElem lotNumber */
+        lotNumber?: (string|null);
+
+        /** ClaimBuyLotListElem buyer */
+        buyer?: (string|null);
+
+        /** ClaimBuyLotListElem date */
+        date?: (string|null);
+
+        /** ClaimBuyLotListElem status */
+        status?: (dto.BuyLotClaimStatus|null);
+
+        /** ClaimBuyLotListElem price */
+        price?: (number|null);
+    }
+
+    /** Represents a ClaimBuyLotListElem. */
+    class ClaimBuyLotListElem implements IClaimBuyLotListElem {
+
+        /**
+         * Constructs a new ClaimBuyLotListElem.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IClaimBuyLotListElem);
+
+        /** ClaimBuyLotListElem id. */
+        public id: string;
+
+        /** ClaimBuyLotListElem lotNumber. */
+        public lotNumber: string;
+
+        /** ClaimBuyLotListElem buyer. */
+        public buyer: string;
+
+        /** ClaimBuyLotListElem date. */
+        public date: string;
+
+        /** ClaimBuyLotListElem status. */
+        public status: dto.BuyLotClaimStatus;
+
+        /** ClaimBuyLotListElem price. */
+        public price: number;
+
+        /**
+         * Creates a new ClaimBuyLotListElem instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ClaimBuyLotListElem instance
+         */
+        public static create(properties?: dto.IClaimBuyLotListElem): dto.ClaimBuyLotListElem;
+
+        /**
+         * Encodes the specified ClaimBuyLotListElem message. Does not implicitly {@link dto.ClaimBuyLotListElem.verify|verify} messages.
+         * @param message ClaimBuyLotListElem message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IClaimBuyLotListElem, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ClaimBuyLotListElem message, length delimited. Does not implicitly {@link dto.ClaimBuyLotListElem.verify|verify} messages.
+         * @param message ClaimBuyLotListElem message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IClaimBuyLotListElem, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ClaimBuyLotListElem message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ClaimBuyLotListElem
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ClaimBuyLotListElem;
+
+        /**
+         * Decodes a ClaimBuyLotListElem message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ClaimBuyLotListElem
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ClaimBuyLotListElem;
+
+        /**
+         * Verifies a ClaimBuyLotListElem message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ClaimBuyLotListElem message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ClaimBuyLotListElem
+         */
+        public static fromObject(object: { [k: string]: any }): dto.ClaimBuyLotListElem;
+
+        /**
+         * Creates a plain object from a ClaimBuyLotListElem message. Also converts values to other types if specified.
+         * @param message ClaimBuyLotListElem
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.ClaimBuyLotListElem, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ClaimBuyLotListElem to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ClaimBuyLotListElem
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ClaimBuyLotListResponse. */
+    interface IClaimBuyLotListResponse {
+
+        /** ClaimBuyLotListResponse totalElems */
+        totalElems?: (number|null);
+
+        /** ClaimBuyLotListResponse claimBuyLotList */
+        claimBuyLotList?: (dto.IClaimBuyLotListElem[]|null);
+    }
+
+    /** Represents a ClaimBuyLotListResponse. */
+    class ClaimBuyLotListResponse implements IClaimBuyLotListResponse {
+
+        /**
+         * Constructs a new ClaimBuyLotListResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IClaimBuyLotListResponse);
+
+        /** ClaimBuyLotListResponse totalElems. */
+        public totalElems: number;
+
+        /** ClaimBuyLotListResponse claimBuyLotList. */
+        public claimBuyLotList: dto.IClaimBuyLotListElem[];
+
+        /**
+         * Creates a new ClaimBuyLotListResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ClaimBuyLotListResponse instance
+         */
+        public static create(properties?: dto.IClaimBuyLotListResponse): dto.ClaimBuyLotListResponse;
+
+        /**
+         * Encodes the specified ClaimBuyLotListResponse message. Does not implicitly {@link dto.ClaimBuyLotListResponse.verify|verify} messages.
+         * @param message ClaimBuyLotListResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IClaimBuyLotListResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ClaimBuyLotListResponse message, length delimited. Does not implicitly {@link dto.ClaimBuyLotListResponse.verify|verify} messages.
+         * @param message ClaimBuyLotListResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IClaimBuyLotListResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ClaimBuyLotListResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ClaimBuyLotListResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ClaimBuyLotListResponse;
+
+        /**
+         * Decodes a ClaimBuyLotListResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ClaimBuyLotListResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ClaimBuyLotListResponse;
+
+        /**
+         * Verifies a ClaimBuyLotListResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ClaimBuyLotListResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ClaimBuyLotListResponse
+         */
+        public static fromObject(object: { [k: string]: any }): dto.ClaimBuyLotListResponse;
+
+        /**
+         * Creates a plain object from a ClaimBuyLotListResponse message. Also converts values to other types if specified.
+         * @param message ClaimBuyLotListResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.ClaimBuyLotListResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ClaimBuyLotListResponse to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ClaimBuyLotListResponse
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ClaimBuyLotListRequest. */
+    interface IClaimBuyLotListRequest {
+
+        /** ClaimBuyLotListRequest page */
+        page?: (number|null);
+
+        /** ClaimBuyLotListRequest pageSize */
+        pageSize?: (number|null);
+    }
+
+    /** Represents a ClaimBuyLotListRequest. */
+    class ClaimBuyLotListRequest implements IClaimBuyLotListRequest {
+
+        /**
+         * Constructs a new ClaimBuyLotListRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: dto.IClaimBuyLotListRequest);
+
+        /** ClaimBuyLotListRequest page. */
+        public page: number;
+
+        /** ClaimBuyLotListRequest pageSize. */
+        public pageSize: number;
+
+        /**
+         * Creates a new ClaimBuyLotListRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ClaimBuyLotListRequest instance
+         */
+        public static create(properties?: dto.IClaimBuyLotListRequest): dto.ClaimBuyLotListRequest;
+
+        /**
+         * Encodes the specified ClaimBuyLotListRequest message. Does not implicitly {@link dto.ClaimBuyLotListRequest.verify|verify} messages.
+         * @param message ClaimBuyLotListRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: dto.IClaimBuyLotListRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ClaimBuyLotListRequest message, length delimited. Does not implicitly {@link dto.ClaimBuyLotListRequest.verify|verify} messages.
+         * @param message ClaimBuyLotListRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: dto.IClaimBuyLotListRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ClaimBuyLotListRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ClaimBuyLotListRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): dto.ClaimBuyLotListRequest;
+
+        /**
+         * Decodes a ClaimBuyLotListRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ClaimBuyLotListRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): dto.ClaimBuyLotListRequest;
+
+        /**
+         * Verifies a ClaimBuyLotListRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ClaimBuyLotListRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ClaimBuyLotListRequest
+         */
+        public static fromObject(object: { [k: string]: any }): dto.ClaimBuyLotListRequest;
+
+        /**
+         * Creates a plain object from a ClaimBuyLotListRequest message. Also converts values to other types if specified.
+         * @param message ClaimBuyLotListRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: dto.ClaimBuyLotListRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ClaimBuyLotListRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ClaimBuyLotListRequest
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

@@ -30,7 +30,7 @@ export default class Account {
       dto.messenger,
       dto.role,
       dto.password,
-      0
+      1000
     );
   }
 

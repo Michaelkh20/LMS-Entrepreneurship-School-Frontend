@@ -11,6 +11,7 @@ import AccountChangeSuccessResponse = dto.AccountChangeSuccessResponse;
 import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
 import AccountListResponse = dto.AccountListResponse;
 import AccountShortListResponse = dto.AccountShortListResponse;
+import NameAndBalanceResponse = dto.NameAndBalanceResponse;
 
 export default function injectAccountsEndpoints(
   app: ReturnType<typeof express>,
@@ -29,6 +30,24 @@ export default function injectAccountsEndpoints(
     const profileResponse = ProfileResponse.encode(result).finish();
 
     res.status(200).type('application/x-protobuf').send(profileResponse);
+  });
+
+  app.get('/profile/name-and-balance/:id', (req, res) => {
+    const id = req.params.id;
+
+    const result = db.getNameAndBalanceById(id);
+
+    if (!result) {
+      res.status(404).send();
+      return;
+    }
+
+    const nameAndBalanceResponse = NameAndBalanceResponse.encode({
+      name: result.partName,
+      balance: result.balance,
+    }).finish();
+
+    res.status(200).type('application/x-protobuf').send(nameAndBalanceResponse);
   });
 
   app.get('/admin/accounts/list', (req, res) => {

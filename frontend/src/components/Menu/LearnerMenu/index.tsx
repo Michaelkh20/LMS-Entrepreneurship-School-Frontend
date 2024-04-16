@@ -3,6 +3,8 @@ import { DollarOutlined } from '@ant-design/icons';
 import { ConfigProvider, Menu, MenuProps } from 'antd';
 import Link from 'next/link';
 import React from 'react';
+import { useAuth } from '../../../redux/features/authSlice';
+import { useGetNameAndBalanceQuery } from '../../../redux/services/learnerApi';
 
 const menuItems: MenuProps['items'] = [
   {
@@ -73,6 +75,9 @@ const menuItems: MenuProps['items'] = [
 ];
 
 export default function LearnerMenu() {
+  const [authState] = useAuth();
+  const { data } = useGetNameAndBalanceQuery(authState.id!);
+
   return (
     <ConfigProvider
       theme={{
@@ -85,7 +90,7 @@ export default function LearnerMenu() {
     >
       <UserDropdown
         props={{
-          name: 'Иван Иванов',
+          name: data?.name || '',
         }}
       />
       <div
@@ -93,10 +98,9 @@ export default function LearnerMenu() {
           padding: '12px 16px 12px 16px',
           fontSize: '1rem',
           fontWeight: 'bold',
-          
         }}
       >
-        <DollarOutlined /> 100 ШП
+        <DollarOutlined /> {data?.balance || ''} ШП
       </div>
       <Menu mode="inline" items={menuItems} />
     </ConfigProvider>

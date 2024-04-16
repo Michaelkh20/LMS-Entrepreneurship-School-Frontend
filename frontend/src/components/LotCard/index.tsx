@@ -7,9 +7,10 @@ import styles from './LotCard.module.css';
 import LotViewModal from '../Modals/LotViewModal';
 import PriceQuestionTooltip from './components/QuestionTooltip';
 import { useCreateBuyLotClaimMutation } from '@/redux/services/learnerApi';
+import { useAuth } from '@/redux/features/authSlice';
 
 type LotCardProps = {
-  id: number;
+  id: string;
   number: string;
   title: string;
   performer: string;
@@ -28,6 +29,7 @@ export default function LotCard({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [createBuyLotClaim, { isError, isLoading, isSuccess }] =
     useCreateBuyLotClaimMutation();
+  const [authState] = useAuth();
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -42,7 +44,7 @@ export default function LotCard({
 
   const handleCreateClaimClick: MouseEventHandler = (e) => {
     e.stopPropagation();
-    createBuyLotClaim(id);
+    createBuyLotClaim({ lotId: id, buyerId: authState.id! });
   };
 
   useEffect(() => {

@@ -16,7 +16,13 @@ import ITeamCreateRequest = dto.ITeamCreateRequest;
 import TeamCreateRequest = dto.TeamCreateRequest;
 import TeamChangeErrorResponse = dto.TeamChangeErrorResponse;
 import TeamCreateSuccessResponse = dto.TeamCreateSuccessResponse;
-import { GetAccountsApiArg } from '@/types/requests';
+import ClaimBuyLotListResponse = dto.ClaimBuyLotListResponse;
+import ClaimBuyLotListRequest = dto.ClaimBuyLotListRequest;
+import ClaimBuyLotResponse = dto.ClaimBuyLotResponse;
+import {
+  ClaimBuyLotListRequestArgs,
+  GetAccountsApiArg,
+} from '@/types/requests';
 
 export const adminApi = createApi({
   reducerPath: 'adminAPI',
@@ -192,6 +198,58 @@ export const adminApi = createApi({
         },
       }),
     }),
+
+    getBuyLotClaimsList: build.query<
+      ClaimBuyLotListResponse,
+      ClaimBuyLotListRequestArgs
+    >({
+      query: (params) => ({
+        url: `/claims/buy-lot/list`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: ClaimBuyLotListRequest.encode(params).finish(),
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = ClaimBuyLotListResponse.decode(
+            new Uint8Array(buffer)
+          );
+          return ClaimBuyLotListResponse.toObject(decoded, { arrays: true });
+        },
+      }),
+      providesTags: ['Claim'],
+      keepUnusedDataFor: 30,
+    }),
+
+    getBuyLotClaimById: build.query<ClaimBuyLotResponse, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/${claimId}`,
+        method: 'GET',
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decoded = ClaimBuyLotResponse.decode(new Uint8Array(buffer));
+          return ClaimBuyLotResponse.toObject(decoded, { arrays: true });
+        },
+      }),
+      providesTags: ['Claim'],
+    }),
+
+    approveClaim: build.mutation<void, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/approve/${claimId}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['Claim'],
+    }),
+
+    declineClaim: build.mutation<void, string>({
+      query: (claimId) => ({
+        url: `/claims/buy-lot/decline/${claimId}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['Claim'],
+    }),
   }),
 });
 
@@ -203,4 +261,8 @@ export const {
   useGetAccountsShortListQuery,
   useGetTeamQuery,
   useCreateTeamMutation,
+  useGetBuyLotClaimsListQuery,
+  useGetBuyLotClaimByIdQuery,
+  useApproveClaimMutation,
+  useDeclineClaimMutation,
 } = adminApi;

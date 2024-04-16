@@ -1,3 +1,4 @@
+import { BuyLotClaimModule } from './modules/buyLotClaimModule';
 import { Low, Memory } from 'lowdb';
 import Account from './entities/account';
 import accountsInit from '../init_data/accounts';
@@ -9,23 +10,40 @@ import { TeamsModule } from './modules/teamsModule';
 import { dto } from '../../protobuffs/dto/index.js';
 import Role = dto.Role;
 import TeamCreateRequest = dto.TeamCreateRequest;
+import LotStatus = dto.LotStatus;
+import BuyLotClaimStatus = dto.BuyLotClaimStatus;
+import { LotsModule } from './modules/lotsModule';
+import Lot from './entities/lot';
+import BuyLotClaim from './entities/buyLotClaim';
+import lotsInit from '../init_data/lots';
 
 export type DBDataType = {
   accounts: Account[];
   teams: Team[];
+  lots: Lot[];
+  buyLotClaims: BuyLotClaim[];
 };
 
 export default class DB {
   db: Low<DBDataType>;
   accountsModule: AccountsModule<DBDataType>;
   teamsModule: TeamsModule<DBDataType>;
+  lotsModule: LotsModule<DBDataType>;
+  BuyLotClaimModule: BuyLotClaimModule<DBDataType>;
 
   constructor() {
-    const initData: DBDataType = { accounts: accountsInit, teams: teamsInit };
+    const initData: DBDataType = {
+      accounts: accountsInit,
+      teams: teamsInit,
+      lots: lotsInit,
+      buyLotClaims: [],
+    };
     this.db = new Low(new Memory<DBDataType>(), initData);
 
     this.accountsModule = new AccountsModule(this.db);
     this.teamsModule = new TeamsModule(this.db);
+    this.lotsModule = new LotsModule(this.db);
+    this.BuyLotClaimModule = new BuyLotClaimModule(this.db);
   }
 
   getProfileById(id: string) {
@@ -38,6 +56,16 @@ export default class DB {
     const accountWithTeam = this.teamsModule.populateAccountWithTeam(account);
 
     return accountWithTeam;
+  }
+
+  getNameAndBalanceById(id: string) {
+    const account = this.accountsModule.getAccountById(id)?.addPartName();
+
+    if (!account) {
+      return null;
+    }
+
+    return account;
   }
 
   getAccountsList({
@@ -113,9 +141,9 @@ export default class DB {
   }
 
   getAccountsShortList() {
-    const accountsWithFullName = this.accountsModule.getAccountsWithFullName();
+    const accountsWithPartName = this.accountsModule.getAccountsWithPartName();
 
-    return accountsWithFullName;
+    return accountsWithPartName;
   }
 
   getTeam(id: string) {
@@ -182,5 +210,169 @@ export default class DB {
     await this.db.write();
 
     return { team: newTeam };
+  }
+
+  getLotWithPerformerById(id: string) {
+    const lot = this.lotsModule.getLotById(id);
+
+    if (!lot) {
+      return null;
+    }
+
+    const lotWithPerformer = this.accountsModule.populateLotWithPerformer(lot);
+    lotWithPerformer.performer = lotWithPerformer.performer?.addPartName();
+
+    return lotWithPerformer;
+  }
+
+  getLotsShortList(pageNumber: number, pageSize: number) {
+    const lots = this.db.data.lots
+      .filter((lot) => lot.status === LotStatus.ACTIVE)
+      .map((lot) => this.accountsModule.populateLotWithPerformerString(lot));
+    const lotsSliced = lots.slice(
+      (pageNumber - 1) * pageSize,
+      pageNumber * pageSize
+    );
+
+    return {
+      totalLotsNumber: lots.length,
+      lots: lotsSliced,
+    };
+  }
+
+  async proccessBuyLotClaim(claim: BuyLotClaim) {
+    const lot = this.lotsModule.getLotById(claim.lotId);
+    const buyer = this.accountsModule.getAccountById(claim.buyerId);
+
+    if (!lot || !buyer) {
+      return false;
+    }
+
+    if (lot.status !== LotStatus.ACTIVE) {
+      return false;
+    }
+
+    if (buyer.balance < lot.price) {
+      return false;
+    }
+
+    buyer.balance -= lot.price;
+
+    this.db.data.buyLotClaims.push(claim);
+
+    await this.db.write();
+
+    return true;
+  }
+
+  getBuyLotClaimsList(pageNumber: number, pageSize: number) {
+    const claims = this.db.data.buyLotClaims.map((claim) => {
+      const lot = this.lotsModule.getLotById(claim.lotId);
+      const buyer = this.accountsModule.getAccountById(claim.buyerId);
+
+      return {
+        id: claim.id,
+        lotNumber: lot?.number,
+        buyer: buyer?.getPartName(),
+        status: claim.status,
+        date: claim.date.toISOString(),
+        price: lot?.price,
+      };
+    });
+
+    const claimsSliced = claims.slice(
+      (pageNumber - 1) * pageSize,
+      pageNumber * pageSize
+    );
+
+    return {
+      totalElems: claims.length,
+      claimBuyLotList: claimsSliced,
+    };
+  }
+
+  getBuyLotClaimById(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+    console.log(claim);
+
+    if (!claim) {
+      return null;
+    }
+
+    const lot = this.getLotWithPerformerById(claim.lotId);
+    console.log(lot);
+
+    if (!lot) {
+      return null;
+    }
+
+    const claimWithBuyer =
+      this.accountsModule.populateBuyLotClaimWithBuyer(claim);
+
+    return {
+      ...claimWithBuyer,
+      lot: {
+        ...lot,
+        date: lot.date.toISOString(),
+      },
+      date: claim.date.toISOString(),
+    };
+  }
+
+  async approveBuyLotClaim(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+
+    if (!claim) {
+      return false;
+    }
+
+    const lot = this.lotsModule.getLotById(claim.lotId);
+
+    if (!lot) {
+      return false;
+    }
+
+    const performer = this.accountsModule.getAccountById(lot.performerId);
+
+    if (!performer) {
+      return false;
+    }
+
+    performer.balance += lot.price;
+    claim.status = BuyLotClaimStatus.APPROVED;
+
+    await this.db.write();
+
+    return true;
+  }
+
+  async declineBuyLotClaim(id: string) {
+    const claim = this.BuyLotClaimModule.getBuyLotClaimById(id);
+    console.log(claim);
+
+    if (!claim) {
+      return false;
+    }
+
+    const lot = this.lotsModule.getLotById(claim.lotId);
+    console.log(lot);
+
+    if (!lot) {
+      return false;
+    }
+
+    const buyer = this.accountsModule.getAccountById(claim.buyerId);
+    console.log(buyer);
+
+    if (!buyer) {
+      return false;
+    }
+
+    buyer.balance += lot.price;
+    claim.status = BuyLotClaimStatus.DENIED;
+
+    await this.db.write();
+
+    return true;
   }
 }
