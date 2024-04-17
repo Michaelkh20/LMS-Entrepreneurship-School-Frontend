@@ -4,7 +4,7 @@ import { ClaimStatus, DateTime } from '@/types/common';
 import { DeleteOutlined } from '@ant-design/icons';
 import { dto } from '@dto';
 import { Button, Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -30,7 +30,9 @@ const TeamUsersEditColumns: ColumnsType<TeamUsersEditColumnsType> = [
             type="primary"
             danger
             icon={<DeleteOutlined />}
-            onClick={() => {console.log(record)}}
+            onClick={() => {
+              console.log(record);
+            }}
           />
         </>
       );
@@ -61,8 +63,10 @@ const mockData: TeamUsersEditColumnsType[] = [
 
 export const TeamUsersEditTable = ({
   users,
+  onRow,
 }: {
   users?: dto.TeamResponse.IPersonShortInfo[];
+  onRow?: TableProps['onRow'];
 }) => {
   //TODO: user type
 
@@ -89,6 +93,7 @@ export const TeamUsersEditTable = ({
       dataSource={userDataTable || mockData}
       pagination={false}
       rowKey={'userId'}
+      onRow={onRow}
       // onRow={(record, rowIndex) => {
       //   return {
       //     onClick: (event) => {

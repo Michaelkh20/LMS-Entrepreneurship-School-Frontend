@@ -18,7 +18,7 @@ import {
   Id,
   TransactionType,
 } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 import type {
   AdminTransactionTableItem,
@@ -74,7 +74,11 @@ const mockData: TransactionsColumnsDataType[] = [
   },
 ];
 
-export function TransactionsTableWithFilters() {
+export function TransactionsTableWithFilters({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetTransactionsApiArg>({
     page: 1,
     pageSize: 10,
@@ -106,6 +110,7 @@ export function TransactionsTableWithFilters() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

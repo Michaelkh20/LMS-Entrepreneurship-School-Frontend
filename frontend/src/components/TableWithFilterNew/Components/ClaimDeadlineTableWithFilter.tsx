@@ -16,7 +16,7 @@ import type {
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 type ClaimDeadlineColumnsDataType = {
   id: AdminClaimTableItem['id'];
@@ -73,7 +73,11 @@ const mockData: ClaimDeadlineColumnsDataType[] = [
   },
 ];
 
-export function ClaimDeadlineTableWithFilter() {
+export function ClaimDeadlineTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetClaimsApiArg>({
     claimType: ClaimType.FailedDeadline,
     page: 1,
@@ -107,6 +111,7 @@ export function ClaimDeadlineTableWithFilter() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

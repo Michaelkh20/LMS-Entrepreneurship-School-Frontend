@@ -14,7 +14,7 @@ import type { GetLessonsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { Id, Date } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
 
 import { useRouter } from 'next/navigation';
@@ -59,8 +59,12 @@ const mockData: AttendanceLessonsColumnsDataType[] = [
   },
 ];
 
-export function AttendanceLessonsTableWithFilter() {
-  const router = useRouter()
+export function AttendanceLessonsTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
+  const router = useRouter();
 
   const [formData, setFormData] = useState<GetLessonsApiArg>({
     page: 1,
@@ -95,15 +99,17 @@ export function AttendanceLessonsTableWithFilter() {
           columns: AttendanceLessonsColumns,
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
-          rowKey: 'id', 
-          onRow:(record, rowIndex) => {
-            return {
-              onClick: (ev) => {
-                console.log(record)
-                router.push(`/admin/attendance/${record.id}`)
-              }, // click row
-            };
-          }
+          rowKey: 'id',
+          onRow:
+            onRow ||
+            function (record, rowIndex) {
+              return {
+                onClick: (ev) => {
+                  console.log(record);
+                  router.push(`/admin/attendance/${record.id}`);
+                },
+              };
+            },
         }}
         formData={formData}
         setFormData={setFormData}

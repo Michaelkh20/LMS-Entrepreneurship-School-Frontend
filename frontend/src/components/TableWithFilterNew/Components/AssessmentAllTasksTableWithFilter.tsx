@@ -5,13 +5,12 @@ import {
   TaskTypeFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
-import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetTasksQuery } from '@/redux/services/adminApi';
 import type { GetTasksApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { Id, TaskType, DateTime } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -65,8 +64,10 @@ const mockData: AssessmentAllTasksTableItem[] = [
 
 export function AssessmentAllTasksTableWithFilter({
   taskType,
+  onRow,
 }: {
   taskType?: TaskType;
+  onRow?: TableProps['onRow'];
 }) {
   const router = useRouter();
 
@@ -110,13 +111,15 @@ export function AssessmentAllTasksTableWithFilter({
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
-          onRow: (record, rowIndex) => {
-            return {
-              onClick: (ev) => {
-                router.push(`/admin/assessments/${record.id}`);
-              },
-            };
-          },
+          onRow:
+            onRow ||
+            function (record, rowIndex) {
+              return {
+                onClick: (ev) => {
+                  router.push(`/admin/assessments/${record.id}`);
+                },
+              };
+            },
         }}
         formData={formData}
         setFormData={setFormData}

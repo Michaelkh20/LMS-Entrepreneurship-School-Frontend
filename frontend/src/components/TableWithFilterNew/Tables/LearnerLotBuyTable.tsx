@@ -1,6 +1,6 @@
 import { ClaimStatus, DateTime } from '@/types/common';
 import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 type LearnerLotBuyColumnsType = {
   id: number | string;
@@ -65,13 +65,18 @@ const mockData: LearnerLotBuyColumnsType[] = [
   },
 ];
 
-export const LearnerLotBuyTable = () => {
+export const LearnerLotBuyTable = ({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) => {
   return (
     <Table
       columns={LearnerLotBuyColumns}
       dataSource={mockData}
       pagination={false}
       rowKey={'id'}
+      onRow={onRow}
     />
   );
 };

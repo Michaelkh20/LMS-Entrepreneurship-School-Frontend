@@ -9,7 +9,7 @@ import type { GetAssessmentsApiArg } from '@/types/requests';
 import { useEffect, useState } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { TeamNumber, Id, Assessment, AssessmentType } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { AssessmentsPage } from '@/types/responses';
 
 // import type { AssessmentTableItem } from '@/types/responses';
@@ -59,7 +59,11 @@ const mockData: AssessmentsPage = {
   ],
 };
 
-export function AssessmentTableWithFilter({}: {}) {
+export function AssessmentTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetAssessmentsApiArg>({
     page: 1,
     pageSize: 10,
@@ -78,26 +82,25 @@ export function AssessmentTableWithFilter({}: {}) {
     console.log('FormData1:', formData);
   }, [formData]);
 
-
   //TODO: Из респонза достаем данные и формируем таблицу
 
   useEffect(() => {
-    setDataTable(mockData.content.map(
-        (el): AssessmentTableItem => {
-          return {
-            id: el.id,
-            learner: el.learner.name,
-            team: 1,
-            assessment: el.assessment,
-          };
-        }
-      ));
+    setDataTable(
+      mockData.content.map((el): AssessmentTableItem => {
+        return {
+          id: el.id,
+          learner: el.learner.name,
+          team: 1,
+          assessment: el.assessment,
+        };
+      })
+    );
   }, [mockData]);
 
   return (
     <>
       <BasicTableWithFilter
-      // totalNumber={data?.totalElems}
+        // totalNumber={data?.totalElems}
         filterFormItems={
           <>
             <NameFormItem name="learnerId" />
@@ -110,6 +113,7 @@ export function AssessmentTableWithFilter({}: {}) {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

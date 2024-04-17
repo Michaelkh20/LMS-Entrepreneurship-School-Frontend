@@ -3,7 +3,7 @@
 import { ClaimStatus, DateTime } from '@/types/common';
 import { dto } from '@dto';
 import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -43,13 +43,14 @@ const mockData: TeamUsersColumnsType[] = [
 
 export const TeamUsersTable = ({
   users,
+  onRow,
 }: {
   users?: dto.TeamResponse.IPersonShortInfo[];
+  onRow?: TableProps['onRow'];
 }) => {
   //TODO: user type
 
-
-  const router = useRouter()
+  const router = useRouter();
 
   const [userDataTable, setUserDataTable] = useState<TeamUsersColumnsType[]>(
     []
@@ -72,11 +73,16 @@ export const TeamUsersTable = ({
       dataSource={userDataTable || mockData}
       pagination={false}
       rowKey={'userId'}
-      onRow={(record, rowIndex) => {
-        return {
-          onClick: (event) => {router.push(`/admin/accounts/${record.userId}`)}
-        };
-      }}
+      onRow={
+        onRow ||
+        function (record, rowIndex) {
+          return {
+            onClick: (event) => {
+              router.push(`/admin/accounts/${record.userId}`);
+            },
+          };
+        }
+      }
     />
   );
 };

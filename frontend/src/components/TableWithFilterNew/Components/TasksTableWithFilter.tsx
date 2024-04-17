@@ -28,7 +28,7 @@ import {
   TaskType,
   DateTime,
 } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
 
 type TasksColumnsDataType = {
@@ -75,7 +75,13 @@ const mockData: TasksColumnsDataType[] = [
   },
 ];
 
-export function TasksTableWithFilter({ taskType }: { taskType?: TaskType }) {
+export function TasksTableWithFilter({
+  taskType,
+  onRow,
+}: {
+  taskType?: TaskType;
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetTasksApiArg>({
     taskType: taskType,
     page: 1,
@@ -111,6 +117,7 @@ export function TasksTableWithFilter({ taskType }: { taskType?: TaskType }) {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

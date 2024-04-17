@@ -78,7 +78,6 @@ export function AccountsTableWithFilter({
   //   console.log('FormData1:', dataForReq);
   // }, [dataForReq]);
 
-
   return (
     <>
       <BasicTableWithFilter
@@ -96,14 +95,16 @@ export function AccountsTableWithFilter({
           pagination: { total: data?.totalElems },
           dataSource: dataForTable,
           rowKey: 'id',
-          onRow: onRow || function(record, rowIndex){
-            return {
-              onClick: (ev) => {
-                console.log(record);
-                router.push(`/admin/accounts/${record.id}`);
-              }, // click row
-            };
-          }
+          onRow:
+            onRow ||
+            function (record, rowIndex) {
+              return {
+                onClick: (ev) => {
+                  console.log(record);
+                  router.push(`/admin/accounts/${record.id}`);
+                }, // click row
+              };
+            },
           // onRow: (record, rowIndex) => {
           //   return {
           //     onClick: (ev) => {

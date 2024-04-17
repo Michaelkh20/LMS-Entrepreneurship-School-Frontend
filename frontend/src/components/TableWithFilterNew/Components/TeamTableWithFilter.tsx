@@ -7,7 +7,7 @@ import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
 import type { GetTeamsApiArg } from '@/types/requests';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import type { ColumnsType } from 'antd/es/table';
+import type { ColumnsType, TableProps } from 'antd/es/table';
 import { Id } from '@/types/common';
 import { useRouter } from 'next/navigation';
 
@@ -49,7 +49,11 @@ const mockData: TeamsColumnsDataType[] = [
   },
 ];
 
-export function TeamTableWithFilter() {
+export function TeamTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetTeamsApiArg>({
     page: 1,
     pageSize: 10,
@@ -60,7 +64,7 @@ export function TeamTableWithFilter() {
     mockData || []
   );
 
-  const router = useRouter()
+  const router = useRouter();
   // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {
@@ -82,11 +86,15 @@ export function TeamTableWithFilter() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'teamId',
-          onRow: (record, rowIndex) => {
-            return {
-              onClick: (event) => {router.push(`/admin/teams/${record.teamId}`)}
-            };
-          },
+          onRow:
+            onRow ||
+            function (record, rowIndex) {
+              return {
+                onClick: (event) => {
+                  router.push(`/admin/teams/${record.teamId}`);
+                },
+              };
+            },
         }}
         formData={formData}
         setFormData={setFormData}

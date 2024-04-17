@@ -1,6 +1,6 @@
 import { DateTime } from '@/types/common';
 import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 type LearnerAseesmentsColumnsType = {
   id: number | string;
@@ -46,13 +46,18 @@ const mockData: LearnerAseesmentsColumnsType[] = [
   },
 ];
 
-export const LearnerAseesmentsTable = () => {
+export const LearnerAseesmentsTable = ({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) => {
   return (
     <Table
       columns={LearnerAseesmentsColumns}
       dataSource={mockData}
       pagination={false}
       rowKey={'id'}
+      onRow={onRow}
     />
   );
 };

@@ -18,7 +18,7 @@ import type {
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { Space, Popconfirm, Button } from 'antd';
 
 type ClaimTransferColumnsDataType = {
@@ -137,7 +137,11 @@ const mockData: ClaimTransferColumnsDataType[] = [
   },
 ];
 
-export function ClaimTransferTableWithFilter() {
+export function ClaimTransferTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetClaimsApiArg>({
     claimType: ClaimType.Transfer,
     page: 1,
@@ -179,6 +183,7 @@ export function ClaimTransferTableWithFilter() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}
