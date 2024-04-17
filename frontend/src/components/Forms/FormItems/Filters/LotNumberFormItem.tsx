@@ -3,7 +3,7 @@ import { Form, InputNumber } from 'antd';
 export function LotNumberFormItem() {
   return (
     <Form.Item name={'lotNumber'}>
-      <InputNumber min={1} placeholder={'Номер лота'} />
+      <InputNumber style={{minWidth:130, fontSize: 16}}  min={1} placeholder={'Номер лота'} />
     </Form.Item>
   );
 }

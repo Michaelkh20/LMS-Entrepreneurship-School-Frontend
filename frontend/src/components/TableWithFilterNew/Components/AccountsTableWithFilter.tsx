@@ -15,6 +15,7 @@ import roleToString from '@/util/roleToString';
 import { dto } from '@dto';
 import Role = dto.Role;
 import { useRouter } from 'next/navigation';
+import { TableProps } from 'antd/lib';
 
 type AccountColumnsDataType = {
   id: Id;
@@ -45,7 +46,11 @@ const AccountsColumns: ColumnsType<AccountColumnsDataType> = [
   { title: 'Баланс', dataIndex: 'balance', key: 'balance' },
 ];
 
-export function AccountsTableWithFilter() {
+export function AccountsTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetAccountsApiArg>({
     page: 1,
     pageSize: 10,
@@ -73,6 +78,7 @@ export function AccountsTableWithFilter() {
   //   console.log('FormData1:', dataForReq);
   // }, [dataForReq]);
 
+
   return (
     <>
       <BasicTableWithFilter
@@ -90,14 +96,22 @@ export function AccountsTableWithFilter() {
           pagination: { total: data?.totalElems },
           dataSource: dataForTable,
           rowKey: 'id',
-          onRow: (record, rowIndex) => {
+          onRow: onRow || function(record, rowIndex){
             return {
               onClick: (ev) => {
                 console.log(record);
                 router.push(`/admin/accounts/${record.id}`);
               }, // click row
             };
-          },
+          }
+          // onRow: (record, rowIndex) => {
+          //   return {
+          //     onClick: (ev) => {
+          //       console.log(record);
+          //       router.push(`/admin/accounts/${record.id}`);
+          //     }, // click row
+          //   };
+          // },
         }}
         formData={formData}
         setFormData={setFormData}

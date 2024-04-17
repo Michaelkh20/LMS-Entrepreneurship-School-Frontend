@@ -42,6 +42,7 @@ export default function UserDropdown(
             alignItems: 'center',
             margin: '12px 0',
           }}
+          onClick={()=>{router.push('/learner/profile')}}
         >
           <Space>
             <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>

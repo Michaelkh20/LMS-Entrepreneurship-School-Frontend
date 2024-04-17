@@ -9,9 +9,10 @@ import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import type { ColumnsType } from 'antd/es/table';
 import { Id } from '@/types/common';
+import { useRouter } from 'next/navigation';
 
 type TeamsColumnsDataType = {
-  id: Id;
+  teamId: Id;
   teamNumber: number;
   theme: string;
 };
@@ -32,17 +33,17 @@ const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
 
 const mockData: TeamsColumnsDataType[] = [
   {
-    id: 1,
+    teamId: 1,
     teamNumber: 1,
     theme: 'Выпечка',
   },
   {
-    id: 2,
+    teamId: 2,
     teamNumber: 2,
     theme: 'Булочки',
   },
   {
-    id: 3,
+    teamId: 3,
     teamNumber: 3,
     theme: 'Чаёчек',
   },
@@ -58,6 +59,8 @@ export function TeamTableWithFilter() {
   const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(
     mockData || []
   );
+
+  const router = useRouter()
   // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   //   useEffect(() => {
@@ -78,7 +81,12 @@ export function TeamTableWithFilter() {
           columns: TeamsColumns,
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
-          rowKey: 'id',
+          rowKey: 'teamId',
+          onRow: (record, rowIndex) => {
+            return {
+              onClick: (event) => {router.push(`/admin/teams/${record.teamId}`)}
+            };
+          },
         }}
         formData={formData}
         setFormData={setFormData}
