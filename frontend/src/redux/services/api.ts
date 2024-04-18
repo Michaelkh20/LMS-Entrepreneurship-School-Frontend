@@ -83,8 +83,8 @@ import type {
   UsersPage,
 } from '@/types/api';
 
-export const commonApi = createApi({
-  reducerPath: 'commonAPI',
+export const api = createApi({
+  reducerPath: 'API',
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1',
   }),
@@ -778,7 +778,7 @@ export const {
   useGetSolutionByAssignmentIdAndLearnerIdQuery,
   useCreateSolutionMutation,
   useCreateEmailMutation,
-} = commonApi;
+} = api;
 
 // getLot: build.query<LotResponse, string>({
 //   query: (lotId) => ({

@@ -2,7 +2,7 @@
 
 import styles from './page.module.css';
 import { Button, Form, Input } from 'antd';
-import { useAuthMutation } from '@/redux/services/commonApi';
+import { useAuthMutation } from '@/redux/services/api';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAuth } from '@/redux/features/authSlice';
