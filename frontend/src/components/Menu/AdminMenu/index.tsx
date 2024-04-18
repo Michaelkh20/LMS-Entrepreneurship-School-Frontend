@@ -115,11 +115,13 @@ export default function AdminMenu() {
         },
       }}
     >
-      <UserDropdown
-        props={{
-          name: undefined,
-        }}
-      />
+      <div style={{paddingRight: 4}}>
+        <UserDropdown
+          props={{
+            name: undefined,
+          }}
+        />
+      </div>
       {/* <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} /> */}
       <Menu mode="inline" items={menuItems} />
     </ConfigProvider>

@@ -18,7 +18,7 @@ import type {
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 type ClaimPlacingLotColumnsDataType = {
   id: AdminClaimTableItem['id'];
@@ -88,7 +88,11 @@ const mockData: ClaimPlacingLotColumnsDataType[] = [
   },
 ];
 
-export function ClaimPlacingLotTableWithFilter() {
+export function ClaimPlacingLotTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetClaimsApiArg>({
     claimType: ClaimType.PlacingLot,
     page: 1,
@@ -127,6 +131,7 @@ export function ClaimPlacingLotTableWithFilter() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

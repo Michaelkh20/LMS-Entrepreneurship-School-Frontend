@@ -1,12 +1,11 @@
 'use client';
 
 import { Key, useEffect, useState } from 'react';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 import { Button, ConfigProvider, InputNumber, Space, Table } from 'antd';
-import { DEBOUNCE_DURATION } from '@/components/TableWithFilter/entity';
 import { LessonNumber } from '@/types/common';
 import tableStyles from '../table.module.css';
 
@@ -100,7 +99,13 @@ const dataD: AttendanceColumnsDataType[] = [
   },
 ];
 
-export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
+export function AttendanceTable({
+  lessonId,
+  onRow,
+}: {
+  lessonId: LessonNumber;
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<AttendanceRequest>({
     lessonId: 123,
     learners: [],
@@ -236,6 +241,7 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
           onSelect: handleOnSelect,
           hideSelectAll: true,
         }}
+        onRow={onRow}
       ></Table>
       <div
         style={{
@@ -247,7 +253,7 @@ export function AttendanceTable({ lessonId }: { lessonId: LessonNumber }) {
         <Space size={32}>
           <div>Выбрано: {selectedRowKeys.length}</div>
           {/* <Button size={'large'} onClick={() => trigger(formData)}> */}
-          <Button size={'large'} onClick={() =>{}}>
+          <Button size={'large'} onClick={() => {}}>
             Подтвердить
           </Button>
         </Space>

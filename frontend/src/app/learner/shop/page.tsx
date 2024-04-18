@@ -7,6 +7,11 @@ import { useGetLotsShortQuery } from '@/redux/services/learnerApi';
 import { Pagination } from 'antd';
 import { useState } from 'react';
 import { pageSizes, pageSizesPostfix } from './constants';
+import { BasicFilter } from '@/components/TableWithFilterNew/BasicFilter';
+import {
+  LotNumberFormItem,
+  LotTitleFormItem,
+} from '@/components/Forms/FormItems/Filters';
 
 export default function Home() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -18,10 +23,25 @@ export default function Home() {
     setPageSize(pageSize);
   };
 
+  const handleFilterChanges = (changedValues: any, allValues: any) => {
+    // setFormData((prevState: T) => {
+    //   return {
+    //     ...prevState,
+    //     ...prepareFormUtil(changedValues),
+    //     // ...prepareFormUtil(allValues),
+    //   };
+    // });
+  };
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageLabel}>Магазин</h1>
       {/* <div className={styles.filtersMock}>Здесь будут фильтры</div> */}
+      <BasicFilter onChangeEvent={handleFilterChanges}>
+        <LotNumberFormItem></LotNumberFormItem>
+        <LotTitleFormItem></LotTitleFormItem>
+        {/* //TODO: add LotCostFormItem  */}
+      </BasicFilter>
       <div className={styles.content}>
         <div className={styles.lotsContainer}>
           {data &&

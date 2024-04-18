@@ -32,7 +32,16 @@ export default function Accounts() {
             Создать
           </Button>
         </div>
-        <AccountsTableWithFilter />
+        <AccountsTableWithFilter
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (ev) => {
+                console.log("ABOBADOBSAODBSABD");
+                router.push(`/admin/accounts/${record.id}`);
+              }, // click row
+            };
+          }}
+        />
       </div>
     </>
   );

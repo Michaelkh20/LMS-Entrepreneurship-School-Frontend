@@ -6,11 +6,11 @@
   justify-content: flex-start;
   gap: 1rem;
 
-  padding: 1.5rem 1.5rem 0;
+  padding: 1.5rem 1.5rem 0 2rem;
 }
 
 .title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -21,17 +21,17 @@
   align-items: center;
   gap: 1.5rem;
 
-  border-radius: 10px;
+  /* border-radius: 10px;
   border: 1px solid #f0f0f0;
-  background-color: white;
-  padding: 1rem 1.5rem;
+  background-color: white; */
+  /* padding: 1rem 1.5rem; */
 }
 
 .profileCard {
-  background-color: white;
+  /* background-color: white;
   border-radius: 10px;
-  border: 1px solid #f0f0f0;
-  padding: 1rem 1.5rem;
+  border: 1px solid #f0f0f0; */
+  /* padding: 1rem 1.5rem; */
 }
 
 .header {
@@ -95,6 +95,8 @@
 .propertyTitle {
   font-size: 14px;
   line-height: 17px;
+  display: flex;
+  gap: 4px
 }
 
 .propertyValue {
@@ -119,5 +121,6 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: flex-start;
+  padding-top: 1.5rem;
   gap: 1rem;
 }

@@ -19,7 +19,7 @@ import type {
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ClaimType, ClaimStatus, Delay, Id, Date } from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
 
 type LessonsColumnsDataType = {
@@ -61,7 +61,11 @@ const mockData: LessonsColumnsDataType[] = [
   },
 ];
 
-export function LessonsTableWithFilter() {
+export function LessonsTableWithFilter({
+  onRow,
+}: {
+  onRow?: TableProps['onRow'];
+}) {
   const [formData, setFormData] = useState<GetLessonsApiArg>({
     page: 1,
     pageSize: 10,
@@ -97,6 +101,7 @@ export function LessonsTableWithFilter() {
           // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
+          onRow: onRow,
         }}
         formData={formData}
         setFormData={setFormData}

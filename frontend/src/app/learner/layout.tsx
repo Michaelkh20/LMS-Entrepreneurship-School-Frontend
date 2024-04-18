@@ -18,7 +18,7 @@ const SiderStyles: CSSProperties = {
 
 const OuterLayoutStyles: CSSProperties = {
   height: '100vh',
-  overflowY: 'auto',
+  overflowY: 'scroll',
   justifyContent: 'center',
   backgroundColor: '#fff',
 };

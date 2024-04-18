@@ -11,36 +11,37 @@ import _debounce from 'lodash.debounce';
 
 import formStyles from './form.module.css';
 import tableStyles from './table.module.css';
+import { BasicFilter } from './BasicFilter';
 
-const BasicFilter = ({
-  onChangeEvent,
-  children,
-  total = 0,
-}: {
-  onChangeEvent: any;
-  children?: React.ReactNode;
-  total?: number;
-}) => {
-  return (
-    <div className={formStyles.wrapper}>
-      <div className={formStyles.header}>
-        <h3>Фильтры</h3>
-        <div className={formStyles.header_span}>
-          <span>Найдено:</span>
-          <span>{total}</span>
-        </div>
-      </div>
-      <Form
-        layout={'inline'}
-        size={'large'}
-        onValuesChange={onChangeEvent}
-        className={''}
-      >
-        {children}
-      </Form>
-    </div>
-  );
-};
+// const BasicFilter = ({
+//   onChangeEvent,
+//   children,
+//   total = 0,
+// }: {
+//   onChangeEvent: any;
+//   children?: React.ReactNode;
+//   total?: number;
+// }) => {
+//   return (
+//     <div className={formStyles.wrapper}>
+//       <div className={formStyles.header}>
+//         <h3>Фильтры</h3>
+//         <div className={formStyles.header_span}>
+//           <span>Найдено:</span>
+//           <span>{total}</span>
+//         </div>
+//       </div>
+//       <Form
+//         layout={'inline'}
+//         size={'large'}
+//         onValuesChange={onChangeEvent}
+//         className={''}
+//       >
+//         {children}
+//       </Form>
+//     </div>
+//   );
+// };
 
 type AttendanceTableColumnsType = (
   prop: SetStateAction<any>

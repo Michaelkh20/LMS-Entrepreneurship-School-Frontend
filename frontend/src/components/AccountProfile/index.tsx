@@ -11,6 +11,10 @@ import {
   ArrowUpOutlined,
   DeleteOutlined,
   EditOutlined,
+  MessageOutlined,
+  PhoneOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { FinalGradeTable } from '../TableWithFilterNew';
 
@@ -58,11 +62,18 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
         <div className={styles.content}>
           <div className={styles.propertiesContainer}>
             <div className={styles.property}>
-              <p className={styles.propertyTitle}>Email</p>
+              <span className={styles.propertyTitle}>
+                <UserOutlined></UserOutlined>
+                <p>Email</p>
+              </span>
               <p className={styles.propertyValue}>{data?.email}</p>
             </div>
             <div className={styles.property}>
-              <p className={styles.propertyTitle}>Команда</p>
+              <span className={styles.propertyTitle}>
+                <TeamOutlined></TeamOutlined>
+                <p className={styles.propertyTitle}>Команда</p>
+              </span>
+
               <p
                 onClick={handleTeamClick}
                 className={cx('propertyValue', 'teamValue')}
@@ -71,13 +82,18 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
               </p>
             </div>
             <div className={styles.property}>
+            <span className={styles.propertyTitle}>
+                <PhoneOutlined></PhoneOutlined>
               <p className={styles.propertyTitle}>Телефон</p>
-              <p className={styles.propertyValue}>
-                {data?.phone ? '+7' + data?.phone : ''}
-              </p>
+              </span>
+              <p className={styles.propertyValue}>{data?.phone}</p>
             </div>
             <div className={styles.property}>
-              <p className={styles.propertyTitle}>Мессенджер</p>
+              <span className={styles.propertyTitle}>
+                <MessageOutlined></MessageOutlined>
+                <p className={styles.propertyTitle}>Мессенджер</p>
+              </span>
+
               <p className={styles.propertyValue}>{data?.messenger}</p>
             </div>
             {isEditable && (
