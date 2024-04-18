@@ -4,5 +4,6 @@
   "apiImport": "emptyApi",
   "outputFile": "./lmsApi.ts",
   "exportName": "lmsApi",
-  "hooks": true
+  "hooks": true,
+  "tags": true
 }

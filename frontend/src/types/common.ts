@@ -1,106 +1,32 @@
-export type PageNumber = number;
-export type PageSize = number;
-export type TotalPages = number;
-export type TotalElements = number;
-export type Id = number;
-export type ShortName = string;
-export type Email = string;
-export type TeamNumber = number;
-export type Balance = number;
-export type Name = string;
-export type Surname = string;
-export type MiddleName = string;
-export type Phone = string;
-export type Messenger = string;
-export type Gender = boolean;
-export type Password = string;
-export type FullName = string;
-export type ProjectTheme = string;
-export type TaskTitle = string;
-export type DateTime = string;
-export type Assessment = number;
-export type Date = string;
-export type Comment = string;
-export type Bonus = number;
-export type GradeWeight = number;
-export type LessonNumber = number;
-export type Description = string;
-export type Criteria = string;
-export type Link = string;
-export type LessonTitle = string;
-export type LotNumber = number;
-export type LotTitle = string;
-export type Price = number;
-export type Sum = number;
-export type ClaimTitle = string;
-export type Delay = number;
-
-// Enums
-// export type Role = 'Learner' | 'Tracker';
-
-// export type SortOrder = 'asc' | 'desc';
-
-// export type AssessmentType = 'FinalGrade' | 'TrackerGrade';
-
-// export type FinalGradeType =
-//   | 'HW'
-//   | 'Testing'
-//   | 'Competitions'
-//   | 'Exams'
-//   | 'Attendance';
-// export type TaskType = 'HW' | 'Test' | 'Competition' | 'Exam';
-
-// export type TransactionType =
-//   | 'Activity'
-//   | 'SellLot'
-//   | 'AdminIncome'
-//   | 'TransferIncome'
-//   | 'FailedDeadline'
-//   | 'BuyLot'
-//   | 'AdminOutcome'
-//   | 'TransferOutcome';
-
-// export type ClaimType =
-//   | 'BuyingLot'
-//   | 'FailedDeadline'
-//   | 'PlacingLot'
-//   | 'Transfer';
-
-// export type ClaimStatus = 'Waiting' | 'Approved' | 'Declined';
-
-// export type ClaimAction = 'Approve' | 'Reject';
-
-// export type EmailGroupingTypes = 'All' | 'Learners' | 'Trackers';
-
 export enum Role {
-  Learner = 'Learner',
-  Tracker = 'Tracker',
-  Admin = 'Admin',
+  NOT_INITIALISED = 'NOT_INITIALISED',
+  STUDENT = 'STUDENT',
+  TRACKER = 'TRACKER',
+  ADMIN = 'ADMIN',
 }
 
-export enum SortOrder {
-  Asc = 'asc',
-  Desc = 'desc',
+export enum Sex {
+  NOT_INITIALISED = 'NOT_INITIALISED',
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
 }
 
 export enum AssessmentType {
-  FinalGrade = 'FinalGrade',
+  AdminGrade = 'AdminGrade',
   TrackerGrade = 'TrackerGrade',
 }
 
-export enum FinalGradeType {
-  HW = 'HW',
-  Testing = 'Testing',
-  Competitions = 'Competitions',
-  Exams = 'Exams',
-  Attendance = 'Attendance',
-}
-
-export enum TaskType {
+export enum AssignmentType {
   HW = 'HW',
   Test = 'Test',
   Competition = 'Competition',
   Exam = 'Exam',
+}
+
+export enum LotStatus {
+  Approval = 'Approval',
+  OnSale = 'OnSale',
+  Withdrawn = 'Withdrawn',
 }
 
 export enum TransactionType {
@@ -114,11 +40,12 @@ export enum TransactionType {
   TransferOutcome = 'TransferOutcome',
 }
 
-export enum ClaimType {
-  BuyingLot = 'BuyingLot',
-  FailedDeadline = 'FailedDeadline',
-  PlacingLot = 'PlacingLot',
-  Transfer = 'Transfer',
+export enum TwoSidedClaimStatus {
+  WaitingAdmin = 'WaitingAdmin',
+  Approved = 'Approved',
+  WaitingLearner = 'WaitingLearner',
+  DeclinedAdmin = 'DeclinedAdmin',
+  DeclinedLearner = 'DeclinedLearner',
 }
 
 export enum ClaimStatus {
@@ -130,6 +57,7 @@ export enum ClaimStatus {
 export enum ClaimAction {
   Approve = 'Approve',
   Reject = 'Reject',
+  ApproveWithNewPrice = 'ApproveWithNewPrice',
 }
 
 export enum EmailGroupingTypes {
@@ -138,19 +66,13 @@ export enum EmailGroupingTypes {
   Trackers = 'Trackers',
 }
 
-// Request and response types
-export type FinalGradeFormula = {
-  weight: GradeWeight;
-  type: FinalGradeType;
-}[];
-
 export function roleTranslate(role: Role | undefined) {
   switch (role) {
-    case Role.Admin:
+    case Role.ADMIN:
       return 'Администратор';
-    case Role.Learner:
+    case Role.STUDENT:
       return 'Ученик';
-    case Role.Tracker:
+    case Role.TRACKER:
       return 'Трекер';
     default:
       return '';
@@ -159,7 +81,7 @@ export function roleTranslate(role: Role | undefined) {
 
 export function assessmentTypeTranslate(role: AssessmentType | undefined) {
   switch (role) {
-    case AssessmentType.FinalGrade:
+    case AssessmentType.AdminGrade:
       return 'Оц. в ведомость';
     case AssessmentType.TrackerGrade:
       return 'Оц. трекера';
