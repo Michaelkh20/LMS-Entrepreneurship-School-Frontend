@@ -3,7 +3,7 @@
   "info": {
     "title": "LMS Entrepreneurship School API",
     "description": "API for interaction with LMS backend. \n\n Путь без роли доступны всем. \n\n /admin - доступ только Admin. \n\n /learner - доступ Learner и Tracker. \n\n /tracker - доступ только Tracker. \n\n Во всех requests и responses неиспользуемые поля должны содержать null. \n\n Response 404 возвращается для Learner и Tracker при попытке доступа к Admin.",
-    "version": "1.1.1"
+    "version": "2.0.0"
   },
   "servers": [
     {
@@ -11,25 +11,36 @@
     }
   ],
   "paths": {
-    "/auth": {
-      "post": {
+    "/auth/login": {
+      "get": {
         "tags": [
           "Authentication"
         ],
         "summary": "Authenticate user",
         "description": "Authenticate user",
         "operationId": "Auth",
-        "requestBody": {
-          "description": "Credentials",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthRequest"
-              }
+        "parameters": [
+          {
+            "name": "login",
+            "in": "query",
+            "description": "User login",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "all@edu.hse.ru"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "User password",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "qwerty"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -53,7 +64,48 @@
         }
       }
     },
-    "/admin/accounts": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create account",
+        "description": "Create account",
+        "operationId": "createAccount",
+        "requestBody": {
+          "description": "User to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/users/list": {
       "get": {
         "tags": [
           "Accounts"
@@ -75,10 +127,7 @@
             "$ref": "#/components/parameters/role"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -93,97 +142,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountsPage"
+                  "$ref": "#/components/schemas/UsersPage"
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/IncorrectParameters"
-          },
           "401": {
             "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Create account",
-        "description": "Create account",
-        "operationId": "createAccount",
-        "requestBody": {
-          "description": "User to create",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "409": {
-            "$ref": "#/components/responses/409"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Update account",
-        "description": "Update account",
-        "operationId": "updateAccount",
-        "requestBody": {
-          "description": "User to update",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "409": {
-            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -191,7 +156,7 @@
         }
       }
     },
-    "/accounts/{id}": {
+    "/users/{id}": {
       "get": {
         "tags": [
           "Accounts"
@@ -210,7 +175,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -225,46 +190,48 @@
             "$ref": "#/components/responses/500"
           }
         }
-      }
-    },
-    "/learner/accounts/balance-name": {
-      "get": {
+      },
+      "patch": {
         "tags": [
           "Accounts"
         ],
-        "summary": "Get user balance and name",
-        "description": "Get user balance and name",
-        "operationId": "getUserBalanceById",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "balance": {
-                      "type": "integer",
-                      "example": 100
-                    },
-                    "name": {
-                      "$ref": "#/components/schemas/shortName"
-                    }
-                  }
-                }
+        "summary": "Update account",
+        "description": "Update account",
+        "operationId": "updateAccount",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "User to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateUpdateRequest"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
           }
         }
-      }
-    },
-    "/admin/accounts/{id}": {
+      },
       "delete": {
         "tags": [
           "Accounts"
@@ -293,7 +260,46 @@
         }
       }
     },
-    "/admin/accounts/select": {
+    "/users/{id}/balance": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get user balance and name",
+        "description": "Get user balance and name",
+        "operationId": "getUserBalanceById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "balance": {
+                      "type": "string",
+                      "example": "100"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/users/snippets": {
       "get": {
         "tags": [
           "Accounts"
@@ -312,7 +318,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserSelectionList"
+                  "$ref": "#/components/schemas/UserSnippetList"
                 }
               }
             }
@@ -329,7 +335,7 @@
         }
       }
     },
-    "/admin/teams": {
+    "/teams/list": {
       "get": {
         "tags": [
           "Teams"
@@ -342,10 +348,10 @@
             "$ref": "#/components/parameters/teamNumber"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
+            "$ref": "#/components/parameters/teamProjectTheme"
           },
           {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -378,7 +384,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/teams": {
       "post": {
         "tags": [
           "Teams"
@@ -392,46 +400,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TeamRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "409": {
-            "$ref": "#/components/responses/409"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Teams"
-        ],
-        "summary": "Update team",
-        "description": "Update team",
-        "operationId": "updateTeam",
-        "requestBody": {
-          "description": "Team to update",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TeamRequest"
+                "$ref": "#/components/schemas/TeamCreateUpdateRequest"
               }
             }
           }
@@ -458,7 +427,51 @@
         }
       }
     },
-    "/admin/teams/{id}": {
+    "/teams/{id}": {
+      "put": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Update team",
+        "description": "Update team",
+        "operationId": "updateTeam",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "Team to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
       "get": {
         "tags": [
           "Teams"
@@ -477,7 +490,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamProfile"
+                  "$ref": "#/components/schemas/Team"
                 }
               }
             }
@@ -521,7 +534,7 @@
         }
       }
     },
-    "/learner/teams/{id}": {
+    "/teams/public/{id}": {
       "get": {
         "tags": [
           "Teams"
@@ -540,7 +553,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LearnerTeamProfile"
+                  "$ref": "#/components/schemas/TeamPublicProfile"
                 }
               }
             }
@@ -557,7 +570,7 @@
         }
       }
     },
-    "/admin/teams/select": {
+    "/teams/snippets": {
       "get": {
         "tags": [
           "Teams"
@@ -571,7 +584,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamSelectionList"
+                  "$ref": "#/components/schemas/TeamSnippetList"
                 }
               }
             }
@@ -588,7 +601,7 @@
         }
       }
     },
-    "/admin/assessments": {
+    "/assessments/list": {
       "get": {
         "tags": [
           "Assessments"
@@ -601,22 +614,16 @@
             "$ref": "#/components/parameters/learnerId"
           },
           {
-            "$ref": "#/components/parameters/taskId"
+            "$ref": "#/components/parameters/teamId"
+          },
+          {
+            "$ref": "#/components/parameters/assignmentId"
           },
           {
             "$ref": "#/components/parameters/assessmentType"
           },
           {
-            "$ref": "#/components/parameters/dateFrom"
-          },
-          {
-            "$ref": "#/components/parameters/dateTo"
-          },
-          {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/pageable"
@@ -652,7 +659,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/assessments": {
       "post": {
         "tags": [
           "Assessments"
@@ -666,7 +675,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssessmentRequest"
+                "$ref": "#/components/schemas/AssessmentCreateUpdateRequest"
               }
             }
           }
@@ -691,7 +700,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/assessments/{id}": {
       "put": {
         "tags": [
           "Assessments"
@@ -699,13 +710,18 @@
         "summary": "Update assessment",
         "description": "Update assessment",
         "operationId": "updateAssessment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
         "requestBody": {
           "description": "Assessment to update",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssessmentRequest"
+                "$ref": "#/components/schemas/AssessmentCreateUpdateRequest"
               }
             }
           }
@@ -716,42 +732,6 @@
           },
           "400": {
             "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/assessments/{id}": {
-      "get": {
-        "tags": [
-          "Assessments"
-        ],
-        "summary": "Get assessment info by id",
-        "description": "Get assessment info by id",
-        "operationId": "getAssessmentById",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/idPath"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssessmentInfo"
-                }
-              }
-            }
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -792,23 +772,17 @@
         }
       }
     },
-    "/assessments/final-grades": {
+    "/users/{id}/final-grades": {
       "get": {
         "tags": [
-          "Assessments"
+          "Accounts"
         ],
-        "summary": "Get final grades by learner id",
-        "description": "Get final grades by learner id",
+        "summary": "Get final grades of learner",
+        "description": "Get final grades of learner",
         "operationId": "getFinalGradesByLearnerId",
         "parameters": [
           {
-            "name": "learnerId",
-            "in": "query",
-            "description": "Learner id",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
+            "$ref": "#/components/parameters/idPath"
           }
         ],
         "responses": {
@@ -817,7 +791,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FinalGradeInfo"
+                  "$ref": "#/components/schemas/FinalGrades"
                 }
               }
             }
@@ -844,7 +818,7 @@
         "operationId": "getFinalGradeFormula",
         "responses": {
           "200": {
-            "description": "Содержит массив объектов, состоящих из типа оценивания и его веса.",
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
@@ -860,9 +834,7 @@
             "$ref": "#/components/responses/500"
           }
         }
-      }
-    },
-    "/admin/assessments/formula": {
+      },
       "put": {
         "tags": [
           "Assessments"
@@ -900,7 +872,7 @@
         }
       }
     },
-    "/admin/assessments/increase-final-grade": {
+    "/assessments/increase-final-grade": {
       "post": {
         "tags": [
           "Assessments"
@@ -914,7 +886,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BonusRequest"
+                "$ref": "#/components/schemas/SetBonusRequest"
               }
             }
           }
@@ -938,142 +910,29 @@
         }
       }
     },
-    "/learner/assessments/final": {
+    "/assignments/homework/list": {
       "get": {
         "tags": [
-          "Assessments"
+          "Assignments"
         ],
-        "summary": "Get list of final assessments for learner",
-        "description": "Get list of final assessments for learner. Only assessment with type = FinalGrade",
-        "operationId": "getFinalAssessmentsLearner",
+        "summary": "Get list of homeworks by filter and sort",
+        "description": "Get list of homeworks by filter and sort",
+        "operationId": "getHWList",
         "parameters": [
           {
-            "$ref": "#/components/parameters/taskType"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LearnerAssessmentTableItem"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/parameters/title"
           },
-          "400": {
-            "$ref": "#/components/responses/IncorrectParameters"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/tracker/assessments": {
-      "post": {
-        "tags": [
-          "Assessments"
-        ],
-        "summary": "Create assessment by tracker",
-        "description": "Create assessment by tracker",
-        "operationId": "createAssessmentByTracker",
-        "requestBody": {
-          "description": "Assessment to create",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AssessmentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "409": {
-            "$ref": "#/components/responses/409"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Assessments"
-        ],
-        "summary": "Update assessment by tracker",
-        "description": "Update assessment by tracker",
-        "operationId": "updateAssessmentByTracker",
-        "requestBody": {
-          "description": "Assessment to update",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AssessmentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/tasks": {
-      "get": {
-        "tags": [
-          "Tasks"
-        ],
-        "summary": "Get list of tasks by filter and sort",
-        "description": "Get list of tasks by filter and sort",
-        "operationId": "getTasks",
-        "parameters": [
           {
             "$ref": "#/components/parameters/lessonId"
           },
           {
-            "$ref": "#/components/parameters/taskType"
+            "$ref": "#/components/parameters/dateFrom"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
+            "$ref": "#/components/parameters/dateTo"
           },
           {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -1088,7 +947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TasksPage"
+                  "$ref": "#/components/schemas/HWPage"
                 }
               }
             }
@@ -1106,21 +965,23 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/assignments/homework": {
       "post": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Create task",
-        "description": "Create task",
-        "operationId": "createTask",
+        "summary": "Create HW",
+        "description": "Create HW",
+        "operationId": "createHW",
         "requestBody": {
-          "description": "Task to create",
+          "description": "Assignment to create",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskRequest"
+                "$ref": "#/components/schemas/HWCreateUpdateRequest"
               }
             }
           }
@@ -1140,6 +1001,42 @@
           },
           "409": {
             "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/assignments/homework/{id}": {
+      "get": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Get HW info by id",
+        "description": "Get HW info by id",
+        "operationId": "getHWById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HW"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -1148,18 +1045,148 @@
       },
       "put": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Update task",
-        "description": "Update task",
-        "operationId": "updateTask",
+        "summary": "Update HW",
+        "description": "Update HW",
+        "operationId": "updateHW",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
         "requestBody": {
-          "description": "Task to update",
+          "description": "Assignment to update",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskRequest"
+                "$ref": "#/components/schemas/HWCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Delete HW by id",
+        "description": "Delete HW by id",
+        "operationId": "deleteHWById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/assignments/test/list": {
+      "get": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Get list of tests by filter and sort",
+        "description": "Get list of tests by filter and sort",
+        "operationId": "getTestList",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/title"
+          },
+          {
+            "$ref": "#/components/parameters/lessonId"
+          },
+          {
+            "$ref": "#/components/parameters/dateFrom"
+          },
+          {
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/assignments/test": {
+      "post": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Create test",
+        "description": "Create test",
+        "operationId": "createTest",
+        "requestBody": {
+          "description": "Test to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestCreateUpdateRequest"
               }
             }
           }
@@ -1186,14 +1213,14 @@
         }
       }
     },
-    "/admin/tasks/{id}": {
+    "/assignments/test/{id}": {
       "get": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Get task info by id",
-        "description": "Get task info by id",
-        "operationId": "getTaskById",
+        "summary": "Get test info by id",
+        "description": "Get test info by id",
+        "operationId": "getTestById",
         "parameters": [
           {
             "$ref": "#/components/parameters/idPath"
@@ -1205,7 +1232,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskInfo"
+                  "$ref": "#/components/schemas/Test"
                 }
               }
             }
@@ -1221,13 +1248,57 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Update test",
+        "description": "Update test",
+        "operationId": "updateTest",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "Test to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
       "delete": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Delete task by id",
-        "description": "Delete task by id",
-        "operationId": "deleteTaskById",
+        "summary": "Delete test by id",
+        "description": "Delete test by id",
+        "operationId": "deleteTestById",
         "parameters": [
           {
             "$ref": "#/components/parameters/idPath"
@@ -1249,17 +1320,38 @@
         }
       }
     },
-    "/admin/tasks/select": {
+    "/assignments/other/list": {
       "get": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Get list of shorted tasks for select element by filter",
-        "description": "Get list of shorted tasks for select element by filter",
-        "operationId": "getTasksForSelect",
+        "summary": "Get list of exams and competitions by filter and sort",
+        "description": "Get list of exams and competitions by filter and sort",
+        "operationId": "getOtherAssignmentList",
         "parameters": [
           {
-            "$ref": "#/components/parameters/taskType"
+            "$ref": "#/components/parameters/title"
+          },
+          {
+            "$ref": "#/components/parameters/assignmentType"
+          },
+          {
+            "$ref": "#/components/parameters/dateFrom"
+          },
+          {
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/pageable"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
           }
         ],
         "responses": {
@@ -1268,10 +1360,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskSelectionList"
+                  "$ref": "#/components/schemas/OtherAssignmentsPage"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -1285,14 +1380,55 @@
         }
       }
     },
-    "/admin/tasks/{id}/deadline": {
+    "/assignments/other": {
+      "post": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Create exam or competition",
+        "description": "Create exam or competition",
+        "operationId": "createOtherAssignment",
+        "requestBody": {
+          "description": "Other assignment to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtherAssignmentCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/assignments/other/{id}": {
       "get": {
         "tags": [
-          "Tasks"
+          "Assignments"
         ],
-        "summary": "Get deadline by task id",
-        "description": "Get deadline by task id",
-        "operationId": "getDeadlineByTask",
+        "summary": "Get exam or competition info by id",
+        "description": "Get exam or competition info by id",
+        "operationId": "getOtherAssignmentById",
         "parameters": [
           {
             "$ref": "#/components/parameters/idPath"
@@ -1304,7 +1440,114 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeadlineInfo"
+                  "$ref": "#/components/schemas/OtherAssignment"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Update exam or competition",
+        "description": "Update exam or competition",
+        "operationId": "updateOtherAssignment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "Other assignment to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtherAssignmentCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Delete exam or competition by id",
+        "description": "Delete exam or competition by id",
+        "operationId": "deleteOtherAssignmentById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/assignments/snippets": {
+      "get": {
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Get list of test snippets for select element",
+        "description": "Get list of test snippets for select element",
+        "operationId": "getAssignmentSnippets",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/assignmentType"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentSnippetList"
                 }
               }
             }
@@ -1321,7 +1564,7 @@
         }
       }
     },
-    "/admin/lessons": {
+    "/lessons/list": {
       "get": {
         "tags": [
           "Lessons"
@@ -1334,13 +1577,16 @@
             "$ref": "#/components/parameters/lessonNumber"
           },
           {
-            "$ref": "#/components/parameters/lessonTitle"
+            "$ref": "#/components/parameters/lessonTheme"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
+            "$ref": "#/components/parameters/dateFrom"
           },
           {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/pageable"
@@ -1376,7 +1622,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/lessons": {
       "post": {
         "tags": [
           "Lessons"
@@ -1390,46 +1638,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LessonRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "409": {
-            "$ref": "#/components/responses/409"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Lessons"
-        ],
-        "summary": "Update lesson",
-        "description": "Update lesson",
-        "operationId": "updateLesson",
-        "requestBody": {
-          "description": "Lesson to update",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LessonRequest"
+                "$ref": "#/components/schemas/LessonCreateUpdateRequest"
               }
             }
           }
@@ -1456,7 +1665,7 @@
         }
       }
     },
-    "/admin/lessons/{id}": {
+    "/lessons/{id}": {
       "get": {
         "tags": [
           "Lessons"
@@ -1475,7 +1684,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LessonInfo"
+                  "$ref": "#/components/schemas/Lesson"
                 }
               }
             }
@@ -1485,6 +1694,50 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Lessons"
+        ],
+        "summary": "Update lesson",
+        "description": "Update lesson",
+        "operationId": "updateLesson",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "Lesson to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LessonCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -1516,24 +1769,27 @@
         }
       }
     },
-    "/admin/lessons/select": {
+    "/lessons/snippets": {
       "get": {
         "tags": [
           "Lessons"
         ],
-        "summary": "Get list of shorted lessons for select element",
-        "description": "Get list of shorted lessons for select element",
-        "operationId": "getLessonsForSelect",
+        "summary": "Get list of lessons' snippets",
+        "description": "Get list of lessons' snippets",
+        "operationId": "getLessonsSnippets",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LessonSelectionList"
+                  "$ref": "#/components/schemas/LessonSnippetList"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -1547,81 +1803,14 @@
         }
       }
     },
-    "/learner/lessons": {
-      "get": {
-        "tags": [
-          "Lessons"
-        ],
-        "summary": "Get list of lessons by filter and sort",
-        "description": "Get list of lessons by filter and sort",
-        "operationId": "getLessonsLearner",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LearnerLessonTableItem"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/learner/lessons/{id}": {
-      "get": {
-        "tags": [
-          "Lessons"
-        ],
-        "summary": "Get lesson info by id",
-        "description": "Get lesson info by id",
-        "operationId": "getLessonByIdLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/idPath"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnerLessonInfo"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/lots": {
+    "/marketplace": {
       "get": {
         "tags": [
           "Lots"
         ],
-        "summary": "Get list of lots by filter and sort",
-        "description": "Get list of lots by filter and sort",
-        "operationId": "getLots",
+        "summary": "Get list of lots by filter and sort for marketplace",
+        "description": "Get list of lots by filter and sort for marketplace",
+        "operationId": "getLotsForMarketPlace",
         "parameters": [
           {
             "$ref": "#/components/parameters/lotNumber"
@@ -1630,13 +1819,19 @@
             "$ref": "#/components/parameters/lotTitle"
           },
           {
-            "$ref": "#/components/parameters/learnerId"
+            "$ref": "#/components/parameters/performerId"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
+            "$ref": "#/components/parameters/performerName"
           },
           {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/priceFrom"
+          },
+          {
+            "$ref": "#/components/parameters/priceTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -1669,31 +1864,55 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
-      "post": {
+      }
+    },
+    "/lots/list": {
+      "get": {
         "tags": [
           "Lots"
         ],
-        "summary": "Create lot",
-        "description": "Create lot",
-        "operationId": "createLot",
-        "requestBody": {
-          "description": "Lot to create",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminLotRequest"
-              }
-            }
+        "summary": "Get list of lots by filter and sort",
+        "description": "Get list of lots by filter and sort",
+        "operationId": "getLots",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/lotNumber"
+          },
+          {
+            "$ref": "#/components/parameters/lotTitle"
+          },
+          {
+            "$ref": "#/components/parameters/performerId"
+          },
+          {
+            "$ref": "#/components/parameters/performerName"
+          },
+          {
+            "$ref": "#/components/parameters/lotStatus"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
           }
-        },
+        ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200"
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LotsPage"
+                }
+              }
+            }
           },
           "400": {
-            "$ref": "#/components/responses/NotSpecified"
+            "$ref": "#/components/responses/IncorrectParameters"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -1705,21 +1924,23 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
-      "put": {
+      }
+    },
+    "/lots": {
+      "post": {
         "tags": [
           "Lots"
         ],
-        "summary": "Update lot",
-        "description": "Update lot",
-        "operationId": "updateLot",
+        "summary": "Create lot",
+        "description": "Создавать лоты мо",
+        "operationId": "createLot",
         "requestBody": {
-          "description": "Lot to update",
+          "description": "Lot to create",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminLotRequest"
+                "$ref": "#/components/schemas/LotCreateUpdateRequest"
               }
             }
           }
@@ -1743,7 +1964,7 @@
         }
       }
     },
-    "/admin/lots/{id}": {
+    "/lots/{id}": {
       "get": {
         "tags": [
           "Lots"
@@ -1762,10 +1983,51 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotInfo"
+                  "$ref": "#/components/schemas/Lot"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Lots"
+        ],
+        "summary": "Update lot",
+        "description": "Update lot",
+        "operationId": "updateLot",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "requestBody": {
+          "description": "Lot to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LotCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -1782,8 +2044,8 @@
         "tags": [
           "Lots"
         ],
-        "summary": "Delete lot by id",
-        "description": "Delete lot by id",
+        "summary": "Withdraw lot from sale by id",
+        "description": "Withdraw lot from sale by id",
         "operationId": "deleteLotById",
         "parameters": [
           {
@@ -1806,64 +2068,13 @@
         }
       }
     },
-    "/learner/lots": {
-      "get": {
-        "tags": [
-          "Lots"
-        ],
-        "summary": "Get list of lots by filter and sort",
-        "description": "Get list of lots by filter and sort",
-        "operationId": "getLotsLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/lotNumber"
-          },
-          {
-            "$ref": "#/components/parameters/lotTitle"
-          },
-          {
-            "$ref": "#/components/parameters/priceFrom"
-          },
-          {
-            "$ref": "#/components/parameters/priceTo"
-          },
-          {
-            "$ref": "#/components/parameters/page"
-          },
-          {
-            "$ref": "#/components/parameters/pageSize"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnerLotsPage"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/IncorrectParameters"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/transactions": {
+    "/transactions": {
       "get": {
         "tags": [
           "Transactions"
         ],
         "summary": "Get list of transactions by filter and sort",
-        "description": "Get list of transactions by filter and sort",
+        "description": "Get list of transactions by filter and sort. \n\n If learner makes request, system should return only this learner's transactions. In this case query parameter learnerId is not used.",
         "operationId": "getTransactions",
         "parameters": [
           {
@@ -1879,10 +2090,7 @@
             "$ref": "#/components/parameters/dateTo"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -1915,7 +2123,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
+      }
+    },
+    "/transactions/manual-accrual": {
       "post": {
         "tags": [
           "Transactions"
@@ -1929,7 +2139,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransactionRequest"
+                "$ref": "#/components/schemas/ManualAccrualRequest"
               }
             }
           }
@@ -1953,7 +2163,7 @@
         }
       }
     },
-    "/admin/transactions/{id}": {
+    "/transactions/{id}": {
       "get": {
         "tags": [
           "Transactions"
@@ -1972,7 +2182,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
+                  "$ref": "#/components/schemas/Transaction"
                 }
               }
             }
@@ -1989,86 +2199,26 @@
         }
       }
     },
-    "/learner/transactions": {
-      "get": {
-        "tags": [
-          "Transactions"
-        ],
-        "summary": "Get list of transactions by filter and sort",
-        "description": "Get list of transactions by filter and sort",
-        "operationId": "getTransactionsLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/transactionType"
-          },
-          {
-            "$ref": "#/components/parameters/dateFrom"
-          },
-          {
-            "$ref": "#/components/parameters/dateTo"
-          },
-          {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
-          },
-          {
-            "$ref": "#/components/parameters/page"
-          },
-          {
-            "$ref": "#/components/parameters/pageSize"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnerTransactionsPage"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/IncorrectParameters"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/claims": {
+    "/claims/buy-lot": {
       "get": {
         "tags": [
           "Claims"
         ],
-        "summary": "Get list of claims by filter and sort",
-        "description": "Get list of claims by filter and sort. \n\n Для всех типов заявок возможна фильтрация по параметрам claimStatus, dateFrom и dateTo. \n\n Если claimType = BuyingLot, то также возможна фильтрация по параметрам lotNumber и learnerId(покупатель). \n\n Если claimType = FailedDeadline, то также возможна фильтрация по параметрам taskId и learnerId(ученик). \n\n Если claimType = PlacingLot, то также возможна фильтрация по параметрам lotNumber и learnerId(исполнитель). \n\n Если claimType = Transfer, то также возможна фильтрация по параметрам learnerId(отправитель) и receiverId(получатель).",
-        "operationId": "getClaims",
+        "summary": "Get list of buy lot claims by filter and sort",
+        "description": "Get list of claims by filter and sort",
+        "operationId": "getBuyLotClaims",
         "parameters": [
           {
-            "$ref": "#/components/parameters/claimTypeRequired"
-          },
-          {
-            "$ref": "#/components/parameters/claimStatus"
+            "$ref": "#/components/parameters/twoSidedClaimStatus"
           },
           {
             "$ref": "#/components/parameters/lotNumber"
           },
           {
-            "$ref": "#/components/parameters/learnerId"
+            "$ref": "#/components/parameters/buyerId"
           },
           {
-            "$ref": "#/components/parameters/taskId"
-          },
-          {
-            "$ref": "#/components/parameters/receiverId"
+            "$ref": "#/components/parameters/sellerId"
           },
           {
             "$ref": "#/components/parameters/dateFrom"
@@ -2077,176 +2227,7 @@
             "$ref": "#/components/parameters/dateTo"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
-          },
-          {
-            "$ref": "#/components/parameters/page"
-          },
-          {
-            "$ref": "#/components/parameters/pageSize"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Для всех типов заявок в элементах поля content должны быть заполнены поля id, claimType, status и dateTime. \n\n Если claimType = BuyingLot, то также должны быть заполнены поля lot, learner(покупатель) и sum. \n\n Если claimType = FailedDeadline, то также должны быть заполнены поля learner(ученик), task и delay. \n\n Если claimType = PlacingLot, то также должны быть заполнены поля lot, learner(исполнитель) и sum. \n\n Если claimType = Transfer, то также должны быть заполнены поля learner(отправитель), receiver(получатель) и sum. \n\n Не заполненные поля должны содержать null. ",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClaimsPage"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/IncorrectParameters"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Claims"
-        ],
-        "summary": "Approve/reject claim",
-        "description": "Approve/reject claim",
-        "operationId": "updateClaim",
-        "requestBody": {
-          "description": "Поле fine заполняется только при типе заявки = DeadlineFailed и поле action = Approve",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminClaimRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "$ref": "#/components/responses/NotSpecified"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/claims/{id}": {
-      "get": {
-        "tags": [
-          "Claims"
-        ],
-        "summary": "Get claim info by id",
-        "description": "Get claim info by id",
-        "operationId": "getClaimById",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/idPath"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Для всех типов заявок должны быть заполнены поля id, claimType, status и dateTime. \n\n Если claimType = BuyingLot, то также должны быть заполнены поля lot и learner(покупатель). \n\n Если claimType = FailedDeadline, то также должны быть заполнены поля learner(ученик), deadline и fine(если status = Approved). \n\n Если claimType = PlacingLot, то также должно быть заполнено поле lot. \n\n claimType = Transfer, не запрашивается. \n\n Не заполненные поля должны содержать null.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClaimInfo"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/claims/new-amount": {
-      "get": {
-        "tags": [
-          "Claims"
-        ],
-        "summary": "Get number of new claims by type",
-        "description": "Get number of new claims by type",
-        "operationId": "getNewClaimsAmount",
-        "responses": {
-          "200": {
-            "description": "Ответ содержит массив объектов, каждый из которых соответствует одному из типов заявок и содержит количество заявок этого типа в статусе = Waiting.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NewClaimsAmount"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/learner/claims": {
-      "get": {
-        "tags": [
-          "Claims"
-        ],
-        "summary": "Get list of claims by filter and sort",
-        "description": "Get list of claims by filter and sort. \n\n  Возможна фильтрация по параметрам claimType, claimStatus, dateFrom и dateTo \n\n Получение заявок с типом = DeadlineFailed невозможно.",
-        "operationId": "getClaimsLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/claimType"
-          },
-          {
-            "$ref": "#/components/parameters/claimStatus"
-          },
-          {
-            "$ref": "#/components/parameters/dateFrom"
-          },
-          {
-            "$ref": "#/components/parameters/dateTo"
-          },
-          {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -2261,7 +2242,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LearnerClaimsPage"
+                  "$ref": "#/components/schemas/BuyLotClaimsPage"
                 }
               }
             }
@@ -2285,15 +2266,14 @@
           "Claims"
         ],
         "summary": "Create claim by user",
-        "description": "Для всех типов заявок должно быть заполнено поле claimType. \n\n Если claimType = BuyingLot, то также должно быть заполнены поле buyingLotId. \n\n Если claimType = PlacingLot, то также должно быть заполнены поле lot. \n\n Если claimType = Transfer, то также должны быть заполнены поля receiverId(получатель) и sum. \n\n Не заполненные поля должны содержать null.",
-        "operationId": "createClaim",
+        "description": "a",
+        "operationId": "createBuyLotClaim",
         "requestBody": {
-          "description": "Для всех типов заявок должно быть заполнено поле claimType. \n\n Если claimType = BuyingLot, то также должно быть заполнены поле buyingLotId. \n\n Если claimType = PlacingLot, то также должно быть заполнены поле lot. \n\n Если claimType = Transfer, то также должны быть заполнены поля receiverId(получатель) и sum. \n\n Не заполненные поля должны содержать null.",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LearnerClaimRequest"
+                "$ref": "#/components/schemas/BuyLotRequest"
               }
             }
           }
@@ -2320,17 +2300,416 @@
         }
       }
     },
-    "/admin/attendance": {
+    "/claims/buy-lot/{id}": {
       "get": {
         "tags": [
-          "Attendance"
+          "Claims"
+        ],
+        "summary": "Get buy lot claim info by id",
+        "description": "Get buy lot claim info by id",
+        "operationId": "getBuyLotClaimById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyLotClaim"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/list-lot": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Get list of listing lot claims by filter and sort",
+        "description": "Get list of listing lot claims by filter and sort",
+        "operationId": "getListLotClaims",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/twoSidedClaimStatus"
+          },
+          {
+            "$ref": "#/components/parameters/performerId"
+          },
+          {
+            "$ref": "#/components/parameters/dateFrom"
+          },
+          {
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListLotClaimsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Create claim by user",
+        "description": "a",
+        "operationId": "createListLotClaim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListLotRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "Not enough money"
+          },
+          "404": {
+            "description": "Lot or reciever not found"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/list-lot/{id}": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Get listing lot claim info by id",
+        "description": "Get listing lot claim info by id",
+        "operationId": "getListLotClaimById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListLotClaim"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/failed-deadline": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Get list of failed deadline claims by filter and sort",
+        "description": "Get list of failed deadline claims by filter and sort",
+        "operationId": "getFailedDeadlineClaims",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/claimStatus"
+          },
+          {
+            "$ref": "#/components/parameters/learnerId"
+          },
+          {
+            "$ref": "#/components/parameters/assignmentId"
+          },
+          {
+            "$ref": "#/components/parameters/dateFrom"
+          },
+          {
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedDeadlineClaimsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/failed-deadline/{id}": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Get failed deadline claim info by id",
+        "description": "Get failed deadline claim info by id",
+        "operationId": "getFailedDeadlineClaimById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedDeadlineClaim"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/transfer": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Get list of transfer claims by filter and sort",
+        "description": "Get list of transfer claims by filter and sort",
+        "operationId": "getTransferClaims",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/claimStatus"
+          },
+          {
+            "$ref": "#/components/parameters/senderId"
+          },
+          {
+            "$ref": "#/components/parameters/receiverId"
+          },
+          {
+            "$ref": "#/components/parameters/dateFrom"
+          },
+          {
+            "$ref": "#/components/parameters/dateTo"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferClaimsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Create claim by user",
+        "description": "a",
+        "operationId": "createTransferClaim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "Not enough money"
+          },
+          "404": {
+            "description": "Lot or reciever not found"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/claims/approve-reject": {
+      "put": {
+        "tags": [
+          "Claims"
+        ],
+        "summary": "Approve/reject claim",
+        "description": "Approve/reject claim",
+        "operationId": "ApproveRejectClaim",
+        "requestBody": {
+          "description": "Поле fine заполняется только при типе заявки = DeadlineFailed и поле action = Approve. \n\n Поле newPrice заполняется только для заявок покупки и размещения лотов.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveRejectClaimRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/lessons/{id}/attendance": {
+      "get": {
+        "tags": [
+          "Lessons"
         ],
         "summary": "Get attendance by lesson id",
         "description": "Get attendance by lesson id",
         "operationId": "getAttendance",
         "parameters": [
           {
-            "$ref": "#/components/parameters/lessonIdRequired"
+            "$ref": "#/components/parameters/idPath"
           }
         ],
         "responses": {
@@ -2357,18 +2736,23 @@
       },
       "put": {
         "tags": [
-          "Attendance"
+          "Lessons"
         ],
         "summary": "Update attendance",
         "description": "Update attendance",
         "operationId": "updateAttendance",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idPath"
+          }
+        ],
         "requestBody": {
           "description": "Attendance to update",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttendanceRequest"
+                "$ref": "#/components/schemas/AttendanceUpdateRequest"
               }
             }
           }
@@ -2392,103 +2776,17 @@
         }
       }
     },
-    "/learner/files": {
-      "post": {
-        "tags": [
-          "Files"
-        ],
-        "summary": "Upload a file",
-        "description": "Upload a file",
-        "operationId": "uploadFile",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "taskId": {
-                    "$ref": "#/components/schemas/id"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
-          },
-          "400": {
-            "description": "The uploaded file was not a .zip"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/files/{fileId}": {
-      "get": {
-        "tags": [
-          "Files"
-        ],
-        "summary": "Downloads a ZIP file",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "fileId",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            },
-            "required": true,
-            "description": "The id of the ZIP file to download"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ZIP file downloaded successfully",
-            "content": {
-              "application/zip": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "403": {
-            "description": "The learner don't have access to this file."
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/admin/solutions": {
+    "/solutions/list": {
       "get": {
         "tags": [
           "Solutions"
         ],
         "summary": "Get list of solutions by filter and sort",
-        "description": "Get list of solutions by filter and sort. \n\n Если task коммандный, возможна фильтрация по teamId, а если task индивидуальный, то возможна фильтрация по learnerId.",
+        "description": "Get list of solutions by filter and sort.",
         "operationId": "getSolutions",
         "parameters": [
           {
-            "$ref": "#/components/parameters/taskIdRequired"
+            "$ref": "#/components/parameters/assignmentId"
           },
           {
             "$ref": "#/components/parameters/learnerId"
@@ -2497,13 +2795,7 @@
             "$ref": "#/components/parameters/teamId"
           },
           {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
-          },
-          {
-            "$ref": "#/components/parameters/pageable"
+            "$ref": "#/components/parameters/sort"
           },
           {
             "$ref": "#/components/parameters/page"
@@ -2514,7 +2806,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Если task коммандный, то заполнено поле team, а если task индивидуальный,  то заполнено поле learner.",
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
@@ -2538,161 +2830,14 @@
         }
       }
     },
-    "/learner/solutions": {
+    "/solutions/{id}": {
       "get": {
         "tags": [
           "Solutions"
         ],
-        "summary": "Get list of solutions for learner",
-        "description": "Get list of solutions for learner. \n\n Возвращает все задания с типом 'HW' даже, если решение не было загружено (completeDate = null в response). \n\n Фильтрация невозможна.",
-        "operationId": "getSolutionsLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnerSolutionsTable"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/learner/solutions/{taskId}": {
-      "get": {
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Get solution by task id for learner",
-        "description": "Get solution by task id for learner",
-        "operationId": "getSolutionByIdLearner",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/taskIdPath"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnerSolutionInfo"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/tracker/solutions/tasks": {
-      "get": {
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Get list of tasks with solutions' info for tracker",
-        "description": "Get list of tasks with solutions' info for tracker. \n\n Возвращает все задания с типом 'HW'.",
-        "operationId": "getSolutionsTracker",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/sortProperty"
-          },
-          {
-            "$ref": "#/components/parameters/sortOrder"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrackerTasksSolutionsTable"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/tracker/solutions": {
-      "get": {
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Get list of solutions by task id for tracker",
-        "description": "Get list of solutions by task id for tracker.",
-        "operationId": "getSolutionsByTaskIdTracker",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/taskIdRequired"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrackerSolutionsTable"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/tracker/solutions/{id}": {
-      "get": {
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Get solution info by id for tracker",
-        "description": "Get solution info by id for tracker",
-        "operationId": "getSolutionInfoByIdTracker",
+        "summary": "Get solution",
+        "description": "Get solution",
+        "operationId": "getSolution",
         "parameters": [
           {
             "$ref": "#/components/parameters/idPath"
@@ -2704,10 +2849,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TrackerSolutionInfo"
+                  "$ref": "#/components/schemas/Solution"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -2721,7 +2869,85 @@
         }
       }
     },
-    "/admin/mail": {
+    "/solutions": {
+      "get": {
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Get solution by assignment id and learner id",
+        "description": "Get solution by assignment id and learner id. if learner makes request, system should return only this learner's solutions. In this case query parameter learnerId is not used.",
+        "operationId": "getSolutionByAssignmentIdAndLearnerId",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/assignmentId"
+          },
+          {
+            "$ref": "#/components/parameters/learnerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Solution"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IncorrectParameters"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Upload solution",
+        "description": "Upload solution",
+        "operationId": "createSolution",
+        "requestBody": {
+          "description": "Solution to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolutionCreateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200"
+          },
+          "400": {
+            "$ref": "#/components/responses/NotSpecified"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/mail": {
       "post": {
         "tags": [
           "Mail"
@@ -2779,28 +3005,69 @@
           "$ref": "#/components/schemas/id"
         }
       },
-      "taskId": {
-        "name": "taskId",
+      "buyerId": {
+        "name": "buyerId",
         "in": "query",
-        "description": "Task id",
+        "description": "Buyer id",
         "schema": {
           "$ref": "#/components/schemas/id"
         }
       },
-      "taskIdPath": {
-        "name": "taskId",
+      "sellerId": {
+        "name": "sellerId",
+        "in": "query",
+        "description": "Seller id",
+        "schema": {
+          "$ref": "#/components/schemas/id"
+        }
+      },
+      "performerId": {
+        "name": "performerId",
+        "in": "query",
+        "description": "Owner id",
+        "schema": {
+          "$ref": "#/components/schemas/id"
+        }
+      },
+      "performerName": {
+        "name": "performerName",
+        "in": "query",
+        "description": "Performer name",
+        "schema": {
+          "type": "string",
+          "example": "Иванов Иван Иванович"
+        }
+      },
+      "lotStatus": {
+        "name": "lotStatus",
+        "in": "query",
+        "description": "Search lot status",
+        "schema": {
+          "$ref": "#/components/schemas/lotStatus"
+        }
+      },
+      "assignmentId": {
+        "name": "assignmentId",
+        "in": "query",
+        "description": "Assignment id",
+        "schema": {
+          "$ref": "#/components/schemas/id"
+        }
+      },
+      "assignmentIdPath": {
+        "name": "assignmentId",
         "in": "path",
         "required": true,
-        "description": "Task id",
+        "description": "Assignment id",
         "schema": {
           "$ref": "#/components/schemas/id"
         }
       },
-      "taskIdRequired": {
-        "name": "taskId",
+      "assignmentIdRequired": {
+        "name": "assignmentId",
         "in": "query",
         "required": true,
-        "description": "Task id",
+        "description": "Assignment id",
         "schema": {
           "$ref": "#/components/schemas/id"
         }
@@ -2826,6 +3093,14 @@
         "in": "query",
         "description": "Lesson id",
         "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/id"
+        }
+      },
+      "senderId": {
+        "name": "senderId",
+        "in": "query",
+        "description": "Sender id",
         "schema": {
           "$ref": "#/components/schemas/id"
         }
@@ -2862,6 +3137,15 @@
           "$ref": "#/components/schemas/teamNumber"
         }
       },
+      "teamProjectTheme": {
+        "name": "teamProjectTheme",
+        "in": "query",
+        "description": "Search team project theme",
+        "schema": {
+          "type": "string",
+          "example": "Тема проекта"
+        }
+      },
       "lessonNumber": {
         "name": "lessonNumber",
         "in": "query",
@@ -2870,12 +3154,12 @@
           "$ref": "#/components/schemas/lessonNumber"
         }
       },
-      "lessonTitle": {
-        "name": "lessonTitle",
+      "lessonTheme": {
+        "name": "lessonTheme",
         "in": "query",
         "description": "Search lesson title",
         "schema": {
-          "$ref": "#/components/schemas/lessonTitle"
+          "$ref": "#/components/schemas/lessonTheme"
         }
       },
       "lotNumber": {
@@ -2892,6 +3176,15 @@
         "description": "Search lot title",
         "schema": {
           "$ref": "#/components/schemas/lotTitle"
+        }
+      },
+      "title": {
+        "name": "title",
+        "in": "query",
+        "description": "Search title",
+        "schema": {
+          "type": "string",
+          "example": "Какое-то название"
         }
       },
       "role": {
@@ -2942,12 +3235,12 @@
           "$ref": "#/components/schemas/price"
         }
       },
-      "taskType": {
-        "name": "taskType",
+      "assignmentType": {
+        "name": "assignmentType",
         "in": "query",
-        "description": "Search task type",
+        "description": "Search assignment type",
         "schema": {
-          "$ref": "#/components/schemas/taskType"
+          "$ref": "#/components/schemas/assignmentType"
         }
       },
       "transactionType": {
@@ -2981,6 +3274,23 @@
         "description": "Search claim status",
         "schema": {
           "$ref": "#/components/schemas/claimStatus"
+        }
+      },
+      "twoSidedClaimStatus": {
+        "name": "twoSidedClaimStatus",
+        "in": "query",
+        "description": "Search two-sided claim status",
+        "schema": {
+          "$ref": "#/components/schemas/twoSidedClaimStatus"
+        }
+      },
+      "sort": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sorting order in format 'sortProperty,sortOrder'",
+        "schema": {
+          "type": "string",
+          "example": "name,asc"
         }
       },
       "sortProperty": {
@@ -3046,9 +3356,12 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "example": "testId"
-              }
+                "type": "string"
+              },
+              "example": [
+                "firstProperty",
+                "secondProperty"
+              ]
             }
           }
         }
@@ -3065,8 +3378,8 @@
     },
     "schemas": {
       "id": {
-        "type": "integer",
-        "example": 123
+        "type": "string",
+        "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
       },
       "email": {
         "type": "string",
@@ -3086,7 +3399,7 @@
         "type": "string",
         "example": "Иванов"
       },
-      "middleName": {
+      "patronymic": {
         "type": "string",
         "example": "Иванович"
       },
@@ -3116,10 +3429,12 @@
       "role": {
         "type": "string",
         "enum": [
-          "Learner",
-          "Tracker"
+          "NOT_INITIALISED",
+          "STUDENT",
+          "TRACKER",
+          "ADMIN"
         ],
-        "example": "Learner"
+        "example": "STUDENT"
       },
       "balance": {
         "type": "integer",
@@ -3134,9 +3449,14 @@
         "type": "string",
         "example": "tg:@ivan"
       },
-      "gender": {
-        "type": "boolean",
-        "example": true
+      "sex": {
+        "type": "string",
+        "enum": [
+          "NOT_INITIALISED",
+          "MALE",
+          "FEMALE"
+        ],
+        "example": "MALE"
       },
       "projectTheme": {
         "type": "string",
@@ -3145,10 +3465,10 @@
       "assessmentType": {
         "type": "string",
         "enum": [
-          "FinalGrade",
+          "AdminGrade",
           "TrackerGrade"
         ],
-        "example": "FinalGrade"
+        "example": "FAdminGrade"
       },
       "assessment": {
         "type": "integer",
@@ -3180,7 +3500,7 @@
         "type": "number",
         "example": 1.2
       },
-      "taskType": {
+      "assignmentType": {
         "type": "string",
         "enum": [
           "HW",
@@ -3190,7 +3510,7 @@
         ],
         "example": "HW"
       },
-      "taskTitle": {
+      "assignmentTitle": {
         "type": "string",
         "example": "ДЗ_1"
       },
@@ -3211,7 +3531,7 @@
         "minimum": 1,
         "example": 7
       },
-      "lessonTitle": {
+      "lessonTheme": {
         "type": "string",
         "minimum": 1,
         "example": "Тема о чём-то"
@@ -3228,7 +3548,7 @@
       },
       "price": {
         "type": "integer",
-        "minimum": 1,
+        "minimum": 0,
         "example": 150
       },
       "transactionType": {
@@ -3275,6 +3595,25 @@
         ],
         "example": "Waiting"
       },
+      "twoSidedClaimStatus": {
+        "type": "string",
+        "enum": [
+          "WaitingAdmin",
+          "Approved",
+          "WaitingLearner",
+          "DeclinedAdmin",
+          "DeclinedLearner"
+        ],
+        "example": "WaitingAdmin"
+      },
+      "lotStatus": {
+        "type": "string",
+        "enum": [
+          "Approval",
+          "OnSale",
+          "Withdrawn"
+        ]
+      },
       "claimTitle": {
         "type": "string",
         "minimum": 1,
@@ -3284,7 +3623,8 @@
         "type": "string",
         "enum": [
           "Approve",
-          "Reject"
+          "Reject",
+          "ApproveWithNewPrice"
         ],
         "example": "Approve"
       },
@@ -3345,117 +3685,146 @@
       "AuthResponse": {
         "type": "object",
         "properties": {
+          "user_id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
           "role": {
             "$ref": "#/components/schemas/role"
-          }
-        }
-      },
-      "FinalGradeFormula": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "weight": {
-              "$ref": "#/components/schemas/gradeWeight"
-            },
-            "type": {
-              "$ref": "#/components/schemas/finalGradeType"
-            }
           }
         }
       },
       "Pagination": {
         "type": "object",
         "properties": {
-          "page": {
-            "$ref": "#/components/schemas/pageNumber"
+          "total_pages": {
+            "type": "integer",
+            "format": "int32",
+            "example": 10
           },
-          "pageSize": {
-            "$ref": "#/components/schemas/pageSize"
-          },
-          "totalPages": {
-            "$ref": "#/components/schemas/totalPages"
-          },
-          "totalElements": {
-            "$ref": "#/components/schemas/totalElements"
+          "total_elements": {
+            "type": "integer",
+            "format": "int64",
+            "example": 100
           }
         }
       },
-      "UserSelectionItem": {
+      "UserSnippet": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "name": {
-            "$ref": "#/components/schemas/shortName"
+            "type": "string",
+            "example": "Иван"
+          },
+          "surname": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "patronymic": {
+            "type": "string",
+            "example": "Иванович",
+            "nullable": true
           }
         }
       },
-      "UserSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/UserSelectionItem"
-        }
-      },
-      "UserTableItem": {
+      "UserSnippetWithEmail": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "name": {
-            "$ref": "#/components/schemas/shortName"
+            "type": "string",
+            "example": "Иванов Иван"
           },
           "email": {
-            "$ref": "#/components/schemas/email"
+            "type": "string",
+            "format": "email",
+            "example": "example@gmail.com"
+          }
+        }
+      },
+      "PerformerSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+            "nullable": true
           },
-          "teamNumber": {
+          "name": {
+            "type": "string",
+            "example": "Иванов Иван"
+          }
+        }
+      },
+      "UserSnippetList": {
+        "type": "object",
+        "properties": {
+          "users": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/teamNumber"
+              "$ref": "#/components/schemas/UserSnippet"
             }
-          },
-          "role": {
-            "$ref": "#/components/schemas/role"
-          },
-          "balance": {
-            "$ref": "#/components/schemas/balance"
           }
         }
       },
-      "UserProfile": {
+      "User": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "fullName": {
-            "$ref": "#/components/schemas/fullName"
+          "name": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "surname": {
+            "type": "string",
+            "example": "Иванов"
+          },
+          "patronymic": {
+            "type": "string",
+            "example": "Иванович",
+            "nullable": true
           },
           "email": {
-            "$ref": "#/components/schemas/email"
+            "type": "string",
+            "format": "email",
+            "example": "all@edu.hse.ru"
           },
-          "phone": {
-            "$ref": "#/components/schemas/phone"
+          "phone_number": {
+            "type": "string",
+            "format": "phone",
+            "example": "+79157777777",
+            "nullable": true
           },
           "messenger": {
-            "$ref": "#/components/schemas/messenger"
+            "type": "string",
+            "example": "tg:@ivan",
+            "nullable": true
           },
-          "teamNumber": {
+          "teams": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/teamNumber"
+              "$ref": "#/components/schemas/TeamSnippet"
             }
           },
-          "gender": {
-            "$ref": "#/components/schemas/gender"
+          "sex": {
+            "$ref": "#/components/schemas/sex"
           },
           "role": {
             "$ref": "#/components/schemas/role"
           },
           "balance": {
-            "$ref": "#/components/schemas/balance"
+            "type": "string",
+            "example": "1000"
           }
         }
       },
@@ -3463,156 +3832,131 @@
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "fullName": {
-            "$ref": "#/components/schemas/fullName"
-          },
-          "email": {
-            "$ref": "#/components/schemas/email"
-          },
-          "messenger": {
-            "$ref": "#/components/schemas/messenger"
-          },
-          "role": {
-            "$ref": "#/components/schemas/role"
-          }
-        }
-      },
-      "UserRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "name": {
-            "$ref": "#/components/schemas/name"
+            "type": "string",
+            "example": "Иван"
           },
           "surname": {
-            "$ref": "#/components/schemas/surname"
+            "type": "string",
+            "example": "Иванов"
           },
-          "middleName": {
-            "$ref": "#/components/schemas/middleName"
+          "patronymic": {
+            "type": "string",
+            "example": "Иванович",
+            "nullable": true
           },
           "email": {
-            "$ref": "#/components/schemas/email"
-          },
-          "phone": {
-            "$ref": "#/components/schemas/phone"
+            "type": "string",
+            "format": "email",
+            "example": "all@edu.hse.ru"
           },
           "messenger": {
-            "$ref": "#/components/schemas/messenger"
-          },
-          "gender": {
-            "$ref": "#/components/schemas/gender"
+            "type": "string",
+            "example": "tg:@ivan",
+            "nullable": true
           },
           "role": {
             "$ref": "#/components/schemas/role"
-          },
-          "password": {
-            "$ref": "#/components/schemas/password"
           }
         }
       },
-      "AccountsPage": {
+      "UserCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "surname": {
+            "type": "string",
+            "example": "Иванов"
+          },
+          "patronymic": {
+            "type": "string",
+            "example": "Иванович",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "all@edu.hse.ru"
+          },
+          "phone_number": {
+            "type": "string",
+            "format": "phone",
+            "example": "+79157777777",
+            "nullable": true
+          },
+          "messenger": {
+            "type": "string",
+            "example": "tg:@ivan",
+            "nullable": true
+          },
+          "sex": {
+            "$ref": "#/components/schemas/sex"
+          },
+          "role": {
+            "$ref": "#/components/schemas/role"
+          }
+        }
+      },
+      "UsersPage": {
         "type": "object",
         "properties": {
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "users": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserTableItem"
+              "$ref": "#/components/schemas/User"
             }
           }
         }
       },
-      "TeamSelectionItem": {
+      "TeamSnippet": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "number": {
-            "$ref": "#/components/schemas/teamNumber"
+            "type": "integer",
+            "format": "int32",
+            "example": 1
           }
         }
       },
-      "TeamSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/TeamSelectionItem"
-        }
-      },
-      "TeamTableItem": {
+      "TeamSnippetList": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "teamNumber": {
-            "$ref": "#/components/schemas/teamNumber"
-          },
-          "projectTheme": {
-            "$ref": "#/components/schemas/projectTheme"
-          }
-        }
-      },
-      "TeamProfile": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "teamNumber": {
-            "$ref": "#/components/schemas/teamNumber"
-          },
-          "projectTheme": {
-            "$ref": "#/components/schemas/projectTheme"
-          },
-          "members": {
+          "teams": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserTableItem"
+              "$ref": "#/components/schemas/TeamSnippet"
             }
           }
         }
       },
-      "LearnerTeamProfile": {
+      "TeamTableSnippet": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "teamNumber": {
-            "$ref": "#/components/schemas/teamNumber"
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
           },
-          "projectTheme": {
-            "$ref": "#/components/schemas/projectTheme"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PublicUserProfile"
-            }
-          }
-        }
-      },
-      "TeamRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "projectTheme": {
-            "$ref": "#/components/schemas/projectTheme"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/id"
-            }
+          "project_theme": {
+            "type": "string",
+            "example": "Тема проекта"
           }
         }
       },
@@ -3622,164 +3966,162 @@
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "teams": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TeamTableItem"
+              "$ref": "#/components/schemas/TeamTableSnippet"
             }
           }
         }
       },
-      "AssessmentTableItem": {
+      "Team": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "project_theme": {
+            "type": "string",
+            "example": "Тема проекта"
+          },
+          "learners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "trackers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "TeamPublicProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "project_theme": {
+            "type": "string",
+            "example": "Тема проекта"
+          },
+          "learners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicUserProfile"
+            }
+          },
+          "trackers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicUserProfile"
+            }
+          }
+        }
+      },
+      "TeamCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "project_theme": {
+            "type": "string",
+            "example": "Тема проекта"
+          },
+          "learners": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+            }
+          },
+          "trackers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+            }
+          }
+        }
+      },
+      "Assessment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
+          "assignment": {
+            "$ref": "#/components/schemas/AssignmentSnippet"
+          },
+          "solutionId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "issueDate": {
-            "$ref": "#/components/schemas/dateTime"
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
           },
           "assessmentType": {
             "$ref": "#/components/schemas/assessmentType"
           },
           "assessment": {
-            "$ref": "#/components/schemas/assessment"
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 10,
+            "example": 8
+          },
+          "comment": {
+            "type": "string",
+            "example": "Some comment"
           }
         }
       },
-      "LearnerAssessmentTableItem": {
+      "AssessmentTableSnippet": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "taskTitle": {
-            "$ref": "#/components/schemas/taskTitle"
-          },
-          "taskType": {
-            "$ref": "#/components/schemas/taskType"
-          },
-          "lessonId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "issueDate": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "assessment": {
-            "$ref": "#/components/schemas/assessment"
-          }
-        }
-      },
-      "AssessmentInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "tracker": {
-            "$ref": "#/components/schemas/UserSelectionItem"
-          },
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          },
-          "issueDate": {
-            "$ref": "#/components/schemas/dateTime"
+          "assignment": {
+            "$ref": "#/components/schemas/AssignmentSnippet"
           },
           "assessmentType": {
             "$ref": "#/components/schemas/assessmentType"
           },
           "assessment": {
-            "$ref": "#/components/schemas/assessment"
-          },
-          "comment": {
-            "$ref": "#/components/schemas/comment"
-          }
-        }
-      },
-      "TrackerAssessment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "trackerName": {
-            "$ref": "#/components/schemas/fullName"
-          },
-          "assessment": {
-            "$ref": "#/components/schemas/assessment"
-          },
-          "comment": {
-            "$ref": "#/components/schemas/comment"
-          }
-        }
-      },
-      "FinalGradeInfo": {
-        "type": "object",
-        "properties": {
-          "assessments": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "finalAssessment": {
-                  "type": "number",
-                  "example": 6.33
-                },
-                "type": {
-                  "$ref": "#/components/schemas/finalGradeType"
-                }
-              }
-            }
-          },
-          "bonus": {
-            "$ref": "#/components/schemas/bonus"
-          },
-          "total": {
-            "type": "number",
-            "example": 8.7
-          }
-        }
-      },
-      "BonusRequest": {
-        "type": "object",
-        "properties": {
-          "learnerId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "bonus": {
-            "$ref": "#/components/schemas/bonus"
-          }
-        }
-      },
-      "AssessmentRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "learnerId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "teamId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "assessment": {
-            "$ref": "#/components/schemas/assessment"
-          },
-          "taskId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "comment": {
-            "$ref": "#/components/schemas/comment"
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 10,
+            "example": 8
           }
         }
       },
@@ -3792,115 +4134,218 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssessmentTableItem"
+              "$ref": "#/components/schemas/AssessmentTableSnippet"
             }
           }
         }
       },
-      "TaskTableItem": {
+      "AssessmentCreateUpdateRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+          "solutionId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "title": {
-            "$ref": "#/components/schemas/taskTitle"
+          "assessment": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 10,
+            "example": 8
           },
-          "lesson": {
-            "$ref": "#/components/schemas/LessonSelectionItem"
-          },
-          "taskType": {
-            "$ref": "#/components/schemas/taskType"
-          },
-          "deadline": {
-            "$ref": "#/components/schemas/dateTime"
+          "comment": {
+            "type": "string",
+            "example": "Some comment"
           }
         }
       },
-      "TaskSelectionItem": {
+      "FinalGradeFormula": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+          "HWs": {
+            "type": "number",
+            "example": 0.3
           },
-          "title": {
-            "$ref": "#/components/schemas/taskTitle"
+          "Tests": {
+            "type": "number",
+            "example": 0.2
+          },
+          "Competitions": {
+            "type": "number",
+            "example": 0.2
+          },
+          "Exams": {
+            "type": "number",
+            "example": 0.3
           }
         }
       },
-      "TaskSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/TaskSelectionItem"
+      "FinalGrades": {
+        "type": "object",
+        "properties": {
+          "HWs": {
+            "type": "number",
+            "example": 8
+          },
+          "Tests": {
+            "type": "number",
+            "example": 7
+          },
+          "Competitions": {
+            "type": "number",
+            "example": 6
+          },
+          "Exams": {
+            "type": "number",
+            "example": 5
+          },
+          "Bonus": {
+            "type": "number",
+            "example": 1.2
+          }
         }
       },
-      "TaskInfo": {
+      "SetBonusRequest": {
+        "type": "object",
+        "properties": {
+          "learnerId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "bonus": {
+            "type": "number",
+            "example": 1.2
+          }
+        }
+      },
+      "HW": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "title": {
-            "$ref": "#/components/schemas/taskTitle"
+            "type": "string",
+            "example": "ДЗ_1"
           },
           "lesson": {
-            "$ref": "#/components/schemas/LessonSelectionItem"
+            "$ref": "#/components/schemas/LessonSnippet"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "criteria": {
-            "$ref": "#/components/schemas/criteria"
+            "type": "string",
+            "example": "Some criteria"
           },
           "isTeamWork": {
             "type": "boolean",
             "example": true
           },
-          "link": {
-            "$ref": "#/components/schemas/link"
-          },
-          "taskType": {
-            "$ref": "#/components/schemas/taskType"
-          },
           "deadline": {
-            "$ref": "#/components/schemas/dateTime"
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
           }
         }
       },
-      "TaskRequest": {
+      "AssignmentSnippet": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "title": {
-            "$ref": "#/components/schemas/taskTitle"
+            "type": "string",
+            "example": "ДЗ_1"
+          }
+        }
+      },
+      "AssignmentSnippetList": {
+        "type": "object",
+        "properties": {
+          "HWs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignmentSnippet"
+            }
+          }
+        }
+      },
+      "HWTableSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "title": {
+            "type": "string",
+            "example": "ДЗ_1"
+          },
+          "lesson": {
+            "$ref": "#/components/schemas/LessonSnippet"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
+          }
+        }
+      },
+      "HWSnippetWithDeadline": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "title": {
+            "type": "string",
+            "example": "ДЗ_1"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
+          }
+        }
+      },
+      "HWCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "ДЗ_1"
           },
           "lessonId": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+            "nullable": true
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "criteria": {
-            "$ref": "#/components/schemas/criteria"
+            "type": "string",
+            "example": "Some criteria"
           },
           "isTeamWork": {
             "type": "boolean",
             "example": true
           },
-          "link": {
-            "$ref": "#/components/schemas/link"
-          },
-          "taskType": {
-            "$ref": "#/components/schemas/taskType"
-          },
           "deadline": {
-            "$ref": "#/components/schemas/dateTime"
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
           }
         }
       },
-      "TasksPage": {
+      "HWPage": {
         "type": "object",
         "properties": {
           "pagination": {
@@ -3909,152 +4354,251 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TaskTableItem"
+              "$ref": "#/components/schemas/HWTableSnippet"
             }
           }
         }
       },
-      "LessonSelectionItem": {
+      "Test": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
+          "title": {
+            "type": "string",
+            "example": "Тест_1"
+          },
+          "lesson": {
+            "$ref": "#/components/schemas/LessonSnippet"
+          },
+          "link": {
+            "type": "string",
+            "example": "Some link"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
           }
         }
       },
-      "LessonSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/LessonSelectionItem"
-        }
-      },
-      "LessonTableItem": {
+      "TestCreateUpdateRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
-          },
           "title": {
-            "$ref": "#/components/schemas/lessonTitle"
+            "type": "string",
+            "example": "Тест_1"
           },
-          "date": {
-            "$ref": "#/components/schemas/date"
+          "lessonId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+            "nullable": true
+          },
+          "link": {
+            "type": "string",
+            "example": "Some link"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
           }
         }
       },
-      "LearnerLessonTableItem": {
+      "TestsPage": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
           },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
-          },
-          "title": {
-            "$ref": "#/components/schemas/lessonTitle"
+          "tests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Test"
+            }
           }
         }
       },
-      "LessonInfo": {
+      "OtherAssignment": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "title": {
-            "$ref": "#/components/schemas/lessonTitle"
+            "type": "string",
+            "example": "Тест_1"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
+          },
+          "assignmentType": {
+            "$ref": "#/components/schemas/assignmentType"
+          }
+        }
+      },
+      "OtherAssignmentsPage": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "assignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OtherAssignment"
+            }
+          }
+        }
+      },
+      "OtherAssignmentCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Тест_1"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
+          },
+          "assignmentType": {
+            "$ref": "#/components/schemas/assignmentType"
+          }
+        }
+      },
+      "Lesson": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "theme": {
+            "type": "string",
+            "example": "Тема о чём-то"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "date": {
-            "$ref": "#/components/schemas/date"
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
           },
-          "presLink": {
-            "$ref": "#/components/schemas/link"
+          "presLinks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://editor.swagger.io/"
+            }
           },
-          "videoLink": {
-            "$ref": "#/components/schemas/link"
-          },
-          "homework": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          },
-          "test": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          }
-        }
-      },
-      "LearnerLessonInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
-          },
-          "title": {
-            "$ref": "#/components/schemas/lessonTitle"
-          },
-          "description": {
-            "$ref": "#/components/schemas/description"
-          },
-          "date": {
-            "$ref": "#/components/schemas/date"
-          },
-          "presLink": {
-            "$ref": "#/components/schemas/link"
-          },
-          "videoLink": {
-            "$ref": "#/components/schemas/link"
-          },
-          "homework": {
-            "$ref": "#/components/schemas/TaskInfo"
-          },
-          "test": {
-            "$ref": "#/components/schemas/TaskInfo"
-          }
-        }
-      },
-      "LessonRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lessonNumber"
-          },
-          "title": {
-            "$ref": "#/components/schemas/lessonTitle"
-          },
-          "description": {
-            "$ref": "#/components/schemas/description"
-          },
-          "date": {
-            "$ref": "#/components/schemas/date"
-          },
-          "presLink": {
-            "$ref": "#/components/schemas/link"
-          },
-          "videoLink": {
-            "$ref": "#/components/schemas/link"
+          "videoLinks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://editor.swagger.io/"
+            }
           },
           "homeworkId": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+            "nullable": true
           },
           "testId": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+            "nullable": true
+          }
+        }
+      },
+      "LessonTableSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "theme": {
+            "type": "string",
+            "example": "Тема о чём-то"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
+          }
+        }
+      },
+      "LessonSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "theme": {
+            "type": "string",
+            "example": "Тема о чём-то"
+          }
+        }
+      },
+      "LessonCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "theme": {
+            "type": "string",
+            "example": "Тема о чём-то"
+          },
+          "description": {
+            "type": "string",
+            "example": "Some description"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
+          },
+          "presLinks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://editor.swagger.io/"
+            }
+          },
+          "videoLinks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://editor.swagger.io/"
+            }
           }
         }
       },
@@ -4064,114 +4608,187 @@
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "lessons": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LessonTableItem"
+              "$ref": "#/components/schemas/LessonTableSnippet"
             }
           }
         }
       },
-      "LotSelectionItem": {
+      "LessonSnippetList": {
         "type": "object",
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lotNumber"
+          "lessons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LessonSnippet"
+            }
           }
         }
       },
-      "LotSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/LotSelectionItem"
-        }
-      },
-      "LotTableItem": {
+      "LotSnippetForClaim": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lotNumber"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "title": {
-            "$ref": "#/components/schemas/lotTitle"
-          },
-          "performer": {
-            "$ref": "#/components/schemas/UserSelectionItem"
-          },
-          "price": {
-            "$ref": "#/components/schemas/price"
-          }
-        }
-      },
-      "LotInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "number": {
-            "$ref": "#/components/schemas/lotNumber"
-          },
-          "title": {
-            "$ref": "#/components/schemas/lotTitle"
+            "type": "string",
+            "example": "Какой-то лот"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "terms": {
-            "$ref": "#/components/schemas/criteria"
-          },
-          "performer": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+            "type": "string",
+            "example": "Some criteria"
           },
           "price": {
-            "$ref": "#/components/schemas/price"
+            "type": "integer",
+            "format": "int32",
+            "example": 150
+          },
+          "performer": {
+            "$ref": "#/components/schemas/UserSnippet"
           }
         }
       },
-      "AdminLotRequest": {
+      "LotSnippet": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1,
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "example": "Какой-то лот"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "example": 150
+          },
+          "performer": {
+            "$ref": "#/components/schemas/UserSnippet"
+          }
+        }
+      },
+      "Lot": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1,
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/lotStatus"
           },
           "title": {
-            "$ref": "#/components/schemas/lotTitle"
+            "type": "string",
+            "example": "Какой-то лот"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "terms": {
-            "$ref": "#/components/schemas/criteria"
-          },
-          "performer": {
-            "$ref": "#/components/schemas/fullName"
+            "type": "string",
+            "example": "Some criteria"
           },
           "price": {
-            "$ref": "#/components/schemas/price"
+            "type": "integer",
+            "format": "int32",
+            "example": 150
+          },
+          "performer": {
+            "$ref": "#/components/schemas/PerformerSnippet"
+          },
+          "listingDate": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023",
+            "nullable": true
           }
         }
       },
-      "LearnerLotRequest": {
+      "LotSnippetForTable": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1,
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/lotStatus"
+          },
+          "listingDate": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023",
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "example": 150
+          },
+          "performer": {
+            "$ref": "#/components/schemas/PerformerSnippet"
+          }
+        }
+      },
+      "LotCreateUpdateRequest": {
         "type": "object",
         "properties": {
           "title": {
-            "$ref": "#/components/schemas/lotTitle"
+            "type": "string",
+            "example": "Какой-то лот"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "Some description"
           },
           "terms": {
-            "$ref": "#/components/schemas/criteria"
+            "type": "string",
+            "example": "Some criteria"
+          },
+          "performer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328",
+                "nullable": true
+              },
+              "name": {
+                "type": "string",
+                "example": "Иванов Иван",
+                "nullable": true
+              }
+            }
           },
           "price": {
-            "$ref": "#/components/schemas/price"
+            "type": "integer",
+            "format": "int32",
+            "example": 150
           }
         }
       },
@@ -4181,108 +4798,73 @@
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "lots": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LotTableItem"
+              "$ref": "#/components/schemas/LotSnippetForTable"
             }
           }
         }
       },
-      "LearnerLotsPage": {
+      "MarketplacePage": {
         "type": "object",
         "properties": {
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "lots": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LotInfo"
+              "$ref": "#/components/schemas/LotSnippet"
             }
           }
         }
       },
-      "AdminTransactionTableItem": {
+      "Transaction": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+            "$ref": "#/components/schemas/UserSnippet"
           },
           "type": {
             "$ref": "#/components/schemas/transactionType"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
+            "type": "string",
+            "example": "some description",
+            "nullable": true
           },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
+          "date": {
+            "type": "string",
+            "format": "date"
           },
           "sum": {
-            "$ref": "#/components/schemas/sum"
+            "type": "integer",
+            "format": "int32",
+            "example": 120
           }
         }
       },
-      "LearnerTransactionTableItem": {
+      "ManualAccrualRequest": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "type": {
-            "$ref": "#/components/schemas/transactionType"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "description": {
-            "$ref": "#/components/schemas/description"
-          },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "sum": {
-            "$ref": "#/components/schemas/sum"
-          }
-        }
-      },
-      "TransactionInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
-          },
-          "type": {
-            "$ref": "#/components/schemas/transactionType"
-          },
-          "description": {
-            "$ref": "#/components/schemas/description"
-          },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
+            "type": "string",
+            "example": "some description",
+            "nullable": true
           },
           "sum": {
-            "$ref": "#/components/schemas/sum"
-          },
-          "calim": {
-            "$ref": "#/components/schemas/ClaimSelectionItem"
-          }
-        }
-      },
-      "TransactionRequest": {
-        "type": "object",
-        "properties": {
-          "learnerId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "description": {
-            "$ref": "#/components/schemas/description"
-          },
-          "sum": {
-            "$ref": "#/components/schemas/sum"
+            "type": "integer",
+            "format": "int32",
+            "example": 120
           }
         }
       },
@@ -4295,211 +4877,266 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AdminTransactionTableItem"
+              "$ref": "#/components/schemas/Transaction"
             }
           }
         }
       },
-      "LearnerTransactionsPage": {
-        "type": "object",
-        "properties": {
-          "pagination": {
-            "$ref": "#/components/schemas/Pagination"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LearnerTransactionTableItem"
-            }
-          }
-        }
-      },
-      "ClaimSelectionItem": {
+      "BuyLotClaim": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "title": {
-            "$ref": "#/components/schemas/claimTitle"
-          }
-        }
-      },
-      "ClaimSelectionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ClaimSelectionItem"
-        }
-      },
-      "NewClaimsAmount": {
-        "type": "object",
-        "properties": {
-          "claimType": {
-            "$ref": "#/components/schemas/claimType"
+          "status": {
+            "$ref": "#/components/schemas/twoSidedClaimStatus"
           },
-          "amount": {
-            "type": "integer",
-            "minimum": 0,
-            "example": 11
-          }
-        }
-      },
-      "AdminClaimTableItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+          "buyer": {
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "claimType": {
-            "$ref": "#/components/schemas/claimType"
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
           },
           "lot": {
-            "$ref": "#/components/schemas/LotSelectionItem"
+            "$ref": "#/components/schemas/LotSnippetForClaim"
+          }
+        }
+      },
+      "BuyLotClaimSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
+          "status": {
+            "$ref": "#/components/schemas/twoSidedClaimStatus"
           },
-          "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+          "buyer": {
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "receiver": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
           },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
+          "lot": {
+            "$ref": "#/components/schemas/LotSnippet"
+          }
+        }
+      },
+      "ListLotClaim": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "status": {
+            "$ref": "#/components/schemas/twoSidedClaimStatus"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
+          },
+          "lot": {
+            "$ref": "#/components/schemas/LotSnippetForClaim"
+          }
+        }
+      },
+      "ListLotClaimSnippet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "status": {
+            "$ref": "#/components/schemas/twoSidedClaimStatus"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "13.07.2023"
+          },
+          "lot": {
+            "$ref": "#/components/schemas/LotSnippet"
+          }
+        }
+      },
+      "FailedDeadlineClaim": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "status": {
             "$ref": "#/components/schemas/claimStatus"
           },
-          "sum": {
-            "$ref": "#/components/schemas/sum"
+          "learner": {
+            "$ref": "#/components/schemas/UserSnippet"
+          },
+          "completeDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:31:89"
           },
           "delay": {
-            "$ref": "#/components/schemas/delay"
+            "type": "integer",
+            "example": "20",
+            "description": "Разница между моментом сдачи и дедлайном в минутах."
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/HWSnippetWithDeadline"
           }
         }
       },
-      "LearnerClaimTableItem": {
+      "TransferClaim": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "claimType": {
-            "$ref": "#/components/schemas/claimType"
+          "sender": {
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "title": {
-            "$ref": "#/components/schemas/claimTitle"
+          "receiver": {
+            "$ref": "#/components/schemas/UserSnippet"
           },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "status": {
-            "$ref": "#/components/schemas/claimStatus"
+          "sum": {
+            "type": "integer",
+            "format": "int32",
+            "example": 120
           }
         }
       },
-      "DeadlineInfo": {
-        "type": "object",
-        "properties": {
-          "lesson": {
-            "$ref": "#/components/schemas/LessonSelectionItem"
-          },
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          },
-          "deadlineTime": {
-            "$ref": "#/components/schemas/dateTime"
-          }
-        }
-      },
-      "ClaimInfo": {
+      "ApproveRejectClaimRequest": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "claimType": {
-            "$ref": "#/components/schemas/claimType"
-          },
-          "lot": {
-            "$ref": "#/components/schemas/LotInfo"
-          },
-          "deadline": {
-            "$ref": "#/components/schemas/DeadlineInfo"
-          },
-          "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
-          },
-          "dateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "status": {
-            "$ref": "#/components/schemas/claimStatus"
-          },
-          "fine": {
-            "$ref": "#/components/schemas/sum"
-          }
-        }
-      },
-      "AdminClaimRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "action": {
             "$ref": "#/components/schemas/claimAction"
           },
           "fine": {
-            "$ref": "#/components/schemas/sum"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "example": 120
+          },
+          "newPrice": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "example": 120
           }
         }
       },
-      "LearnerClaimRequest": {
+      "BuyLotRequest": {
         "type": "object",
         "properties": {
-          "claimType": {
-            "$ref": "#/components/schemas/claimType"
-          },
-          "lot": {
-            "$ref": "#/components/schemas/LearnerLotRequest"
-          },
-          "buyingLotId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "receiverId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "sum": {
-            "$ref": "#/components/schemas/sum"
+          "lotId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           }
         }
       },
-      "ClaimsPage": {
+      "ListLotRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Какой-то лот"
+          },
+          "description": {
+            "type": "string",
+            "example": "Some description"
+          },
+          "terms": {
+            "type": "string",
+            "example": "Some criteria"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "example": 150
+          }
+        }
+      },
+      "TransferRequest": {
+        "type": "object",
+        "properties": {
+          "receiverId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
+          },
+          "sum": {
+            "type": "integer",
+            "format": "int32",
+            "example": 120
+          }
+        }
+      },
+      "BuyLotClaimsPage": {
         "type": "object",
         "properties": {
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "claims": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AdminClaimTableItem"
+              "$ref": "#/components/schemas/BuyLotClaimSnippet"
             }
           }
         }
       },
-      "LearnerClaimsPage": {
+      "ListLotClaimsPage": {
         "type": "object",
         "properties": {
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
           },
-          "content": {
+          "claims": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LearnerClaimTableItem"
+              "$ref": "#/components/schemas/ListLotClaimSnippet"
+            }
+          }
+        }
+      },
+      "FailedDeadlineClaimsPage": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FailedDeadlineClaim"
+            }
+          }
+        }
+      },
+      "TransferClaimsPage": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferClaim"
             }
           }
         }
@@ -4508,7 +5145,7 @@
         "type": "object",
         "properties": {
           "lesson": {
-            "$ref": "#/components/schemas/LessonTableItem"
+            "$ref": "#/components/schemas/LessonTableSnippet"
           },
           "learners": {
             "type": "array",
@@ -4516,25 +5153,29 @@
               "type": "object",
               "properties": {
                 "learner": {
-                  "$ref": "#/components/schemas/UserTableItem"
+                  "$ref": "#/components/schemas/UserSnippetWithEmail"
                 },
-                "didCome": {
+                "hasCome": {
                   "type": "boolean",
                   "example": true
                 },
                 "accruedСurrency": {
-                  "$ref": "#/components/schemas/price"
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 100,
+                  "nullable": true
                 }
               }
             }
           }
         }
       },
-      "AttendanceRequest": {
+      "AttendanceUpdateRequest": {
         "type": "object",
         "properties": {
           "lessonId": {
-            "$ref": "#/components/schemas/id"
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "learners": {
             "type": "array",
@@ -4542,134 +5183,60 @@
               "type": "object",
               "properties": {
                 "learnerId": {
-                  "$ref": "#/components/schemas/id"
+                  "type": "string",
+                  "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
                 },
                 "accruedСurrency": {
-                  "$ref": "#/components/schemas/price"
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 100,
+                  "nullable": true
                 }
               }
             }
           }
         }
       },
-      "AdminSolutionTableItem": {
-        "type": "object",
-        "properties": {
-          "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
-          },
-          "team": {
-            "$ref": "#/components/schemas/TeamSelectionItem"
-          },
-          "completeDateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "fileId": {
-            "$ref": "#/components/schemas/id"
-          }
-        }
-      },
-      "LearnerSolutionTableItem": {
-        "type": "object",
-        "properties": {
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          },
-          "deadline": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "completeDateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          }
-        }
-      },
-      "TrackerTasksSolutionTableItem": {
-        "type": "object",
-        "properties": {
-          "task": {
-            "$ref": "#/components/schemas/TaskSelectionItem"
-          },
-          "deadline": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "submittedNumber": {
-            "type": "integer",
-            "example": 10
-          },
-          "notEvaluatedNumber": {
-            "type": "integer",
-            "example": 5
-          }
-        }
-      },
-      "TrackerSolutionTableItem": {
+      "Solution": {
         "type": "object",
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "name": {
             "type": "string",
-            "description": "Team number or learner name",
-            "example": "Иванов Иван Иванович"
-          },
-          "completeDateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "assessment": {
-            "$ref": "#/components/schemas/assessment"
-          }
-        }
-      },
-      "LearnerSolutionInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
-          },
-          "task": {
-            "$ref": "#/components/schemas/TaskInfo"
-          },
-          "completeDateTime": {
-            "$ref": "#/components/schemas/dateTime"
-          },
-          "fileId": {
-            "$ref": "#/components/schemas/id"
-          },
-          "trackerAssessments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TrackerAssessment"
-            }
-          }
-        }
-      },
-      "TrackerSolutionInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/id"
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
           "learner": {
-            "$ref": "#/components/schemas/UserSelectionItem"
+            "$ref": "#/components/schemas/UserSnippet"
+          },
+          "uploader": {
+            "$ref": "#/components/schemas/UserSnippet"
           },
           "team": {
-            "$ref": "#/components/schemas/TeamSelectionItem"
+            "$ref": "#/components/schemas/TeamSnippet"
           },
-          "task": {
-            "$ref": "#/components/schemas/TaskInfo"
+          "HW": {
+            "$ref": "#/components/schemas/HWTableSnippet"
           },
           "completeDateTime": {
-            "$ref": "#/components/schemas/dateTime"
+            "type": "string",
+            "format": "date-time",
+            "example": "13.07.2023 12:13:44"
           },
-          "fileId": {
-            "$ref": "#/components/schemas/id"
+          "fileUrl": {
+            "type": "string",
+            "example": "https://editor.swagger.io/"
+          }
+        }
+      },
+      "SolutionCreateUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "HWId": {
+            "type": "string",
+            "example": "2c8e4ae6-cfbc-469c-909d-2beb22243328"
           },
-          "comment": {
-            "$ref": "#/components/schemas/comment"
-          },
-          "assessment": {
-            "$ref": "#/components/schemas/assessment"
+          "fileUrl": {
+            "type": "string",
+            "example": "https://editor.swagger.io/"
           }
         }
       },
@@ -4682,40 +5249,7 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AdminSolutionTableItem"
-            }
-          }
-        }
-      },
-      "LearnerSolutionsTable": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LearnerSolutionTableItem"
-            }
-          }
-        }
-      },
-      "TrackerTasksSolutionsTable": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TrackerTasksSolutionTableItem"
-            }
-          }
-        }
-      },
-      "TrackerSolutionsTable": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TrackerSolutionTableItem"
+              "$ref": "#/components/schemas/Solution"
             }
           }
         }
@@ -4778,13 +5312,7 @@
       "name": "Lessons"
     },
     {
-      "name": "Tasks"
-    },
-    {
-      "name": "Attendance"
-    },
-    {
-      "name": "Files"
+      "name": "Assignments"
     },
     {
       "name": "Solutions"

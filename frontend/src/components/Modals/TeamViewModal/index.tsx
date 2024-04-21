@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'antd';
 import styles from './TeamViewModal.module.css';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useGetTeamProfileViewQuery } from '@/redux/services/commonApi';
+import { useGetTeamProfileViewQuery } from '@/redux/services/api';
 
 type TeamViewModalProps = {
   isOpen: boolean;

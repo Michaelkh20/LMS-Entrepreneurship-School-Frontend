@@ -1267,6 +1267,8 @@ paths:
       summary: Update lot
       description: Update lot
       operationId: updateLot
+      parameters:
+        - $ref: '#/components/parameters/idPath'
       requestBody:
         description: Lot to update
         required: true
