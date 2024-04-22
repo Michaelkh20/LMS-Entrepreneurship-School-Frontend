@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.users;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.users";
+
+import "google/protobuf/wrappers.proto";
+import "ru/hse/lmsteam/proto/common/pageable.proto";
+
+message GetUser {
+  message Request {
+    string id = 1;
+  }
+
+  message Response {
+    User user = 1;
+  }
+}
+
+message GetUserBalance {
+  message Response {
+    // notation used: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html#toString()
+    string balance = 1;
+  }
+}
+
+message CreateOrUpdateUser {
+  message Request {
+    string name = 2;
+    string surname = 3;
+    google.protobuf.StringValue patronymic = 4;
+
+    google.protobuf.StringValue messenger_contact = 5;
+    UserSexNamespace.Sex sex = 6;
+    string email = 7;
+    google.protobuf.StringValue phone_number = 8;
+    UserRoleNamespace.Role role = 9;
+  }
+
+  message Response {
+    User user = 1;
+  }
+}
+
+message DeleteUser {
+  message Response {
+    int64 entities_deleted = 1;
+  }
+}
+
+message GetUsers {
+  message Response {
+    ru.hse.lmsteam.proto.common.Page page = 1;
+    repeated User users = 2;
+  }
+}
+
+message GetUserNameList {
+  message Response {
+    repeated UserSnippet items = 1;
+  }
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+  string surname = 3;
+  google.protobuf.StringValue patronymic = 4;
+
+  google.protobuf.StringValue messenger_contact = 5;
+  UserSexNamespace.Sex sex = 6;
+  string email = 7;
+  google.protobuf.StringValue phone_number = 8;
+
+  // notation used: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html#toString()
+  string balance = 9;
+  UserRoleNamespace.Role role = 10;
+
+  repeated TeamSnippet member_of_teams = 11;
+}
+
+message UserSnippet {
+  string id = 1;
+  string name = 2;
+  string surname = 3;
+  google.protobuf.StringValue patronymic = 4;
+}
+
+message UserSexNamespace {
+  enum Sex {
+    NOT_INITIALISED = 0;
+    MALE = 1;
+    FEMALE = 2;
+  }
+}
+
+
+message UserRoleNamespace {
+  enum Role {
+    NOT_INITIALISED = 0;
+    LEARNER = 1;
+    TRACKER = 2;
+    ADMIN = 3;
+  }
+}
+
+message TeamSnippet {
+  string id = 1;
+  int32 number = 2;
+  string project_theme = 3;
+  string description = 4;
+}
+

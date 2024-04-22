@@ -22,7 +22,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@dto": ["./protobuffs/dto"],
-      "@util": ["./src/util"]
+      "@util": ["./src/util"],
+      "@proto/*": ["./protobuffs/dto/ru/hse/lmsteam/proto/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.competitions;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.competitions";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "ru/hse/lmsteam/proto/common/pageable.proto";
+
+message GetCompetition {
+  message Response {
+    Competition competition = 1;
+  }
+}
+
+message CreateOrUpdateCompetition {
+  message Request {
+    google.protobuf.Timestamp deadline_date = 2;
+    google.protobuf.Timestamp publish_date = 3;
+    string title = 5;
+    string description = 6;
+    string grading_criteria = 7;
+    repeated string external_material_urls = 8;
+  }
+
+  message Response {
+    Competition competition = 1;
+  }
+}
+
+message DeleteCompetition {
+  message Response {
+    int64 entries_deleted = 1;
+  }
+}
+
+message GetCompetitions {
+  message Response {
+    ru.hse.lmsteam.proto.common.Page page = 1;
+    repeated CompetitionSnippet competitions = 2;
+  }
+}
+
+message Competition {
+  string id = 1;
+  google.protobuf.Timestamp deadline_date = 2;
+  google.protobuf.Timestamp publish_date = 3;
+  string title = 4;
+  string description = 5;
+  string grading_criteria = 6;
+  repeated string external_material_urls = 7;
+}
+
+message CompetitionSnippet {
+  string id = 1;
+  string title = 2;
+  google.protobuf.Timestamp deadline_date = 3;
+}

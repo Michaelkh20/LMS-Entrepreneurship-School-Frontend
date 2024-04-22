@@ -32,3 +32,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Protobuf generation
+
+```bash
+protoc \
+--plugin="protoc-gen-ts_proto=D:\\Repositories\\LMS-Entrepreneurship-School-Frontend\\frontend\\node_modules\\.bin\\protoc-gen-ts_proto.cmd" \
+--ts_proto_opt=esModuleInterop=true,oneof=unions,outputJsonMethods=false \
+--ts_proto_out="../dto" \
+--proto_path="." \
+ru/hse/lmsteam/proto/assignments/homework_api.proto \
+ru/hse/lmsteam/proto/assignments/competition_api.proto \
+ru/hse/lmsteam/proto/assignments/exam_api.proto \
+ru/hse/lmsteam/proto/assignments/test_api.proto \
+ru/hse/lmsteam/proto/lessons/lessons_api.proto \
+ru/hse/lmsteam/proto/teams/teams_api.proto \
+ru/hse/lmsteam/proto/users/users_api.proto \
+ru/hse/lmsteam/proto/users/users_auth_api.proto
+```
