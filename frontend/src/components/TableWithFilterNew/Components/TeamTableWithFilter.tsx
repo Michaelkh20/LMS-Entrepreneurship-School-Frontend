@@ -3,14 +3,14 @@
 // TODO: themeSelectionFormItem
 
 import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
-// import { useGetTeamsQuery } from '@/redux/services/adminApi';
-import type { GetTeamsApiArg, TeamsPage } from '@/types/api';
+import type { GetTeamsApiArg } from '@/types/api';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 
 import { useGetTeamsQuery } from '@/redux/services/api';
 import { useRouter } from 'next/navigation';
+import { GetTeams_Response } from '@proto/teams/teams_api';
 
 type TeamsColumnsDataType = {
   teamId: string;
@@ -32,23 +32,25 @@ const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
   { title: 'Тема', dataIndex: 'theme', key: 'theme' },
 ];
 
-const mockData: TeamsPage = {
-  pagination: {
-    total_pages: 1,
-    total_elements: 3,
-  },
+const mockData: GetTeams_Response = {
   teams: [
     {
       id: '1',
-      number: 1,
-      project_theme: 'чаёчек',
+      number: 2,
+      projectTheme: 'чаёчек',
+      description: 'чаёчек_дескрипшн',
     },
     {
       id: '2',
-      number: 2,
-      project_theme: 'выпечка',
+      number: 3,
+      projectTheme: 'кофеёчек',
+      description: 'кофеёчек_дескрипшн',
     },
   ],
+  page: {
+    totalElements: 2,
+    totalPages: 1,
+  },
 };
 
 export function TeamTableWithFilter({
@@ -58,7 +60,7 @@ export function TeamTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetTeamsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
@@ -68,12 +70,12 @@ export function TeamTableWithFilter({
   const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
 
   useEffect(() => {
-    const dataForTable: TeamsColumnsDataType[] = mockData?.teams.map(
+    const dataForTable: TeamsColumnsDataType[] | undefined = data?.teams.map(
       (team): TeamsColumnsDataType => {
         const res: TeamsColumnsDataType = {
           teamId: team.id,
           teamNumber: team.number,
-          theme: team.project_theme,
+          theme: team.projectTheme,
         };
         return res;
       }
@@ -88,7 +90,7 @@ export function TeamTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <TeamNumberFormItem />
@@ -97,7 +99,7 @@ export function TeamTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: TeamsColumns,
-          // pagination: { total: data?.pagination?.totalElements },
+          pagination: { total: data?.page?.totalElements },
           dataSource: dataTable,
           rowKey: 'teamId',
           onRow:

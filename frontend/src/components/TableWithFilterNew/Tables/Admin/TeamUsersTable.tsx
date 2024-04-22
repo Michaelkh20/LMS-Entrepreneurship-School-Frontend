@@ -1,17 +1,16 @@
 'use client';
 
-import { ClaimStatus, DateTime } from '@/types/common';
-import { dto } from '@dto';
+import { User } from '@proto/users/users_api';
 import { Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 
 type TeamUsersColumnsType = {
-  userId: number | string;
+  userId: string;
   userName: string;
   userEmail: string;
-  userBalance: number;
+  userBalance: string;
 };
 
 const TeamUsersColumns: ColumnsType<TeamUsersColumnsType> = [
@@ -25,19 +24,19 @@ const mockData: TeamUsersColumnsType[] = [
     userId: '1',
     userName: 'Лёха Петров',
     userEmail: 'lexa@edu.hse.ru',
-    userBalance: 0,
+    userBalance: '0',
   },
   {
     userId: '2',
     userName: 'Ванёк Петров',
     userEmail: 'ioann@edu.hse.ru',
-    userBalance: 55,
+    userBalance: '55',
   },
   {
     userId: '3',
     userName: 'Саня Петров',
     userEmail: 'sanek@edu.hse.ru',
-    userBalance: 110,
+    userBalance: '110',
   },
 ];
 
@@ -45,7 +44,7 @@ export const TeamUsersTable = ({
   users,
   onRow,
 }: {
-  users?: dto.TeamResponse.IPersonShortInfo[];
+  users?: User[];
   onRow?: TableProps['onRow'];
 }) => {
   //TODO: user type
@@ -57,14 +56,18 @@ export const TeamUsersTable = ({
   );
 
   useEffect(() => {
-    const u = users?.map((user) => ({
-      userId: user.id,
-      userName: user.partName,
-      userEmail: user.email,
-      userBalance: user.balance,
-    })) as TeamUsersColumnsType[];
-
-    setUserDataTable(u);
+    const dataForTable: TeamUsersColumnsType[] | undefined = users?.map(
+      (user): TeamUsersColumnsType => {
+        const res: TeamUsersColumnsType = {
+          userId: user.id,
+          userName: `${user.surname} ${user.name}`,
+          userEmail: user.email,
+          userBalance: user.balance,
+        };
+        return res;
+      }
+    );
+    setUserDataTable(dataForTable || []);
   }, [users]);
 
   return (

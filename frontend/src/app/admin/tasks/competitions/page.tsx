@@ -1,11 +1,9 @@
 import React from 'react';
 
 import styles from '@/app/admin/main.module.css';
-import { TasksTableWithFilter } from '@/components/TableWithFilterNew/Components/TasksTableWithFilter';
-import { TaskType } from '@/types/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-
+import { CompetitionsTableWithFilter } from '@/components/TableWithFilterNew/Components/CompetitionsTableWithFilter';
 
 export default function CompetitionsPage() {
   return (
@@ -16,7 +14,7 @@ export default function CompetitionsPage() {
           Создать
         </Button>
       </div>
-      <TasksTableWithFilter taskType={TaskType.Competition}/>
+      <CompetitionsTableWithFilter />
     </div>
   );
 }

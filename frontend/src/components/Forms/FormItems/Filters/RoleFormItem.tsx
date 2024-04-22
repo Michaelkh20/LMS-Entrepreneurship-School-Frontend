@@ -1,6 +1,5 @@
 import { Form, Select } from 'antd';
-import { dto } from '@dto';
-import Role = dto.Role;
+import { Role } from '@/types/common'
 
 export function RoleFormItem() {
   return (

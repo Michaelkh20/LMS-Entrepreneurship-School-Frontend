@@ -1,10 +1,9 @@
-import { TasksTableWithFilter } from '@/components/TableWithFilterNew/Components/TasksTableWithFilter';
-import { TaskType } from '@/types/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
 
 import styles from '@/app/admin/main.module.css';
+import { TestsTableWithFilter } from '@/components/TableWithFilterNew/Components/TestsTableWithFilter';
 
 export default function TestsPage() {
   return (
@@ -15,7 +14,7 @@ export default function TestsPage() {
           Создать
         </Button>
       </div>
-      <TasksTableWithFilter taskType={TaskType.Test}/>
+      <TestsTableWithFilter />
     </div>
   );
 }

@@ -5,17 +5,17 @@ import {
   TeamNumberFormItem,
   RoleFormItem,
 } from '@/components/Forms/FormItems/Filters';
-import { GetAccountsApiArg, TeamSnippet, UsersPage } from '@/types/api';
+import { GetAccountsApiArg, TeamSnippet } from '@/types/api';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-// import { Name, Email, TeamNumber, Balance, Id } from '';
 import { ColumnsType } from 'antd/es/table';
-// import { useGetAccountsListQuery } from '@/redux/services/adminApi';
-import { useGetAccountsQuery } from '@/redux/services/api';
-// import Role = dto.Role;
+
+import { useGetUsersQuery } from '@/redux/services/api';
+
 import { Role, Sex } from '@/types/common';
 import { useRouter } from 'next/navigation';
 import { TableProps } from 'antd/lib';
+import { GetUsers_Response } from '@proto/users/users_api';
 
 type AccountColumnsDataType = {
   id: string;
@@ -26,46 +26,31 @@ type AccountColumnsDataType = {
   balance: string;
 };
 
-const mockData: UsersPage = {
-  pagination: {
-    total_pages: 0,
-    total_elements: 0,
+const mockData: GetUsers_Response = {
+  page: {
+    totalElements: 0,
+    totalPages: 0,
   },
   users: [
     {
       id: '1',
       name: 'ivan',
       surname: 'ivan',
-      patronymic: null,
-      email: 'ivan',
-      phone_number: null,
-      messenger: null,
-      teams: [],
+      patronymic: undefined,
+      messengerContact: undefined,
       sex: Sex.MALE,
-      role: Role.STUDENT,
-      balance: '1',
-    },
-    {
-      id: '2',
-      name: 'ivan',
-      surname: 'ivanov',
-      patronymic: null,
-      email: 'ivan',
-      phone_number: null,
-      messenger: null,
-      teams: [
+      email: 'ivan@',
+      phoneNumber: undefined,
+      balance: '19',
+      role: Role.LEARNER,
+      memberOfTeams: [
         {
           id: '1',
           number: 1,
-        },
-        {
-          id: '2',
-          number: 2,
+          projectTheme: 'asd',
+          description: 'asd',
         },
       ],
-      sex: Sex.MALE,
-      role: Role.STUDENT,
-      balance: '1',
     },
   ],
 };
@@ -86,16 +71,21 @@ const AccountsColumns: ColumnsType<AccountColumnsDataType> = [
       return record.teams.map((team) => `№${team.number} `) || '-';
     },
   },
-  { title: 'Роль', dataIndex: 'role', key: 'role', render(value, record, index) {
+  {
+    title: 'Роль',
+    dataIndex: 'role',
+    key: 'role',
+    render(value, record, index) {
       return (
         <>
-        {record.role === Role.ADMIN && (<p>Администратор</p>)}
-        {record.role === Role.STUDENT && (<p>Ученик</p>)}
-        {record.role === Role.TRACKER && (<p>Трекер</p>)}
-        {record.role === Role.NOT_INITIALISED && (<p>-</p>)}
+          {record.role === Role.ADMIN && <p>Администратор</p>}
+          {record.role === Role.LEARNER && <p>Ученик</p>}
+          {record.role === Role.TRACKER && <p>Трекер</p>}
+          {record.role === Role.NOT_INITIALISED && <p>-</p>}
         </>
-      )
-  }, },
+      );
+    },
+  },
   { title: 'Баланс', dataIndex: 'balance', key: 'balance' },
 ];
 
@@ -106,44 +96,32 @@ export function AccountsTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetAccountsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const router = useRouter();
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>();
-  const { data } = useGetAccountsQuery(dataForReq);
+  const { data } = useGetUsersQuery(dataForReq);
 
   console.log(data);
 
-  // const dataForTable = data?.users.map((user) => {
-  //   return {
-  //     id: user.id,
-  //     name: `${user.surname} ${user.name}`,
-  //     email: user.email,
-  //     team: user.teams,
-  //     // role: roleToString(user.role),
-  //     role: user.role,
-  //     balance: user.balance,
-  //   };
-  // });
-
   useEffect(() => {
-    const dataForTable: AccountColumnsDataType[] = mockData?.users.map(
+    const dataForTable: AccountColumnsDataType[] | undefined = data?.users.map(
       (user) => {
         return {
           id: user.id,
           name: `${user.surname} ${user.name}`,
           email: user.email,
-          teams: user.teams,
+          teams: user.memberOfTeams,
           role: user.role,
           balance: user.balance,
         };
       }
     );
     setDataTable(dataForTable);
-  }, [mockData, data]);
+  }, [data]);
 
   // useEffect(() => {
   //   console.log('FormData1:', dataForReq);
@@ -152,7 +130,7 @@ export function AccountsTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <NameFormItem />
@@ -163,7 +141,7 @@ export function AccountsTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: AccountsColumns,
-          pagination: { total: data?.pagination.total_elements },
+          pagination: { total: data?.page?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
           onRow:

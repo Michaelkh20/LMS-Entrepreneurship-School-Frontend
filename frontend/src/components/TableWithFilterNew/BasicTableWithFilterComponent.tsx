@@ -1,5 +1,4 @@
-import { SortOrder } from '@/types/common';
-import { Form, TableProps, Table } from 'antd';
+import { TableProps, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { SorterResult } from 'antd/es/table/interface';
 import { SetStateAction, useMemo, useEffect } from 'react';
@@ -9,39 +8,8 @@ import { prepareFormUtil } from './utils';
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 
-import formStyles from './form.module.css';
 import tableStyles from './table.module.css';
 import { BasicFilter } from './BasicFilter';
-
-// const BasicFilter = ({
-//   onChangeEvent,
-//   children,
-//   total = 0,
-// }: {
-//   onChangeEvent: any;
-//   children?: React.ReactNode;
-//   total?: number;
-// }) => {
-//   return (
-//     <div className={formStyles.wrapper}>
-//       <div className={formStyles.header}>
-//         <h3>Фильтры</h3>
-//         <div className={formStyles.header_span}>
-//           <span>Найдено:</span>
-//           <span>{total}</span>
-//         </div>
-//       </div>
-//       <Form
-//         layout={'inline'}
-//         size={'large'}
-//         onValuesChange={onChangeEvent}
-//         className={''}
-//       >
-//         {children}
-//       </Form>
-//     </div>
-//   );
-// };
 
 type AttendanceTableColumnsType = (
   prop: SetStateAction<any>
@@ -82,9 +50,9 @@ export function BasicTableWithFilter<T>({
   const checkSorter = (sorter: SorterResult<any>) => {
     switch (sorter.order) {
       case 'descend':
-        return SortOrder.Desc;
+        return 'desc'//SortOrder.Desc;
       case 'ascend':
-        return SortOrder.Asc;
+        return 'asc' //SortOrder.Asc;
       default:
         return undefined;
     }
@@ -104,7 +72,7 @@ export function BasicTableWithFilter<T>({
     () =>
       _debounce((data: any) => {
         setDataForReq(data);
-        console.log("REQ: ", data)
+        console.log('REQ: ', data);
       }, 700),
     []
   );

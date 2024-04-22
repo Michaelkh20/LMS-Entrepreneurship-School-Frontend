@@ -4,41 +4,38 @@ import {
   DatePickerFormItem,
   LessonNumberFormItem,
 } from '@/components/Forms/FormItems/Filters';
-
-import type { GetLessonsApiArg } from '@/types/api';
+import type { GetCompetitionListApiArg } from '@/types/api';
+import { useGetCompetitionListQuery } from '@/redux/services/api';
 
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
+
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { GetCompetitions_Response } from '@proto/assignments/competition_api';
 
-import { useGetLessonsQuery } from '@/redux/services/api';
-import { GetLessons_Response } from '@proto/lessons/lessons_api';
-
-type LessonsColumnsDataType = {
+type CompetitionsColumnsDataType = {
   id: string;
-  lessonNumber: number;
-  lessonTheme: string;
-  date: Date | undefined;
+  title: string;
+  deadlineDate: Date | undefined;
 };
 
-const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
+const CompetitionsColumns: ColumnsType<CompetitionsColumnsDataType> = [
   {
-    title: 'Урок',
-    dataIndex: 'lessonNumber',
-    key: 'lessonNumber',
+    title: 'Задание',
+    dataIndex: 'title',
+    key: 'title',
     sorter: true,
   },
-  { title: 'Тема', dataIndex: 'lessonTheme', key: 'lessonTheme' },
   {
-    title: 'Дата проведения',
-    dataIndex: 'date',
-    key: 'date',
+    title: 'Дедлайн',
+    dataIndex: 'deadlineDate',
+    key: 'deadlineDate',
     render: (value, record, index) => {
       return (
         <>
-          {record.date &&
-            `${record.date?.getDate()}.${record.date?.getMonth()}.${record.date?.getFullYear()}`}
+          {record.deadlineDate &&
+            `${record.deadlineDate?.getDate()}.${record.deadlineDate?.getMonth()}.${record.deadlineDate?.getFullYear()}`}
           -
         </>
       );
@@ -46,44 +43,39 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
   },
 ];
 
-const mockData: GetLessons_Response = {
-  lessons: [
+const mockData: GetCompetitions_Response = {
+  page: undefined,
+  competitions: [
     {
       id: '1',
-      title: 'asd',
-      lessonNumber: 0,
-      publishDate: undefined,
+      title: 'comp_1',
+      deadlineDate: undefined,
     },
   ],
-  page: {
-    totalElements: 1,
-    totalPages: 1,
-  },
 };
 
-export function LessonsTableWithFilter({
+export function CompetitionsTableWithFilter({
   onRow,
 }: {
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<GetLessonsApiArg>({
+  const [formData, setFormData] = useState<GetCompetitionListApiArg>({
     page: 1,
     size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<LessonsColumnsDataType[]>();
+  const [dataTable, setDataTable] = useState<CompetitionsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
-    useGetLessonsQuery(dataForReq);
+    useGetCompetitionListQuery(dataForReq);
 
   useEffect(() => {
-    const dataForTable: LessonsColumnsDataType[] | undefined =
-      data?.lessons.map((lesson): LessonsColumnsDataType => {
-        const res: LessonsColumnsDataType = {
-          id: lesson.id,
-          lessonNumber: lesson.lessonNumber,
-          lessonTheme: lesson.title,
-          date: lesson.publishDate,
+    const dataForTable: CompetitionsColumnsDataType[] | undefined =
+      data?.competitions.map((competition): CompetitionsColumnsDataType => {
+        const res: CompetitionsColumnsDataType = {
+          id: competition.id,
+          title: competition.title,
+          deadlineDate: competition.deadlineDate,
         };
         return res;
       });
@@ -97,7 +89,7 @@ export function LessonsTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <LessonNumberFormItem />
@@ -110,7 +102,7 @@ export function LessonsTableWithFilter({
         }
         tableProps={{
           scroll: { x: true },
-          columns: LessonsColumns,
+          columns: CompetitionsColumns,
           pagination: { total: data?.page?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',

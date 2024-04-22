@@ -1,7 +1,7 @@
 'use client';
 
 import { TeamUsersTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersTable';
-import { useGetTeamQuery } from '@/redux/services/adminApi';
+import { useGetTeamByIdQuery } from '@/redux/services/api';
 
 import styles from '@/app/admin/main.module.css';
 import { Button } from 'antd';
@@ -13,7 +13,7 @@ export default function TeamPage({
 }: {
   params: { id: string };
 }) {
-  const { data } = useGetTeamQuery(id);
+  const { data } = useGetTeamByIdQuery(id);
   console.log("data", data);
   return (
     <div className={styles.container}>
@@ -24,14 +24,14 @@ export default function TeamPage({
         </Button>
       </div>
       <h3>
-        Тема проекта: {data?.theme} 
+        Тема проекта: {data?.team?.projectTheme} 
       </h3>
 
       <h3>Ученики</h3>
-      <TeamUsersTable users={data?.learners}></TeamUsersTable>
+      <TeamUsersTable users={data?.team?.students}></TeamUsersTable>
 
       <h3>Трекеры</h3>
-      <TeamUsersTable users={data?.trackers}></TeamUsersTable>
+      <TeamUsersTable users={data?.team?.trackers}></TeamUsersTable>
     </div>
   );
 }

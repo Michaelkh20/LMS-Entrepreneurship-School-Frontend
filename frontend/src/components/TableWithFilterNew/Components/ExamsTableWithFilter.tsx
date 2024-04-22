@@ -4,41 +4,40 @@ import {
   DatePickerFormItem,
   LessonNumberFormItem,
 } from '@/components/Forms/FormItems/Filters';
-
-import type { GetLessonsApiArg } from '@/types/api';
+import type { GetExamListApiArg } from '@/types/api';
+import { useGetExamListQuery } from '@/redux/services/api';
 
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
+
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { GetExams_Response } from '@proto/assignments/exam_api';
 
-import { useGetLessonsQuery } from '@/redux/services/api';
-import { GetLessons_Response } from '@proto/lessons/lessons_api';
+//GetExams_Response
 
-type LessonsColumnsDataType = {
+type ExamsColumnsDataType = {
   id: string;
-  lessonNumber: number;
-  lessonTheme: string;
-  date: Date | undefined;
+  title: string;
+  deadlineDate: Date | undefined;
 };
 
-const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
+const ExamsColumns: ColumnsType<ExamsColumnsDataType> = [
   {
-    title: 'Урок',
-    dataIndex: 'lessonNumber',
-    key: 'lessonNumber',
+    title: 'Задание',
+    dataIndex: 'title',
+    key: 'title',
     sorter: true,
   },
-  { title: 'Тема', dataIndex: 'lessonTheme', key: 'lessonTheme' },
   {
-    title: 'Дата проведения',
-    dataIndex: 'date',
-    key: 'date',
+    title: 'Дедлайн',
+    dataIndex: 'deadlineDate',
+    key: 'deadlineDate',
     render: (value, record, index) => {
       return (
         <>
-          {record.date &&
-            `${record.date?.getDate()}.${record.date?.getMonth()}.${record.date?.getFullYear()}`}
+          {record.deadlineDate &&
+            `${record.deadlineDate?.getDate()}.${record.deadlineDate?.getMonth()}.${record.deadlineDate?.getFullYear()}`}
           -
         </>
       );
@@ -46,49 +45,45 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
   },
 ];
 
-const mockData: GetLessons_Response = {
-  lessons: [
+const mockData: GetExams_Response = {
+  page: undefined,
+  exams: [
     {
-      id: '1',
-      title: 'asd',
-      lessonNumber: 0,
-      publishDate: undefined,
+      id: 'ex1',
+      title: 'exam',
+      deadlineDate: undefined,
     },
   ],
-  page: {
-    totalElements: 1,
-    totalPages: 1,
-  },
 };
 
-export function LessonsTableWithFilter({
+export function ExamsTableWithFilter({
   onRow,
 }: {
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<GetLessonsApiArg>({
+  const [formData, setFormData] = useState<GetExamListApiArg>({
     page: 1,
     size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<LessonsColumnsDataType[]>();
+  const [dataTable, setDataTable] = useState<ExamsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
-    useGetLessonsQuery(dataForReq);
+    useGetExamListQuery(dataForReq);
 
   useEffect(() => {
-    const dataForTable: LessonsColumnsDataType[] | undefined =
-      data?.lessons.map((lesson): LessonsColumnsDataType => {
-        const res: LessonsColumnsDataType = {
-          id: lesson.id,
-          lessonNumber: lesson.lessonNumber,
-          lessonTheme: lesson.title,
-          date: lesson.publishDate,
+    const dataForTable: ExamsColumnsDataType[] = mockData?.exams.map(
+      (exam): ExamsColumnsDataType => {
+        const res: ExamsColumnsDataType = {
+          id: exam.id,
+          title: exam.title,
+          deadlineDate: exam.deadlineDate,
         };
         return res;
-      });
+      }
+    );
     setDataTable(dataForTable);
-  }, [data]);
+  }, [mockData, data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -110,8 +105,8 @@ export function LessonsTableWithFilter({
         }
         tableProps={{
           scroll: { x: true },
-          columns: LessonsColumns,
-          pagination: { total: data?.page?.totalElements },
+          columns: ExamsColumns,
+          // pagination: { total: data?.pagination?.totalElements },
           dataSource: dataTable,
           rowKey: 'id',
           onRow: onRow,

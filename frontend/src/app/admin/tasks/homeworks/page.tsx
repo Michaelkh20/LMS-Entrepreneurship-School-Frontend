@@ -1,11 +1,10 @@
 import { TasksTableWithFilter } from '@/components/TableWithFilterNew/Components/TasksTableWithFilter';
-import { TaskType } from '@/types/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
 
 import styles from '@/app/admin/main.module.css';
-
+import { HWTableWithFilter } from '@/components/TableWithFilterNew/Components/HWTableWithFilter';
 
 export default function HomeworksPage() {
   return (
@@ -16,7 +15,7 @@ export default function HomeworksPage() {
           Создать
         </Button>
       </div>
-      <TasksTableWithFilter taskType={TaskType.HW}/>
+      <HWTableWithFilter></HWTableWithFilter>
     </div>
   );
 }
