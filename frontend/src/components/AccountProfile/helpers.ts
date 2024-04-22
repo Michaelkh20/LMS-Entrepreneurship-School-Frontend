@@ -1,5 +1,4 @@
-import { dto } from '@dto';
-import Role = dto.Role;
+import { Role } from '@/types/common';
 
 export function getRoleString(role: Role | undefined) {
   switch (role) {

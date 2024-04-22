@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { dto } from '@dto';
-import Role = dto.Role;
+import { Role } from '@/types/common'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 

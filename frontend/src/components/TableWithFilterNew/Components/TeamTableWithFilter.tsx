@@ -3,16 +3,17 @@
 // TODO: themeSelectionFormItem
 
 import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
-// import { useGetTeamsQuery } from '@/redux/services/adminApi';
-import type { GetTeamsApiArg } from '@/types/requests';
+import type { GetTeamsApiArg } from '@/types/api';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Id } from '@/types/common';
+
+import { useGetTeamsQuery } from '@/redux/services/api';
 import { useRouter } from 'next/navigation';
+import { GetTeams_Response } from '@proto/teams/teams_api';
 
 type TeamsColumnsDataType = {
-  teamId: Id;
+  teamId: string;
   teamNumber: number;
   theme: string;
 };
@@ -31,23 +32,26 @@ const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
   { title: 'Тема', dataIndex: 'theme', key: 'theme' },
 ];
 
-const mockData: TeamsColumnsDataType[] = [
-  {
-    teamId: 1,
-    teamNumber: 1,
-    theme: 'Выпечка',
+const mockData: GetTeams_Response = {
+  teams: [
+    {
+      id: '1',
+      number: 2,
+      projectTheme: 'чаёчек',
+      description: 'чаёчек_дескрипшн',
+    },
+    {
+      id: '2',
+      number: 3,
+      projectTheme: 'кофеёчек',
+      description: 'кофеёчек_дескрипшн',
+    },
+  ],
+  page: {
+    totalElements: 2,
+    totalPages: 1,
   },
-  {
-    teamId: 2,
-    teamNumber: 2,
-    theme: 'Булочки',
-  },
-  {
-    teamId: 3,
-    teamNumber: 3,
-    theme: 'Чаёчек',
-  },
-];
+};
 
 export function TeamTableWithFilter({
   onRow,
@@ -56,16 +60,28 @@ export function TeamTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetTeamsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(
-    mockData || []
-  );
+  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>();
 
   const router = useRouter();
-  // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
+  const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
+
+  useEffect(() => {
+    const dataForTable: TeamsColumnsDataType[] | undefined = data?.teams.map(
+      (team): TeamsColumnsDataType => {
+        const res: TeamsColumnsDataType = {
+          teamId: team.id,
+          teamNumber: team.number,
+          theme: team.projectTheme,
+        };
+        return res;
+      }
+    );
+    setDataTable(dataForTable);
+  }, [mockData, data]);
 
   //   useEffect(() => {
   //     console.log('FormData1:', formData);
@@ -74,7 +90,7 @@ export function TeamTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <TeamNumberFormItem />
@@ -83,7 +99,7 @@ export function TeamTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: TeamsColumns,
-          // pagination: { total: data?.pagination?.totalElements },
+          pagination: { total: data?.page?.totalElements },
           dataSource: dataTable,
           rowKey: 'teamId',
           onRow:

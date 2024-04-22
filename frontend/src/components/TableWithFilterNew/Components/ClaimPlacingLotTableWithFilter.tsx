@@ -8,26 +8,23 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetClaimsApiArg } from '@/types/requests';
-import type {
-  AdminClaimTableItem,
-  LotSelectionItem,
-  TaskSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+import type { GetLotsForMarketPlaceApiArg, UserSnippet } from '@/types/api';
+
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ClaimType, ClaimStatus, Delay } from '@/types/common';
+
 import { ColumnsType, TableProps } from 'antd/es/table';
+import { ClaimStatus } from '@/types/common';
 
 type ClaimPlacingLotColumnsDataType = {
-  id: AdminClaimTableItem['id'];
-  claimStatus: AdminClaimTableItem['status'];
-  date: AdminClaimTableItem['dateTime'];
-  receiver: UserSelectionItem['name'];
-  lot: LotSelectionItem['number'];
-  sum: AdminClaimTableItem['sum'];
+  id: string;
+  claimStatus: ClaimStatus;
+  date: string;
+  receiver: UserSnippet;
+  lot: string;
+  sum: string;
 };
+
 
 const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
   {
@@ -61,32 +58,32 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
   { title: 'Стоимость', dataIndex: 'sum', key: 'sum' },
 ];
 
-const mockData: ClaimPlacingLotColumnsDataType[] = [
-  {
-    id: 12,
-    lot: 5,
-    claimStatus: ClaimStatus.Approved,
-    receiver: 'Иван Обучающийся',
-    date: '123123',
-    sum: 5000,
-  },
-  {
-    id: 122,
-    lot: 6,
-    claimStatus: ClaimStatus.Declined,
-    receiver: 'Иван Обучающийся',
-    date: '123123',
-    sum: 5000,
-  },
-  {
-    id: 13,
-    lot: 7,
-    claimStatus: ClaimStatus.Waiting,
-    receiver: 'Иван Обучающийся',
-    date: '222',
-    sum: 300,
-  },
-];
+// const mockData: ClaimPlacingLotColumnsDataType[] = [
+//   {
+//     id: 12,
+//     lot: 5,
+//     claimStatus: ClaimStatus.Approved,
+//     receiver: 'Иван Обучающийся',
+//     date: '123123',
+//     sum: 5000,
+//   },
+//   {
+//     id: 122,
+//     lot: 6,
+//     claimStatus: ClaimStatus.Declined,
+//     receiver: 'Иван Обучающийся',
+//     date: '123123',
+//     sum: 5000,
+//   },
+//   {
+//     id: 13,
+//     lot: 7,
+//     claimStatus: ClaimStatus.Waiting,
+//     receiver: 'Иван Обучающийся',
+//     date: '222',
+//     sum: 300,
+//   },
+// ];
 
 export function ClaimPlacingLotTableWithFilter({
   onRow,
