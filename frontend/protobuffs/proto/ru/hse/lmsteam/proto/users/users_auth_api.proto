@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.users.auth;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.users.auth";
+
+import "google/protobuf/wrappers.proto";
+
+message AuthResponse {
+  oneof result {
+    Success success = 1;
+    Failure failure = 2;
+  }
+}
+
+message Login {
+  message Response {
+    AuthResponse response = 1;
+  }
+}
+
+message ChangePassword {
+  message Request {
+    string login = 1;
+    string old_password = 2;
+    string new_password = 3;
+  }
+
+  message Response {
+    AuthResponse response = 1;
+  }
+}
+
+message SetPassword {
+  message Request {
+    string login = 1;
+    string token = 2;
+    string new_password = 3;
+  }
+
+  message Response {
+    AuthResponse response = 1;
+  }
+}
+
+
+message Success {
+  string token = 1;
+  string role = 2;
+  string user_id = 3;
+  string name = 4;
+  string surname = 5;
+  google.protobuf.StringValue patronymic = 6;
+}
+
+message Failure {
+  string message = 4;
+}

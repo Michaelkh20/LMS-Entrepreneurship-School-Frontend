@@ -4,10 +4,8 @@ import type {
   ApproveRejectClaimRequest,
   AssessmentCreateUpdateRequest,
   AssessmentsPage,
-  AssignmentSnippetList,
   AttendanceInfo,
   AuthApiArg,
-  AuthResponse,
   BuyLotClaim,
   BuyLotClaimsPage,
   BuyLotRequest,
@@ -17,31 +15,23 @@ import type {
   FinalGradeFormula,
   FinalGrades,
   GetAccountsApiArg,
-  GetAccountsForSelectApiArg,
+  GetUserSnippetListApiArg,
   GetAssessmentsApiArg,
-  GetAssignmentSnippetsApiArg,
   GetBuyLotClaimsApiArg,
+  GetCompetitionListApiArg,
+  GetExamListApiArg,
   GetFailedDeadlineClaimsApiArg,
   GetHwListApiArg,
   GetLessonsApiArg,
   GetListLotClaimsApiArg,
   GetLotsApiArg,
   GetLotsForMarketPlaceApiArg,
-  GetOtherAssignmentListApiArg,
   GetSolutionByAssignmentIdAndLearnerIdApiArg,
   GetSolutionsApiArg,
   GetTeamsApiArg,
   GetTestListApiArg,
   GetTransactionsApiArg,
   GetTransferClaimsApiArg,
-  GetUserBalanceByIdApiResponse,
-  Hw,
-  HwCreateUpdateRequest,
-  HwPage,
-  Lesson,
-  LessonCreateUpdateRequest,
-  LessonSnippetList,
-  LessonsPage,
   ListLotClaim,
   ListLotClaimsPage,
   ListLotRequest,
@@ -49,21 +39,11 @@ import type {
   LotCreateUpdateRequest,
   LotsPage,
   ManualAccrualRequest,
-  OtherAssignment,
-  OtherAssignmentCreateUpdateRequest,
-  OtherAssignmentsPage,
   SetBonusRequest,
   Solution,
   SolutionCreateUpdateRequest,
   SolutionsPage,
-  Team,
-  TeamCreateUpdateRequest,
   TeamPublicProfile,
-  TeamSnippetList,
-  TeamsPage,
-  Test,
-  TestCreateUpdateRequest,
-  TestsPage,
   Transaction,
   TransactionsPage,
   TransferClaimsPage,
@@ -71,17 +51,77 @@ import type {
   UpdateAccountApiArg,
   UpdateAssessmentApiArg,
   UpdateAttendanceApiArg,
+  UpdateCompetitionApiArg,
+  UpdateExamApiArg,
   UpdateHwApiArg,
   UpdateLessonApiArg,
   UpdateLotApiArg,
-  UpdateOtherAssignmentApiArg,
   UpdateTeamApiArg,
   UpdateTestApiArg,
-  User,
-  UserCreateUpdateRequest,
-  UserSnippetList,
-  UsersPage,
 } from '@/types/api';
+
+import type {
+  IAuthResponse,
+  ICreateUpdateUserRequest,
+  IUsersList,
+  IGetUserResponse,
+  IUserBalanceResponse,
+  IUserSnippetList,
+  ITeamsList,
+  ICreateUpdateTeamRequest,
+  ICreateUpdateTeamResponse,
+  IGetTeamResponse,
+  ILessonsList,
+  IHomeworksList,
+  ICreateUpdateHomeworkRequest,
+  IGetHomeworkResponse,
+  ITestsList,
+  ICreateUpdateTestRequest,
+  IGetTestResponse,
+  IExamsList,
+  ICreateUpdateExamRequest,
+  IGetExamResponse,
+  ICompetitionsList,
+  ICreateUpdateCompetitionRequest,
+  IGetCompetitionResponse,
+  IGetLessonResponse,
+  TeamSnippet,
+  ICreateUpdateLessonRequest,
+  LessonSnippet,
+  HomeworkSnippet,
+  TestSnippet,
+  ExamSnippet,
+} from '@/types/proto';
+
+import {
+  AuthResponseTransformer,
+  CreateUpdateUserRequestTransformer,
+  UsersListTransformer,
+  GetUserResponseTransformer,
+  UserBalanceResponseTransformer,
+  UserSnippetListTransformer,
+  TeamsListTransformer,
+  CreateUpdateTeamRequestTransformer,
+  CreateUpdateTeamResponseTransformer,
+  GetTeamResponseTransformer,
+  LessonsListTransformer,
+  CreateUpdateLessonRequestTransformer,
+  GetLessonResponseTransformer,
+  HomeworksListTransformer,
+  CreateUpdateHomeworkRequestTransformer,
+  GetHomeworkResponseTransformer,
+  TestsListTransformer,
+  CreateUpdateTestRequestTransformer,
+  GetTestResponseTransformer,
+  ExamsListTransformer,
+  CreateUpdateExamRequestTransformer,
+  GetExamResponseTransformer,
+  GetCompetitionResponseTransformer,
+  CreateUpdateCompetitionRequestTransformer,
+  CompetitionsListTransformer,
+} from '@/types/proto';
+
+import { getResponseHandler } from './helpers/responseHandler';
 
 export const api = createApi({
   reducerPath: 'API',
@@ -89,22 +129,26 @@ export const api = createApi({
     baseUrl: '/api/v1',
   }),
   endpoints: (build) => ({
-    auth: build.query<AuthResponse, AuthApiArg>({
+    auth: build.query<IAuthResponse, AuthApiArg>({
       query: (queryArg) => ({
         url: `/auth/login`,
         params: { login: queryArg.login, password: queryArg.password },
+        responseHandler: getResponseHandler(AuthResponseTransformer),
       }),
     }),
 
-    createAccount: build.mutation<undefined, UserCreateUpdateRequest>({
+    createUser: build.mutation<undefined, ICreateUpdateUserRequest>({
       query: (requestBody) => ({
         url: `/users`,
         method: 'POST',
-        body: requestBody,
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: CreateUpdateUserRequestTransformer.encode(requestBody).finish(),
       }),
     }),
 
-    getAccounts: build.query<UsersPage, GetAccountsApiArg>({
+    getUsers: build.query<IUsersList, GetAccountsApiArg>({
       query: (queryArg) => ({
         url: `/users/list`,
         params: {
@@ -114,42 +158,54 @@ export const api = createApi({
           role: queryArg.role,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
+        responseHandler: getResponseHandler(UsersListTransformer),
       }),
     }),
 
-    getAccountById: build.query<User, string>({
-      query: (id) => ({ url: `/users/${id}` }),
+    getUserById: build.query<IGetUserResponse, string>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        responseHandler: getResponseHandler(GetUserResponseTransformer),
+      }),
     }),
 
-    updateAccount: build.mutation<undefined, UpdateAccountApiArg>({
+    updateUser: build.mutation<undefined, UpdateAccountApiArg>({
       query: (queryArg) => ({
         url: `/users/${queryArg.id}`,
         method: 'PATCH',
-        body: queryArg.updateRequestBody,
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: CreateUpdateUserRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
       }),
     }),
 
-    deleteAccountById: build.mutation<undefined, string>({
+    deleteUserById: build.mutation<undefined, string>({
       query: (id) => ({ url: `/users/${id}`, method: 'DELETE' }),
     }),
 
-    getUserBalanceById: build.query<GetUserBalanceByIdApiResponse, string>({
-      query: (id) => ({ url: `/users/${id}/balance` }),
-    }),
-
-    getAccountsForSelect: build.query<
-      UserSnippetList,
-      GetAccountsForSelectApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/snippets`,
-        params: { role: queryArg.role },
+    getUserBalanceById: build.query<IUserBalanceResponse, string>({
+      query: (id) => ({
+        url: `/users/${id}/balance`,
+        responseHandler: getResponseHandler(UserBalanceResponseTransformer),
       }),
     }),
 
-    getTeams: build.query<TeamsPage, GetTeamsApiArg>({
+    getUserSnippetList: build.query<IUserSnippetList, GetUserSnippetListApiArg>(
+      {
+        query: (queryArg) => ({
+          url: `/users/snippets`,
+          params: { role: queryArg.role },
+          responseHandler: getResponseHandler(UserSnippetListTransformer),
+        }),
+      }
+    ),
+
+    getTeams: build.query<ITeamsList, GetTeamsApiArg>({
       query: (queryArg) => ({
         url: `/teams/list`,
         params: {
@@ -157,41 +213,72 @@ export const api = createApi({
           teamProjectTheme: queryArg.teamProjectTheme,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
+        responseHandler: getResponseHandler(TeamsListTransformer),
       }),
     }),
 
-    createTeam: build.mutation<undefined, TeamCreateUpdateRequest>({
+    createTeam: build.mutation<
+      ICreateUpdateTeamResponse,
+      ICreateUpdateTeamRequest
+    >({
       query: (requestBody) => ({
         url: `/teams`,
         method: 'POST',
-        body: requestBody,
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: CreateUpdateTeamRequestTransformer.encode(requestBody).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateTeamResponseTransformer
+        ),
       }),
     }),
 
-    updateTeam: build.mutation<undefined, UpdateTeamApiArg>({
+    updateTeam: build.mutation<ICreateUpdateTeamResponse, UpdateTeamApiArg>({
       query: (queryArg) => ({
         url: `/teams/${queryArg.id}`,
         method: 'PUT',
-        body: queryArg.updateRequestBody,
+        body: CreateUpdateTeamRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateTeamResponseTransformer
+        ),
       }),
     }),
 
-    getTeamById: build.query<Team, string>({
-      query: (id) => ({ url: `/teams/${id}` }),
+    getTeamById: build.query<IGetTeamResponse, string>({
+      query: (id) => ({
+        url: `/teams/${id}`,
+        responseHandler: getResponseHandler(GetTeamResponseTransformer),
+      }),
     }),
 
     deleteTeamById: build.mutation<undefined, string>({
       query: (id) => ({ url: `/teams/${id}`, method: 'DELETE' }),
     }),
 
-    getTeamPublicProfileById: build.query<TeamPublicProfile, string>({
-      query: (id) => ({ url: `/teams/public/${id}` }),
+    getTeamPublicProfileById: build.query<IGetTeamResponse, string>({
+      query: (id) => ({
+        url: `/teams/${id}/public`,
+        responseHandler: getResponseHandler(GetTeamResponseTransformer),
+      }),
     }),
 
-    getTeamsForSelect: build.query<TeamSnippetList, void>({
-      query: () => ({ url: `/teams/snippets` }),
+    getTeamsForSelect: build.query<TeamSnippet[], void>({
+      query: () => ({
+        url: `/teams/list`,
+        params: { size: 10_000 },
+        responseHandler: async (response) => {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = TeamsListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+          return decodedResponse.teams;
+        },
+      }),
     }),
 
     getAssessments: build.query<AssessmentsPage, GetAssessmentsApiArg>({
@@ -204,7 +291,7 @@ export const api = createApi({
           assessmentType: queryArg.assessmentType,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -256,9 +343,9 @@ export const api = createApi({
       }),
     }),
 
-    getHwList: build.query<HwPage, GetHwListApiArg>({
+    getHwList: build.query<IHomeworksList, GetHwListApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/homework/list`,
+        url: `/assignments/homeworks/list`,
         params: {
           title: queryArg.title,
           lessonId: queryArg.lessonId,
@@ -266,41 +353,64 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
+        responseHandler: getResponseHandler(HomeworksListTransformer),
       }),
     }),
 
-    createHw: build.mutation<undefined, HwCreateUpdateRequest>({
+    createHw: build.mutation<undefined, ICreateUpdateHomeworkRequest>({
       query: (requestBody) => ({
-        url: `/assignments/homework`,
+        url: `/assignments/homeworks`,
         method: 'POST',
-        body: requestBody,
+        body: CreateUpdateHomeworkRequestTransformer.encode(
+          requestBody
+        ).finish(),
       }),
     }),
 
-    getHwById: build.query<Hw, string>({
-      query: (id) => ({ url: `/assignments/homework/${id}` }),
+    getHwById: build.query<IGetHomeworkResponse, string>({
+      query: (id) => ({
+        url: `/assignments/homeworks/${id}`,
+        responseHandler: getResponseHandler(GetHomeworkResponseTransformer),
+      }),
     }),
 
     updateHw: build.mutation<undefined, UpdateHwApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/homework/${queryArg.id}`,
+        url: `/assignments/homeworks/${queryArg.id}`,
         method: 'PUT',
-        body: queryArg.updateRequestBody,
+        body: CreateUpdateHomeworkRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
       }),
     }),
 
     deleteHwById: build.mutation<undefined, string>({
       query: (id) => ({
-        url: `/assignments/homework/${id}`,
+        url: `/assignments/homeworks/${id}`,
         method: 'DELETE',
       }),
     }),
 
-    getTestList: build.query<TestsPage, GetTestListApiArg>({
+    getHWSnippets: build.query<HomeworkSnippet[], void>({
+      query: () => ({
+        url: `/assignments/homeworks/list`,
+        params: { size: 10_000 },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = HomeworksListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+
+          return decodedResponse.homeworks;
+        },
+      }),
+    }),
+
+    getTestList: build.query<ITestsList, GetTestListApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/test/list`,
+        url: `/assignments/tests/list`,
         params: {
           title: queryArg.title,
           lessonId: queryArg.lessonId,
@@ -308,100 +418,192 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
+        responseHandler: getResponseHandler(TestsListTransformer),
       }),
     }),
 
-    createTest: build.mutation<undefined, TestCreateUpdateRequest>({
+    createTest: build.mutation<undefined, ICreateUpdateTestRequest>({
       query: (requestBody) => ({
-        url: `/assignments/test`,
+        url: `/assignments/tests`,
         method: 'POST',
-        body: requestBody,
+        body: CreateUpdateTestRequestTransformer.encode(requestBody).finish(),
       }),
     }),
 
-    getTestById: build.query<Test, string>({
-      query: (id) => ({ url: `/assignments/test/${id}` }),
+    getTestById: build.query<IGetTestResponse, string>({
+      query: (id) => ({
+        url: `/assignments/tests/${id}`,
+        responseHandler: getResponseHandler(GetTestResponseTransformer),
+      }),
     }),
 
     updateTest: build.mutation<undefined, UpdateTestApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/test/${queryArg.id}`,
+        url: `/assignments/tests/${queryArg.id}`,
         method: 'PUT',
-        body: queryArg.updateRequestBody,
+        body: CreateUpdateTestRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
       }),
     }),
 
     deleteTestById: build.mutation<undefined, string>({
       query: (id) => ({
-        url: `/assignments/test/${id}`,
+        url: `/assignments/tests/${id}`,
         method: 'DELETE',
       }),
     }),
 
-    getOtherAssignmentList: build.query<
-      OtherAssignmentsPage,
-      GetOtherAssignmentListApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/assignments/other/list`,
-        params: {
-          title: queryArg.title,
-          assignmentType: queryArg.assignmentType,
-          dateFrom: queryArg.dateFrom,
-          dateTo: queryArg.dateTo,
-          sort: queryArg.sort,
-          page: queryArg.page,
-          pageSize: queryArg.pageSize,
+    getTestSnippets: build.query<TestSnippet[], void>({
+      query: () => ({
+        url: `/assignments/tests/list`,
+        params: { size: 10_000 },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = TestsListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+
+          return decodedResponse.tests;
         },
       }),
     }),
 
-    createOtherAssignment: build.mutation<
-      undefined,
-      OtherAssignmentCreateUpdateRequest
-    >({
-      query: (requestBody) => ({
-        url: `/assignments/other`,
-        method: 'POST',
-        body: requestBody,
-      }),
-    }),
-
-    getOtherAssignmentById: build.query<OtherAssignment, string>({
-      query: (id) => ({ url: `/assignments/other/${id}` }),
-    }),
-
-    updateOtherAssignment: build.mutation<
-      undefined,
-      UpdateOtherAssignmentApiArg
-    >({
+    getExamList: build.query<IExamsList, GetExamListApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/other/${queryArg.id}`,
-        method: 'PUT',
-        body: queryArg.updateRequestBody,
+        url: `/assignments/exams/list`,
+        params: {
+          title: queryArg.title,
+          dateFrom: queryArg.dateFrom,
+          dateTo: queryArg.dateTo,
+          sort: queryArg.sort,
+          page: queryArg.page,
+          size: queryArg.size,
+        },
+        responseHandler: getResponseHandler(ExamsListTransformer),
       }),
     }),
 
-    deleteOtherAssignmentById: build.mutation<undefined, string>({
+    createExam: build.mutation<undefined, ICreateUpdateExamRequest>({
+      query: (requestBody) => ({
+        url: `/assignments/exams`,
+        method: 'POST',
+        body: CreateUpdateExamRequestTransformer.encode(requestBody).finish(),
+      }),
+    }),
+
+    getExamById: build.query<IGetExamResponse, string>({
       query: (id) => ({
-        url: `/assignments/other/${id}`,
+        url: `/assignments/exams/${id}`,
+        responseHandler: getResponseHandler(GetExamResponseTransformer),
+      }),
+    }),
+
+    updateExam: build.mutation<undefined, UpdateExamApiArg>({
+      query: (queryArg) => ({
+        url: `/assignments/exams/${queryArg.id}`,
+        method: 'PUT',
+        body: CreateUpdateExamRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
+      }),
+    }),
+
+    deleteExamById: build.mutation<undefined, string>({
+      query: (id) => ({
+        url: `/assignments/exams/${id}`,
         method: 'DELETE',
       }),
     }),
 
-    getAssignmentSnippets: build.query<
-      AssignmentSnippetList,
-      GetAssignmentSnippetsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/assignments/snippets`,
-        params: { assignmentType: queryArg.assignmentType },
+    getExamSnippets: build.query<ExamSnippet[], void>({
+      query: () => ({
+        url: `/assignments/exams/list`,
+        params: { size: 10_000 },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = ExamsListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+
+          return decodedResponse.exams;
+        },
       }),
     }),
 
-    getLessons: build.query<LessonsPage, GetLessonsApiArg>({
+    getCompetitionList: build.query<
+      ICompetitionsList,
+      GetCompetitionListApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/assignments/competitions/list`,
+        params: {
+          title: queryArg.title,
+          dateFrom: queryArg.dateFrom,
+          dateTo: queryArg.dateTo,
+          sort: queryArg.sort,
+          page: queryArg.page,
+          size: queryArg.size,
+        },
+        responseHandler: getResponseHandler(CompetitionsListTransformer),
+      }),
+    }),
+
+    createCompetition: build.mutation<
+      undefined,
+      ICreateUpdateCompetitionRequest
+    >({
+      query: (requestBody) => ({
+        url: `/assignments/competitions`,
+        method: 'POST',
+        body: CreateUpdateCompetitionRequestTransformer.encode(
+          requestBody
+        ).finish(),
+      }),
+    }),
+
+    getCompetitionById: build.query<IGetCompetitionResponse, string>({
+      query: (id) => ({
+        url: `/assignments/competitions/${id}`,
+        responseHandler: getResponseHandler(GetCompetitionResponseTransformer),
+      }),
+    }),
+
+    updateCompetition: build.mutation<undefined, UpdateCompetitionApiArg>({
+      query: (queryArg) => ({
+        url: `/assignments/competitions/${queryArg.id}`,
+        method: 'PUT',
+        body: CreateUpdateCompetitionRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
+      }),
+    }),
+
+    deleteCompetitionById: build.mutation<undefined, string>({
+      query: (id) => ({
+        url: `/assignments/competitions/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+
+    getCompetitionSnippets: build.query<ExamSnippet[], void>({
+      query: () => ({
+        url: `/assignments/competitions/list`,
+        params: { size: 10_000 },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = CompetitionsListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+
+          return decodedResponse.competitions;
+        },
+      }),
+    }),
+
+    getLessons: build.query<ILessonsList, GetLessonsApiArg>({
       query: (queryArg) => ({
         url: `/lessons/list`,
         params: {
@@ -411,28 +613,34 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
+        responseHandler: getResponseHandler(LessonsListTransformer),
       }),
     }),
 
-    createLesson: build.mutation<undefined, LessonCreateUpdateRequest>({
+    createLesson: build.mutation<undefined, ICreateUpdateLessonRequest>({
       query: (requestBody) => ({
         url: `/lessons`,
         method: 'POST',
-        body: requestBody,
+        body: CreateUpdateLessonRequestTransformer.encode(requestBody).finish(),
       }),
     }),
 
-    getLessonById: build.query<Lesson, string>({
-      query: (id) => ({ url: `/lessons/${id}` }),
+    getLessonById: build.query<IGetLessonResponse, string>({
+      query: (id) => ({
+        url: `/lessons/${id}`,
+        responseHandler: getResponseHandler(GetLessonResponseTransformer),
+      }),
     }),
 
     updateLesson: build.mutation<undefined, UpdateLessonApiArg>({
       query: (queryArg) => ({
         url: `/lessons/${queryArg.id}`,
         method: 'PUT',
-        body: queryArg.updateRequestBody,
+        body: CreateUpdateLessonRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
       }),
     }),
 
@@ -443,8 +651,19 @@ export const api = createApi({
       }),
     }),
 
-    getLessonsSnippets: build.query<LessonSnippetList, void>({
-      query: () => ({ url: `/lessons/snippets` }),
+    getLessonsSnippets: build.query<LessonSnippet[], void>({
+      query: () => ({
+        url: `/lessons/list`,
+        params: { size: 10_000 },
+        async responseHandler(response) {
+          const buffer = await response.arrayBuffer();
+          const decodedResponse = LessonsListTransformer.decode(
+            new Uint8Array(buffer)
+          );
+
+          return decodedResponse.lessons;
+        },
+      }),
     }),
 
     getLotsForMarketPlace: build.query<LotsPage, GetLotsForMarketPlaceApiArg>({
@@ -459,7 +678,7 @@ export const api = createApi({
           priceTo: queryArg.priceTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -475,7 +694,7 @@ export const api = createApi({
           lotStatus: queryArg.lotStatus,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -514,7 +733,7 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -543,7 +762,7 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -570,7 +789,7 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -601,7 +820,7 @@ export const api = createApi({
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -622,7 +841,7 @@ export const api = createApi({
             dateTo: queryArg.dateTo,
             sort: queryArg.sort,
             page: queryArg.page,
-            pageSize: queryArg.pageSize,
+            size: queryArg.size,
           },
         }),
       }
@@ -665,7 +884,7 @@ export const api = createApi({
           teamId: queryArg.teamId,
           sort: queryArg.sort,
           page: queryArg.page,
-          pageSize: queryArg.pageSize,
+          size: queryArg.size,
         },
       }),
     }),
@@ -707,13 +926,13 @@ export const api = createApi({
 
 export const {
   useAuthQuery,
-  useCreateAccountMutation,
-  useGetAccountsQuery,
-  useGetAccountByIdQuery,
-  useUpdateAccountMutation,
-  useDeleteAccountByIdMutation,
+  useGetUsersQuery,
+  useGetUserByIdQuery,
   useGetUserBalanceByIdQuery,
-  useGetAccountsForSelectQuery,
+  useGetUserSnippetListQuery,
+  useCreateUserMutation,
+  useDeleteUserByIdMutation,
+  useUpdateUserMutation,
   useGetTeamsQuery,
   useCreateTeamMutation,
   useUpdateTeamMutation,
@@ -734,17 +953,25 @@ export const {
   useGetHwByIdQuery,
   useUpdateHwMutation,
   useDeleteHwByIdMutation,
+  useGetHWSnippetsQuery,
   useGetTestListQuery,
   useCreateTestMutation,
   useGetTestByIdQuery,
   useUpdateTestMutation,
   useDeleteTestByIdMutation,
-  useGetOtherAssignmentListQuery,
-  useCreateOtherAssignmentMutation,
-  useGetOtherAssignmentByIdQuery,
-  useUpdateOtherAssignmentMutation,
-  useDeleteOtherAssignmentByIdMutation,
-  useGetAssignmentSnippetsQuery,
+  useGetTestSnippetsQuery,
+  useGetCompetitionListQuery,
+  useCreateCompetitionMutation,
+  useGetCompetitionByIdQuery,
+  useUpdateCompetitionMutation,
+  useDeleteCompetitionByIdMutation,
+  useGetCompetitionSnippetsQuery,
+  useGetExamListQuery,
+  useCreateExamMutation,
+  useGetExamByIdQuery,
+  useUpdateExamMutation,
+  useDeleteExamByIdMutation,
+  useGetExamSnippetsQuery,
   useGetLessonsQuery,
   useCreateLessonMutation,
   useGetLessonByIdQuery,
@@ -779,26 +1006,3 @@ export const {
   useCreateSolutionMutation,
   useCreateEmailMutation,
 } = api;
-
-// getLot: build.query<LotResponse, string>({
-//   query: (lotId) => ({
-//     url: `/lot/${lotId}`,
-//     method: 'GET',
-//     async responseHandler(response) {
-//       const buffer = await response.arrayBuffer();
-//       const decoded = LotResponse.decode(new Uint8Array(buffer));
-//       return LotResponse.toObject(decoded);
-//     },
-//   }),
-// }),
-// createBuyLotClaim: build.mutation<void, CreateBuyLotClaimRequestArgs>({
-//   query: (args) => ({
-//     url: `/learner/claims/buy-lot`,
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-protobuf',
-//     },
-//     body: ClaimBuyLotRequest.encode(args).finish(),
-//   }),
-//   invalidatesTags: ['Balance'],
-// }),

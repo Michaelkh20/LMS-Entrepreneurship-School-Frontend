@@ -1,8 +1,5 @@
 import {
-  Role,
-  Sex,
   AssessmentType,
-  AssignmentType,
   LotStatus,
   TransactionType,
   TwoSidedClaimStatus,
@@ -11,6 +8,18 @@ import {
   EmailGroupingTypes,
 } from './common';
 
+import { Role } from './proto';
+
+import type {
+  ICreateUpdateCompetitionRequest,
+  ICreateUpdateExamRequest,
+  ICreateUpdateHomeworkRequest,
+  ICreateUpdateLessonRequest,
+  ICreateUpdateTeamRequest,
+  ICreateUpdateTestRequest,
+  ICreateUpdateUserRequest,
+} from '@/types/proto';
+
 export type AuthApiArg = {
   /** User login */
   login: string;
@@ -18,7 +27,7 @@ export type AuthApiArg = {
   password: string;
 };
 
-export type GetAccountsApiArg = {
+export type GetAccountsApiArg = Partial<{
   /** Search name */
   name: string;
   /** Search email */
@@ -32,27 +41,22 @@ export type GetAccountsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateAccountApiArg = {
   /** id */
   id: string;
   /** User to update */
-  updateRequestBody: UserCreateUpdateRequest;
+  updateRequestBody: ICreateUpdateUserRequest;
 };
 
-export type GetUserBalanceByIdApiResponse =
-  /** status 200 Successful response */ {
-    balance: string;
-  };
-
-export type GetAccountsForSelectApiArg = {
+export type GetUserSnippetListApiArg = {
   /** Search role */
-  role: Role;
+  role?: Role;
 };
 
-export type GetTeamsApiArg = {
+export type GetTeamsApiArg = Partial<{
   /** Search team number */
   teamNumber: number;
   /** Search team project theme */
@@ -62,17 +66,17 @@ export type GetTeamsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateTeamApiArg = {
   /** id */
   id: string;
   /** Team to update */
-  updateRequestBody: TeamCreateUpdateRequest;
+  updateRequestBody: ICreateUpdateTeamRequest;
 };
 
-export type GetAssessmentsApiArg = {
+export type GetAssessmentsApiArg = Partial<{
   /** Learner id */
   learnerId: string;
   /** Team id */
@@ -86,8 +90,8 @@ export type GetAssessmentsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateAssessmentApiArg = {
   /** id */
@@ -96,7 +100,7 @@ export type UpdateAssessmentApiArg = {
   updateRequestBody: AssessmentCreateUpdateRequest;
 };
 
-export type GetHwListApiArg = {
+export type GetHwListApiArg = Partial<{
   /** Search title */
   title: string;
   /** Lesson id */
@@ -110,17 +114,17 @@ export type GetHwListApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateHwApiArg = {
   /** id */
   id: string;
   /** Assignment to update */
-  updateRequestBody: HwCreateUpdateRequest;
+  updateRequestBody: ICreateUpdateHomeworkRequest;
 };
 
-export type GetTestListApiArg = {
+export type GetTestListApiArg = Partial<{
   /** Search title */
   title: string;
   /** Lesson id */
@@ -134,21 +138,33 @@ export type GetTestListApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateTestApiArg = {
   /** id */
   id: string;
   /** Test to update */
-  updateRequestBody: TestCreateUpdateRequest;
+  updateRequestBody: ICreateUpdateTestRequest;
 };
 
-export type GetOtherAssignmentListApiArg = {
+export type UpdateExamApiArg = {
+  /** id */
+  id: string;
+  /** Test to update */
+  updateRequestBody: ICreateUpdateExamRequest;
+};
+
+export type UpdateCompetitionApiArg = {
+  /** id */
+  id: string;
+  /** Test to update */
+  updateRequestBody: ICreateUpdateCompetitionRequest;
+};
+
+export type GetExamListApiArg = Partial<{
   /** Search title */
   title: string;
-  /** Search assignment type */
-  assignmentType: AssignmentType;
   /** The beginning of the desired interval */
   dateFrom: string;
   /** The end of the desired interval */
@@ -158,22 +174,25 @@ export type GetOtherAssignmentListApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type UpdateOtherAssignmentApiArg = {
-  /** id */
-  id: string;
-  /** Other assignment to update */
-  updateRequestBody: OtherAssignmentCreateUpdateRequest;
-};
+export type GetCompetitionListApiArg = Partial<{
+  /** Search title */
+  title: string;
+  /** The beginning of the desired interval */
+  dateFrom: string;
+  /** The end of the desired interval */
+  dateTo: string;
+  /** Sorting order in format 'sortProperty,sortOrder' */
+  sort: string;
+  /** Page number */
+  page: number;
+  /** The size of the page to be returned */
+  size: number;
+}>;
 
-export type GetAssignmentSnippetsApiArg = {
-  /** Search assignment type */
-  assignmentType: AssignmentType;
-};
-
-export type GetLessonsApiArg = {
+export type GetLessonsApiArg = Partial<{
   /** Search lesson number */
   lessonNumber: number;
   /** Search lesson title */
@@ -187,17 +206,17 @@ export type GetLessonsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateLessonApiArg = {
   /** id */
   id: string;
   /** Lesson to update */
-  updateRequestBody: LessonCreateUpdateRequest;
+  updateRequestBody: ICreateUpdateLessonRequest;
 };
 
-export type GetLotsForMarketPlaceApiArg = {
+export type GetLotsForMarketPlaceApiArg = Partial<{
   /** Search lot number */
   lotNumber: number;
   /** Search lot title */
@@ -215,10 +234,10 @@ export type GetLotsForMarketPlaceApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type GetLotsApiArg = {
+export type GetLotsApiArg = Partial<{
   /** Search lot number */
   lotNumber: number;
   /** Search lot title */
@@ -234,8 +253,8 @@ export type GetLotsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateLotApiArg = {
   /** id */
@@ -244,7 +263,7 @@ export type UpdateLotApiArg = {
   updateRequestBody: LotCreateUpdateRequest;
 };
 
-export type GetTransactionsApiArg = {
+export type GetTransactionsApiArg = Partial<{
   /** Learner id */
   learnerId: string;
   /** Search transaction type */
@@ -258,10 +277,10 @@ export type GetTransactionsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type GetBuyLotClaimsApiArg = {
+export type GetBuyLotClaimsApiArg = Partial<{
   /** Search two-sided claim status */
   twoSidedClaimStatus: TwoSidedClaimStatus;
   /** Search lot number */
@@ -279,10 +298,10 @@ export type GetBuyLotClaimsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type GetListLotClaimsApiArg = {
+export type GetListLotClaimsApiArg = Partial<{
   /** Search two-sided claim status */
   twoSidedClaimStatus: TwoSidedClaimStatus;
   /** Owner id */
@@ -296,10 +315,10 @@ export type GetListLotClaimsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type GetFailedDeadlineClaimsApiArg = {
+export type GetFailedDeadlineClaimsApiArg = Partial<{
   /** Search claim status */
   claimStatus: ClaimStatus;
   /** Learner id */
@@ -315,10 +334,10 @@ export type GetFailedDeadlineClaimsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
-export type GetTransferClaimsApiArg = {
+export type GetTransferClaimsApiArg = Partial<{
   /** Search claim status */
   claimStatus: ClaimStatus;
   /** Sender id */
@@ -334,8 +353,8 @@ export type GetTransferClaimsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type UpdateAttendanceApiArg = {
   /** id */
@@ -344,7 +363,7 @@ export type UpdateAttendanceApiArg = {
   updateRequestBody: AttendanceUpdateRequest;
 };
 
-export type GetSolutionsApiArg = {
+export type GetSolutionsApiArg = Partial<{
   /** Assignment id */
   assignmentId: string;
   /** Learner id */
@@ -356,31 +375,14 @@ export type GetSolutionsApiArg = {
   /** Page number */
   page: number;
   /** The size of the page to be returned */
-  pageSize: number;
-};
+  size: number;
+}>;
 
 export type GetSolutionByAssignmentIdAndLearnerIdApiArg = {
   /** Assignment id */
   assignmentId: string;
   /** Learner id */
   learnerId: string;
-};
-
-export type AuthResponse = {
-  user_id: string;
-  role: Role;
-  token: string;
-};
-
-export type UserCreateUpdateRequest = {
-  name: string;
-  surname: string;
-  patronymic: string | null;
-  email: string;
-  phone_number: string | null;
-  messenger: string | null;
-  sex: Sex;
-  role: Role;
 };
 
 export type Pagination = {
@@ -393,60 +395,11 @@ export type TeamSnippet = {
   number: number;
 };
 
-export type User = {
-  id: string;
-  name: string;
-  surname: string;
-  patronymic: string | null;
-  email: string;
-  phone_number: string | null;
-  messenger: string | null;
-  teams: TeamSnippet[];
-  sex: Sex;
-  role: Role;
-  balance: string;
-};
-
-export type UsersPage = {
-  pagination: Pagination;
-  users: User[];
-};
-
 export type UserSnippet = {
   id: string;
   name: string;
   surname: string;
   patronymic: string | null;
-};
-
-export type UserSnippetList = {
-  users: UserSnippet[];
-};
-
-export type TeamTableSnippet = {
-  id: string;
-  number: number;
-  project_theme: string;
-};
-
-export type TeamsPage = {
-  pagination: Pagination;
-  teams: TeamTableSnippet[];
-};
-
-export type TeamCreateUpdateRequest = {
-  number: number;
-  project_theme: string;
-  learners: string[];
-  trackers: string[];
-};
-
-export type Team = {
-  id: string;
-  number: number;
-  project_theme: string;
-  learners: User[];
-  trackers: User[];
 };
 
 export type PublicUserProfile = {
@@ -465,10 +418,6 @@ export type TeamPublicProfile = {
   project_theme: string;
   learners: PublicUserProfile[];
   trackers: PublicUserProfile[];
-};
-
-export type TeamSnippetList = {
-  teams: TeamSnippet[];
 };
 
 export type AssignmentSnippet = {
@@ -515,120 +464,11 @@ export type SetBonusRequest = {
   bonus: number;
 };
 
-export type LessonSnippet = {
-  id: string;
-  number: number;
-  theme: string;
-};
-
-export type HwTableSnippet = {
-  id: string;
-  title: string;
-  lesson: LessonSnippet;
-  deadline: string;
-};
-
-export type HwPage = {
-  pagination: Pagination;
-  content: HwTableSnippet[];
-};
-
-export type HwCreateUpdateRequest = {
-  title: string;
-  lessonstring: string | null;
-  description: string;
-  criteria: string;
-  isTeamWork: boolean;
-  deadline: string;
-};
-
-export type Hw = {
-  id: string;
-  title: string;
-  lesson: LessonSnippet;
-  description: string;
-  criteria: string;
-  isTeamWork: boolean;
-  deadline: string;
-};
-
-export type Test = {
-  id: string;
-  title: string;
-  lesson: LessonSnippet;
-  link: string;
-  deadline: string;
-};
-
-export type TestsPage = {
-  pagination: Pagination;
-  tests: Test[];
-};
-
-export type TestCreateUpdateRequest = {
-  title: string;
-  lessonstring: string | null;
-  link: string;
-  deadline: string;
-};
-
-export type OtherAssignment = {
-  id: string;
-  title: string;
-  deadline: string;
-  assignmentType: AssignmentType;
-};
-
-export type OtherAssignmentsPage = {
-  pagination: Pagination;
-  assignments: OtherAssignment[];
-};
-
-export type OtherAssignmentCreateUpdateRequest = {
-  title: string;
-  deadline: string;
-  assignmentType: AssignmentType;
-};
-
-export type AssignmentSnippetList = {
-  HWs: AssignmentSnippet[];
-};
-
 export type LessonTableSnippet = {
   id: string;
   number: number;
   theme: string;
   date: string;
-};
-
-export type LessonsPage = {
-  pagination: Pagination;
-  lessons: LessonTableSnippet[];
-};
-
-export type LessonCreateUpdateRequest = {
-  number: number;
-  theme: string;
-  description: string;
-  date: string;
-  presLinks: string[];
-  videoLinks: string[];
-};
-
-export type Lesson = {
-  id: string;
-  number: number;
-  theme: string;
-  description: string;
-  date: string;
-  presLinks: string[];
-  videoLinks: string[];
-  homeworkstring: string | null;
-  teststring: string | null;
-};
-
-export type LessonSnippetList = {
-  lessons: LessonSnippet[];
 };
 
 export type PerformerSnippet = {
@@ -833,7 +673,7 @@ export type Solution = {
   learner: UserSnippet;
   uploader: UserSnippet;
   team: TeamSnippet;
-  HW: HwTableSnippet;
+  HW: { id: string; title: string };
   completeDateTime: string;
   fileUrl: string;
 };

@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.teams;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.teams";
+
+import "google/protobuf/wrappers.proto";
+import "ru/hse/lmsteam/proto/users/users_api.proto";
+import "ru/hse/lmsteam/proto/common/pageable.proto";
+
+message GetTeam {
+  message Response {
+    Team team = 1;
+  }
+}
+
+message CreateOrUpdateTeam {
+  message Request {
+    google.protobuf.Int32Value number = 2;
+    google.protobuf.StringValue project_theme = 3;
+    google.protobuf.StringValue description = 4;
+    repeated string user_ids = 5;
+  }
+
+  message Response {
+    oneof data {
+      Team team = 1;
+      ValidationErrors errors = 2;
+    }
+  }
+}
+
+message DeleteTeam {
+  message Response {
+    int64 entities_deleted = 1;
+  }
+}
+
+message GetTeams {
+  message Response {
+    ru.hse.lmsteam.proto.common.Page page = 1;
+    repeated ru.hse.lmsteam.proto.users.TeamSnippet teams = 2;
+  }
+}
+
+message GetTeamMembers {
+  message Response {
+    repeated ru.hse.lmsteam.proto.users.User users = 1;
+  }
+}
+
+message UpdateTeamMembers {
+  message Request {
+    repeated string user_ids = 1;
+  }
+
+  message Response {
+    oneof data {
+      Success success = 1;
+      ValidationErrors errors = 2;
+    }
+  }
+
+  message Success {
+  }
+}
+
+message ValidationErrors {
+  message UserTeams {
+    ru.hse.lmsteam.proto.users.UserSnippet user = 1;
+    repeated ru.hse.lmsteam.proto.users.TeamSnippet teams = 2;
+  }
+
+  repeated string not_found_user_ids = 1;
+  repeated UserTeams already_members = 2;
+}
+
+message Team {
+  string id = 1;
+  int32 number = 2;
+  string project_theme = 3;
+  string description = 4;
+
+  repeated ru.hse.lmsteam.proto.users.User students = 6;
+  repeated ru.hse.lmsteam.proto.users.User trackers = 7;
+}

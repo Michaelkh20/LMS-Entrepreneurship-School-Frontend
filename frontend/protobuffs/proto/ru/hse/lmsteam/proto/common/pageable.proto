@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.common;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.common";
+
+message Page {
+  int32 total_pages = 1;
+  int64 total_elements = 2;
+}
