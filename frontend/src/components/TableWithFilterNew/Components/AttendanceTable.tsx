@@ -6,7 +6,7 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 // @ts-ignore
 import _debounce from 'lodash.debounce';
 import { Button, ConfigProvider, InputNumber, Space, Table } from 'antd';
-import { LessonNumber } from '@/types/common';
+
 import tableStyles from '../table.module.css';
 
 // import {
@@ -14,7 +14,9 @@ import tableStyles from '../table.module.css';
 //   useUpdateAttendanceMutation,
 // } from '@/redux/services/adminApi';
 
-import { AttendanceRequest } from '@/types/requests';
+import { AttendanceInfo } from '@/types/api';
+
+import { useGetAttendanceQuery } from '@/redux/services/api';
 
 export type AttendanceColumnsDataType = {
   key: number;
@@ -103,15 +105,15 @@ export function AttendanceTable({
   lessonId,
   onRow,
 }: {
-  lessonId: LessonNumber;
+  lessonId: string;
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<AttendanceRequest>({
-    lessonId: 123,
+  const [formData, setFormData] = useState<AttendanceInfo>({
+    // lessonId: 123,
     learners: [],
   });
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetAttendanceQuery(lessonId);
+  const { data, isLoading, isError, isFetching } =
+    useGetAttendanceQuery(lessonId);
 
   const [dataTable, setDataTable] =
     useState<AttendanceColumnsDataType[]>(dataD);
@@ -167,7 +169,7 @@ export function AttendanceTable({
   }, [formData]);
   useEffect(() => {
     console.log('Table:', dataTable);
-    setFormData((prevState): AttendanceRequest => {
+    setFormData((prevState): AttendanceInfo => {
       return {
         ...prevState,
         learners: dataTable

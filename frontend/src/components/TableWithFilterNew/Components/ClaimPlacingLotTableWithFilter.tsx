@@ -8,16 +8,11 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetClaimsApiArg } from '@/types/requests';
-import type {
-  AdminClaimTableItem,
-  LotSelectionItem,
-  TaskSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+import type { GetLotsForMarketPlaceApiArg } from '@/types/api';
+
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ClaimType, ClaimStatus, Delay } from '@/types/common';
+
 import { ColumnsType, TableProps } from 'antd/es/table';
 
 type ClaimPlacingLotColumnsDataType = {

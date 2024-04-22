@@ -8,24 +8,19 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetClaimsApiArg } from '@/types/requests';
-import type {
-  AdminClaimTableItem,
-  LotSelectionItem,
-  TaskSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+import type { GetTransferClaimsApiArg, TransferClaimsPage } from '@/types/api';
+
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ClaimType, ClaimStatus, Delay } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { Space, Popconfirm, Button } from 'antd';
+
+import { useGetTransferClaimsQuery } from '@/redux/services/api';
 
 type ClaimTransferColumnsDataType = {
   id: AdminClaimTableItem['id'];
   claimStatus: AdminClaimTableItem['status'];
-  date: AdminClaimTableItem['dateTime'];
-  learner: UserSelectionItem['name'];
+  sender: UserSelectionItem['name'];
   receiver: UserSelectionItem['name'];
   sum: AdminClaimTableItem['sum'];
 };
@@ -33,8 +28,8 @@ type ClaimTransferColumnsDataType = {
 const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
   {
     title: 'Отправитель',
-    dataIndex: 'learner',
-    key: 'learner',
+    dataIndex: 'sender',
+    key: 'sender',
     sorter: true,
   },
   {
@@ -43,7 +38,6 @@ const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
     key: 'receiver',
     sorter: true,
   },
-  { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
     dataIndex: 'claimStatus',
@@ -110,49 +104,87 @@ const ConfirmButtons = ({
   );
 };
 
-const mockData: ClaimTransferColumnsDataType[] = [
-  {
-    id: 12,
-    claimStatus: ClaimStatus.Approved,
-    learner: 'Иван Обучающийся',
-    receiver: 'Иван Получающий',
-    date: '123123',
-    sum: 5000,
+// const mockData: ClaimTransferColumnsDataType[] = [
+//   {
+//     id: 12,
+//     claimStatus: ClaimStatus.Approved,
+//     learner: 'Иван Обучающийся',
+//     receiver: 'Иван Получающий',
+//     date: '123123',
+//     sum: 5000,
+//   },
+//   {
+//     id: 123123,
+//     claimStatus: ClaimStatus.Waiting,
+//     learner: 'Иван Обучающийся',
+//     receiver: 'Иван Ожидающий',
+//     date: '123123',
+//     sum: 5000,
+//   },
+//   {
+//     id: 1234,
+//     claimStatus: ClaimStatus.Declined,
+//     learner: 'Иван Обучающийся',
+//     receiver: 'Иван Получающий',
+//     date: '123123',
+//     sum: 5000,
+//   },
+// ];
+
+const mockData: TransferClaimsPage = {
+  pagination: {
+    total_pages: 1,
+    total_elements: 1
   },
-  {
-    id: 123123,
-    claimStatus: ClaimStatus.Waiting,
-    learner: 'Иван Обучающийся',
-    receiver: 'Иван Ожидающий',
-    date: '123123',
-    sum: 5000,
-  },
-  {
-    id: 1234,
-    claimStatus: ClaimStatus.Declined,
-    learner: 'Иван Обучающийся',
-    receiver: 'Иван Получающий',
-    date: '123123',
-    sum: 5000,
-  },
-];
+  claims: [{
+    id: '1',
+    sender: {
+      id: '1',
+      name: 'Иван',
+      surname: 'Обучающийся',
+      patronymic: null
+    },
+    receiver: {
+      id: '2',
+      name: 'Иван',
+      surname: 'Получающий',
+      patronymic: null
+    },
+    sum: 100
+  }]
+}
 
 export function ClaimTransferTableWithFilter({
   onRow,
 }: {
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<GetClaimsApiArg>({
-    claimType: ClaimType.Transfer,
+  const [formData, setFormData] = useState<GetTransferClaimsApiArg>({
     page: 1,
     pageSize: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<ClaimTransferColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetClaimsQuery(dataForReq);
+  const [dataTable, setDataTable] = useState<ClaimTransferColumnsDataType[]>();
+  const { data, isLoading, isError, isFetching } =
+    useGetTransferClaimsQuery(dataForReq);
+
+  useEffect(() => {
+    const dataForTable: ClaimTransferColumnsDataType[] = mockData?.claims.map(
+      (claim): ClaimTransferColumnsDataType => {
+        const res: ClaimTransferColumnsDataType = {
+          id: undefined,
+          claimStatus: undefined,
+          date: undefined,
+          sender: claim.sender,
+          receiver: claim.receiver,
+          sum: claim.sum
+        };
+        return res;
+      }
+    );
+    setDataTable(dataForTable);
+  }, [mockData, data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
