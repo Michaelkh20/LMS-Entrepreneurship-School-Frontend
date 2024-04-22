@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './LearnerProfile.module.css';
-import { useGetProfileQuery } from '@/redux/services/learnerApi';
+import { } from '@/redux/services/api';
 import cn from 'classnames/bind';
 import { getRoleString } from './helpers';
 import TeamViewModal from '../Modals/TeamViewModal';
@@ -130,3 +130,7 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
     </div>
   );
 }
+function useGetProfileQuery(id: string): { data: any; } {
+  throw new Error('Function not implemented.');
+}
+

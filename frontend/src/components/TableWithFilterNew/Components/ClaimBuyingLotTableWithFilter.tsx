@@ -6,40 +6,29 @@ import {
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetClaimsApiArg } from '@/types/requests';
+
 import type {
-  AdminClaimTableItem,
-  LotSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+  BuyLotClaimsPage,
+  GetBuyLotClaimsApiArg,
+  UserSnippet,
+} from '@/types/api';
+
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import {
-  Name,
-  Email,
-  TeamNumber,
-  Role,
-  Balance,
-  Id,
-  ClaimType,
-  ClaimStatus,
-} from '@/types/common';
-import { ColumnsType } from 'antd/es/table';
-import { useGetBuyLotClaimsListQuery } from '@/redux/services/adminApi';
+import { TwoSidedClaimStatus } from '@/types/common';
 
-import { dto } from '@dto';
-import BuyLotClaimStatus = dto.BuyLotClaimStatus;
+import { ColumnsType } from 'antd/es/table';
+import { useGetBuyLotClaimsQuery } from '@/redux/services/api';
+
 import dateToFormatString from '@/util/dateToFormatString';
 
 type ClaimBuyingLotColumnsDataType = {
-  id: AdminClaimTableItem['id'];
-  claimStatus: AdminClaimTableItem['status'];
-  date: AdminClaimTableItem['dateTime'];
-  receiver: UserSelectionItem['name'];
-  lot: LotSelectionItem['number'];
-  sum: AdminClaimTableItem['sum'];
+  id: string;
+  claimStatus: TwoSidedClaimStatus;
+  date: string;
+  buyer: UserSnippet;
+  lot: string;
+  price: number;
 };
 
 const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
@@ -49,7 +38,14 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     key: 'lot',
     sorter: true,
   },
-  { title: 'Покупатель', dataIndex: 'receiver', key: 'receiver' },
+  {
+    title: 'Покупатель',
+    dataIndex: 'buyer',
+    key: 'buyer',
+    render: (value, record, index) => {
+      return `${record.buyer.surname} ${record.buyer.name}`;
+    },
+  },
   { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
@@ -58,83 +54,96 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     render: (_, record: ClaimBuyingLotColumnsDataType) => {
       return (
         <>
-          {record.claimStatus === ClaimStatus.Waiting && (
-            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
+          {record.claimStatus === TwoSidedClaimStatus.WaitingAdmin && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание админа</p>
           )}
-          {record.claimStatus === ClaimStatus.Declined && (
-            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
+          {record.claimStatus === TwoSidedClaimStatus.DeclinedAdmin && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено админом</p>
           )}
-          {record.claimStatus === ClaimStatus.Approved && (
+          {record.claimStatus === TwoSidedClaimStatus.WaitingLearner && (
+            <p style={{ color: 'var(--color-primary)' }}>
+              Ожидание пользователя
+            </p>
+          )}
+          {record.claimStatus === TwoSidedClaimStatus.DeclinedLearner && (
+            <p style={{ color: 'var(--color-error)' }}>
+              Отклонено пользователем
+            </p>
+          )}
+          {record.claimStatus === TwoSidedClaimStatus.Approved && (
             <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
           )}
         </>
       );
     },
   },
-  { title: 'Стоимость', dataIndex: 'sum', key: 'sum' },
+  { title: 'Стоимость', dataIndex: 'price', key: 'price' },
 ];
 
-const mockData: ClaimBuyingLotColumnsDataType[] = [
-  {
-    id: 12,
-    lot: 5,
-    claimStatus: ClaimStatus.Approved,
-    receiver: 'Иван Обучающийся',
-    date: '123123',
-    sum: 5000,
+const mockData: BuyLotClaimsPage = {
+  pagination: {
+    total_pages: 1,
+    total_elements: 3,
   },
-  {
-    id: 122,
-    lot: 6,
-    claimStatus: ClaimStatus.Declined,
-    receiver: 'Иван Обучающийся',
-    date: '123123',
-    sum: 5000,
-  },
-  {
-    id: 13,
-    lot: 7,
-    claimStatus: ClaimStatus.Waiting,
-    receiver: 'Иван Обучающийся',
-    date: '222',
-    sum: 300,
-  },
-];
+  claims: [
+    {
+      id: '',
+      status: TwoSidedClaimStatus.WaitingAdmin,
+      buyer: {
+        id: '1',
+        name: 'asd',
+        surname: 'sdf',
+        patronymic: null,
+      },
+      date: '12.12.12',
+      lot: {
+        number: null,
+        title: '1',
+        price: 20,
+        performer: {
+          id: '2',
+          name: 'sdf',
+          surname: 'sdf',
+          patronymic: null,
+        },
+      },
+    },
+  ],
+};
 
 export function ClaimBuyingLotTableWithFilter({
   onRowClick,
 }: {
   onRowClick?: (id: string) => void;
 }) {
-  const [formData, setFormData] = useState({
-    claimType: ClaimType.BuyingLot,
+  const [formData, setFormData] = useState<GetBuyLotClaimsApiArg>({
     page: 1,
     pageSize: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  // const [dataTable, setDataTable] =
-  //   useState<ClaimBuyingLotColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetClaimsQuery(dataForReq);
+  const [dataTable, setDataTable] = useState<ClaimBuyingLotColumnsDataType[]>();
 
-  const { data } = useGetBuyLotClaimsListQuery(dataForReq);
+  const { data, isLoading, isError, isFetching } =
+    useGetBuyLotClaimsQuery(dataForReq);
 
   console.log(data);
 
-  const dataTable = data?.claimBuyLotList.map((item) => ({
-    id: item.id,
-    lot: item.lotNumber,
-    claimStatus:
-      BuyLotClaimStatus.APPROVED === item.status
-        ? ClaimStatus.Approved
-        : BuyLotClaimStatus.WAITING === item.status
-        ? ClaimStatus.Waiting
-        : ClaimStatus.Declined,
-    receiver: item.buyer,
-    date: dateToFormatString(item.date || undefined),
-    sum: item.price,
-  }));
+  useEffect(() => {
+    const dataForTable: ClaimBuyingLotColumnsDataType[] = mockData?.claims.map(
+      (claim) => {
+        return {
+          id: claim.id,
+          claimStatus: claim.status,
+          date: dateToFormatString(claim.date || undefined),
+          buyer: claim.buyer,
+          lot: claim.lot.title,
+          price: claim.lot.price,
+        } as ClaimBuyingLotColumnsDataType;
+      }
+    );
+    setDataTable(dataForTable);
+  }, [mockData, data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -143,7 +152,7 @@ export function ClaimBuyingLotTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.pagination.total_elements}
         filterFormItems={
           <>
             <LotNumberFormItem />
@@ -159,7 +168,7 @@ export function ClaimBuyingLotTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimBuyingLotColumns,
-          pagination: { total: data?.totalElems },
+          pagination: { total: data?.pagination.total_elements },
           dataSource: dataTable,
           rowKey: 'id',
           onRow: (record) => {

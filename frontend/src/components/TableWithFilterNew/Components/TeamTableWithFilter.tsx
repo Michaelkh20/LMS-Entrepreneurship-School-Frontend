@@ -4,15 +4,16 @@
 
 import { TeamNumberFormItem } from '@/components/Forms/FormItems/Filters';
 // import { useGetTeamsQuery } from '@/redux/services/adminApi';
-import type { GetTeamsApiArg } from '@/types/requests';
+import type { GetTeamsApiArg, TeamsPage } from '@/types/api';
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Id } from '@/types/common';
+
+import { useGetTeamsQuery } from '@/redux/services/api';
 import { useRouter } from 'next/navigation';
 
 type TeamsColumnsDataType = {
-  teamId: Id;
+  teamId: string;
   teamNumber: number;
   theme: string;
 };
@@ -31,23 +32,24 @@ const TeamsColumns: ColumnsType<TeamsColumnsDataType> = [
   { title: 'Тема', dataIndex: 'theme', key: 'theme' },
 ];
 
-const mockData: TeamsColumnsDataType[] = [
-  {
-    teamId: 1,
-    teamNumber: 1,
-    theme: 'Выпечка',
+const mockData: TeamsPage = {
+  pagination: {
+    total_pages: 1,
+    total_elements: 3,
   },
-  {
-    teamId: 2,
-    teamNumber: 2,
-    theme: 'Булочки',
-  },
-  {
-    teamId: 3,
-    teamNumber: 3,
-    theme: 'Чаёчек',
-  },
-];
+  teams: [
+    {
+      id: '1',
+      number: 1,
+      project_theme: 'чаёчек',
+    },
+    {
+      id: '2',
+      number: 2,
+      project_theme: 'выпечка',
+    },
+  ],
+};
 
 export function TeamTableWithFilter({
   onRow,
@@ -60,12 +62,24 @@ export function TeamTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>(
-    mockData || []
-  );
+  const [dataTable, setDataTable] = useState<TeamsColumnsDataType[]>();
 
   const router = useRouter();
-  // const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
+  const { data, isLoading, isError, isFetching } = useGetTeamsQuery(dataForReq);
+
+  useEffect(() => {
+    const dataForTable: TeamsColumnsDataType[] = mockData?.teams.map(
+      (team): TeamsColumnsDataType => {
+        const res: TeamsColumnsDataType = {
+          teamId: team.id,
+          teamNumber: team.number,
+          theme: team.project_theme,
+        };
+        return res;
+      }
+    );
+    setDataTable(dataForTable);
+  }, [mockData, data]);
 
   //   useEffect(() => {
   //     console.log('FormData1:', formData);

@@ -9,24 +9,20 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 // import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
 // import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetLessonsApiArg } from '@/types/requests';
-import type {
-  AdminClaimTableItem,
-  LotSelectionItem,
-  TaskSelectionItem,
-  UserSelectionItem,
-} from '@/types/responses';
+import type { GetLessonsApiArg, LessonsPage } from '@/types/api';
+
 import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ClaimType, ClaimStatus, Delay, Id, Date } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
 
+import { useGetLessonsQuery } from '@/redux/services/api';
+
 type LessonsColumnsDataType = {
-  id: Id;
-  lessonNumber: string;
+  id: string;
+  lessonNumber: number;
   lessonTheme: string;
-  date: Date;
+  date: string;
 };
 
 const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
@@ -40,26 +36,20 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
   { title: 'Дата проведения', dataIndex: 'date', key: 'date' },
 ];
 
-const mockData: LessonsColumnsDataType[] = [
-  {
-    id: 1,
-    lessonNumber: 'Ур_1',
-    lessonTheme: 'Тема_1',
-    date: '01.01.2001',
+const mockData: LessonsPage = {
+  pagination: {
+    total_pages: 0,
+    total_elements: 0,
   },
-  {
-    id: 2,
-    lessonNumber: 'Ур_2',
-    lessonTheme: 'Тема_2',
-    date: '01.01.2001',
-  },
-  {
-    id: 3,
-    lessonNumber: 'Ур_3',
-    lessonTheme: 'Тема_3',
-    date: '01.01.2001',
-  },
-];
+  lessons: [
+    {
+      id: '1',
+      number: 1,
+      theme: 'Тема_1',
+      date: '01.01.2001',
+    },
+  ],
+};
 
 export function LessonsTableWithFilter({
   onRow,
@@ -72,10 +62,24 @@ export function LessonsTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<LessonsColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetClaimsQuery(dataForReq);
+  const [dataTable, setDataTable] = useState<LessonsColumnsDataType[]>();
+  const { data, isLoading, isError, isFetching } =
+    useGetLessonsQuery(dataForReq);
+
+  useEffect(() => {
+    const dataForTable: LessonsColumnsDataType[] = mockData?.lessons.map(
+      (lesson): LessonsColumnsDataType => {
+        const res: LessonsColumnsDataType = {
+          id: lesson.id,
+          lessonNumber: lesson.number,
+          lessonTheme: lesson.theme,
+          date: lesson.date,
+        };
+        return res;
+      }
+    );
+    setDataTable(dataForTable);
+  }, [mockData, data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
