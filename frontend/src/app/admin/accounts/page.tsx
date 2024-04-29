@@ -4,10 +4,6 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from '../main.module.css';
 
-import {
-  useGetAccountsListQuery,
-  useGetAccountsShortListQuery,
-} from '@/redux/services/adminApi';
 import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
 import { useRouter } from 'next/navigation';
 
@@ -36,7 +32,7 @@ export default function Accounts() {
           onRow={(record, rowIndex) => {
             return {
               onClick: (ev) => {
-                console.log("ABOBADOBSAODBSABD");
+                console.log('ABOBADOBSAODBSABD');
                 router.push(`/admin/accounts/${record.id}`);
               }, // click row
             };

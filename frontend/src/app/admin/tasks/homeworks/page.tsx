@@ -1,4 +1,3 @@
-import { TasksTableWithFilter } from '@/components/TableWithFilterNew/Components/TasksTableWithFilter';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
@@ -15,7 +14,7 @@ export default function HomeworksPage() {
           Создать
         </Button>
       </div>
-      <HWTableWithFilter></HWTableWithFilter>
+      <HWTableWithFilter />
     </div>
   );
 }

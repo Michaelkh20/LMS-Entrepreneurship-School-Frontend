@@ -6,12 +6,12 @@ import cn from 'classnames/bind';
 import styles from './LotCard.module.css';
 import LotViewModal from '../Modals/LotViewModal';
 import PriceQuestionTooltip from './components/QuestionTooltip';
-import { useCreateBuyLotClaimMutation } from '@/redux/services/learnerApi';
+import { useCreateBuyLotClaimMutation } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
 
 type LotCardProps = {
   id: string;
-  number: string;
+  number: number | null;
   title: string;
   performer: string;
   price: number;
@@ -44,7 +44,7 @@ export default function LotCard({
 
   const handleCreateClaimClick: MouseEventHandler = (e) => {
     e.stopPropagation();
-    createBuyLotClaim({ lotId: id, buyerId: authState.id! });
+    createBuyLotClaim({ lotId: id });
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function LotCard({
 
   return (
     <div className={cx('LotCard')} onClick={handleLotClick}>
-      <div className={cx('LotNumber')}>{`Лот №${number}`}</div>
+      <div className={cx('LotNumber')}>{`Лот №${number || '-'}`}</div>
       <div className={cx('LotContent')}>
         <p className={cx('LotTitle')}>{title}</p>
         <div className={cx('Property')}>

@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAuth } from '@/redux/features/authSlice';
 
-import { dto } from '@dto';
-import Role = dto.Role;
+import { Role } from '@/types/common';
+import { AuthStatus } from '@/types/redux';
 
 type AuthFormValues = {
   login: string;
@@ -20,6 +20,8 @@ export default function Home() {
   const [form] = Form.useForm<AuthFormValues>();
   const [auth, { data, isLoading, isError, isSuccess }] = useAuthMutation();
   const [authState, { logIn }] = useAuth();
+
+  console.log('authState', authState);
 
   function onFinish(values: AuthFormValues) {
     const { login, password } = values;
@@ -38,22 +40,26 @@ export default function Home() {
   }, [form, isError]);
 
   useEffect(() => {
-    if (isSuccess && data) {
-      logIn(data.role, data.id);
+    if (isSuccess && data && data.response?.result?.$case === 'success') {
+      console.log(data);
+      logIn(data.response.result.success);
     }
   }, [data, isSuccess, logIn]);
 
   useEffect(() => {
-    if (authState.role === Role.ADMIN) {
-      router.push(`/admin/accounts`);
-      return;
-    }
+    console.log('redux login');
+    if (authState.status === AuthStatus.AUTHED) {
+      if (authState.role === Role.ADMIN) {
+        router.push(`/admin/accounts`);
+        return;
+      }
 
-    if (authState.role === Role.LEARNER || authState.role === Role.TRACKER) {
-      router.push(`/learner/profile`);
-      return;
+      if (authState.role === Role.LEARNER || authState.role === Role.TRACKER) {
+        router.push(`/learner/profile`);
+        return;
+      }
     }
-  }, [authState.role, router]);
+  }, [authState, router]);
 
   return (
     <div className={styles.main}>

@@ -1,20 +1,18 @@
 'use client';
 
-import { TeamUsersTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersTable';
-import { useGetTeamQuery } from '@/redux/services/adminApi';
-
 import styles from '@/app/admin/main.module.css';
 import { Button } from 'antd';
-import { CheckOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import { TeamUsersEditTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
 import { useState } from 'react';
+import { useGetTeamByIdQuery } from '@/redux/services/api';
 
 export default function TeamPage({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const { data } = useGetTeamQuery(id);
+  const { data } = useGetTeamByIdQuery(id);
   const [formData, setFormData] = useState({}); //TODO: form for edit team members
 
   console.log('data', data);
@@ -26,7 +24,7 @@ export default function TeamPage({
           Отменить
         </Button> */}
       </div>
-      <h3>Тема проекта: {data?.theme}</h3>
+      <h3>Тема проекта: {data?.team?.projectTheme || '-'}</h3>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <h3>Ученики</h3>
@@ -35,7 +33,7 @@ export default function TeamPage({
         </Button>
       </div>
 
-      <TeamUsersEditTable users={data?.learners}></TeamUsersEditTable>
+      <TeamUsersEditTable users={data?.team?.students} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <h3>Трекеры</h3>
@@ -44,7 +42,7 @@ export default function TeamPage({
         </Button>
       </div>
 
-      <TeamUsersEditTable users={data?.trackers}></TeamUsersEditTable>
+      <TeamUsersEditTable users={data?.team?.trackers}></TeamUsersEditTable>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Button icon={<CheckOutlined />} size="large" danger>
@@ -60,9 +58,7 @@ export default function TeamPage({
           gap: '1rem',
         }}
       >
-        <Button size="large">
-          Назад
-        </Button>
+        <Button size="large">Назад</Button>
         <Button type="primary" icon={<CheckOutlined />} size="large">
           Подтвердить
         </Button>

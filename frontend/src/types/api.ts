@@ -439,7 +439,7 @@ export type AssessmentsPage = {
 };
 
 export type AssessmentCreateUpdateRequest = {
-  solutionstring: string;
+  solutionId: string;
   assessment: number;
   comment: string;
 };
@@ -479,6 +479,7 @@ export type PerformerSnippet = {
 export type LotSnippetForTable = {
   id: string;
   number: number | null;
+  title: string;
   status: LotStatus;
   listingDate: string | null;
   price: number;
@@ -555,7 +556,7 @@ export type BuyLotClaimsPage = {
 };
 
 export type BuyLotRequest = {
-  lotstring: string;
+  lotId: string;
 };
 
 export type LotSnippetForClaim = {
@@ -572,7 +573,7 @@ export type BuyLotClaim = {
   status: TwoSidedClaimStatus;
   buyer: UserSnippet;
   date: string;
-  lot: LotSnippetForClaim;
+  lot: Lot;
 };
 
 export type ListLotClaimSnippet = {

@@ -5,6 +5,7 @@ export function getResponseHandler<
   return async (response: Response) => {
     const buffer = await response.arrayBuffer();
     const decodedResponse = transformer.decode(new Uint8Array(buffer));
+    console.log(decodedResponse);
     return decodedResponse;
   };
 }

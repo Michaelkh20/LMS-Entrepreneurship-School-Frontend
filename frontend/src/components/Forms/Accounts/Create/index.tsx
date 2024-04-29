@@ -1,27 +1,31 @@
 'use client';
-import { Form, Input, Select, Button, Space, message } from 'antd';
+import { Form, Input, Button, Space, message, Radio } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { useCreateAccountMutation } from '@/redux/services/adminApi';
-import { useEffect, useState } from 'react';
+
+import { useEffect } from 'react';
 import PhoneNumber from '../../FormItems/EntityForms/PhoneNumber';
 import { useRouter } from 'next/navigation';
 
-import { dto } from '@dto';
-import Role = dto.Role;
-import AccountChangeErrorResponse = dto.AccountChangeErrorResponse;
-import AccountChangeSuccessResponse = dto.AccountChangeSuccessResponse;
-import { CreateAccountFormType } from '@/types/forms';
+import { Role, Sex } from '@/types/common';
+import type { CreateAccountFormType } from '@/types/forms';
 import { formValuesToRequest } from './helpers';
+import { useCreateUserMutation } from '@/redux/services/api';
+import { roleToString, sexToString } from '@/util/enumsToString';
 
-const { Option } = Select;
+const sexOptions = [
+  { label: sexToString(Sex.MALE), value: Sex.MALE },
+  { label: sexToString(Sex.FEMALE), value: Sex.FEMALE },
+];
+
+const roleOptions = [
+  { label: roleToString(Role.LEARNER), value: Role.LEARNER },
+  { label: roleToString(Role.TRACKER), value: Role.TRACKER },
+];
 
 export default function CreateAccountForm() {
   const [form] = useForm<CreateAccountFormType>();
   const router = useRouter();
-  const [createAccount, result] = useCreateAccountMutation();
-
-  const [validEmail, setValidEmail] = useState(true);
-  const [validPhone, setValidPhone] = useState(true);
+  const [createUser, result] = useCreateUserMutation();
 
   useEffect(() => {
     if (result.isError) {
@@ -30,30 +34,29 @@ export default function CreateAccountForm() {
 
       // Check if the response status is 409
       if ('status' in errorDetails && errorDetails.status === 409) {
-        const data = errorDetails.data as AccountChangeErrorResponse;
+        // const data = errorDetails.data as AccountChangeErrorResponse;
         let fieldsError = [];
 
         // Based on the message you get, update the appropriate field's error
-        if (data.email) {
-          fieldsError.push({
-            name: 'email',
-            errors: ['Пользователь с таким email уже существует'],
-          });
-          setValidEmail(false);
-          message.error('Пользователь с таким email уже существует', 5);
-        }
+        // if (data.email) {
+        fieldsError.push({
+          name: 'email',
+          errors: ['Пользователь с таким email уже существует'],
+        });
+        message.error('Пользователь с таким email уже существует', 5);
+        // }
 
-        if (data.phone) {
-          fieldsError.push({
-            name: 'phone',
-            errors: ['Пользователь с таким номером телефона уже существует'],
-          });
-          setValidPhone(false);
-          message.error(
-            'Пользователь с таким номером телефона уже существует',
-            5
-          );
-        }
+        // if (data.phone) {
+        //   fieldsError.push({
+        //     name: 'phone',
+        //     errors: ['Пользователь с таким номером телефона уже существует'],
+        //   });
+        //   setValidPhone(false);
+        //   message.error(
+        //     'Пользователь с таким номером телефона уже существует',
+        //     5
+        //   );
+        // }
 
         form.setFields(fieldsError);
       } else {
@@ -68,24 +71,19 @@ export default function CreateAccountForm() {
     }
 
     if (result.isSuccess) {
-      const data = result.data as AccountChangeSuccessResponse;
+      // const data = result.data as AccountChangeSuccessResponse;
       message.success('Аккаунт успешно создан');
-      router.push(`/admin/accounts/${data.id}`);
+      router.push(`/admin/accounts`);
     }
   }, [form, result, router]);
 
   const onFinish = (values: CreateAccountFormType) => {
     const request = formValuesToRequest(values);
-    createAccount(request);
+    createUser(request);
   };
 
-  function onValuesChange(changedValues: any) {
-    if (changedValues.email) {
-      setValidEmail(true);
-    }
-    if (changedValues.phoneNumber) {
-      setValidPhone(true);
-    }
+  function onValuesChange(changedValues: any, values: CreateAccountFormType) {
+    console.log(values);
   }
 
   return (
@@ -151,6 +149,20 @@ export default function CreateAccountForm() {
         <Input />
       </Form.Item>
       <Form.Item
+        label="Пол"
+        name="sex"
+        rules={[{ required: true, message: 'Выберите пол' }]}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 4 }}
+        hasFeedback
+      >
+        <Radio.Group
+          options={sexOptions}
+          optionType="button"
+          buttonStyle="solid"
+        />
+      </Form.Item>
+      <Form.Item
         label="Роль"
         name="role"
         rules={[{ required: true, message: 'Выберите роль' }]}
@@ -158,10 +170,11 @@ export default function CreateAccountForm() {
         wrapperCol={{ span: 4 }}
         hasFeedback
       >
-        <Select>
-          <Option value={Role.LEARNER}>Ученик</Option>
-          <Option value={Role.TRACKER}>Трекер</Option>
-        </Select>
+        <Radio.Group
+          options={roleOptions}
+          optionType="button"
+          buttonStyle="solid"
+        />
       </Form.Item>
       <Form.Item
         label="Мессенджер"
@@ -203,7 +216,7 @@ export default function CreateAccountForm() {
       >
         <Input />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         label="Пароль"
         name="password"
         rules={[
@@ -217,7 +230,7 @@ export default function CreateAccountForm() {
         hasFeedback
       >
         <Input.Password />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item>
         <Space>
           <Button

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import BaseDeleteButton from '../BaseDeleteButton';
-import { useDeleteAssessmentByIdMutation } from '@/redux/services/adminApi';
+import { useDeleteAssessmentByIdMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default function AssessmentDeleteBtn({ id }: { id: number }) {
+export default function AssessmentDeleteBtn({ id }: { id: string }) {
   const router = useRouter();
   const [deleteAssessment, result] = useDeleteAssessmentByIdMutation();
 

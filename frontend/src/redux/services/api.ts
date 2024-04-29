@@ -61,7 +61,7 @@ import type {
 } from '@/types/api';
 
 import type {
-  IAuthResponse,
+  ILoginResponse,
   ICreateUpdateUserRequest,
   IUsersList,
   IGetUserResponse,
@@ -94,7 +94,7 @@ import type {
 } from '@/types/proto';
 
 import {
-  AuthResponseTransformer,
+  LoginResponseTransformer,
   CreateUpdateUserRequestTransformer,
   UsersListTransformer,
   GetUserResponseTransformer,
@@ -122,18 +122,21 @@ import {
 } from '@/types/proto';
 
 import { getResponseHandler } from './helpers/responseHandler';
+import { roleToSearchParam } from '@/util/enumsToString';
 
 export const api = createApi({
   reducerPath: 'API',
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1',
   }),
+  tagTypes: ['User'],
   endpoints: (build) => ({
-    auth: build.query<IAuthResponse, AuthApiArg>({
+    auth: build.mutation<ILoginResponse, AuthApiArg>({
       query: (queryArg) => ({
         url: `/auth/login`,
+        method: 'POST',
         params: { login: queryArg.login, password: queryArg.password },
-        responseHandler: getResponseHandler(AuthResponseTransformer),
+        responseHandler: getResponseHandler(LoginResponseTransformer),
       }),
     }),
 
@@ -146,22 +149,24 @@ export const api = createApi({
         },
         body: CreateUpdateUserRequestTransformer.encode(requestBody).finish(),
       }),
+      invalidatesTags: ['User'],
     }),
 
     getUsers: build.query<IUsersList, GetAccountsApiArg>({
       query: (queryArg) => ({
         url: `/users/list`,
         params: {
-          name: queryArg.name,
+          namePattern: queryArg.name,
           email: queryArg.email,
           teamNumber: queryArg.teamNumber,
-          role: queryArg.role,
+          roles: roleToSearchParam(queryArg.role),
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
         responseHandler: getResponseHandler(UsersListTransformer),
       }),
+      providesTags: ['User'],
     }),
 
     getUserById: build.query<IGetUserResponse, string>({
@@ -925,7 +930,7 @@ export const api = createApi({
 });
 
 export const {
-  useAuthQuery,
+  useAuthMutation,
   useGetUsersQuery,
   useGetUserByIdQuery,
   useGetUserBalanceByIdQuery,

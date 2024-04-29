@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './LearnerProfile.module.css';
-import { } from '@/redux/services/api';
+import { useGetUserByIdQuery } from '@/redux/services/api';
 import cn from 'classnames/bind';
 import { getRoleString } from './helpers';
 import TeamViewModal from '../Modals/TeamViewModal';
@@ -26,7 +26,7 @@ type Props = {
 };
 
 export default function AccountProfile({ id, isEditable = false }: Props) {
-  const { data } = useGetProfileQuery(id);
+  const { data } = useGetUserByIdQuery(id);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleTeamClick = () => {
@@ -51,12 +51,20 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
       <div className={styles.profileCard}>
         <div className={styles.header}>
           <div>
-            <p className={styles.name}>{data?.fullName}</p>
-            <p className={styles.role}>{getRoleString(data?.role)}</p>
+            <p className={styles.name}>
+              {data?.user?.surname +
+                ' ' +
+                data?.user?.name +
+                ' ' +
+                data?.user?.patronymic}
+            </p>
+            <p className={styles.role}>{getRoleString(data?.user?.role)}</p>
           </div>
           <div className={styles.balance}>
             Баланс:
-            <span className={styles.balanceNumber}>{data?.balance} ШП</span>
+            <span className={styles.balanceNumber}>
+              {data?.user?.balance} ШП
+            </span>
           </div>
         </div>
         <div className={styles.content}>
@@ -66,7 +74,7 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
                 <UserOutlined></UserOutlined>
                 <p>Email</p>
               </span>
-              <p className={styles.propertyValue}>{data?.email}</p>
+              <p className={styles.propertyValue}>{data?.user?.email}</p>
             </div>
             <div className={styles.property}>
               <span className={styles.propertyTitle}>
@@ -78,15 +86,17 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
                 onClick={handleTeamClick}
                 className={cx('propertyValue', 'teamValue')}
               >
-                {data?.team?.number ? '№' + data.team.number : 'Не в команде'}
+                {data?.user?.memberOfTeams[0]
+                  ? '№' + data.user.memberOfTeams[0].number
+                  : 'Не в команде'}
               </p>
             </div>
             <div className={styles.property}>
-            <span className={styles.propertyTitle}>
+              <span className={styles.propertyTitle}>
                 <PhoneOutlined></PhoneOutlined>
-              <p className={styles.propertyTitle}>Телефон</p>
+                <p className={styles.propertyTitle}>Телефон</p>
               </span>
-              <p className={styles.propertyValue}>{data?.phone}</p>
+              <p className={styles.propertyValue}>{data?.user?.phoneNumber}</p>
             </div>
             <div className={styles.property}>
               <span className={styles.propertyTitle}>
@@ -94,7 +104,9 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
                 <p className={styles.propertyTitle}>Мессенджер</p>
               </span>
 
-              <p className={styles.propertyValue}>{data?.messenger}</p>
+              <p className={styles.propertyValue}>
+                {data?.user?.messengerContact}
+              </p>
             </div>
             {isEditable && (
               <div className={styles.deleteBtnContainer}>
@@ -122,15 +134,11 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
         </div>
       </div>
 
-      <TeamViewModal
+      {/* <TeamViewModal
         isOpen={isModalOpen}
         setModalOpen={setIsModalOpen}
         teamId={data?.team?.id}
-      />
+      /> */}
     </div>
   );
 }
-function useGetProfileQuery(id: string): { data: any; } {
-  throw new Error('Function not implemented.');
-}
-

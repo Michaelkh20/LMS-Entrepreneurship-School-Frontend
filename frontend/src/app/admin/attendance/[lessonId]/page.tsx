@@ -1,14 +1,13 @@
 import { AttendanceTable } from '@/components/TableWithFilterNew';
-import { LeftOutlined, PlusOutlined, RollbackOutlined } from '@ant-design/icons';
+import { RollbackOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import styles from '@/app/admin/main.module.css';
-import { LessonNumber } from '@/types/common';
 
 export default function AttendencePage({
   params: { lessonId },
 }: {
-  params: { lessonId: LessonNumber };
+  params: { lessonId: string };
 }) {
   return (
     <div className={styles.container}>
