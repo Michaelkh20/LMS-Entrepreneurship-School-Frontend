@@ -1,5 +1,4 @@
-import { dto } from '@dto';
-import Role = dto.Role;
+import { Role, Sex } from '@/types/common';
 
 export type EditAccountFormType = {
   firstName: string;
@@ -9,6 +8,7 @@ export type EditAccountFormType = {
   phone: string;
   messenger: string;
   role: Role;
+  sex: Sex;
 };
 
 export type CreateAccountFormType = {
@@ -19,5 +19,5 @@ export type CreateAccountFormType = {
   phone: string;
   messenger: string;
   role: Role;
-  password: string;
+  sex: Sex;
 };

@@ -3,7 +3,6 @@
 import styles from './page.module.css';
 import TradeLotCard from '@/components/LotCard';
 import LotCardSkeleton from '@/components/LotCard/components/LotCardSkeleton';
-import { useGetLotsShortQuery } from '@/redux/services/learnerApi';
 import { Pagination } from 'antd';
 import { useState } from 'react';
 import { pageSizes, pageSizesPostfix } from './constants';
@@ -12,14 +11,18 @@ import {
   LotNumberFormItem,
   LotTitleFormItem,
 } from '@/components/Forms/FormItems/Filters';
+import { useGetLotsForMarketPlaceQuery } from '@/redux/services/api';
 
 export default function Home() {
-  const [pageNumber, setPageNumber] = useState(1);
+  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(pageSizes[0]);
-  const { data, isLoading } = useGetLotsShortQuery({ pageNumber, pageSize });
+  const { data, isLoading } = useGetLotsForMarketPlaceQuery({
+    page: page,
+    size: pageSize,
+  });
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPageNumber(page);
+    setPage(page);
     setPageSize(pageSize);
   };
 
@@ -36,7 +39,6 @@ export default function Home() {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.pageLabel}>Магазин</h1>
-      {/* <div className={styles.filtersMock}>Здесь будут фильтры</div> */}
       <BasicFilter onChangeEvent={handleFilterChanges}>
         <LotNumberFormItem></LotNumberFormItem>
         <LotTitleFormItem></LotTitleFormItem>
@@ -47,12 +49,12 @@ export default function Home() {
           {data &&
             data.lots.map((lot) => (
               <TradeLotCard
-                id={lot.id!}
-                title={lot.title!}
-                number={lot.number!}
-                performer={lot.performer!}
-                price={lot.price!}
-                key={lot.id!}
+                id={lot.id}
+                title={lot.title}
+                number={lot.number}
+                performer={lot.performer.name}
+                price={lot.price}
+                key={lot.id}
               />
             ))}
           {isLoading &&
@@ -62,11 +64,11 @@ export default function Home() {
         </div>
         <div className={styles.paginationContainer}>
           <Pagination
-            current={pageNumber}
+            current={page}
             pageSize={pageSize}
             pageSizeOptions={pageSizes}
             showSizeChanger
-            total={data?.totalLotsNumber}
+            total={data?.pagination.total_elements}
             onChange={handlePageChange}
             locale={{ items_per_page: pageSizesPostfix }}
           />

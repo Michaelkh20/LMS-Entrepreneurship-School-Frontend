@@ -3173,6 +3173,9 @@ components:
           format: int32
           example: 1
           nullable: true
+        title:
+          type: string
+          example: 'Some title'
         status:
           $ref: '#/components/schemas/lotStatus'
         listingDate:
@@ -3299,7 +3302,7 @@ components:
           format: 'date'
           example: '13.07.2023'
         lot:
-          $ref: '#/components/schemas/LotSnippetForClaim'
+          $ref: '#/components/schemas/Lot'
 
     BuyLotClaimSnippet:
       type: object

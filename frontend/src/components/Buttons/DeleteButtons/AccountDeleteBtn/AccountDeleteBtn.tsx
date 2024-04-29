@@ -2,13 +2,13 @@
 
 import React, { useEffect } from 'react';
 import BaseDeleteButton from '../BaseDeleteButton';
-import { useDeleteAccountByIdMutation } from '@/redux/services/adminApi';
+import { useDeleteUserByIdMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default function AccountDeleteBtn({ id }: { id: number }) {
+export default function AccountDeleteBtn({ id }: { id: string }) {
   const router = useRouter();
-  const [deleteAccount, result] = useDeleteAccountByIdMutation();
+  const [deleteAccount, result] = useDeleteUserByIdMutation();
 
   useEffect(() => {
     if (result.isSuccess) {

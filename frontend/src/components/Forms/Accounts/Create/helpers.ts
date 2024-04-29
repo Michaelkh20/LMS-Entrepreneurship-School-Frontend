@@ -1,18 +1,17 @@
-import { dto } from '@dto';
-import IAccountCreateRequest = dto.IAccountCreateRequest;
 import { CreateAccountFormType } from '@/types/forms';
+import { ICreateUpdateUserRequest } from '@/types/proto';
 
 export function formValuesToRequest(
   values: CreateAccountFormType
-): IAccountCreateRequest {
+): ICreateUpdateUserRequest {
   return {
     name: values.firstName,
     surname: values.surName,
-    lastName: values.lastName || '',
+    patronymic: values.lastName || '',
     email: values.email,
-    phone: values.phone.replace(/\D/g, ''),
-    messenger: values.messenger,
+    phoneNumber: values.phone.replace(/\D/g, ''),
+    messengerContact: values.messenger,
     role: values.role,
-    password: values.password,
+    sex: values.sex,
   };
 }

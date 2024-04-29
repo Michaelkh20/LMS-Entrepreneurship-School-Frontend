@@ -6,6 +6,7 @@ option java_multiple_files = true;
 option java_package = "ru.hse.lmsteam.schema.api.users.auth";
 
 import "google/protobuf/wrappers.proto";
+import "ru/hse/lmsteam/proto/users/users_api.proto";
 
 message AuthResponse {
   oneof result {
@@ -47,7 +48,7 @@ message SetPassword {
 
 message Success {
   string token = 1;
-  string role = 2;
+  ru.hse.lmsteam.proto.users.UserRoleNamespace.Role role = 2;
   string user_id = 3;
   string name = 4;
   string surname = 5;

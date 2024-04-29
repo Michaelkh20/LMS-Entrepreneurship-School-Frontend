@@ -3,8 +3,9 @@ export { UserRoleNamespace_Role as Role } from '@proto/users/users_api';
 export { UserSexNamespace_Sex as Sex } from '@proto/users/users_api';
 
 export {
-  type AuthResponse as IAuthResponse,
-  AuthResponse as AuthResponseTransformer,
+  type Login_Response as ILoginResponse,
+  type Success as ISuccessAuthResponse,
+  Login_Response as LoginResponseTransformer,
 } from '@proto/users/users_auth_api';
 
 export {

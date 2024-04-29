@@ -4,7 +4,7 @@ import { ConfigProvider, Menu, MenuProps } from 'antd';
 import Link from 'next/link';
 import React from 'react';
 import { useAuth } from '../../../redux/features/authSlice';
-import { useGetNameAndBalanceQuery } from '../../../redux/services/learnerApi';
+import { useGetUserBalanceByIdQuery } from '@/redux/services/api';
 
 const menuItems: MenuProps['items'] = [
   {
@@ -76,7 +76,7 @@ const menuItems: MenuProps['items'] = [
 
 export default function LearnerMenu() {
   const [authState] = useAuth();
-  const { data } = useGetNameAndBalanceQuery(authState.id!);
+  const { data } = useGetUserBalanceByIdQuery(authState.id!);
 
   return (
     <ConfigProvider
@@ -90,7 +90,8 @@ export default function LearnerMenu() {
     >
       <UserDropdown
         props={{
-          name: data?.name || '',
+          // name: data?.name || 'Михаил',
+          name: 'Михаил',
         }}
       />
       <div

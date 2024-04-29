@@ -1,13 +1,13 @@
 'use client';
 import { Form, Input, Button, message, Radio, InputNumber } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { AssessmentRequest } from '@/types/requests';
-import { useCreateAssessmentMutation } from '@/redux/services/adminApi';
+import { useCreateAssessmentMutation } from '@/redux/services/api';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeanerSelectionFormItem } from '../FormItems/EntityForms/LearnerSelectionFormItem';
 import { TeamSelectionFormItem } from '../FormItems/EntityForms/TeamSelectionFormItem';
 import { TaskSelectionFormItem } from '../FormItems/EntityForms/TaskSelectionFormItem';
+import { AssessmentCreateUpdateRequest } from '@/types/api';
 
 export default function CreateAssessmentForm() {
   const [form] = useForm();
@@ -130,13 +130,19 @@ export default function CreateAssessmentForm() {
   );
 }
 
-function formValuesToRequest(values: any): AssessmentRequest {
+function formValuesToRequest(values: any): AssessmentCreateUpdateRequest {
+  // return {
+  //   id: null,
+  //   taskId: values.taskId,
+  //   learnerId: values.learnerId ?? null,
+  //   teamId: values.teamId ?? null,
+  //   assessment: values.assessment,
+  //   comment: values.comment ?? '',
+  // };
+
   return {
-    id: null,
-    taskId: values.taskId,
-    learnerId: values.learnerId ?? null,
-    teamId: values.teamId ?? null,
-    assessment: values.assessment,
-    comment: values.comment ?? '',
+    assessment: 1,
+    comment: 'Some comment',
+    solutionId: 'someId',
   };
 }

@@ -112,7 +112,7 @@ export function HWTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
     useGetHwListQuery(dataForReq);
 
   useEffect(() => {
-    const dataForTable: HWColumnsDataType[] = mockData?.homeworks.map(
+    const dataForTable: HWColumnsDataType[] | undefined = data?.homeworks.map(
       (hw): HWColumnsDataType => {
         const res: HWColumnsDataType = {
           id: hw.id,

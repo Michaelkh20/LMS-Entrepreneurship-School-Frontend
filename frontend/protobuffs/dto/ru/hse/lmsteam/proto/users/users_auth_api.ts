@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
 import { StringValue } from "../../../../../google/protobuf/wrappers";
+import { UserRoleNamespace_Role } from "./users_api";
 
 export const protobufPackage = "ru.hse.lmsteam.proto.users.auth";
 
@@ -43,7 +44,7 @@ export interface SetPassword_Response {
 
 export interface Success {
   token: string;
-  role: string;
+  role: UserRoleNamespace_Role;
   userId: string;
   name: string;
   surname: string;
@@ -494,7 +495,7 @@ export const SetPassword_Response = {
 };
 
 function createBaseSuccess(): Success {
-  return { token: "", role: "", userId: "", name: "", surname: "", patronymic: undefined };
+  return { token: "", role: 0, userId: "", name: "", surname: "", patronymic: undefined };
 }
 
 export const Success = {
@@ -502,8 +503,8 @@ export const Success = {
     if (message.token !== "") {
       writer.uint32(10).string(message.token);
     }
-    if (message.role !== "") {
-      writer.uint32(18).string(message.role);
+    if (message.role !== 0) {
+      writer.uint32(16).int32(message.role);
     }
     if (message.userId !== "") {
       writer.uint32(26).string(message.userId);
@@ -535,11 +536,11 @@ export const Success = {
           message.token = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.role = reader.string();
+          message.role = reader.int32() as any;
           continue;
         case 3:
           if (tag !== 26) {
@@ -584,7 +585,7 @@ export const Success = {
   fromPartial<I extends Exact<DeepPartial<Success>, I>>(object: I): Success {
     const message = createBaseSuccess();
     message.token = object.token ?? "";
-    message.role = object.role ?? "";
+    message.role = object.role ?? 0;
     message.userId = object.userId ?? "";
     message.name = object.name ?? "";
     message.surname = object.surname ?? "";

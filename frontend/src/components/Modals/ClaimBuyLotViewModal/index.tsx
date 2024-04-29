@@ -4,22 +4,18 @@ import cn from 'classnames/bind';
 import React, { MouseEventHandler } from 'react';
 
 import PriceQuestionTooltip from '@/components/LotCard/components/QuestionTooltip';
-import { dto } from '@dto';
 
 import styles from './ClaimBuyLotViewModal.module.css';
 
-import LotStatus = dto.LotStatus;
-import BuyLotClaimStatus = dto.BuyLotClaimStatus;
-
-import lotStatusToString from '@/util/lotStatusToString';
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import dateToFormatString from '@/util/dateToFormatString';
 import {
-  useApproveClaimMutation,
+  useApproveRejectClaimMutation,
   useGetBuyLotClaimByIdQuery,
-} from '@/redux/services/adminApi';
-import buyLotClaimStatusToString from '@/util/buyLotClaimStatusToString';
+} from '@/redux/services/api';
+import { TwoSidedClaimStatus } from '@/types/common';
+import { twoSidedClaimStatusToString } from '@/util/enumsToString';
 
 type Props = {
   claimId?: string | null;
@@ -48,7 +44,7 @@ export default function ClaimBuyLotViewModal({
 
   return (
     <Modal
-      title={`Заявка на покупку лота №${data?.lot?.number}`}
+      title={`Заявка на покупку лота №${data?.lot.number}`}
       open={isOpen}
       onCancel={onExit}
       footer={null}
@@ -59,12 +55,16 @@ export default function ClaimBuyLotViewModal({
           <p className={styles.PropertyTitle}>Статус</p>
           <p
             className={cx('PropertyValue', {
-              StatusApproval: data?.status === BuyLotClaimStatus.WAITING,
-              StatusActive: data?.status === BuyLotClaimStatus.APPROVED,
-              StatusInactive: data?.status === BuyLotClaimStatus.DENIED,
+              StatusApproval:
+                data?.status === TwoSidedClaimStatus.WaitingAdmin ||
+                data?.status === TwoSidedClaimStatus.WaitingLearner,
+              StatusActive: data?.status === TwoSidedClaimStatus.Approved,
+              StatusInactive:
+                data?.status === TwoSidedClaimStatus.DeclinedAdmin ||
+                data?.status === TwoSidedClaimStatus.DeclinedLearner,
             })}
           >
-            {buyLotClaimStatusToString(data?.status)}
+            {twoSidedClaimStatusToString(data?.status)}
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function ClaimBuyLotViewModal({
             href={`/admin/accounts/${data?.buyer?.id}`}
             className={cx('PropertyValue', 'Link')}
           >
-            {data?.buyer?.partName || ''}
+            {data?.buyer.name || ''}
           </Link>
         </div>
 
@@ -91,19 +91,19 @@ export default function ClaimBuyLotViewModal({
         <div className={styles.PropertyContainer}>
           <p className={styles.PropertyTitle}>Исполнитель</p>
           <Link
-            href={`/admin/accounts/${data?.lot?.performer?.partName}`}
+            href={`/admin/accounts/${data?.lot.performer.id}`}
             className={cx('PropertyValue', 'Link')}
           >
-            {data?.lot?.performer?.partName || ''}
+            {data?.lot.performer.name || ''}
           </Link>
         </div>
         <Property
           title="Дата размещения"
-          value={dateToFormatString(data?.lot?.date || undefined) || ''}
+          value={dateToFormatString(data?.lot.listingDate || undefined) || ''}
         />
         <Property title="Стоимость" value={data?.lot?.price + '' || ''} />
       </div>
-      {data?.status === BuyLotClaimStatus.WAITING && (
+      {data?.status === TwoSidedClaimStatus.WaitingAdmin && (
         <div className={styles.Actions}>
           <Button
             size="large"

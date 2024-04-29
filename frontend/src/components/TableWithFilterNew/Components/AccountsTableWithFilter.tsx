@@ -6,7 +6,7 @@ import {
   RoleFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import { GetAccountsApiArg, TeamSnippet } from '@/types/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType } from 'antd/es/table';
 
@@ -94,33 +94,27 @@ export function AccountsTableWithFilter({
 }: {
   onRow?: TableProps['onRow'];
 }) {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<GetAccountsApiArg>({
     page: 1,
     size: 10,
   });
-
-  const router = useRouter();
-
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<AccountColumnsDataType[]>();
+
   const { data } = useGetUsersQuery(dataForReq);
 
-  console.log(data);
-
-  useEffect(() => {
-    const dataForTable: AccountColumnsDataType[] | undefined = data?.users.map(
-      (user) => {
-        return {
-          id: user.id,
-          name: `${user.surname} ${user.name}`,
-          email: user.email,
-          teams: user.memberOfTeams,
-          role: user.role,
-          balance: user.balance,
-        };
-      }
-    );
-    setDataTable(dataForTable);
+  const dataForTable = useMemo(() => {
+    return data?.users.map<AccountColumnsDataType>((user) => {
+      return {
+        id: user.id,
+        name: `${user.surname} ${user.name}`,
+        email: user.email,
+        teams: user.memberOfTeams,
+        role: user.role,
+        balance: user.balance,
+      };
+    });
   }, [data]);
 
   // useEffect(() => {
@@ -142,7 +136,7 @@ export function AccountsTableWithFilter({
           scroll: { x: true },
           columns: AccountsColumns,
           pagination: { total: data?.page?.totalElements },
-          dataSource: dataTable,
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow:
             onRow ||
