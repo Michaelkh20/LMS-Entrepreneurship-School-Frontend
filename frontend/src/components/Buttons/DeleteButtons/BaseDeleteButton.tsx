@@ -23,7 +23,7 @@ export default function BaseDeleteButton({
       cancelText="Нет"
     >
       <Button
-        type="primary"
+        type="dashed"
         danger
         size="large"
         style={{

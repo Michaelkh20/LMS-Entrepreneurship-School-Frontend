@@ -9,7 +9,7 @@ import {
 } from '@/redux/services/adminApi';
 import { useEffect } from 'react';
 import { AssessmentInfo } from '@/types/responses';
-import LoadingErrorWrapper from '@/components/LoadingErrorWrapper/LoadingErrorWrapper';
+import LoadingErrorStub from '@/components/LoadingErrorStub';
 import { useRouter } from 'next/navigation';
 import Prop from '@/components/EntityProps/Prop';
 import Link from 'next/link';
@@ -45,7 +45,7 @@ export default function EditAssessmentForm({ id }: { id: Id }) {
   };
 
   return (
-    <LoadingErrorWrapper isLoading={isLoading} isError={isError}>
+    <LoadingErrorStub isLoading={isLoading} isError={isError}>
       {isSuccess ? (
         <>
           <Prop.Container>
@@ -107,7 +107,7 @@ export default function EditAssessmentForm({ id }: { id: Id }) {
           </Form>
         </>
       ) : null}
-    </LoadingErrorWrapper>
+    </LoadingErrorStub>
   );
 }
 

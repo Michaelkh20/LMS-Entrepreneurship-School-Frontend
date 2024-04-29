@@ -91,6 +91,9 @@ import type {
   HomeworkSnippet,
   TestSnippet,
   ExamSnippet,
+  ICreateUpdateUserResponse,
+  ISetPasswordRequest,
+  ISetPasswordResponse,
 } from '@/types/proto';
 
 import {
@@ -119,6 +122,10 @@ import {
   GetCompetitionResponseTransformer,
   CreateUpdateCompetitionRequestTransformer,
   CompetitionsListTransformer,
+  CreateUpdateUserResponseTransformer,
+  SetPasswordResponseTransformer,
+  SetPasswordRequestTransformer,
+  DeleteUserResponseTransformer,
 } from '@/types/proto';
 
 import { getResponseHandler } from './helpers/responseHandler';
@@ -128,6 +135,9 @@ export const api = createApi({
   reducerPath: 'API',
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1',
+    prepareHeaders(headers) {
+      headers.set('Accept', 'application/x-protobuf');
+    },
   }),
   tagTypes: ['User'],
   endpoints: (build) => ({
@@ -140,7 +150,22 @@ export const api = createApi({
       }),
     }),
 
-    createUser: build.mutation<undefined, ICreateUpdateUserRequest>({
+    setPassword: build.mutation<ISetPasswordResponse, ISetPasswordRequest>({
+      query: (queryArg) => ({
+        url: `/auth/set-password`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: SetPasswordRequestTransformer.encode(queryArg).finish(),
+        responseHandler: getResponseHandler(SetPasswordResponseTransformer),
+      }),
+    }),
+
+    createUser: build.mutation<
+      ICreateUpdateUserResponse,
+      ICreateUpdateUserRequest
+    >({
       query: (requestBody) => ({
         url: `/users`,
         method: 'POST',
@@ -148,6 +173,9 @@ export const api = createApi({
           'Content-Type': 'application/x-protobuf',
         },
         body: CreateUpdateUserRequestTransformer.encode(requestBody).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateUserResponseTransformer
+        ),
       }),
       invalidatesTags: ['User'],
     }),
@@ -174,9 +202,10 @@ export const api = createApi({
         url: `/users/${id}`,
         responseHandler: getResponseHandler(GetUserResponseTransformer),
       }),
+      providesTags: ['User'],
     }),
 
-    updateUser: build.mutation<undefined, UpdateAccountApiArg>({
+    updateUser: build.mutation<ICreateUpdateUserResponse, UpdateAccountApiArg>({
       query: (queryArg) => ({
         url: `/users/${queryArg.id}`,
         method: 'PATCH',
@@ -186,11 +215,20 @@ export const api = createApi({
         body: CreateUpdateUserRequestTransformer.encode(
           queryArg.updateRequestBody
         ).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateUserResponseTransformer
+        ),
       }),
+      invalidatesTags: ['User'],
     }),
 
     deleteUserById: build.mutation<undefined, string>({
-      query: (id) => ({ url: `/users/${id}`, method: 'DELETE' }),
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: 'DELETE',
+        responseHandler: getResponseHandler(DeleteUserResponseTransformer),
+      }),
+      invalidatesTags: ['User'],
     }),
 
     getUserBalanceById: build.query<IUserBalanceResponse, string>({
@@ -931,6 +969,7 @@ export const api = createApi({
 
 export const {
   useAuthMutation,
+  useSetPasswordMutation,
   useGetUsersQuery,
   useGetUserByIdQuery,
   useGetUserBalanceByIdQuery,

@@ -11,7 +11,7 @@ export default function AssessmentDeleteBtn({ id }: { id: string }) {
   useEffect(() => {
     if (result.isSuccess) {
       message.success('Оценка успешно удалена');
-      router.push('/admin/accounts');
+      router.push('/admin/users');
     }
 
     if (result.isError) {

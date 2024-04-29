@@ -13,7 +13,7 @@ export default function AccountDeleteBtn({ id }: { id: string }) {
   useEffect(() => {
     if (result.isSuccess) {
       message.success('Аккаунт успешно удалён');
-      router.push('/admin/accounts');
+      router.push('/admin/users');
     }
 
     if (result.isError) {

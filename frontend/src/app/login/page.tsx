@@ -21,8 +21,6 @@ export default function Home() {
   const [auth, { data, isLoading, isError, isSuccess }] = useAuthMutation();
   const [authState, { logIn }] = useAuth();
 
-  console.log('authState', authState);
-
   function onFinish(values: AuthFormValues) {
     const { login, password } = values;
     auth({ login, password });
@@ -40,17 +38,17 @@ export default function Home() {
   }, [form, isError]);
 
   useEffect(() => {
-    if (isSuccess && data && data.response?.result?.$case === 'success') {
+    if (isSuccess && data.response?.result?.$case === 'success') {
       console.log(data);
       logIn(data.response.result.success);
     }
   }, [data, isSuccess, logIn]);
 
   useEffect(() => {
-    console.log('redux login');
     if (authState.status === AuthStatus.AUTHED) {
+      console.log('redux login');
       if (authState.role === Role.ADMIN) {
-        router.push(`/admin/accounts`);
+        router.push(`/admin/users`);
         return;
       }
 
@@ -59,7 +57,7 @@ export default function Home() {
         return;
       }
     }
-  }, [authState, router]);
+  }, [authState.status, router]);
 
   return (
     <div className={styles.main}>

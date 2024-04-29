@@ -1,8 +1,0 @@
-.spinnerContainer {
-  /* width: 100%; */
-  display: flex;
-  justify-content: center;
-  /* align-items: center;*/
-  margin: 2rem 0; /* space from top of the page */
-  overflow: hidden;
-}

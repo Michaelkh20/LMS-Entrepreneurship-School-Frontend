@@ -5,7 +5,11 @@ import { AssessmentTableWithFilter } from '@/components/TableWithFilterNew/Compo
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
-export default function AssessmentPage({ params: { id } }: { params: { id: number } }) {
+export default function AssessmentPage({
+  params: { id },
+}: {
+  params: { id: number };
+}) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -18,9 +22,6 @@ export default function AssessmentPage({ params: { id } }: { params: { id: numbe
     </div>
   );
 }
-
-
-
 
 // import { Jura } from 'next/font/google';
 // import styles from './page.module.css';
@@ -86,7 +87,7 @@ export default function AssessmentPage({ params: { id } }: { params: { id: numbe
 //             <Prop
 //               label="Ученик"
 //               value={{
-//                 href: `/admin/accounts/${data.learner.id}`,
+//                 href: `/admin/users/${data.learner.id}`,
 //                 content: data.learner.name,
 //               }}
 //             />
@@ -94,7 +95,7 @@ export default function AssessmentPage({ params: { id } }: { params: { id: numbe
 //               <Prop
 //                 label="Трекер"
 //                 value={{
-//                   href: `/admin/accounts/${data.tracker.id}`,
+//                   href: `/admin/users/${data.tracker.id}`,
 //                   content: data.tracker.name,
 //                 }}
 //               />

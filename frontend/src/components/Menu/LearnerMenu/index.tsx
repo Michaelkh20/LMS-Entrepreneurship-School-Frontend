@@ -76,7 +76,7 @@ const menuItems: MenuProps['items'] = [
 
 export default function LearnerMenu() {
   const [authState] = useAuth();
-  const { data } = useGetUserBalanceByIdQuery(authState.id!);
+  const { data } = useGetUserBalanceByIdQuery(authState.userId!);
 
   return (
     <ConfigProvider

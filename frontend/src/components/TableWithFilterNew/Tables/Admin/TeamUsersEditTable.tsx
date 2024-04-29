@@ -97,7 +97,7 @@ export const TeamUsersEditTable = ({
       // onRow={(record, rowIndex) => {
       //   return {
       //     onClick: (event) => {
-      //       router.push(`/admin/accounts/${record.userId}`);
+      //       router.push(`/admin/users/${record.userId}`);
       //     },
       //   };
       // }}
