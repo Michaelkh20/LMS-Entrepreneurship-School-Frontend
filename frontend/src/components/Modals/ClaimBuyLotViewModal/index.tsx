@@ -71,7 +71,7 @@ export default function ClaimBuyLotViewModal({
         <div className={styles.PropertyContainer}>
           <p className={styles.PropertyTitle}>Покупатель</p>
           <Link
-            href={`/admin/accounts/${data?.buyer?.id}`}
+            href={`/admin/users/${data?.buyer?.id}`}
             className={cx('PropertyValue', 'Link')}
           >
             {data?.buyer.name || ''}
@@ -91,7 +91,7 @@ export default function ClaimBuyLotViewModal({
         <div className={styles.PropertyContainer}>
           <p className={styles.PropertyTitle}>Исполнитель</p>
           <Link
-            href={`/admin/accounts/${data?.lot.performer.id}`}
+            href={`/admin/users/${data?.lot.performer.id}`}
             className={cx('PropertyValue', 'Link')}
           >
             {data?.lot.performer.name || ''}

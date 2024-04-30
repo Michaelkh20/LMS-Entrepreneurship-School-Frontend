@@ -11,8 +11,8 @@ const menuItems: MenuProps['items'] = [
     type: 'group',
     children: [
       {
-        key: 'accounts',
-        label: <Link href="/admin/accounts">Аккаунты</Link>,
+        key: 'users',
+        label: <Link href="/admin/users">Пользователи</Link>,
         icon: <UserOutlined />,
       },
       {
@@ -115,7 +115,7 @@ export default function AdminMenu() {
         },
       }}
     >
-      <div style={{paddingRight: 4}}>
+      <div style={{ paddingRight: 4 }}>
         <UserDropdown
           props={{
             name: undefined,

@@ -1,0 +1,19 @@
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.Form {
+  width: 100%;
+  max-width: 300px;
+}

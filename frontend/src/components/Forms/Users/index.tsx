@@ -3,14 +3,22 @@ import { Form, Input, Button, Space, message, Radio } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 
 import { useEffect } from 'react';
-import PhoneNumber from '../../FormItems/EntityForms/PhoneNumber';
+import PhoneNumber from '../FormItems/EntityForms/PhoneNumberInput';
 import { useRouter } from 'next/navigation';
 
 import { Role, Sex } from '@/types/common';
-import type { CreateAccountFormType } from '@/types/forms';
-import { formValuesToRequest } from './helpers';
-import { useCreateUserMutation } from '@/redux/services/api';
+import type { UserFormValues } from '@/types/forms';
+import { formValuesToRequest, getResponseToFormValues } from './helpers';
+import type {
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} from '@/redux/services/api';
 import { roleToString, sexToString } from '@/util/enumsToString';
+import {
+  ICreateUpdateUserRequest,
+  ICreateUpdateUserResponse,
+  IGetUserResponse,
+} from '@/types/proto';
 
 const sexOptions = [
   { label: sexToString(Sex.MALE), value: Sex.MALE },
@@ -22,10 +30,29 @@ const roleOptions = [
   { label: roleToString(Role.TRACKER), value: Role.TRACKER },
 ];
 
-export default function CreateAccountForm() {
-  const [form] = useForm<CreateAccountFormType>();
+type UserFormProps = {
+  onFinish: (values: ICreateUpdateUserRequest) => void;
+} & (
+  | {
+      type: 'create';
+      result: ReturnType<typeof useCreateUserMutation>[1];
+      user?: undefined;
+    }
+  | {
+      type: 'edit';
+      result: ReturnType<typeof useUpdateUserMutation>[1];
+      user: IGetUserResponse;
+    }
+);
+
+export default function UserForm({
+  onFinish,
+  type,
+  result,
+  user,
+}: UserFormProps) {
+  const [form] = useForm<UserFormValues>();
   const router = useRouter();
-  const [createUser, result] = useCreateUserMutation();
 
   useEffect(() => {
     if (result.isError) {
@@ -71,26 +98,33 @@ export default function CreateAccountForm() {
     }
 
     if (result.isSuccess) {
-      // const data = result.data as AccountChangeSuccessResponse;
-      message.success('Аккаунт успешно создан');
-      router.push(`/admin/accounts`);
+      const userId = (result.data as ICreateUpdateUserResponse).user?.id;
+      message.success(
+        type === 'create'
+          ? 'Пользователь успешно создан'
+          : 'Пользователь успешно изменён'
+      );
+      router.push(`/admin/users/${userId}`);
     }
-  }, [form, result, router]);
+  }, [form, result, router, type]);
 
-  const onFinish = (values: CreateAccountFormType) => {
+  const handleFinish = (values: UserFormValues) => {
     const request = formValuesToRequest(values);
-    createUser(request);
+    onFinish(request);
   };
 
-  function onValuesChange(changedValues: any, values: CreateAccountFormType) {
+  function onValuesChange(changedValues: any, values: UserFormValues) {
     console.log(values);
   }
 
   return (
-    <Form<CreateAccountFormType>
+    <Form<UserFormValues>
       form={form}
-      onFinish={onFinish}
+      onFinish={handleFinish}
       onValuesChange={onValuesChange}
+      initialValues={
+        type === 'edit' ? getResponseToFormValues(user) : undefined
+      }
       layout="vertical"
     >
       <Form.Item
@@ -192,7 +226,7 @@ export default function CreateAccountForm() {
         rules={[
           { required: true, message: 'Введите номер телефона' },
           {
-            len: 19,
+            len: 10,
             message: 'Неверный формат номера телефона',
           },
         ]}
@@ -216,21 +250,6 @@ export default function CreateAccountForm() {
       >
         <Input />
       </Form.Item>
-      {/* <Form.Item
-        label="Пароль"
-        name="password"
-        rules={[
-          { required: true, message: 'Введите пароль' },
-          {
-            min: 6,
-            message: 'Пароль должен иметь длину не менее 6 символов',
-          },
-        ]}
-        wrapperCol={{ span: 6 }}
-        hasFeedback
-      >
-        <Input.Password />
-      </Form.Item> */}
       <Form.Item>
         <Space>
           <Button
@@ -239,7 +258,9 @@ export default function CreateAccountForm() {
             style={{ marginTop: '1rem' }}
             loading={result.isLoading}
           >
-            Создать аккаунт
+            {type === 'create'
+              ? 'Создать пользователя'
+              : 'Изменить пользователя'}
           </Button>
         </Space>
       </Form.Item>

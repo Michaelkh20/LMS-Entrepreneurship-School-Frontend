@@ -17,6 +17,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { FinalGradeTable } from '../TableWithFilterNew';
+import AccountDeleteBtn from '../Buttons/DeleteButtons/AccountDeleteBtn/AccountDeleteBtn';
 
 const cx = cn.bind(styles);
 
@@ -42,7 +43,7 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
             size="large"
             type="default"
             icon={<EditOutlined />}
-            href={`/admin/accounts/${id}/edit`}
+            href={`/admin/users/${id}/edit`}
           >
             Редактировать
           </Button>
@@ -110,14 +111,7 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
             </div>
             {isEditable && (
               <div className={styles.deleteBtnContainer}>
-                <Button
-                  size="large"
-                  type="primary"
-                  danger
-                  icon={<DeleteOutlined />}
-                >
-                  Удалить
-                </Button>
+                <AccountDeleteBtn id={id} />
               </div>
             )}
           </div>

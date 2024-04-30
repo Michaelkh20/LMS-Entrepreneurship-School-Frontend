@@ -7,11 +7,11 @@ import styles from '../main.module.css';
 import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
 import { useRouter } from 'next/navigation';
 
-export default function Accounts() {
+export default function Users() {
   const router = useRouter();
 
   const handleCreateClick = () => {
-    router.push('/admin/accounts/create');
+    router.push('/admin/users/create');
   };
 
   return (
@@ -33,7 +33,7 @@ export default function Accounts() {
             return {
               onClick: (ev) => {
                 console.log('ABOBADOBSAODBSABD');
-                router.push(`/admin/accounts/${record.id}`);
+                router.push(`/admin/users/${record.id}`);
               }, // click row
             };
           }}

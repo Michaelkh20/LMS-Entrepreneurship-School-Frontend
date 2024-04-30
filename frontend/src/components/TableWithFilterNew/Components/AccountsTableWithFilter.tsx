@@ -144,7 +144,7 @@ export function AccountsTableWithFilter({
               return {
                 onClick: (ev) => {
                   console.log(record);
-                  router.push(`/admin/accounts/${record.id}`);
+                  router.push(`/admin/users/${record.id}`);
                 }, // click row
               };
             },

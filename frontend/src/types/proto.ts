@@ -5,7 +5,11 @@ export { UserSexNamespace_Sex as Sex } from '@proto/users/users_api';
 export {
   type Login_Response as ILoginResponse,
   type Success as ISuccessAuthResponse,
+  type SetPassword_Request as ISetPasswordRequest,
+  type SetPassword_Response as ISetPasswordResponse,
   Login_Response as LoginResponseTransformer,
+  SetPassword_Request as SetPasswordRequestTransformer,
+  SetPassword_Response as SetPasswordResponseTransformer,
 } from '@proto/users/users_auth_api';
 
 export {
@@ -15,11 +19,16 @@ export {
   type GetUserBalance_Response as IUserBalanceResponse,
   type GetUserNameList_Response as IUserSnippetList,
   type TeamSnippet,
+  type User,
+  type CreateOrUpdateUser_Response as ICreateUpdateUserResponse,
+  type DeleteUser_Response as IDeleteUserResponse,
   CreateOrUpdateUser_Request as CreateUpdateUserRequestTransformer,
   GetUsers_Response as UsersListTransformer,
   GetUser_Response as GetUserResponseTransformer,
   GetUserBalance_Response as UserBalanceResponseTransformer,
   GetUserNameList_Response as UserSnippetListTransformer,
+  CreateOrUpdateUser_Response as CreateUpdateUserResponseTransformer,
+  DeleteUser_Response as DeleteUserResponseTransformer,
 } from '@proto/users/users_api';
 
 export {

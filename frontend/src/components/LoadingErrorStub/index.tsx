@@ -1,16 +1,14 @@
 import React from 'react';
 import { Result } from 'antd';
 import { RingLoader } from 'react-spinners';
-import styles from './loadingErrorWrapper.module.css';
+import styles from './LoadingErrorStub.module.css';
 
-export default function LoadingErrorWrapper({
+export default function LoadingErrorStub({
   isLoading,
   isError,
-  children,
 }: {
   isLoading: boolean;
   isError: boolean;
-  children: React.ReactNode;
 }) {
   if (isLoading) {
     return (
@@ -20,9 +18,9 @@ export default function LoadingErrorWrapper({
     );
   } else if (isError) {
     return (
-      <Result status="error" title={'Sorry, something went wrong.'}></Result>
+      <Result status="error" title={'Извините, что-то пошло не так.'}></Result>
     );
   } else {
-    return children;
+    return null;
   }
 }

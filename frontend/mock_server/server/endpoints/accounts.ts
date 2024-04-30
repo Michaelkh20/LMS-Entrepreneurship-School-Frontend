@@ -50,7 +50,7 @@ export default function injectAccountsEndpoints(
     res.status(200).type('application/x-protobuf').send(nameAndBalanceResponse);
   });
 
-  app.get('/admin/accounts/list', (req, res) => {
+  app.get('/admin/users/list', (req, res) => {
     const { name, teamNumber, role, sortProperty, sortOrder, page, pageSize } =
       req.query;
     if (
@@ -87,7 +87,7 @@ export default function injectAccountsEndpoints(
     res.status(200).type('application/x-protobuf').send(accountListResponse);
   });
 
-  app.get('/admin/accounts/list-short', (req, res) => {
+  app.get('/admin/users/list-short', (req, res) => {
     const result = db.getAccountsShortList();
 
     const accountShortListResponse = AccountShortListResponse.encode({
@@ -100,7 +100,7 @@ export default function injectAccountsEndpoints(
       .send(accountShortListResponse);
   });
 
-  app.get('/admin/accounts/:id', async (req, res) => {
+  app.get('/admin/users/:id', async (req, res) => {
     const id = req.params.id;
 
     const account = db.accountsModule.getAccountById(id);
@@ -115,7 +115,7 @@ export default function injectAccountsEndpoints(
     res.status(200).type('application/x-protobuf').send(accountResponse);
   });
 
-  app.post('/admin/accounts', async (req, res) => {
+  app.post('/admin/users', async (req, res) => {
     const newAccount = AccountCreateRequest.decode(req.body);
 
     const result = await db.accountsModule.createAccountFromDto(newAccount);
@@ -139,7 +139,7 @@ export default function injectAccountsEndpoints(
     res.status(200).type('application/x-protobuf').send(accountSuccessResponse);
   });
 
-  app.put('/admin/accounts/:id', async (req, res) => {
+  app.put('/admin/users/:id', async (req, res) => {
     const editedAccount = AccountEditRequest.decode(req.body);
     const id = req.params.id;
 

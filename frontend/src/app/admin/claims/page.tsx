@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Page() {
   const rectangles = [
-    { text: 'Купля-продажа лотов', link: '/admin/accounts', notifications: 5 }, // Добавлено поле notifications
+    { text: 'Купля-продажа лотов', link: '/admin/users', notifications: 5 }, // Добавлено поле notifications
     { text: 'Просроченный дедлайн', link: '/teams' },
     { text: 'Размещение лотов', link: '/grades' },
     { text: 'Перевод шпрот', link: '/applications' },
