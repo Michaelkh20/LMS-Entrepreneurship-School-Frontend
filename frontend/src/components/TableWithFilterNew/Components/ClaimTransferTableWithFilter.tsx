@@ -3,79 +3,31 @@
 import {
   ClaimStatusFormItem,
   UserSelectionFormItem,
-  LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetTransferClaimsApiArg, TransferClaimsPage } from '@/types/api';
 
-import { useState, useEffect } from 'react';
+import type {
+  GetTransferClaimsApiArg,
+  TransferClaimsPage,
+  UserSnippet,
+} from '@/types/api';
+
+import { useState, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { Space, Popconfirm, Button } from 'antd';
 
 import { useGetTransferClaimsQuery } from '@/redux/services/api';
+import { ClaimStatus } from '@/types/common';
+import { useAuth } from '../../../redux/features/authSlice';
 
 type ClaimTransferColumnsDataType = {
-  id: AdminClaimTableItem['id'];
-  claimStatus: AdminClaimTableItem['status'];
-  sender: UserSelectionItem['name'];
-  receiver: UserSelectionItem['name'];
-  sum: AdminClaimTableItem['sum'];
+  id: string;
+  claimStatus: ClaimStatus;
+  sender: UserSnippet;
+  receiver: UserSnippet;
+  sum: number;
 };
-
-const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
-  {
-    title: 'Отправитель',
-    dataIndex: 'sender',
-    key: 'sender',
-    sorter: true,
-  },
-  {
-    title: 'Получатель',
-    dataIndex: 'receiver',
-    key: 'receiver',
-    sorter: true,
-  },
-  {
-    title: 'Статус',
-    dataIndex: 'claimStatus',
-    key: 'claimStatus',
-    render: (_, record: ClaimTransferColumnsDataType) => {
-      return (
-        <>
-          {record.claimStatus === ClaimStatus.Waiting && (
-            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
-          )}
-          {record.claimStatus === ClaimStatus.Declined && (
-            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
-          )}
-          {record.claimStatus === ClaimStatus.Approved && (
-            <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
-          )}
-        </>
-      );
-    },
-  },
-
-  { title: 'Сумма', dataIndex: 'sum', key: 'sum' },
-  { title: 'Подтверждение', dataIndex: 'delay', key: 'delay' },
-  {
-    title: 'Подтверждение',
-    dataIndex: '',
-    key: 'x',
-    render: (_: any, record: ClaimTransferColumnsDataType) => {
-      return (
-        <>
-          {record.claimStatus === ClaimStatus.Waiting && (
-            <ConfirmButtons record={record} />
-          )}
-        </>
-      );
-    },
-  },
-];
 
 const ConfirmButtons = ({
   record,
@@ -104,55 +56,30 @@ const ConfirmButtons = ({
   );
 };
 
-// const mockData: ClaimTransferColumnsDataType[] = [
-//   {
-//     id: 12,
-//     claimStatus: ClaimStatus.Approved,
-//     learner: 'Иван Обучающийся',
-//     receiver: 'Иван Получающий',
-//     date: '123123',
-//     sum: 5000,
-//   },
-//   {
-//     id: 123123,
-//     claimStatus: ClaimStatus.Waiting,
-//     learner: 'Иван Обучающийся',
-//     receiver: 'Иван Ожидающий',
-//     date: '123123',
-//     sum: 5000,
-//   },
-//   {
-//     id: 1234,
-//     claimStatus: ClaimStatus.Declined,
-//     learner: 'Иван Обучающийся',
-//     receiver: 'Иван Получающий',
-//     date: '123123',
-//     sum: 5000,
-//   },
-// ];
-
 const mockData: TransferClaimsPage = {
   pagination: {
     total_pages: 1,
-    total_elements: 1
+    total_elements: 1,
   },
-  claims: [{
-    id: '1',
-    sender: {
+  claims: [
+    {
       id: '1',
-      name: 'Иван',
-      surname: 'Обучающийся',
-      patronymic: null
+      sender: {
+        id: '1',
+        name: 'Иван',
+        surname: 'Обучающийся',
+        patronymic: null,
+      },
+      receiver: {
+        id: '2',
+        name: 'Иван',
+        surname: 'Получающий',
+        patronymic: null,
+      },
+      sum: 100,
     },
-    receiver: {
-      id: '2',
-      name: 'Иван',
-      surname: 'Получающий',
-      patronymic: null
-    },
-    sum: 100
-  }]
-}
+  ],
+};
 
 export function ClaimTransferTableWithFilter({
   onRow,
@@ -161,39 +88,94 @@ export function ClaimTransferTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetTransferClaimsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<ClaimTransferColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetTransferClaimsQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: ClaimTransferColumnsDataType[] = mockData?.claims.map(
-      (claim): ClaimTransferColumnsDataType => {
-        const res: ClaimTransferColumnsDataType = {
-          id: undefined,
-          claimStatus: undefined,
-          date: undefined,
-          sender: claim.sender,
-          receiver: claim.receiver,
-          sum: claim.sum
-        };
-        return res;
-      }
-    );
-    setDataTable(dataForTable);
-  }, [mockData, data]);
+  const dataForTable = useMemo(() => {
+    return data?.claims.map<ClaimTransferColumnsDataType>((claim) => {
+      const res: ClaimTransferColumnsDataType = {
+        id: claim.id,
+        claimStatus: ClaimStatus.Waiting,
+        sender: claim.sender,
+        receiver: claim.receiver,
+        sum: claim.sum,
+      };
+      return res;
+    });
+  }, [data]);
 
-  useEffect(() => {
-    console.log('FormData1:', formData);
-  }, [formData]);
+  const [, , { isAdmin }] = useAuth();
+
+  // const [isAdminMock, setIsAdminMock] = useState(false);
+
+  const ClaimTransferColumns: ColumnsType<ClaimTransferColumnsDataType> = [
+    {
+      title: 'Отправитель',
+      dataIndex: 'sender',
+      key: 'sender',
+      sorter: true,
+      render: (value, record, index) => {
+        return <>{`${record.sender.surname} ${record.sender.name}`}</>;
+      },
+    },
+    {
+      title: 'Получатель',
+      dataIndex: 'receiver',
+      key: 'receiver',
+      sorter: true,
+      render: (value, record, index) => {
+        return <>{`${record.receiver.surname} ${record.receiver.name}`}</>;
+      },
+    },
+    {
+      title: 'Статус',
+      dataIndex: 'claimStatus',
+      key: 'claimStatus',
+      render: (_, record: ClaimTransferColumnsDataType) => {
+        return (
+          <>
+            {record.claimStatus === ClaimStatus.Waiting && (
+              <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
+            )}
+            {record.claimStatus === ClaimStatus.Declined && (
+              <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
+            )}
+            {record.claimStatus === ClaimStatus.Approved && (
+              <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
+            )}
+          </>
+        );
+      },
+    },
+
+    { title: 'Сумма', dataIndex: 'sum', key: 'sum' },
+
+    //TODO: Проверить работает ли с изменением состояния isAdmin
+    {
+      hidden: !isAdmin,
+      title: 'Подтверждение',
+      dataIndex: '',
+      key: 'x',
+      render: (_: any, record: ClaimTransferColumnsDataType) => {
+        return (
+          <>
+            {record.claimStatus === ClaimStatus.Waiting && (
+              <ConfirmButtons record={record} />
+            )}
+          </>
+        );
+      },
+    },
+  ];
 
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.pagination.total_elements}
         filterFormItems={
           <>
             <UserSelectionFormItem
@@ -212,8 +194,8 @@ export function ClaimTransferTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimTransferColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.pagination?.total_elements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

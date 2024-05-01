@@ -1,3 +1,4 @@
+import { usePathname } from 'next/navigation';
 import UserDropdown from '@/components/Dropdowns/UserDropdown';
 import { TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { ConfigProvider, Menu, MenuProps } from 'antd';
@@ -105,6 +106,8 @@ const menuItems: MenuProps['items'] = [
 ];
 
 export default function AdminMenu() {
+  const pathname = usePathname();
+  console.log(pathname, pathname.split('/').at(-1));
   return (
     <ConfigProvider
       theme={{
@@ -123,7 +126,11 @@ export default function AdminMenu() {
         />
       </div>
       {/* <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} /> */}
-      <Menu mode="inline" items={menuItems} />
+      <Menu
+        mode="inline"
+        items={menuItems}
+        defaultSelectedKeys={[pathname.split('/').at(-1)!]}
+      />
     </ConfigProvider>
   );
 }

@@ -1,74 +1,61 @@
 'use client';
 
-import styles from './lessons.module.css';
-
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { LessonSnippet } from '@proto/lessons/lessons_api';
 
-type lessonItemList = {
-  id: number | string;
-  lessonNumber: number;
-  lessonTheme: string;
-};
+import styles from './lessons.module.css';
+
+import { useGetLessonsSnippetsQuery } from '@/redux/services/api';
+import { useGetExamSnippetsQuery } from '@/redux/services/api';
+import { useGetCompetitionSnippetsQuery } from '@/redux/services/api';
+import { ExamSnippet } from '@proto/assignments/exam_api';
+import { CompetitionSnippet } from '@proto/assignments/competition_api';
 
 export default function LessonsPage() {
-  const lessonsData: lessonItemList[] = [
-    {
-      id: 1,
-      lessonNumber: 1,
-      lessonTheme: 'Генерация идей',
-    },
-    {
-      id: 2,
-      lessonNumber: 2,
-      lessonTheme: 'Ошибки при выводе продуктов на рынок',
-    },
-    {
-      id: 3,
-      lessonNumber: 3,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 4,
-      lessonNumber: 4,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 5,
-      lessonNumber: 5,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 6,
-      lessonNumber: 6,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 7,
-      lessonNumber: 7,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 8,
-      lessonNumber: 8,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-    {
-      id: 9,
-      lessonNumber: 9,
-      lessonTheme: 'Модели монетизации и ценообразование',
-    },
-  ];
+  const { data: lessonsSnippets } = useGetLessonsSnippetsQuery();
+  const { data: examsSnippets } = useGetExamSnippetsQuery();
+  const { data: competitionsSnippets } = useGetCompetitionSnippetsQuery();
+
   return (
     <div className={styles.main__container}>
       <h1 className={styles.main__header}>Уроки</h1>
       <div className={styles.lessons_container}>
-        {lessonsData.map((lesson) => {
+        {lessonsSnippets?.map((lesson) => {
+          {
+            /* {lessonsMockData?.map((lesson) => { */
+          }
           return (
             <LessonCard
               key={lesson.id}
               to={`lessons/${lesson.id}`}
               lessonData={lesson}
+            />
+          );
+        })}
+      </div>
+      <h1 className={styles.main__header}>Экзамены</h1>
+      <div className={styles.lessons_container}>
+        {examsSnippets?.map((exam) => {
+          {
+            /* {examsMockData?.map((exam) => { */
+          }
+          return (
+            <ExamCard key={exam.id} to={`lessons/${exam.id}`} examData={exam} />
+          );
+        })}
+      </div>
+      <h1 className={styles.main__header}>Конкурсы</h1>
+      <div className={styles.lessons_container}>
+        {competitionsSnippets?.map((competition) => {
+          {
+            /* {competitionsMockData.map((competition) => { */
+          }
+          return (
+            <CompetitionCard
+              key={competition.id}
+              to={`lessons/${competition.id}`}
+              competitionData={competition}
             />
           );
         })}
@@ -81,17 +68,11 @@ const LessonCard = ({
   lessonData,
   to,
 }: {
-  lessonData: lessonItemList;
+  lessonData: LessonSnippet;
   to: string;
 }) => {
   const router = useRouter();
   return (
-    // <Link href={to} className={styles.lessonCard__wrapper}>
-    //   <p className={styles.lessonCard__header}>
-    //     Урок {lessonData.lessonNumber}
-    //   </p>
-    //   <p className={styles.lessonCard__body}>{lessonData.lessonTheme}</p>
-    // </Link>
     <div
       onClick={() => {
         router.push(to);
@@ -101,7 +82,41 @@ const LessonCard = ({
       <p className={styles.lessonCard__header}>
         Урок {lessonData.lessonNumber}
       </p>
-      <p className={styles.lessonCard__body}>{lessonData.lessonTheme}</p>
+      <p className={styles.lessonCard__body}>{lessonData.title}</p>
+    </div>
+  );
+};
+
+const ExamCard = ({ examData, to }: { examData: ExamSnippet; to: string }) => {
+  const router = useRouter();
+  return (
+    <div
+      onClick={() => {
+        router.push(to);
+      }}
+      className={styles.lessonCard__wrapper}
+    >
+      <p className={styles.lessonCard__header}>{examData.title}</p>
+    </div>
+  );
+};
+
+const CompetitionCard = ({
+  competitionData,
+  to,
+}: {
+  competitionData: CompetitionSnippet;
+  to: string;
+}) => {
+  const router = useRouter();
+  return (
+    <div
+      onClick={() => {
+        router.push(to);
+      }}
+      className={styles.lessonCard__wrapper}
+    >
+      <p className={styles.lessonCard__header}>{competitionData.title}</p>
     </div>
   );
 };

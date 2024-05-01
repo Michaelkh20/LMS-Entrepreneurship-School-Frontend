@@ -1,0 +1,8 @@
+.section_title{
+    font-weight: bold;
+}
+.section{
+    padding: .5rem 0;
+    display: flex;
+    flex-direction: column;
+}

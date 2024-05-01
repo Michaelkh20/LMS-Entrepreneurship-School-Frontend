@@ -4,17 +4,15 @@ import cn from 'classnames/bind';
 import React, { MouseEventHandler } from 'react';
 
 import PriceQuestionTooltip from '@/components/LotCard/components/QuestionTooltip';
-import { useGetLotQuery } from '@/redux/services/learnerApi';
-import { dto } from '@dto';
+import { useGetLotByIdQuery } from '@/redux/services/api';
 
 import styles from './LotViewModal.module.css';
 
-import LotStatus = dto.LotStatus;
-
-import lotStatusToString from '@/util/lotStatusToString';
+import { lotStatusToString } from '@/util/enumsToString';
 import { EditOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import dateToFormatString from '@/util/dateToFormatString';
+import { LotStatus } from '@/types/common';
 
 type Props = {
   lotId?: string | null;
@@ -33,7 +31,7 @@ export default function LotViewModal({
   onOk,
   isClaimLoading,
 }: Props) {
-  const { data } = useGetLotQuery(lotId && isOpen ? lotId : skipToken);
+  const { data } = useGetLotByIdQuery(lotId && isOpen ? lotId : skipToken);
 
   return (
     <Modal
@@ -49,9 +47,9 @@ export default function LotViewModal({
             <p className={styles.PropertyTitle}>Статус</p>
             <p
               className={cx('PropertyValue', {
-                StatusApproval: data?.status === LotStatus.APPROVAL,
-                StatusActive: data?.status === LotStatus.ACTIVE,
-                StatusInactive: data?.status === LotStatus.INACTIVE,
+                StatusApproval: data?.status === LotStatus.Approval,
+                StatusActive: data?.status === LotStatus.OnSale,
+                StatusInactive: data?.status === LotStatus.Withdrawn,
               })}
             >
               {lotStatusToString(data?.status)}
@@ -68,10 +66,10 @@ export default function LotViewModal({
         <Property title="Название" value={data?.title || ''} />
         <Property title="Описание" value={data?.description || ''} />
         <Property title="Условия" value={data?.terms || ''} />
-        <Property title="Исполнитель" value={data?.performer?.partName || ''} />
+        <Property title="Исполнитель" value={data?.performer?.name || ''} />
         <Property
           title="Дата размещения"
-          value={dateToFormatString(data?.date)}
+          value={dateToFormatString(data?.listingDate!)}
         />
       </div>
       <div className={styles.Actions}>

@@ -6,6 +6,7 @@ import styles from '../main.module.css';
 
 import { AccountsTableWithFilter } from '@/components/TableWithFilterNew';
 import { useRouter } from 'next/navigation';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function Users() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function Users() {
 
   return (
     <>
-      <div className={styles.container}>
+      {/* <div className={styles.container}>
         <div className={styles.header}>
           <h2>Аккаунты</h2>
           <Button
@@ -38,7 +39,33 @@ export default function Users() {
             };
           }}
         />
-      </div>
+      </div> */}
+      <BasePageLayout
+        header={
+          <>
+            <h2>Аккаунты</h2>
+            <Button
+              icon={<PlusOutlined height={10} />}
+              size="large"
+              type="primary"
+              onClick={handleCreateClick}
+            >
+              Создать
+            </Button>
+          </>
+        }
+      >
+        <AccountsTableWithFilter
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (ev) => {
+                console.log('ABOBADOBSAODBSABD');
+                router.push(`/admin/users/${record.id}`);
+              }, // click row
+            };
+          }}
+        />
+      </BasePageLayout>
     </>
   );
 }
