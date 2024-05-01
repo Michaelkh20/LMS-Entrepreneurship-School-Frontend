@@ -6,110 +6,110 @@ import {
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetLotsForMarketPlaceApiArg, UserSnippet } from '@/types/api';
 
-import { useState, useEffect } from 'react';
+import type { GetListLotClaimsApiArg } from '@/types/api';
+import { useGetListLotClaimsQuery } from '@/redux/services/api';
+
+import { useState, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { ClaimStatus } from '@/types/common';
+import { TwoSidedClaimStatus } from '@/types/common';
+import type { ListLotClaimSnippet } from '@/types/api';
 
-type ClaimPlacingLotColumnsDataType = {
-  id: string;
-  claimStatus: ClaimStatus;
-  date: string;
-  receiver: UserSnippet;
-  lot: string;
-  sum: string;
-};
+type ClaimListLotColumnsDataType = ListLotClaimSnippet;
 
-
-const ClaimPlacingLotColumns: ColumnsType<ClaimPlacingLotColumnsDataType> = [
+const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
   {
     title: 'Лот',
     dataIndex: 'lot',
     key: 'lot',
     sorter: true,
+    render: (value, record, index) => {
+      return <>{record.lot.title}</>;
+    },
   },
-  { title: 'Покупатель', dataIndex: 'receiver', key: 'receiver' },
+  {
+    title: 'Исполнитель',
+    dataIndex: 'performer',
+    key: 'performer',
+    render: (value, record, index) => {
+      return (
+        <>{`${record.lot.performer.surname} ${record.lot.performer.name}`}</>
+      );
+    },
+  },
   { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
     dataIndex: 'claimStatus',
     key: 'claimStatus',
-    render: (_, record: ClaimPlacingLotColumnsDataType) => {
+    render: (_, record: ClaimListLotColumnsDataType) => {
       return (
         <>
-          {record.claimStatus === ClaimStatus.Waiting && (
-            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
+          {record.status === TwoSidedClaimStatus.WaitingAdmin && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание админа</p>
           )}
-          {record.claimStatus === ClaimStatus.Declined && (
-            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
+          {record.status === TwoSidedClaimStatus.WaitingLearner && (
+            <p style={{ color: 'var(--color-primary)' }}>
+              Ожидание пользователя
+            </p>
           )}
-          {record.claimStatus === ClaimStatus.Approved && (
+          {record.status === TwoSidedClaimStatus.DeclinedAdmin && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено админом</p>
+          )}
+          {record.status === TwoSidedClaimStatus.DeclinedLearner && (
+            <p style={{ color: 'var(--color-error)' }}>
+              Отклонено пользователем
+            </p>
+          )}
+          {record.status === TwoSidedClaimStatus.Approved && (
             <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
           )}
         </>
       );
     },
   },
-  { title: 'Стоимость', dataIndex: 'sum', key: 'sum' },
+  {
+    title: 'Стоимость',
+    dataIndex: 'price',
+    key: 'price',
+    render: (value, record, index) => {
+      return <>{record.lot.price}</>;
+    },
+  },
 ];
-
-// const mockData: ClaimPlacingLotColumnsDataType[] = [
-//   {
-//     id: 12,
-//     lot: 5,
-//     claimStatus: ClaimStatus.Approved,
-//     receiver: 'Иван Обучающийся',
-//     date: '123123',
-//     sum: 5000,
-//   },
-//   {
-//     id: 122,
-//     lot: 6,
-//     claimStatus: ClaimStatus.Declined,
-//     receiver: 'Иван Обучающийся',
-//     date: '123123',
-//     sum: 5000,
-//   },
-//   {
-//     id: 13,
-//     lot: 7,
-//     claimStatus: ClaimStatus.Waiting,
-//     receiver: 'Иван Обучающийся',
-//     date: '222',
-//     sum: 300,
-//   },
-// ];
 
 export function ClaimPlacingLotTableWithFilter({
   onRow,
 }: {
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<GetClaimsApiArg>({
-    claimType: ClaimType.PlacingLot,
+  const [formData, setFormData] = useState<GetListLotClaimsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
-
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<ClaimPlacingLotColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetClaimsQuery(dataForReq);
 
-  useEffect(() => {
-    console.log('FormData1:', formData);
-  }, [formData]);
+  const { data, isLoading, isError, isFetching } =
+    useGetListLotClaimsQuery(dataForReq);
+
+  const dataForTable = useMemo(() => {
+    return data?.claims.map<ClaimListLotColumnsDataType>((claim) => {
+      const res: ClaimListLotColumnsDataType = {
+        id: claim.id,
+        status: claim.status,
+        date: claim.date,
+        lot: claim.lot,
+      };
+      return res;
+    });
+  }, [data]);
 
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.pagination.total_elements}
         filterFormItems={
           <>
             <LotNumberFormItem />
@@ -125,8 +125,8 @@ export function ClaimPlacingLotTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimPlacingLotColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.pagination?.total_elements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

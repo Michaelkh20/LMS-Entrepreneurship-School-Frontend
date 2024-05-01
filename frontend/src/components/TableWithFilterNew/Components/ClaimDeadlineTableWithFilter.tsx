@@ -5,33 +5,21 @@ import {
   UserSelectionFormItem,
   TaskSelectionFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
 import type {
   FailedDeadlineClaimsPage,
   GetFailedDeadlineClaimsApiArg,
-  HwSnippetWithDeadline,
-  UserSnippet,
 } from '@/types/api';
 
-import { useState, useEffect } from 'react';
-import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
+import { useState, useMemo } from 'react';
 
+import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
 
 import { useGetFailedDeadlineClaimsQuery } from '@/redux/services/api';
+import type { FailedDeadlineClaim } from '@/types/api';
 import { ClaimStatus } from '@/types/common';
-import dateToFormatString from '@/util/dateToFormatString';
 
-type ClaimDeadlineColumnsDataType = {
-  id: string;
-  claimStatus: ClaimStatus;
-  assignment: HwSnippetWithDeadline['title'];
-  completeDate: string;
-  learner: UserSnippet;
-  // sum?: AdminClaimTableItem['sum'];
-  delay: number;
-};
+type ClaimDeadlineColumnsDataType = FailedDeadlineClaim;
 
 const ClaimDeadlineColumns: ColumnsType<ClaimDeadlineColumnsDataType> = [
   {
@@ -39,26 +27,33 @@ const ClaimDeadlineColumns: ColumnsType<ClaimDeadlineColumnsDataType> = [
     dataIndex: 'learner',
     key: 'learner',
     sorter: true,
-    render: (value, record, index) => {
-        return `${record.learner.surname} ${record.learner.name}`
+    render: (_value, record, _index) => {
+      return `${record.learner.surname} ${record.learner.name}`;
     },
   },
-  { title: 'Задание', dataIndex: 'assignment', key: 'assignment' },
+  {
+    title: 'Задание',
+    dataIndex: 'assignment',
+    key: 'assignment',
+    render: (_value, record, _index) => {
+      return `${record.assignment.title}`;
+    },
+  },
   { title: 'Дата сдачи', dataIndex: 'completeDate', key: 'completeDate' },
   {
     title: 'Статус',
     dataIndex: 'claimStatus',
     key: 'claimStatus',
-    render: (_, record: ClaimDeadlineColumnsDataType) => {
+    render: (_value, record, _index) => {
       return (
         <>
-          {record.claimStatus === ClaimStatus.Waiting && (
+          {record.status === ClaimStatus.Waiting && (
             <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
           )}
-          {record.claimStatus === ClaimStatus.Declined && (
+          {record.status === ClaimStatus.Declined && (
             <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
           )}
-          {record.claimStatus === ClaimStatus.Approved && (
+          {record.status === ClaimStatus.Approved && (
             <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
           )}
         </>
@@ -102,35 +97,29 @@ export function ClaimDeadlineTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetFailedDeadlineClaimsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<ClaimDeadlineColumnsDataType[]>();
 
   const { data, isLoading, isError, isFetching } =
     useGetFailedDeadlineClaimsQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: ClaimDeadlineColumnsDataType[] = mockData?.claims.map(
-      (claim): ClaimDeadlineColumnsDataType => {
-        const res: ClaimDeadlineColumnsDataType = {
-          id: claim.id,
-          claimStatus: claim.status,
-          assignment: claim.assignment.title,
-          completeDate: claim.completeDate,
-          learner: claim.learner,
-          delay: claim.delay,
-        };
-        return res;
-      }
-    );
-    setDataTable(dataForTable);
-  }, [mockData, data]);
+  // const data = mockData;
 
-  // useEffect(() => {
-  //   console.log('FormData1:', formData);
-  // }, [formData]);
+  const dataForTable = useMemo(() => {
+    return data?.claims.map<ClaimDeadlineColumnsDataType>((claim) => {
+      const res: ClaimDeadlineColumnsDataType = {
+        id: claim.id,
+        status: claim.status,
+        learner: claim.learner,
+        completeDate: claim.completeDate,
+        delay: claim.delay,
+        assignment: claim.assignment,
+      };
+      return res;
+    });
+  }, [data]);
 
   return (
     <>
@@ -146,8 +135,8 @@ export function ClaimDeadlineTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimDeadlineColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.pagination?.total_elements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

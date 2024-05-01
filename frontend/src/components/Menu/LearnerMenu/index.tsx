@@ -21,10 +21,6 @@ const menuItems: MenuProps['items'] = [
         label: <Link href="/learner/lessons">Уроки</Link>,
       },
       {
-        key: 'assessments',
-        label: <Link href="/learner/assessments">Оценки</Link>,
-      },
-      {
         key: 'lots',
         label: 'Лоты',
         children: [
@@ -65,10 +61,6 @@ const menuItems: MenuProps['items'] = [
       {
         key: 'transactions',
         label: <Link href="/learner/transactions">Транзакции</Link>,
-      },
-      {
-        key: 'HW',
-        label: <Link href="/learner/homeworks">ДЗ</Link>,
       },
     ],
   },

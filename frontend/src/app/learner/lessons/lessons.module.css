@@ -5,6 +5,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
+  padding-bottom: 1rem;
 }
 
 .lessonCard__wrapper {
@@ -53,5 +54,5 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  padding-left: 1rem;
+  /* padding-left: 1rem; */
 }
