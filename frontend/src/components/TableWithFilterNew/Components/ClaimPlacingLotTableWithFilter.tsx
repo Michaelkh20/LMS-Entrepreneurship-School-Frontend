@@ -7,7 +7,7 @@ import {
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type { GetListLotClaimsApiArg } from '@/types/api';
+import type { GetListLotClaimsApiArg, ListLotClaimsPage } from '@/types/api';
 import { useGetListLotClaimsQuery } from '@/redux/services/api';
 
 import { useState, useMemo } from 'react';
@@ -80,6 +80,31 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
   },
 ];
 
+const mockData: ListLotClaimsPage = {
+  pagination: {
+    total_pages: 1,
+    total_elements: 1,
+  },
+  claims: [
+    {
+      id: '1',
+      status: TwoSidedClaimStatus.WaitingAdmin,
+      date: '12/12/12',
+      lot: {
+        number: 23,
+        title: 'lot-23',
+        price: 100,
+        performer: {
+          id: 'id1',
+          name: 'name1',
+          surname: 'surname1',
+          patronymic: null,
+        },
+      },
+    },
+  ],
+};
+
 export function ClaimPlacingLotTableWithFilter({
   onRow,
 }: {
@@ -91,8 +116,9 @@ export function ClaimPlacingLotTableWithFilter({
   });
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
-  const { data, isLoading, isError, isFetching } =
-    useGetListLotClaimsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetListLotClaimsQuery(dataForReq);
+  const data = mockData;
 
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimListLotColumnsDataType>((claim) => {
