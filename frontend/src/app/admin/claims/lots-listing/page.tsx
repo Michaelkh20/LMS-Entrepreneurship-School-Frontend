@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 import styles from '@/app/admin/main.module.css';
 import { Modal } from 'antd';
-import ClaimListLotViewModal from '@/components/Modals/Claims/ClaimListLotModals/ClaimListLotViewModal/ClaimListLotViewModal';
+import { ClaimListLotViewModal } from '@/components/Modals';
 
 export default function LotsListingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

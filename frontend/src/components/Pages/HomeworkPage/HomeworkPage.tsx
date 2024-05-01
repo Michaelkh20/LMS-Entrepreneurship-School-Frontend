@@ -8,13 +8,16 @@ import { Divider } from 'antd';
 
 import styles from './HomeworkPage.module.css';
 import { PaperClipOutlined } from '@ant-design/icons';
+import { useAuth } from '@/redux/features/authSlice';
+import { AuthState } from '../../../redux/features/authSlice';
 
 export const HomeworkPage = ({ HwId }: { HwId: string }) => {
   //   const { data: hwData } = useGetHwByIdQuery(HwId);
+  const [AuthState] = useAuth();
 
   const { data: solutionData } = useGetSolutionByAssignmentIdAndLearnerIdQuery({
-    assignmentId: '',
-    learnerId: '',
+    assignmentId: HwId,
+    learnerId: AuthState.userId!,
   });
 
   const mockHwData: GetHomework_Response = {

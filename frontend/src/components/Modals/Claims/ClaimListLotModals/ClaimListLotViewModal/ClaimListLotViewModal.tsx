@@ -29,7 +29,7 @@ type Props = {
 
 const cx = cn.bind(styles);
 
-export default function ClaimListLotViewModal({
+export function ClaimListLotViewModal({
   claimId,
   isOpen,
   onCancel,
