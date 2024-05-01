@@ -44,10 +44,10 @@
 }
 
 .main__container {
-  /* display: flex;
+  display: flex;
   flex-direction: column;
-  gap: 1.5rem; */
-  padding: 24px 16px 16px 2rem;
+  gap: 1.5rem;
+  /* padding: 24px 16px 16px 2rem; */
 }
 
 .main__header {

@@ -83,8 +83,12 @@ export const TestPage = ({ TestId }: { TestId: string }) => {
 
       <section className={styles.section}>
         <p className={styles.section_title}>Дополнительные материалы</p>
-        {testData?.test?.externalMaterialUrls.map((url) => {
-          return <a href="url">urlx</a>;
+        {testData?.test?.externalMaterialUrls.map((url, index) => {
+          return (
+            <a href="url" key={index + url}>
+              urlx
+            </a>
+          );
         })}
       </section>
 

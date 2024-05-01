@@ -1,9 +1,9 @@
 'use client';
 
-import styles from '../lessons.module.css';
+import styles from './lessons.module.css';
 import { LessonPage } from '@/components/Pages/LessonPage/LessonPage';
 
-export default function LessonPageLearner({
+export default function LessonPageAdmin({
   params: { id },
 }: {
   params: { id: string };

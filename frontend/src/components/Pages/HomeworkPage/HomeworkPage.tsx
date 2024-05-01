@@ -86,8 +86,12 @@ export const HomeworkPage = ({ HwId }: { HwId: string }) => {
 
       <section className={styles.section}>
         <p className={styles.section_title}>Дополнительные материалы</p>
-        {hwData?.homework?.externalMaterialUrls.map((url) => {
-          return <a href="url">urlx</a>;
+        {hwData?.homework?.externalMaterialUrls.map((url, index) => {
+          return (
+            <a key={index + url} href="url">
+              urlx
+            </a>
+          );
         })}
       </section>
 

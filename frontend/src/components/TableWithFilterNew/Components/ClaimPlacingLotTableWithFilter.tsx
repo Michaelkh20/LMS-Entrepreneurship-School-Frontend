@@ -74,7 +74,7 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
     title: 'Стоимость',
     dataIndex: 'price',
     key: 'price',
-    render: (value, record, index) => {
+    render: (_value, record, _index) => {
       return <>{record.lot.price}</>;
     },
   },
