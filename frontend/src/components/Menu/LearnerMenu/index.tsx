@@ -5,6 +5,9 @@ import Link from 'next/link';
 import React from 'react';
 import { useAuth } from '../../../redux/features/authSlice';
 import { useGetUserBalanceByIdQuery } from '@/redux/services/api';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import dollarSvg from '../../../../public/dollar.svg';
 
 const menuItems: MenuProps['items'] = [
   {
@@ -69,6 +72,7 @@ const menuItems: MenuProps['items'] = [
 export default function LearnerMenu() {
   const [authState] = useAuth();
   const { data } = useGetUserBalanceByIdQuery(authState.userId!);
+  const pathname = usePathname();
 
   return (
     <ConfigProvider
@@ -91,11 +95,19 @@ export default function LearnerMenu() {
           padding: '12px 16px 12px 16px',
           fontSize: '1rem',
           fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        <DollarOutlined /> {data?.balance || ''} ШП
+        {/* <DollarOutlined /> */}
+        <Image width={20} height={20} src={dollarSvg} alt="asd"></Image>{' '}
+        {data?.balance || '0'}
       </div>
-      <Menu mode="inline" items={menuItems} />
+      <Menu
+        mode="inline"
+        items={menuItems}
+        defaultSelectedKeys={[pathname.split('/').at(-1)!]}
+      />
     </ConfigProvider>
   );
 }
