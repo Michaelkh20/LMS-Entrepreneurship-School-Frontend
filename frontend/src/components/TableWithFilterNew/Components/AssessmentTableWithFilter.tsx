@@ -4,60 +4,76 @@ import {
   TeamNumberFormItem,
   NameFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { useGetAssessmentsQuery } from '@/redux/services/adminApi';
-import type { GetAssessmentsApiArg } from '@/types/requests';
-import { useEffect, useState } from 'react';
+
+import type { AssessmentsPage, GetAssessmentsApiArg } from '@/types/api';
+import { useGetAssessmentsQuery } from '@/redux/services/api';
+import { useEffect, useMemo, useState } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { TeamNumber, Id, Assessment, AssessmentType } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { AssessmentsPage } from '@/types/responses';
+import type { AssessmentTableSnippet } from '@/types/api';
+import {
+  AssignmentTypeToString,
+  assessmentTypeToString,
+} from '@/util/enumsToString';
 
-// import type { AssessmentTableItem } from '@/types/responses';
-
-//todo:
-
-type AssessmentTableItem = {
-  id: Id;
-  learner: string;
-  team: TeamNumber;
-  assessment: Assessment;
-};
+//TODO: ЗАДАНИЯ И ОЦЕНКИ ОТСУТСТВУЮТ В СНИППЕТЕ
+type AssessmentTableItem = AssessmentTableSnippet;
 
 const AssessmentColumns: ColumnsType<AssessmentTableItem> = [
+  {
+    title: 'Задание',
+    dataIndex: 'assignment',
+    key: 'assignment',
+    render: (_value, record, _index) => {
+      return <>{record.assignment.title}</>;
+    },
+  },
+  {
+    title: 'Тип задания',
+    dataIndex: 'assignmentType',
+    key: 'assignmentType',
+    render: (_value, record, _index) => {
+      return <></>;
+    },
+  },
   {
     title: 'Имя',
     dataIndex: 'learner',
     key: 'learner',
     sorter: true,
-  },
-  { title: 'Команда', dataIndex: 'team', key: 'team' },
-  { title: 'Оценка', dataIndex: 'assessment', key: 'assessment' },
-];
-
-const mockData: AssessmentsPage = {
-  pagination: {
-    page: 1,
-    pageSize: 10,
-    totalPages: 1,
-    totalElements: 10,
-  },
-  content: [
-    {
-      id: 1,
-      learner: {
-        id: 2,
-        name: 'Иван Иванов',
-      },
-      task: {
-        id: 1,
-        title: 'TaskTitle',
-      },
-      issueDate: 'DateTime',
-      assessmentType: AssessmentType.FinalGrade,
-      assessment: 10,
+    render: (_value, record, _index) => {
+      return (
+        <>
+          `${record.learner.surname} ${record.learner.surname}`
+        </>
+      );
     },
-  ],
-};
+  },
+  {
+    title: 'Команда',
+    dataIndex: 'team',
+    key: 'team',
+    render: (_value, record, _index) => {
+      return <></>;
+    },
+  },
+  {
+    title: 'Тип оценки',
+    dataIndex: 'assessmentType',
+    key: 'assessmentType',
+    render: (_value, record, _index) => {
+      return <>{assessmentTypeToString(record.assessmentType)}</>;
+    },
+  },
+  {
+    title: 'Оценка',
+    dataIndex: 'assessment',
+    key: 'assessment',
+    render: (_value, record, _index) => {
+      return <>{record.assessment}</>;
+    },
+  },
+];
 
 export function AssessmentTableWithFilter({
   onRow,
@@ -66,41 +82,32 @@ export function AssessmentTableWithFilter({
 }) {
   const [formData, setFormData] = useState<GetAssessmentsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const [dataTable, setDataTable] = useState<AssessmentTableItem[]>([]);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetAssessmentsQuery(dataForReq);
-
-  useEffect(() => {
-    console.log('dataForReq:', dataForReq);
-  }, [dataForReq]);
-
-  useEffect(() => {
-    console.log('FormData1:', formData);
-  }, [formData]);
+  const { data, isLoading, isError, isFetching } =
+    useGetAssessmentsQuery(dataForReq);
 
   //TODO: Из респонза достаем данные и формируем таблицу
-
-  useEffect(() => {
-    setDataTable(
-      mockData.content.map((el): AssessmentTableItem => {
-        return {
-          id: el.id,
-          learner: el.learner.name,
-          team: 1,
-          assessment: el.assessment,
-        };
-      })
-    );
-  }, [mockData]);
+  const dataForTable = useMemo(() => {
+    return data?.content.map<AssessmentTableItem>((assessment) => {
+      const res: AssessmentTableItem = {
+        id: assessment.id,
+        learner: assessment.learner,
+        assignment: assessment.assignment,
+        assessmentType: assessment.assessmentType,
+        assessment: assessment.assessment,
+      };
+      return res;
+    });
+  }, [data]);
 
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.pagination.total_elements}
         filterFormItems={
           <>
             <NameFormItem name="learnerId" />
@@ -110,7 +117,7 @@ export function AssessmentTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: AssessmentColumns,
-          // pagination: { total: data?.pagination?.totalElements },
+          pagination: { total: data?.pagination?.total_elements },
           dataSource: dataTable,
           rowKey: 'id',
           onRow: onRow,

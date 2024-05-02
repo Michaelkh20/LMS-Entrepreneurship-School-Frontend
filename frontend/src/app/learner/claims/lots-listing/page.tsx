@@ -1,15 +1,11 @@
 import { ClaimPlacingLotTableWithFilter } from '@/components/TableWithFilterNew';
 import React from 'react';
-
-import styles from '@/app/admin/main.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function LotsListingPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Заявки: Размещение лотов</h2>
-      </div>
+    <BasePageLayout header={<h2>Заявки: Размещение лотов</h2>}>
       <ClaimPlacingLotTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }

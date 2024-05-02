@@ -1,8 +1,7 @@
 import { AttendanceTable } from '@/components/TableWithFilterNew';
 import { RollbackOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-
-import styles from '@/app/admin/main.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function AttendencePage({
   params: { lessonId },
@@ -10,14 +9,17 @@ export default function AttendencePage({
   params: { lessonId: string };
 }) {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Посещаемость</h2>
-        <Button icon={<RollbackOutlined height={10} />} size="large">
-          Назад
-        </Button>
-      </div>
+    <BasePageLayout
+      header={
+        <>
+          <h2>Посещаемость</h2>
+          <Button icon={<RollbackOutlined height={10} />} size="large">
+            Назад
+          </Button>
+        </>
+      }
+    >
       <AttendanceTable lessonId={lessonId} />
-    </div>
+    </BasePageLayout>
   );
 }

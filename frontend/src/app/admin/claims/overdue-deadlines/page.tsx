@@ -1,15 +1,11 @@
 import React from 'react';
 import { ClaimDeadlineTableWithFilter } from '@/components/TableWithFilterNew';
-
-import styles from '@/app/admin/main.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function OverdueDeadlinesPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Заявки: Просроченный дедлайн</h2>
-      </div>
+    <BasePageLayout header={<h2>Заявки: Просроченный дедлайн</h2>}>
       <ClaimDeadlineTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }

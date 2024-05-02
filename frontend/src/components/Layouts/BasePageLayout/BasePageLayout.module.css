@@ -11,3 +11,9 @@
   align-items: center;
   padding-left: 1rem;
 }
+
+.main{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

@@ -1,12 +1,11 @@
 'use client';
 import { LearnerLotBuyTable } from '@/components/TableWithFilterNew/Tables/LearnerLotBuyTable';
-import styles from '../../assessments/assessments.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function LotsBuyPage() {
   return (
-    <div className={styles.main__container}>
-      <h1 className={styles.main__header}>Лоты: купленные</h1>
+    <BasePageLayout header={<h2>Лоты: купленные</h2>}>
       <LearnerLotBuyTable></LearnerLotBuyTable>
-    </div>
+    </BasePageLayout>
   );
 }

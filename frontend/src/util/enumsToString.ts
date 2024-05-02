@@ -5,6 +5,7 @@ import {
   Role,
   Sex,
   TwoSidedClaimStatus,
+  AssignmentType,
 } from '@/types/common';
 
 export function roleToString(role: Role | undefined) {
@@ -97,5 +98,22 @@ export function twoSidedClaimStatusToString(
       return 'Одобрено';
     default:
       return 'Неизвестный статус';
+  }
+}
+
+export function AssignmentTypeToString(
+  assignmentType: AssignmentType | undefined
+) {
+  switch (assignmentType) {
+    case AssignmentType.Exam:
+      return 'Экзамен';
+    case AssignmentType.Competition:
+      return 'Конкурс';
+    case AssignmentType.HW:
+      return 'ДЗ';
+    case AssignmentType.Test:
+      return 'Тест';
+    default:
+      return '-';
   }
 }

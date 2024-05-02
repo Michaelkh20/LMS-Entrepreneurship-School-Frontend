@@ -16,9 +16,9 @@ export default function Users() {
   };
 
   return (
-    <>
-      {/* <div className={styles.container}>
-        <div className={styles.header}>
+    <BasePageLayout
+      header={
+        <>
           <h2>Аккаунты</h2>
           <Button
             icon={<PlusOutlined height={10} />}
@@ -28,44 +28,19 @@ export default function Users() {
           >
             Создать
           </Button>
-        </div>
-        <AccountsTableWithFilter
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (ev) => {
-                console.log('ABOBADOBSAODBSABD');
-                router.push(`/admin/users/${record.id}`);
-              }, // click row
-            };
-          }}
-        />
-      </div> */}
-      <BasePageLayout
-        header={
-          <>
-            <h2>Аккаунты</h2>
-            <Button
-              icon={<PlusOutlined height={10} />}
-              size="large"
-              type="primary"
-              onClick={handleCreateClick}
-            >
-              Создать
-            </Button>
-          </>
-        }
-      >
-        <AccountsTableWithFilter
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (ev) => {
-                console.log('ABOBADOBSAODBSABD');
-                router.push(`/admin/users/${record.id}`);
-              }, // click row
-            };
-          }}
-        />
-      </BasePageLayout>
-    </>
+        </>
+      }
+    >
+      <AccountsTableWithFilter
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (ev) => {
+              console.log('ABOBADOBSAODBSABD');
+              router.push(`/admin/users/${record.id}`);
+            },
+          };
+        }}
+      />
+    </BasePageLayout>
   );
 }

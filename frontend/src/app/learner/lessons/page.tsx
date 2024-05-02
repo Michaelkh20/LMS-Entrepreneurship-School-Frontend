@@ -11,20 +11,23 @@ import { useGetExamSnippetsQuery } from '@/redux/services/api';
 import { useGetCompetitionSnippetsQuery } from '@/redux/services/api';
 import { ExamSnippet } from '@proto/assignments/exam_api';
 import { CompetitionSnippet } from '@proto/assignments/competition_api';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { competitionsMockData, examsMockData, lessonsMockData } from './mock';
 
 export default function LessonsPage() {
   const { data: lessonsSnippets } = useGetLessonsSnippetsQuery();
   const { data: examsSnippets } = useGetExamSnippetsQuery();
   const { data: competitionsSnippets } = useGetCompetitionSnippetsQuery();
 
+  // lessonsSnippets = lessonsMockData;
+  // examsSnippets = examsMockData;
+  // competitionsSnippets = competitionsMockData;
+
   return (
-    <div className={styles.main__container}>
-      <h1 className={styles.main__header}>Уроки</h1>
+    <BasePageLayout>
+      <h2 className={styles.main__header}>Уроки </h2>
       <div className={styles.lessons_container}>
         {lessonsSnippets?.map((lesson) => {
-          {
-            /* {lessonsMockData?.map((lesson) => { */
-          }
           return (
             <LessonCard
               key={lesson.id}
@@ -32,25 +35,23 @@ export default function LessonsPage() {
               lessonData={lesson}
             />
           );
-        })}
+        }) || (
+          <div style={{ paddingLeft: '1rem' }}>Уроки пока отсутствуют 🧑‍🎓</div>
+        )}
       </div>
-      <h1 className={styles.main__header}>Экзамены</h1>
+      <h2 className={styles.main__header}>Экзамены</h2>
       <div className={styles.lessons_container}>
         {examsSnippets?.map((exam) => {
-          {
-            /* {examsMockData?.map((exam) => { */
-          }
           return (
             <ExamCard key={exam.id} to={`lessons/${exam.id}`} examData={exam} />
           );
-        })}
+        }) || (
+          <div style={{ paddingLeft: '1rem' }}>Экзаменов нет, выдыхаем 🤩</div>
+        )}
       </div>
-      <h1 className={styles.main__header}>Конкурсы</h1>
+      <h2 className={styles.main__header}>Конкурсы</h2>
       <div className={styles.lessons_container}>
         {competitionsSnippets?.map((competition) => {
-          {
-            /* {competitionsMockData.map((competition) => { */
-          }
           return (
             <CompetitionCard
               key={competition.id}
@@ -58,9 +59,11 @@ export default function LessonsPage() {
               competitionData={competition}
             />
           );
-        })}
+        }) || (
+          <div style={{ paddingLeft: '1rem' }}>Конкурсы скоро начнутся...</div>
+        )}
       </div>
-    </div>
+    </BasePageLayout>
   );
 }
 

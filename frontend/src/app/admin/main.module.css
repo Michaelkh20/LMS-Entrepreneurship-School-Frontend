@@ -11,3 +11,22 @@
   align-items: center;
   padding-left: 1rem;
 }
+
+.section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.buttons_group{
+  display: flex;
+  align-items: center;
+  gap: 1rem
+}
+
+.buttons_group_end{
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 1rem
+}

@@ -1,5 +1,4 @@
 import { TableProps, Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
 import { SorterResult } from 'antd/es/table/interface';
 import { SetStateAction, useMemo, useEffect } from 'react';
 
@@ -10,10 +9,6 @@ import _debounce from 'lodash.debounce';
 
 import tableStyles from './table.module.css';
 import { BasicFilter } from './BasicFilter';
-
-type AttendanceTableColumnsType = (
-  prop: SetStateAction<any>
-) => ColumnsType<any>;
 
 export function BasicTableWithFilter<T>({
   filterFormItems,
@@ -50,9 +45,9 @@ export function BasicTableWithFilter<T>({
   const checkSorter = (sorter: SorterResult<any>) => {
     switch (sorter.order) {
       case 'descend':
-        return 'desc'//SortOrder.Desc;
+        return 'desc'; //SortOrder.Desc;
       case 'ascend':
-        return 'asc' //SortOrder.Asc;
+        return 'asc'; //SortOrder.Asc;
       default:
         return undefined;
     }
@@ -82,7 +77,7 @@ export function BasicTableWithFilter<T>({
   }, [formData, debounceDataForReq]);
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <BasicFilter onChangeEvent={handleFilterChanges} total={totalNumber}>
         {filterFormItems}
       </BasicFilter>
@@ -92,6 +87,6 @@ export function BasicTableWithFilter<T>({
         onChange={handleTableChange}
         {...tableProps}
       ></Table>
-    </>
+    </div>
   );
 }

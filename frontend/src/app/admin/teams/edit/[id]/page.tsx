@@ -6,6 +6,7 @@ import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import { TeamUsersEditTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
 import { useState } from 'react';
 import { useGetTeamByIdQuery } from '@/redux/services/api';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function TeamPage({
   params: { id },
@@ -17,52 +18,45 @@ export default function TeamPage({
 
   console.log('data', data);
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Редактировать команду {id}</h2>
-        {/* <Button icon={<EditOutlined height={10} />} size="large">
-          Отменить
-        </Button> */}
-      </div>
-      <h3>Тема проекта: {data?.team?.projectTheme || '-'}</h3>
+    <BasePageLayout header={<h2>Редактировать команду {id}</h2>}>
+      <h3 className={styles.header}>
+        Тема проекта: {data?.team?.projectTheme || ' -'}
+      </h3>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <h3>Ученики</h3>
-        <Button icon={<PlusOutlined />} size="large">
-          Добавить ученика
-        </Button>
-      </div>
+      <section className={styles.section}>
+        <div className={styles.header}>
+          <h3>Ученики</h3>
+          <Button icon={<PlusOutlined />} size="large">
+            Добавить ученика
+          </Button>
+        </div>
 
-      <TeamUsersEditTable users={data?.team?.students} />
+        <TeamUsersEditTable users={data?.team?.students} />
+      </section>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <h3>Трекеры</h3>
-        <Button icon={<PlusOutlined />} size="large">
-          Добавить трекера
-        </Button>
-      </div>
+      <section className={styles.section}>
+        <div className={styles.header}>
+          <h3>Трекеры</h3>
+          <Button icon={<PlusOutlined />} size="large">
+            Добавить трекера
+          </Button>
+        </div>
 
-      <TeamUsersEditTable users={data?.team?.trackers}></TeamUsersEditTable>
+        <TeamUsersEditTable users={data?.team?.trackers}></TeamUsersEditTable>
+      </section>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div className={styles.buttons_group}>
         <Button icon={<CheckOutlined />} size="large" danger>
           Удалить команду
         </Button>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '1rem',
-        }}
-      >
+      <div className={styles.buttons_group_end}>
         <Button size="large">Назад</Button>
         <Button type="primary" icon={<CheckOutlined />} size="large">
           Подтвердить
         </Button>
       </div>
-    </div>
+    </BasePageLayout>
   );
 }

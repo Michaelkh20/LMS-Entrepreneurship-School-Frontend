@@ -3,10 +3,11 @@
 import { TeamUsersTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersTable';
 import { useGetTeamByIdQuery } from '@/redux/services/api';
 
-import styles from '@/app/admin/main.module.css';
+import styles from '../../main.module.css';
 import { Button } from 'antd';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { TeamUsersEditTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { useRouter } from 'next/navigation';
 
 export default function TeamPage({
   params: { id },
@@ -14,24 +15,38 @@ export default function TeamPage({
   params: { id: string };
 }) {
   const { data } = useGetTeamByIdQuery(id);
-  console.log("data", data);
+  const router = useRouter();
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Команда {id}</h2>
-        <Button icon={<EditOutlined height={10} />} size="large">
-          Редактировать
-        </Button>
-      </div>
-      <h3>
-        Тема проекта: {data?.team?.projectTheme} 
-      </h3>
-
-      <h3>Ученики</h3>
-      <TeamUsersTable users={data?.team?.students}></TeamUsersTable>
-
-      <h3>Трекеры</h3>
-      <TeamUsersTable users={data?.team?.trackers}></TeamUsersTable>
-    </div>
+    <BasePageLayout
+      header={
+        <>
+          <h2>Команда {id}</h2>
+          <Button
+            icon={<EditOutlined height={10} />}
+            size="large"
+            onClick={() => {
+              router.push(`edit/${id}`);
+            }}
+          >
+            Редактировать
+          </Button>
+        </>
+      }
+    >
+      <section className={styles.section}>
+        <h3 className={styles.header}>
+          Тема проекта: {data?.team?.projectTheme}
+        </h3>
+      </section>
+      <section className={styles.section}>
+        <h3 className={styles.header}>Ученики</h3>
+        <TeamUsersTable users={data?.team?.students}></TeamUsersTable>
+      </section>
+      <section className={styles.section}>
+        <h3 className={styles.header}>Трекеры</h3>
+        <TeamUsersTable users={data?.team?.trackers}></TeamUsersTable>
+      </section>
+    </BasePageLayout>
   );
 }
