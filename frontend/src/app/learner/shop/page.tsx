@@ -12,6 +12,7 @@ import {
   LotTitleFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import { useGetLotsForMarketPlaceQuery } from '@/redux/services/api';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function Home() {
   const [page, setPage] = useState(1);
@@ -37,8 +38,7 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.pageLabel}>Магазин</h1>
+    <BasePageLayout header={<h2>Магазин</h2>}>
       <BasicFilter onChangeEvent={handleFilterChanges}>
         <LotNumberFormItem></LotNumberFormItem>
         <LotTitleFormItem></LotTitleFormItem>
@@ -74,6 +74,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </div>
+    </BasePageLayout>
   );
 }

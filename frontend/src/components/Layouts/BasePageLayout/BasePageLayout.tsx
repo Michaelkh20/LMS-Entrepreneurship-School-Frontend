@@ -10,7 +10,7 @@ export const BasePageLayout = ({
 }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.header}>{header}</div>
+      {header && <div className={styles.header}>{header}</div>}
       <div className={styles.main}>{children}</div>
     </div>
   );

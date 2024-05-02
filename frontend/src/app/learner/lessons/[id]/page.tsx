@@ -1,6 +1,4 @@
-'use client';
-
-import styles from '../lessons.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import { LessonPage } from '@/components/Pages/LessonPage/LessonPage';
 
 export default function LessonPageLearner({
@@ -9,8 +7,8 @@ export default function LessonPageLearner({
   params: { id: string };
 }) {
   return (
-    <div className={styles.main__container}>
+    <BasePageLayout>
       <LessonPage params={{ id: id }}></LessonPage>
-    </div>
+    </BasePageLayout>
   );
 }

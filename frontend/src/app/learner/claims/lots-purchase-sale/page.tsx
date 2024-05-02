@@ -5,10 +5,9 @@ import { ClaimBuyingLotTableWithFilter } from '@/components/TableWithFilterNew';
 
 import styles from '@/app/admin/main.module.css';
 import ClaimBuyLotViewModal from '@/components/Modals/ClaimBuyLotViewModal';
-import {
-  useApproveRejectClaimMutation,
-} from '@/redux/services/api';
+import { useApproveRejectClaimMutation } from '@/redux/services/api';
 import { message } from 'antd';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function LotsPurchaseSalePage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -63,10 +62,7 @@ export default function LotsPurchaseSalePage() {
   // }, [declineResult.isError]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Заявки: Купля-продажа лотов</h2>
-      </div>
+    <BasePageLayout header={<h2>Заявки: Купля-продажа лотов</h2>}>
       <ClaimBuyingLotTableWithFilter onRowClick={handleRowClick} />
       {/* <ClaimBuyLotViewModal
         claimId={claimId}
@@ -77,6 +73,6 @@ export default function LotsPurchaseSalePage() {
         // isDeclineLoading={declineResult.isLoading}
         // onExit={handleExit}
       /> */}
-    </div>
+    </BasePageLayout>
   );
 }
