@@ -1,14 +1,11 @@
 import React from 'react';
-import styles from '@/app/admin/main.module.css';
 import { ClaimTransferTableWithFilter } from '@/components/TableWithFilterNew';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function TransfersPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Заявки: Перевод ШПрот</h2>
-      </div>
+    <BasePageLayout header={<h2>Заявки: Перевод ШПрот</h2>}>
       <ClaimTransferTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }

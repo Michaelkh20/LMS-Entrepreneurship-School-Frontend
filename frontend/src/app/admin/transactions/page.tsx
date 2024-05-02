@@ -1,15 +1,12 @@
 import React from 'react';
 
-import styles from '@/app/admin/main.module.css';
 import { TransactionsTableWithFilters } from '@/components/TableWithFilterNew';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function TransactionsPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Транзакции</h2>
-      </div>
+    <BasePageLayout header={<h2>Транзакции</h2>}>
       <TransactionsTableWithFilters />
-    </div>
+    </BasePageLayout>
   );
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import styles from '../../main.module.css';
 import { AssessmentTableWithFilter } from '@/components/TableWithFilterNew/Components/AssessmentTableWithFilter';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function AssessmentPage({
   params: { id },
@@ -11,15 +11,22 @@ export default function AssessmentPage({
   params: { id: number };
 }) {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Оценить ДЗ1</h2>
-        <Button icon={<PlusOutlined height={10} />} size="large" type="primary">
-          Создать
-        </Button>
-      </div>
+    <BasePageLayout
+      header={
+        <>
+          <h2>Оценить ДЗ1</h2>
+          <Button
+            icon={<PlusOutlined height={10} />}
+            size="large"
+            type="primary"
+          >
+            Создать
+          </Button>
+        </>
+      }
+    >
       <AssessmentTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }
 

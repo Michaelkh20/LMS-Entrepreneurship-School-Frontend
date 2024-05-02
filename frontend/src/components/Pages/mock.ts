@@ -1,4 +1,4 @@
-import { GetHomework_Response } from '@proto/assignments/homework_api';
+import { GetHomework_Response } from "@proto/assignments/homework_api";
 
 const mockHwData: GetHomework_Response = {
   homework: {

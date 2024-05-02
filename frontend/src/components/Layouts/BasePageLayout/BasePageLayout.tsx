@@ -6,13 +6,12 @@ export const BasePageLayout = ({
   header,
 }: {
   children: ReactNode;
-  header: ReactNode;
+  header?: ReactNode;
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>{header}</div>
-      {/* <div className={styles.main}>{children}</div> */}
-      {children}
+      <div className={styles.main}>{children}</div>
     </div>
   );
 };

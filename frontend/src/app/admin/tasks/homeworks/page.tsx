@@ -4,17 +4,25 @@ import React from 'react';
 
 import styles from '@/app/admin/main.module.css';
 import { HWTableWithFilter } from '@/components/TableWithFilterNew/Components/HWTableWithFilter';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function HomeworksPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Задания: ДЗ</h2>
-        <Button icon={<PlusOutlined height={10} />} size="large" type="primary">
-          Создать
-        </Button>
-      </div>
+    <BasePageLayout
+      header={
+        <>
+          <h2>Задания: ДЗ</h2>
+          <Button
+            icon={<PlusOutlined height={10} />}
+            size="large"
+            type="primary"
+          >
+            Создать
+          </Button>
+        </>
+      }
+    >
       <HWTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }

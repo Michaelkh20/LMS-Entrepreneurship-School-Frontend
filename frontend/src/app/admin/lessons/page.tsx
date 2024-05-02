@@ -2,19 +2,25 @@ import { LessonsTableWithFilter } from '@/components/TableWithFilterNew/Componen
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
-
-import styles from '@/app/admin/main.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function LessonsPage() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Уроки</h2>
-        <Button icon={<PlusOutlined height={10} />} size="large" type="primary">
-          Создать
-        </Button>
-      </div>
+    <BasePageLayout
+      header={
+        <>
+          <h2>Уроки</h2>
+          <Button
+            icon={<PlusOutlined height={10} />}
+            size="large"
+            type="primary"
+          >
+            Создать
+          </Button>
+        </>
+      }
+    >
       <LessonsTableWithFilter />
-    </div>
+    </BasePageLayout>
   );
 }

@@ -3,7 +3,7 @@ import { PaperClipOutlined } from '@ant-design/icons';
 export const PresentationsSection = ({
   presentationUrls,
 }: {
-  presentationUrls: string[];
+  presentationUrls: string[] | undefined;
 }) => {
   return (
     <div
