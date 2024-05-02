@@ -94,6 +94,7 @@ import type {
   ICreateUpdateUserResponse,
   ISetPasswordRequest,
   ISetPasswordResponse,
+  ICreateUpdateLessonResponse,
 } from '@/types/proto';
 
 import {
@@ -126,6 +127,7 @@ import {
   SetPasswordResponseTransformer,
   SetPasswordRequestTransformer,
   DeleteUserResponseTransformer,
+  CreateUpdateLessonResponseTransformer,
 } from '@/types/proto';
 
 import { getResponseHandler } from './helpers/responseHandler';
@@ -655,18 +657,24 @@ export const api = createApi({
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
         responseHandler: getResponseHandler(LessonsListTransformer),
       }),
     }),
 
-    createLesson: build.mutation<undefined, ICreateUpdateLessonRequest>({
+    createLesson: build.mutation<
+      ICreateUpdateLessonResponse,
+      ICreateUpdateLessonRequest
+    >({
       query: (requestBody) => ({
         url: `/lessons`,
         method: 'POST',
         body: CreateUpdateLessonRequestTransformer.encode(requestBody).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateLessonResponseTransformer
+        ),
       }),
     }),
 
@@ -677,13 +685,19 @@ export const api = createApi({
       }),
     }),
 
-    updateLesson: build.mutation<undefined, UpdateLessonApiArg>({
+    updateLesson: build.mutation<
+      ICreateUpdateLessonResponse,
+      UpdateLessonApiArg
+    >({
       query: (queryArg) => ({
         url: `/lessons/${queryArg.id}`,
         method: 'PUT',
         body: CreateUpdateLessonRequestTransformer.encode(
           queryArg.updateRequestBody
         ).finish(),
+        responseHandler: getResponseHandler(
+          CreateUpdateLessonResponseTransformer
+        ),
       }),
     }),
 

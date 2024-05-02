@@ -44,12 +44,15 @@ export {
 
 export {
   type CreateOrUpdateLesson_Request as ICreateUpdateLessonRequest,
+  type CreateOrUpdateLesson_Response as ICreateUpdateLessonResponse,
   type GetLessons_Response as ILessonsList,
   type GetLesson_Response as IGetLessonResponse,
   type LessonSnippet,
+  type Lesson,
   CreateOrUpdateLesson_Request as CreateUpdateLessonRequestTransformer,
   GetLessons_Response as LessonsListTransformer,
   GetLesson_Response as GetLessonResponseTransformer,
+  CreateOrUpdateLesson_Response as CreateUpdateLessonResponseTransformer,
 } from '@proto/lessons/lessons_api';
 
 export {

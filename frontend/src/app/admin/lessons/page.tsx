@@ -1,10 +1,19 @@
+'use client';
+
+import React from 'react';
 import { LessonsTableWithFilter } from '@/components/TableWithFilterNew/Components/LessonsTableWithFilter';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React from 'react';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { useRouter } from 'next/navigation';
 
 export default function LessonsPage() {
+  const router = useRouter();
+
+  const handleCreateClick = () => {
+    router.push('lessons/create');
+  };
+
   return (
     <BasePageLayout
       header={
@@ -14,6 +23,7 @@ export default function LessonsPage() {
             icon={<PlusOutlined height={10} />}
             size="large"
             type="primary"
+            onClick={handleCreateClick}
           >
             Создать
           </Button>
