@@ -4,10 +4,10 @@ import { useGetSolutionByAssignmentIdAndLearnerIdQuery } from '@/redux/services/
 
 import { GetHomework_Response } from '@proto/assignments/homework_api';
 
-import { Divider } from 'antd';
+import { Divider, Input } from 'antd';
 
 import styles from './HomeworkPage.module.css';
-import { PaperClipOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAuth } from '@/redux/features/authSlice';
 import { AuthState } from '../../../redux/features/authSlice';
 
@@ -63,7 +63,7 @@ export const HomeworkPage = ({ HwId }: { HwId: string }) => {
       <h3>Решение</h3>
       <section className={styles.section}>
         <p className={styles.section_title}>Статус</p>
-        <div>загружено</div>
+        <div>{solutionData ? 'Загружено' : 'Не загружено'}</div>
       </section>
       <section className={styles.section}>
         <p className={styles.section_title}>Номер команды</p>
@@ -90,6 +90,12 @@ export const HomeworkPage = ({ HwId }: { HwId: string }) => {
             </a>
           </span>
         </div>
+      </section>
+      <section className={styles.section}>
+        <p className={styles.section_title}>Загрузить ДЗ</p>
+        <Input type="file">
+          <UploadOutlined></UploadOutlined>Загрузить ДЗ
+        </Input>
       </section>
 
       {/* <div>{solutionData?.HW?.id}</div>
