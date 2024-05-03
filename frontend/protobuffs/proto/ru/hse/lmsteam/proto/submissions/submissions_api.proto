@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.submissions;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.submissions";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "ru/hse/lmsteam/proto/common/pageable.proto";
+import "ru/hse/lmsteam/proto/assignments/homework_api.proto";
+import "ru/hse/lmsteam/proto/users/users_api.proto";
+import "ru/hse/lmsteam/proto/common/team_snippet.proto";
+
+
+message GetSubmission {
+  message Response {
+    Submission submission = 1;
+  }
+}
+
+message CreateSubmission {
+  message Request {
+    string homework_id = 1;
+    google.protobuf.Timestamp publishedAt = 2;
+    SubmissionPayload payload = 3;
+  }
+
+  message Response {
+    Submission submission = 1;
+  }
+}
+
+message GetSubmissions {
+  message Response {
+    ru.hse.lmsteam.proto.common.Page page = 1;
+    repeated Submission submissions = 2;
+  }
+}
+
+message Submission {
+  string id = 1;
+  ru.hse.lmsteam.proto.homeworks.HomeworkSnippet homework = 2;
+  ru.hse.lmsteam.proto.users.UserSnippet owner = 3;
+  ru.hse.lmsteam.proto.users.UserSnippet publisher = 4;
+  // this field is set only if submission is on team homework
+  ru.hse.lmsteam.proto.teams.TeamSnippet team = 5;
+  google.protobuf.Timestamp publishedAt = 6;
+
+  SubmissionPayload payload = 7;
+}
+
+message SubmissionPayload {
+  string text_answer = 1;
+  repeated string attachment_urls = 2;
+}

@@ -4,8 +4,15 @@ import React from 'react';
 
 import { ExamsTableWithFilter } from '@/components/TableWithFilterNew/Components/ExamsTableWithFilter';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { useRouter } from 'next/navigation';
 
 export default function ExamsPage() {
+  const router = useRouter();
+
+  const handleCreateClick = () => {
+    router.push('/admin/tasks/exams/create');
+  };
+
   return (
     <BasePageLayout
       header={
@@ -15,6 +22,7 @@ export default function ExamsPage() {
             icon={<PlusOutlined height={10} />}
             size="large"
             type="primary"
+            onClick={handleCreateClick}
           >
             Создать
           </Button>

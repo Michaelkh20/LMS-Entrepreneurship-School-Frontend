@@ -48,5 +48,6 @@ ru/hse/lmsteam/proto/assignments/test_api.proto \
 ru/hse/lmsteam/proto/lessons/lessons_api.proto \
 ru/hse/lmsteam/proto/teams/teams_api.proto \
 ru/hse/lmsteam/proto/users/users_api.proto \
-ru/hse/lmsteam/proto/users/users_auth_api.proto
+ru/hse/lmsteam/proto/users/users_auth_api.proto \
+ru/hse/lmsteam/proto/common/team_snippet.proto
 ```

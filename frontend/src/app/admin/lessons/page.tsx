@@ -30,7 +30,15 @@ export default function LessonsPage() {
         </>
       }
     >
-      <LessonsTableWithFilter />
+      <LessonsTableWithFilter
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              router.push(`/admin/lessons/${record.id}`);
+            },
+          };
+        }}
+      />
     </BasePageLayout>
   );
 }

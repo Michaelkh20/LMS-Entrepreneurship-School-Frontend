@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import LessonForm from '@/components/Forms/Lessons';
@@ -6,35 +8,31 @@ import {
   useUpdateLessonMutation,
 } from '@/redux/services/api';
 import { ICreateUpdateLessonRequest } from '@/types/proto';
-
-import styles from './page.module.css';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 export default function EditLessonPage({
-  params: { lessonId },
+  params: { id },
 }: {
-  params: { lessonId: string };
+  params: { id: string };
 }) {
-  const { data, isSuccess, isError, isLoading } =
-    useGetLessonByIdQuery(lessonId);
+  const { data, isSuccess, isError, isLoading } = useGetLessonByIdQuery(id);
   const [updateLesson, result] = useUpdateLessonMutation();
 
   const handleFinish = (values: ICreateUpdateLessonRequest) => {
-    updateLesson({ id: lessonId, updateRequestBody: values });
+    updateLesson({ id: id, updateRequestBody: values });
   };
 
   if (!isSuccess) {
     return <LoadingErrorStub isError={isError} isLoading={isLoading} />;
   }
-
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.title}>Изменить урок</h1>
+    <BasePageLayout header={<h2>Изменить урок</h2>}>
       <LessonForm
         type="edit"
         onFinish={handleFinish}
         result={result}
         lesson={data}
       />
-    </div>
+    </BasePageLayout>
   );
 }

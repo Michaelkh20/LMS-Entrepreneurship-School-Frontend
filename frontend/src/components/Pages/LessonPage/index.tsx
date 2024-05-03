@@ -11,9 +11,8 @@ import { useGetLessonByIdQuery } from '@/redux/services/api';
 import { Button, Collapse, CollapseProps, Space } from 'antd';
 import DOMPurify from 'dompurify';
 
-import { GetLesson_Response } from '@proto/lessons/lessons_api';
-import { HomeworkPage } from '@/components/Pages/HomeworkPage/HomeworkPage';
-import { TestPage } from '@/components/Pages/TestPage/TestPage';
+import { HomeworkPage } from '@/components/Pages/HomeworkPage';
+import { TestPage } from '@/components/Pages/TestPage';
 import { useAuth } from '@/redux/features/authSlice';
 
 import styles from './LessonPage.module.css';
@@ -21,6 +20,8 @@ import { EditOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { VideoSection } from './Components/VideoSection';
 import { PresentationsSection } from './Components/PresentationsSection';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { useRouter } from 'next/navigation';
+import LessonDeleteBtn from '@/components/Buttons/DeleteButtons/LessonDeleteBtn';
 
 type lessonType = {
   lessonTitle: string;
@@ -28,6 +29,7 @@ type lessonType = {
 };
 
 export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
+  const router = useRouter();
   const { data } = useGetLessonByIdQuery(id);
   const [textField, setTextField] = useState('');
 
@@ -47,9 +49,13 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
               // fontSize: '1rem',
               wordBreak: 'break-word',
             }}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(data?.lesson?.description!),
-            }}
+            dangerouslySetInnerHTML={
+              data?.lesson?.description !== undefined
+                ? {
+                    __html: DOMPurify.sanitize(data.lesson.description),
+                  }
+                : undefined
+            }
           ></div>
         ),
       },
@@ -75,7 +81,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
               return {
                 key: index + 'HW' + hwId,
                 label: `ДЗ ${index + 1}`,
-                children: <HomeworkPage HwId={hwId}></HomeworkPage>,
+                children: <HomeworkPage hwId={hwId}></HomeworkPage>,
               };
             })}
           ></Collapse>
@@ -91,7 +97,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
               return {
                 key: index + 'Test' + testId,
                 label: `Тест ${index + 1}`,
-                children: <TestPage TestId={testId}></TestPage>,
+                children: <TestPage testId={testId}></TestPage>,
               };
             })}
           ></Collapse>
@@ -99,6 +105,10 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
       },
     ];
   }, [data]);
+
+  const handleEditClick = () => {
+    router.push(`/admin/lessons/${id}/edit`);
+  };
 
   return (
     <BasePageLayout
@@ -114,9 +124,14 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
           <Button type="primary" size="large">
             Посещаемость
           </Button>
-          <Button size="large" icon={<EditOutlined></EditOutlined>}>
+          <Button
+            size="large"
+            icon={<EditOutlined></EditOutlined>}
+            onClick={handleEditClick}
+          >
             Редактировать
           </Button>
+          <LessonDeleteBtn id={id} />
         </Space>
       )}
       <Collapse items={collapseItems} defaultActiveKey={['1', '2']}></Collapse>

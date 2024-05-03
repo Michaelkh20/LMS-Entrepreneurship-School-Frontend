@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.teams;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.teams";
+
+message TeamSnippet {
+  string id = 1;
+  int32 number = 2;
+  string project_theme = 3;
+  string description = 4;
+}

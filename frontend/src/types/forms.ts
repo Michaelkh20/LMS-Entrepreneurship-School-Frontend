@@ -26,3 +26,24 @@ export type LessonFormValues = {
   videoUrls: string[] | undefined;
   presentationUrls: string[] | undefined;
 };
+
+export type HomeworkFormValues = {
+  lessonId: string;
+  deadlineDate: dayjs.Dayjs;
+  isGroupWork: boolean;
+  title: string;
+  description: string;
+  gradingCriteria: string;
+};
+
+export type TestFormValues = {
+  lessonId: string;
+  deadlineDate: dayjs.Dayjs;
+  title: string;
+  testUrl: string;
+};
+
+export type ExamCompetitionsFormValues = {
+  deadlineDate: dayjs.Dayjs;
+  title: string;
+};

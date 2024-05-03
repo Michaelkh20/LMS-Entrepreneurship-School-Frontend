@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeanerSelectionFormItem } from '../FormItems/EntityForms/LearnerSelectionFormItem';
 import { TeamSelectionFormItem } from '../FormItems/EntityForms/TeamSelectionFormItem';
-import { TaskSelectionFormItem } from '../FormItems/EntityForms/TaskSelectionFormItem';
+import { LessonSelectionFormItem } from '../FormItems/EntityForms/LessonSelectionFormItem';
 import { AssessmentCreateUpdateRequest } from '@/types/api';
 
 export default function CreateAssessmentForm() {
@@ -84,7 +84,7 @@ export default function CreateAssessmentForm() {
       layout="vertical"
       style={{ padding: '2rem' }}
     >
-      <TaskSelectionFormItem />
+      <LessonSelectionFormItem />
       <Radio.Group
         optionType="button"
         onChange={(e) => setAssessmentReceiver(e.target.value)}

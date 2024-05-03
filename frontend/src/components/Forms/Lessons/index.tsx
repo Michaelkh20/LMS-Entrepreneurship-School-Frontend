@@ -19,24 +19,27 @@ import {
   ICreateUpdateLessonResponse,
   IGetLessonResponse,
 } from '@/types/proto';
-import type {
-  useCreateLessonMutation,
-  useUpdateLessonMutation,
-} from '@/redux/services/api';
 import { useRouter } from 'next/navigation';
 import { formValuesToRequest, getResponseToFormValues } from './helpers';
+import { MutationResultType, UpdateLessonApiArg } from '@/types/api';
 
 type LessonFormProps = {
   onFinish: (values: ICreateUpdateLessonRequest) => void;
 } & (
   | {
       type: 'create';
-      result: ReturnType<typeof useCreateLessonMutation>[1];
+      result: MutationResultType<
+        ICreateUpdateLessonResponse,
+        ICreateUpdateLessonRequest
+      >;
       lesson?: undefined;
     }
   | {
       type: 'edit';
-      result: ReturnType<typeof useUpdateLessonMutation>[1];
+      result: MutationResultType<
+        ICreateUpdateLessonResponse,
+        UpdateLessonApiArg
+      >;
       lesson: IGetLessonResponse;
     }
 );
@@ -78,7 +81,7 @@ export default function LessonForm({
     }
 
     if (result.isSuccess) {
-      const lessonId = (result.data as ICreateUpdateLessonResponse).lesson?.id;
+      const lessonId = result.data.lesson?.id;
       message.success(
         type === 'create' ? 'Урок успешно создан' : 'Урок успешно изменён'
       );
@@ -169,12 +172,14 @@ export default function LessonForm({
         addBtnText="Добавить ссылку на видео"
         requiredMessage="Введите ссылку на видео или удалите это поле"
         title="Видео"
+        rules={[{ type: 'url', message: 'Нужно ввести ссылку' }]}
       />
       <ListFormItem
         name="presentationUrls"
         addBtnText="Добавить ссылку на презентацию"
         requiredMessage="Введите ссылку на презентацию или удалите это поле"
         title="Презентации"
+        rules={[{ type: 'url', message: 'Нужно ввести ссылку' }]}
       />
       <Form.Item>
         <Space>

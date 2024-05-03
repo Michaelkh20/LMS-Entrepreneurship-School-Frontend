@@ -1,7 +1,7 @@
 import React from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Flex, Form, Input, Space } from 'antd';
-import { FormListProps } from 'antd/es/form';
+import { FormListProps, Rule } from 'antd/es/form';
 import styles from './ListFormItem.module.css';
 
 type ListProps = {
@@ -9,13 +9,15 @@ type ListProps = {
   title: string;
   requiredMessage: string;
   addBtnText: string;
-} & Omit<FormListProps, 'children'>;
+  rules?: Rule[];
+} & Omit<FormListProps, 'children' | 'rules'>;
 
 export default function ListFormItem({
   name,
   addBtnText,
   requiredMessage,
   title,
+  rules = [],
   ...formListProps
 }: ListProps) {
   return (
@@ -35,6 +37,7 @@ export default function ListFormItem({
                   whitespace: true,
                   message: requiredMessage,
                 },
+                ...rules,
               ]}
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 8 }}

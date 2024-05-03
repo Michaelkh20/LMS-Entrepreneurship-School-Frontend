@@ -35,13 +35,7 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
     dataIndex: 'date',
     key: 'date',
     render: (value, record, index) => {
-      return (
-        <>
-          {record.date &&
-            `${record.date?.getDate()}.${record.date?.getMonth()}.${record.date?.getFullYear()}`}
-          -
-        </>
-      );
+      return <>{record.date ? record.date.toLocaleDateString('ru-RU') : '-'}</>;
     },
   },
 ];
@@ -97,7 +91,7 @@ export function LessonsTableWithFilter({
             <LessonNumberFormItem />
             <LessonTitleFormItem />
             <DatePickerFormItem
-              name={'dateFrom'}
+              name={'publishDate'}
               placeholder={'Дата проведения'}
             />
           </>

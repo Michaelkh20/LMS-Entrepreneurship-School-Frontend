@@ -7,12 +7,11 @@ import {
 import type { GetExamListApiArg } from '@/types/api';
 import { useGetExamListQuery } from '@/redux/services/api';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
-import { GetExams_Response } from '@proto/assignments/exam_api';
 
 //GetExams_Response
 
@@ -36,25 +35,14 @@ const ExamsColumns: ColumnsType<ExamsColumnsDataType> = [
     render: (value, record, index) => {
       return (
         <>
-          {record.deadlineDate &&
-            `${record.deadlineDate?.getDate()}.${record.deadlineDate?.getMonth()}.${record.deadlineDate?.getFullYear()}`}
-          -
+          {record.deadlineDate
+            ? record.deadlineDate.toLocaleDateString('ru-RU')
+            : '-'}
         </>
       );
     },
   },
 ];
-
-const mockData: GetExams_Response = {
-  page: undefined,
-  exams: [
-    {
-      id: 'ex1',
-      title: 'exam',
-      deadlineDate: undefined,
-    },
-  ],
-};
 
 export function ExamsTableWithFilter({
   onRow,
@@ -67,23 +55,16 @@ export function ExamsTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<ExamsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetExamListQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: ExamsColumnsDataType[] = mockData?.exams.map(
-      (exam): ExamsColumnsDataType => {
-        const res: ExamsColumnsDataType = {
-          id: exam.id,
-          title: exam.title,
-          deadlineDate: exam.deadlineDate,
-        };
-        return res;
-      }
-    );
-    setDataTable(dataForTable);
-  }, [mockData, data]);
+  const dataForTable = useMemo(() => {
+    return data?.exams.map<ExamsColumnsDataType>((exam) => ({
+      id: exam.id,
+      title: exam.title,
+      deadlineDate: exam.deadlineDate,
+    }));
+  }, [data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -92,7 +73,7 @@ export function ExamsTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <LessonNumberFormItem />
@@ -106,8 +87,8 @@ export function ExamsTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ExamsColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.page?.totalElements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

@@ -17,7 +17,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { FinalGradeTable } from '../TableWithFilterNew';
-import AccountDeleteBtn from '../Buttons/DeleteButtons/AccountDeleteBtn/AccountDeleteBtn';
+import AccountDeleteBtn from '../Buttons/DeleteButtons/AccountDeleteBtn';
 
 const cx = cn.bind(styles);
 

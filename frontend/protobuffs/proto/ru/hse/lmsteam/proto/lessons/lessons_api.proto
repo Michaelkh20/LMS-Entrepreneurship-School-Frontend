@@ -15,16 +15,6 @@ message GetLesson {
   }
 }
 
-message UpdateLesson {
-  message Request {
-    Lesson lesson = 1;
-  }
-
-  message Response {
-    Lesson lesson = 1;
-  }
-}
-
 message CreateOrUpdateLesson {
   message Request {
     string title = 1;

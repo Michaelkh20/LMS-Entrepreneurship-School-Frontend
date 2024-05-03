@@ -4,13 +4,11 @@ import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/redux/features/authSlice';
 
-export default function UserDropdown(
-  {
-    props: { name = 'Администратор' },
-  }: {
-    props: { name?: string };
-  }
-) {
+export default function UserDropdown({
+  props: { name = 'Администратор' },
+}: {
+  props: { name?: string };
+}) {
   const router = useRouter();
   const [_, { logOut }] = useAuth();
 
@@ -42,7 +40,9 @@ export default function UserDropdown(
             alignItems: 'center',
             margin: '12px 0',
           }}
-          onClick={()=>{router.push('/learner/profile')}}
+          onClick={() => {
+            router.push('/learner/profile');
+          }}
         >
           <Space>
             <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>

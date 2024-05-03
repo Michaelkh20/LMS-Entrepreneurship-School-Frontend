@@ -8,17 +8,18 @@ import {
 import type { GetTestListApiArg } from '@/types/api';
 import { useGetTestListQuery } from '@/redux/services/api';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
-import { GetTests_Response } from '@proto/assignments/test_api';
+import type { LessonSnippet } from '@types/proto';
+import { Flex } from 'antd';
 
 type TestsColumnsDataType = {
   id: string;
   title: string;
-  lesson: number | undefined;
+  lesson: LessonSnippet | undefined;
   deadline: Date | undefined;
 };
 
@@ -34,7 +35,20 @@ const TestsColumns: ColumnsType<TestsColumnsDataType> = [
     dataIndex: 'lesson',
     key: 'lesson',
     render: (value, record, index) => {
-      return <>{record.lesson ? record.lesson : '-'}</>;
+      return (
+        <>
+          {record.lesson ? (
+            <Flex justify="space-between">
+              <div>{`Урок №${record.lesson.lessonNumber}, ${record.lesson.title}`}</div>
+              <div>
+                {record.lesson.publishDate?.toLocaleDateString('ru-RU') || '-'}
+              </div>
+            </Flex>
+          ) : (
+            '-'
+          )}
+        </>
+      );
     },
   },
   {
@@ -44,32 +58,12 @@ const TestsColumns: ColumnsType<TestsColumnsDataType> = [
     render: (value, record, index) => {
       return (
         <>
-          {record.deadline &&
-            `${record.deadline?.getDate()}.${record.deadline?.getMonth()}.${record.deadline?.getFullYear()}`}
-          -
+          {record.deadline ? record.deadline.toLocaleDateString('ru-RU') : '-'}
         </>
       );
     },
   },
 ];
-
-const mockData: GetTests_Response = {
-  page: undefined,
-  tests: [
-    {
-      id: '1',
-      // lesson: {
-      //   id: '2',
-      //   title: 'lesson 1',
-      //   lessonNumber: 1,
-      //   publishDate: undefined,
-      // },\
-      lesson: undefined,
-      title: 'test',
-      deadlineDate: undefined,
-    },
-  ],
-};
 
 export function TestsTableWithFilter({
   onRow,
@@ -82,24 +76,17 @@ export function TestsTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<TestsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetTestListQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: TestsColumnsDataType[] | undefined = data?.tests.map(
-      (test): TestsColumnsDataType => {
-        const res: TestsColumnsDataType = {
-          id: test.id,
-          title: test.title,
-          deadline: test.deadlineDate,
-          lesson: test.lesson?.lessonNumber || undefined,
-        };
-        return res;
-      }
-    );
-    setDataTable(dataForTable);
-  }, [mockData, data]);
+  const dataForTable = useMemo(() => {
+    return data?.tests.map<TestsColumnsDataType>((test) => ({
+      id: test.id,
+      title: test.title,
+      deadline: test.deadlineDate,
+      lesson: test.lesson,
+    }));
+  }, [data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -123,7 +110,7 @@ export function TestsTableWithFilter({
           scroll: { x: true },
           columns: TestsColumns,
           pagination: { total: data?.page?.totalElements },
-          dataSource: dataTable,
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

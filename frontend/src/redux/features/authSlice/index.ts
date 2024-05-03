@@ -3,10 +3,14 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { Role } from '@/types/common';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 import { AuthStatus } from '@/types/redux';
 import { ISuccessAuthResponse } from '@/types/proto';
 import { useCallback } from 'react';
+import {
+  deserializeAuthStateFromLocalStorage,
+  serializeAuthStateToLocalStorage,
+} from './helpers';
 
 export type AuthState =
   | {
@@ -28,7 +32,7 @@ export type AuthState =
       patronymic: string | undefined;
     };
 
-const initialState: AuthState = {
+const defaultInitialState: AuthState = {
   status: AuthStatus.NOT_AUTHED,
   userId: undefined,
   token: undefined,
@@ -38,9 +42,11 @@ const initialState: AuthState = {
   role: undefined,
 };
 
+const deserializedInitialState = deserializeAuthStateFromLocalStorage();
+
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState as AuthState,
+  initialState: deserializedInitialState || (defaultInitialState as AuthState),
   reducers: {
     logIn: (_, action: PayloadAction<ISuccessAuthResponse>) => {
       const newState: AuthState = {
@@ -53,20 +59,9 @@ export const authSlice = createSlice({
         role: action.payload.role,
       };
 
+      serializeAuthStateToLocalStorage(newState);
+
       return newState;
-      // state.status = AuthStatus.AUTHED;
-      // // @ts-ignore
-      // state.userId = action.payload.userId;
-      // // @ts-ignore
-      // state.token = action.payload.token;
-      // // @ts-ignore
-      // state.name = action.payload.name;
-      // // @ts-ignore
-      // state.surname = action.payload.surname;
-      // // @ts-ignore
-      // state.patronymic = action.payload.patronymic;
-      // // @ts-ignore
-      // state.role = action.payload.role;
     },
     logOut: () => {
       const newState: AuthState = {
@@ -78,6 +73,8 @@ export const authSlice = createSlice({
         patronymic: undefined,
         role: undefined,
       };
+
+      serializeAuthStateToLocalStorage(newState);
 
       return newState;
     },
