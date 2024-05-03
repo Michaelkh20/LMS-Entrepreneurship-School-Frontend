@@ -7,6 +7,7 @@ option java_package = "ru.hse.lmsteam.schema.api.users";
 
 import "google/protobuf/wrappers.proto";
 import "ru/hse/lmsteam/proto/common/pageable.proto";
+import "ru/hse/lmsteam/proto/common/team_snippet.proto";
 
 message GetUser {
   message Request {
@@ -77,7 +78,7 @@ message User {
   string balance = 9;
   UserRoleNamespace.Role role = 10;
 
-  repeated TeamSnippet member_of_teams = 11;
+  repeated ru.hse.lmsteam.proto.teams.TeamSnippet member_of_teams = 11;
 }
 
 message UserSnippet {
@@ -104,11 +105,3 @@ message UserRoleNamespace {
     ADMIN = 3;
   }
 }
-
-message TeamSnippet {
-  string id = 1;
-  int32 number = 2;
-  string project_theme = 3;
-  string description = 4;
-}
-

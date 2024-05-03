@@ -9,16 +9,13 @@ import { useRouter } from 'next/navigation';
 import { Role, Sex } from '@/types/common';
 import type { UserFormValues } from '@/types/forms';
 import { formValuesToRequest, getResponseToFormValues } from './helpers';
-import type {
-  useCreateUserMutation,
-  useUpdateUserMutation,
-} from '@/redux/services/api';
 import { roleToString, sexToString } from '@/util/enumsToString';
 import {
   ICreateUpdateUserRequest,
   ICreateUpdateUserResponse,
   IGetUserResponse,
 } from '@/types/proto';
+import { MutationResultType, UpdateUserApiArg } from '@/types/api';
 
 const sexOptions = [
   { label: sexToString(Sex.MALE), value: Sex.MALE },
@@ -35,12 +32,15 @@ type UserFormProps = {
 } & (
   | {
       type: 'create';
-      result: ReturnType<typeof useCreateUserMutation>[1];
+      result: MutationResultType<
+        ICreateUpdateUserResponse,
+        ICreateUpdateUserRequest
+      >;
       user?: undefined;
     }
   | {
       type: 'edit';
-      result: ReturnType<typeof useUpdateUserMutation>[1];
+      result: MutationResultType<ICreateUpdateUserResponse, UpdateUserApiArg>;
       user: IGetUserResponse;
     }
 );
@@ -98,7 +98,7 @@ export default function UserForm({
     }
 
     if (result.isSuccess) {
-      const userId = (result.data as ICreateUpdateUserResponse).user?.id;
+      const userId = result.data.user?.id;
       message.success(
         type === 'create'
           ? 'Пользователь успешно создан'

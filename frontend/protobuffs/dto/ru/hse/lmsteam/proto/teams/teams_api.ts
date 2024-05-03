@@ -3,7 +3,8 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Int32Value, StringValue } from "../../../../../google/protobuf/wrappers";
 import { Page } from "../common/pageable";
-import { TeamSnippet, User, UserSnippet } from "../users/users_api";
+import { TeamSnippet } from "../common/team_snippet";
+import { User, UserSnippet } from "../users/users_api";
 
 export const protobufPackage = "ru.hse.lmsteam.proto.teams";
 

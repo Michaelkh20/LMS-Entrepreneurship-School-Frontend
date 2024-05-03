@@ -1,30 +1,24 @@
 'use client';
 
-import {
-  ClaimStatusFormItem,
-  UserSelectionFormItem,
-  LotNumberFormItem,
-  DatePickerFormItem,
-  LessonNumberFormItem,
-} from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetHwListApiArg, LessonTableSnippet } from '@/types/api';
+import { DatePickerFormItem } from '@/components/Forms/FormItems/Filters';
+import type { GetHwListApiArg } from '@/types/api';
 import { useGetHwListQuery } from '@/redux/services/api';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
-import { GetHomeworks_Response } from '@proto/assignments/homework_api';
+import { LessonSnippet } from '@types/proto';
+import { Flex } from 'antd';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
+import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';
 
 //GetHomeworks_Response
 
 type HWColumnsDataType = {
   id: string;
   title: string;
-  lesson: LessonTableSnippet['number'] | undefined;
+  lesson: LessonSnippet | undefined;
   deadline: Date | undefined;
 };
 
@@ -40,7 +34,20 @@ const HWColumns: ColumnsType<HWColumnsDataType> = [
     dataIndex: 'lesson',
     key: 'lesson',
     render: (value, record, index) => {
-      return <>{record.lesson ? record.lesson : '-'}</>;
+      return (
+        <>
+          {record.lesson ? (
+            <Flex justify="space-between">
+              <div>{`Урок №${record.lesson.lessonNumber}, ${record.lesson.title}`}</div>
+              <div>
+                {record.lesson.publishDate?.toLocaleDateString('ru-RU') || '-'}
+              </div>
+            </Flex>
+          ) : (
+            '-'
+          )}
+        </>
+      );
     },
   },
   {
@@ -50,55 +57,12 @@ const HWColumns: ColumnsType<HWColumnsDataType> = [
     render: (value, record, index) => {
       return (
         <>
-          {record.deadline &&
-            `${record.deadline?.getDate()}.${record.deadline?.getMonth()}.${record.deadline?.getFullYear()}`}
-          -
+          {record.deadline ? record.deadline.toLocaleDateString('ru-RU') : '-'}
         </>
       );
     },
   },
 ];
-
-const mockData: GetHomeworks_Response = {
-  page: undefined,
-  homeworks: [
-    {
-      id: '1',
-      // lesson: {
-      //   id: '2',
-      //   title: 'lesson 1',
-      //   lessonNumber: 1,
-      //   publishDate: undefined,
-      // },\
-      lesson: undefined,
-      title: 'HW',
-      deadlineDate: undefined,
-    },
-  ],
-};
-// const mockData: TasksColumnsDataType[] = [
-//   {
-//     id: 1,
-//     taskTitle: 'ДЗ_1',
-//     lessonNumber: 'Ур_1',
-//     taskType: TaskType.HW,
-//     deadline: '01.01.2001',
-//   },
-//   {
-//     id: 2,
-//     taskTitle: 'ДЗ_2',
-//     lessonNumber: 'Ур_2',
-//     taskType: TaskType.HW,
-//     deadline: '01.01.2001',
-//   },
-//   {
-//     id: 3,
-//     taskTitle: 'ДЗ_3',
-//     lessonNumber: 'Ур_3',
-//     taskType: TaskType.HW,
-//     deadline: '01.01.2001',
-//   },
-// ];
 
 export function HWTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   const [formData, setFormData] = useState<GetHwListApiArg>({
@@ -107,24 +71,17 @@ export function HWTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<HWColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetHwListQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: HWColumnsDataType[] | undefined = data?.homeworks.map(
-      (hw): HWColumnsDataType => {
-        const res: HWColumnsDataType = {
-          id: hw.id,
-          title: hw.title,
-          deadline: hw.deadlineDate,
-          lesson: hw.lesson?.lessonNumber,
-        };
-        return res;
-      }
-    );
-    setDataTable(dataForTable);
-  }, [mockData, data]);
+  const dataForTable = useMemo(() => {
+    return data?.homeworks.map<HWColumnsDataType>((hw) => ({
+      id: hw.id,
+      title: hw.title,
+      deadline: hw.deadlineDate,
+      lesson: hw.lesson,
+    }));
+  }, [data]);
 
   useEffect(() => {
     console.log('FormData1:', formData);
@@ -133,22 +90,26 @@ export function HWTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Название ДЗ" />
+            <LessonSelectionFormItem type="filter" />
             <DatePickerFormItem
-              name={'dateFrom'}
-              placeholder={'Дата проведения'}
+              name={'deadlineFrom'}
+              placeholder={'Дедлайн от'}
+            />
+            <DatePickerFormItem
+              name={'deadlineTo'}
+              placeholder={'Дедлайн до'}
             />
           </>
         }
         tableProps={{
           scroll: { x: true },
           columns: HWColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.page?.totalElements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

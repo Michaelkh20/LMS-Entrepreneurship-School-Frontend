@@ -7,10 +7,10 @@ import {
 
 import type { GetLessonsApiArg } from '@/types/api';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 
 import { useGetLessonsQuery } from '@/redux/services/api';
 import { GetLessons_Response } from '@proto/lessons/lessons_api';
@@ -35,13 +35,7 @@ const LessonsColumns: ColumnsType<LessonsColumnsDataType> = [
     dataIndex: 'date',
     key: 'date',
     render: (value, record, index) => {
-      return (
-        <>
-          {record.date &&
-            `${record.date?.getDate()}.${record.date?.getMonth()}.${record.date?.getFullYear()}`}
-          -
-        </>
-      );
+      return <>{record.date ? record.date.toLocaleDateString('ru-RU') : '-'}</>;
     },
   },
 ];
@@ -72,22 +66,16 @@ export function LessonsTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<LessonsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetLessonsQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: LessonsColumnsDataType[] | undefined =
-      data?.lessons.map((lesson): LessonsColumnsDataType => {
-        const res: LessonsColumnsDataType = {
-          id: lesson.id,
-          lessonNumber: lesson.lessonNumber,
-          lessonTheme: lesson.title,
-          date: lesson.publishDate,
-        };
-        return res;
-      });
-    setDataTable(dataForTable);
+  const dataForTable = useMemo(() => {
+    return data?.lessons.map<LessonsColumnsDataType>((lesson) => ({
+      id: lesson.id,
+      lessonNumber: lesson.lessonNumber,
+      lessonTheme: lesson.title,
+      date: lesson.publishDate,
+    }));
   }, [data]);
 
   useEffect(() => {
@@ -97,14 +85,18 @@ export function LessonsTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
             <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Тема урока" />
             <DatePickerFormItem
-              name={'dateFrom'}
-              placeholder={'Дата проведения'}
+              name={'publishDateFrom'}
+              placeholder={'Дата проведения от'}
+            />
+            <DatePickerFormItem
+              name={'publishDateTo'}
+              placeholder={'Дата проведения до'}
             />
           </>
         }
@@ -112,7 +104,7 @@ export function LessonsTableWithFilter({
           scroll: { x: true },
           columns: LessonsColumns,
           pagination: { total: data?.page?.totalElements },
-          dataSource: dataTable,
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

@@ -7,12 +7,11 @@ import {
 import type { GetCompetitionListApiArg } from '@/types/api';
 import { useGetCompetitionListQuery } from '@/redux/services/api';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
-import { GetCompetitions_Response } from '@proto/assignments/competition_api';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 
 type CompetitionsColumnsDataType = {
   id: string;
@@ -22,7 +21,7 @@ type CompetitionsColumnsDataType = {
 
 const CompetitionsColumns: ColumnsType<CompetitionsColumnsDataType> = [
   {
-    title: 'Задание',
+    title: 'Название конкурса',
     dataIndex: 'title',
     key: 'title',
     sorter: true,
@@ -34,25 +33,14 @@ const CompetitionsColumns: ColumnsType<CompetitionsColumnsDataType> = [
     render: (value, record, index) => {
       return (
         <>
-          {record.deadlineDate &&
-            `${record.deadlineDate?.getDate()}.${record.deadlineDate?.getMonth()}.${record.deadlineDate?.getFullYear()}`}
-          -
+          {record.deadlineDate
+            ? record.deadlineDate.toLocaleDateString('ru-RU')
+            : '-'}
         </>
       );
     },
   },
 ];
-
-const mockData: GetCompetitions_Response = {
-  page: undefined,
-  competitions: [
-    {
-      id: '1',
-      title: 'comp_1',
-      deadlineDate: undefined,
-    },
-  ],
-};
 
 export function CompetitionsTableWithFilter({
   onRow,
@@ -65,21 +53,17 @@ export function CompetitionsTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] = useState<CompetitionsColumnsDataType[]>();
   const { data, isLoading, isError, isFetching } =
     useGetCompetitionListQuery(dataForReq);
 
-  useEffect(() => {
-    const dataForTable: CompetitionsColumnsDataType[] | undefined =
-      data?.competitions.map((competition): CompetitionsColumnsDataType => {
-        const res: CompetitionsColumnsDataType = {
-          id: competition.id,
-          title: competition.title,
-          deadlineDate: competition.deadlineDate,
-        };
-        return res;
-      });
-    setDataTable(dataForTable);
+  const dataForTable = useMemo(() => {
+    return data?.competitions.map<CompetitionsColumnsDataType>(
+      (competition) => ({
+        id: competition.id,
+        title: competition.title,
+        deadlineDate: competition.deadlineDate,
+      })
+    );
   }, [data]);
 
   useEffect(() => {
@@ -92,11 +76,14 @@ export function CompetitionsTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Название конкурса" />
             <DatePickerFormItem
-              name={'dateFrom'}
-              placeholder={'Дата проведения'}
+              name={'deadlineFrom'}
+              placeholder={'Дедлайн от'}
+            />
+            <DatePickerFormItem
+              name={'deadlineTo'}
+              placeholder={'Дедлайн до'}
             />
           </>
         }
@@ -104,7 +91,7 @@ export function CompetitionsTableWithFilter({
           scroll: { x: true },
           columns: CompetitionsColumns,
           pagination: { total: data?.page?.totalElements },
-          dataSource: dataTable,
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

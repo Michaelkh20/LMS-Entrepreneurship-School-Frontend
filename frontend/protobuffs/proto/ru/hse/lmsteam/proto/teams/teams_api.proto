@@ -8,6 +8,7 @@ option java_package = "ru.hse.lmsteam.schema.api.teams";
 import "google/protobuf/wrappers.proto";
 import "ru/hse/lmsteam/proto/users/users_api.proto";
 import "ru/hse/lmsteam/proto/common/pageable.proto";
+import "ru/hse/lmsteam/proto/common/team_snippet.proto";
 
 message GetTeam {
   message Response {
@@ -40,7 +41,7 @@ message DeleteTeam {
 message GetTeams {
   message Response {
     ru.hse.lmsteam.proto.common.Page page = 1;
-    repeated ru.hse.lmsteam.proto.users.TeamSnippet teams = 2;
+    repeated ru.hse.lmsteam.proto.teams.TeamSnippet teams = 2;
   }
 }
 
@@ -69,7 +70,7 @@ message UpdateTeamMembers {
 message ValidationErrors {
   message UserTeams {
     ru.hse.lmsteam.proto.users.UserSnippet user = 1;
-    repeated ru.hse.lmsteam.proto.users.TeamSnippet teams = 2;
+    repeated ru.hse.lmsteam.proto.teams.TeamSnippet teams = 2;
   }
 
   repeated string not_found_user_ids = 1;

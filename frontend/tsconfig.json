@@ -23,6 +23,7 @@
       "@/*": ["./src/*"],
       "@dto": ["./protobuffs/dto"],
       "@util": ["./src/util"],
+      "@types/*": ["./src/types/*"],
       "@proto/*": ["./protobuffs/dto/ru/hse/lmsteam/proto/*"]
     }
   },

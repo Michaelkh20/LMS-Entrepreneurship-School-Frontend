@@ -26,13 +26,13 @@ export default function BaseDeleteButton({
         type="dashed"
         danger
         size="large"
-        style={{
-          width: '11rem',
-          height: ' 3rem',
-          fontSize: '1.2rem',
-          fontWeight: '600',
-          borderRadius: '0.75rem',
-        }}
+        // style={{
+        //   width: '11rem',
+        //   height: ' 3rem',
+        //   fontSize: '1.2rem',
+        //   fontWeight: '600',
+        //   borderRadius: '0.75rem',
+        // }}
         loading={isLoading}
       >
         Удалить

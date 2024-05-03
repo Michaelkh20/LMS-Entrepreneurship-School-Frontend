@@ -12,13 +12,14 @@ export {
   SetPassword_Response as SetPasswordResponseTransformer,
 } from '@proto/users/users_auth_api';
 
+export { type TeamSnippet } from '@proto/common/team_snippet';
+
 export {
   type CreateOrUpdateUser_Request as ICreateUpdateUserRequest,
   type GetUsers_Response as IUsersList,
   type GetUser_Response as IGetUserResponse,
   type GetUserBalance_Response as IUserBalanceResponse,
   type GetUserNameList_Response as IUserSnippetList,
-  type TeamSnippet,
   type User,
   type CreateOrUpdateUser_Response as ICreateUpdateUserResponse,
   type DeleteUser_Response as IDeleteUserResponse,
@@ -44,50 +45,75 @@ export {
 
 export {
   type CreateOrUpdateLesson_Request as ICreateUpdateLessonRequest,
+  type CreateOrUpdateLesson_Response as ICreateUpdateLessonResponse,
   type GetLessons_Response as ILessonsList,
   type GetLesson_Response as IGetLessonResponse,
   type LessonSnippet,
+  type Lesson,
+  type DeleteLesson_Response as IDeleteLessonResponse,
   CreateOrUpdateLesson_Request as CreateUpdateLessonRequestTransformer,
   GetLessons_Response as LessonsListTransformer,
   GetLesson_Response as GetLessonResponseTransformer,
+  CreateOrUpdateLesson_Response as CreateUpdateLessonResponseTransformer,
+  DeleteLesson_Response as DeleteLessonResponseTransformer,
 } from '@proto/lessons/lessons_api';
 
 export {
   type CreateOrUpdateHomework_Request as ICreateUpdateHomeworkRequest,
+  type CreateOrUpdateHomework_Response as ICreateUpdateHomeworkResponse,
   type GetHomeworks_Response as IHomeworksList,
   type GetHomework_Response as IGetHomeworkResponse,
   type HomeworkSnippet,
+  type Homework,
+  type DeleteHomework_Response as IDeleteHomeworkResponse,
   CreateOrUpdateHomework_Request as CreateUpdateHomeworkRequestTransformer,
   GetHomeworks_Response as HomeworksListTransformer,
   GetHomework_Response as GetHomeworkResponseTransformer,
+  CreateOrUpdateHomework_Response as CreateUpdateHomeworkResponseTransformer,
+  DeleteHomework_Response as DeleteHomeworkResponseTransformer,
 } from '@proto/assignments/homework_api';
 
 export {
   type CreateOrUpdateTest_Request as ICreateUpdateTestRequest,
+  type CreateOrUpdateTest_Response as ICreateUpdateTestResponse,
   type GetTests_Response as ITestsList,
   type GetTest_Response as IGetTestResponse,
   type TestSnippet,
+  type Test,
+  type DeleteTest_Response as IDeleteTestResponse,
   CreateOrUpdateTest_Request as CreateUpdateTestRequestTransformer,
   GetTests_Response as TestsListTransformer,
   GetTest_Response as GetTestResponseTransformer,
+  CreateOrUpdateTest_Response as CreateUpdateTestResponseTransformer,
+  DeleteTest_Response as DeleteTestResponseTransformer,
 } from '@proto/assignments/test_api';
 
 export {
   type CreateOrUpdateExam_Request as ICreateUpdateExamRequest,
+  type CreateOrUpdateExam_Response as ICreateUpdateExamResponse,
   type GetExams_Response as IExamsList,
   type GetExam_Response as IGetExamResponse,
   type ExamSnippet,
+  type Exam,
+  type DeleteExam_Response as IDeleteExamResponse,
   CreateOrUpdateExam_Request as CreateUpdateExamRequestTransformer,
   GetExams_Response as ExamsListTransformer,
   GetExam_Response as GetExamResponseTransformer,
+  CreateOrUpdateExam_Response as CreateUpdateExamResponseTransformer,
+  DeleteExam_Response as DeleteExamResponseTransformer,
 } from '@proto/assignments/exam_api';
 
 export {
   type CreateOrUpdateCompetition_Request as ICreateUpdateCompetitionRequest,
+  type CreateOrUpdateCompetition_Response as ICreateUpdateCompetitionResponse,
   type GetCompetitions_Response as ICompetitionsList,
   type GetCompetition_Response as IGetCompetitionResponse,
   type CompetitionSnippet,
+  type Competition,
+  type DeleteCompetition_Response as IDeleteCompetitionResponse,
   CreateOrUpdateCompetition_Request as CreateUpdateCompetitionRequestTransformer,
   GetCompetitions_Response as CompetitionsListTransformer,
   GetCompetition_Response as GetCompetitionResponseTransformer,
+  CreateOrUpdateCompetition_Response as CreateUpdateCompetitionResponseTransformer,
+  DeleteCompetition_Response as DeleteCompetitionResponseTransformer,
 } from '@proto/assignments/competition_api';

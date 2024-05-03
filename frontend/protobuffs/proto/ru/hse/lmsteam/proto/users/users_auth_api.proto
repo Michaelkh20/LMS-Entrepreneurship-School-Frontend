@@ -35,7 +35,7 @@ message ChangePassword {
 
 message SetPassword {
   message Request {
-    string login = 1;
+    reserved 1;
     string token = 2;
     string new_password = 3;
   }

@@ -1,3 +1,10 @@
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+  TypedUseMutationResult,
+} from '@reduxjs/toolkit/dist/query/react';
 import {
   AssessmentType,
   LotStatus,
@@ -11,6 +18,8 @@ import {
 import { Role } from './proto';
 
 import type {
+  Competition,
+  Exam,
   ICreateUpdateCompetitionRequest,
   ICreateUpdateExamRequest,
   ICreateUpdateHomeworkRequest,
@@ -19,6 +28,24 @@ import type {
   ICreateUpdateTestRequest,
   ICreateUpdateUserRequest,
 } from '@/types/proto';
+
+export type MutationResultType<ResponseType, ArgType> = TypedUseMutationResult<
+  ResponseType,
+  ArgType,
+  BaseQueryFn<
+    string | FetchArgs,
+    unknown,
+    FetchBaseQueryError,
+    {},
+    FetchBaseQueryMeta
+  >
+>;
+
+export interface ICreateUpdateExamCompetitionRequest
+  extends ICreateUpdateExamRequest,
+    ICreateUpdateCompetitionRequest {}
+
+export interface ExamCompetition extends Exam, Competition {}
 
 export type AuthApiArg = {
   /** User login */
@@ -44,7 +71,7 @@ export type GetAccountsApiArg = Partial<{
   size: number;
 }>;
 
-export type UpdateAccountApiArg = {
+export type UpdateUserApiArg = {
   /** id */
   id: string;
   /** User to update */
@@ -106,9 +133,9 @@ export type GetHwListApiArg = Partial<{
   /** Lesson id */
   lessonId: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -130,9 +157,9 @@ export type GetTestListApiArg = Partial<{
   /** Lesson id */
   lessonId: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -166,9 +193,9 @@ export type GetExamListApiArg = Partial<{
   /** Search title */
   title: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -181,9 +208,9 @@ export type GetCompetitionListApiArg = Partial<{
   /** Search title */
   title: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -196,9 +223,11 @@ export type GetLessonsApiArg = Partial<{
   /** Search lesson number */
   lessonNumber: number;
   /** Search lesson title */
-  lessonTheme: string;
+  title: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  publishDateTo: string;
+
+  publishDateFrom: string;
   /** The end of the desired interval */
   dateTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */

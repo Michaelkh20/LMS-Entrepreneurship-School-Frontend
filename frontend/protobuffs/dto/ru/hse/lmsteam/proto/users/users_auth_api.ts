@@ -33,7 +33,6 @@ export interface SetPassword {
 }
 
 export interface SetPassword_Request {
-  login: string;
   token: string;
   newPassword: string;
 }
@@ -381,14 +380,11 @@ export const SetPassword = {
 };
 
 function createBaseSetPassword_Request(): SetPassword_Request {
-  return { login: "", token: "", newPassword: "" };
+  return { token: "", newPassword: "" };
 }
 
 export const SetPassword_Request = {
   encode(message: SetPassword_Request, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.login !== "") {
-      writer.uint32(10).string(message.login);
-    }
     if (message.token !== "") {
       writer.uint32(18).string(message.token);
     }
@@ -405,13 +401,6 @@ export const SetPassword_Request = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.login = reader.string();
-          continue;
         case 2:
           if (tag !== 18) {
             break;
@@ -440,7 +429,6 @@ export const SetPassword_Request = {
   },
   fromPartial<I extends Exact<DeepPartial<SetPassword_Request>, I>>(object: I): SetPassword_Request {
     const message = createBaseSetPassword_Request();
-    message.login = object.login ?? "";
     message.token = object.token ?? "";
     message.newPassword = object.newPassword ?? "";
     return message;

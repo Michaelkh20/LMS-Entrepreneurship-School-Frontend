@@ -26,7 +26,6 @@ export default function SetPasswordForm({ className }: { className?: string }) {
 
   const handleFinish = (values: SetPasswordFormValues) => {
     setPassword({
-      login: values.login,
       token: searchParams.get('token')!,
       newPassword: values.newPassword,
     });
@@ -39,17 +38,6 @@ export default function SetPasswordForm({ className }: { className?: string }) {
       layout="vertical"
       className={className}
     >
-      <Form.Item
-        label="Логин"
-        name="login"
-        rules={[
-          { required: true, message: 'Введите логин' },
-          { type: 'email', message: 'Неверный формат логина' },
-        ]}
-        hasFeedback
-      >
-        <Input />
-      </Form.Item>
       <Form.Item
         label="Новый пароль"
         name="newPassword"
