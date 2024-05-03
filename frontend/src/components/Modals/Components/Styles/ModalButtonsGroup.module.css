@@ -1,0 +1,7 @@
+.buttonsContainer{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding-top: .75rem;
+}

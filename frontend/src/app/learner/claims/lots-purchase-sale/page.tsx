@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { ClaimBuyingLotTableWithFilter } from '@/components/TableWithFilterNew';
 
 import styles from '@/app/admin/main.module.css';
-import ClaimBuyLotViewModal from '@/components/Modals/ClaimBuyLotViewModal';
+import ClaimBuyLotViewModal from '@/components/Modals/Claims/ClaimBuyLotModals/ClaimBuyLotViewModal';
 import { useApproveRejectClaimMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
