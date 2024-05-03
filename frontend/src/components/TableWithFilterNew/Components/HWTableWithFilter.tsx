@@ -1,25 +1,17 @@
 'use client';
 
-import {
-  ClaimStatusFormItem,
-  UserSelectionFormItem,
-  LotNumberFormItem,
-  DatePickerFormItem,
-  LessonNumberFormItem,
-} from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetClaimsQuery } from '@/redux/services/adminApi';
-import type { GetHwListApiArg, LessonTableSnippet } from '@/types/api';
+import { DatePickerFormItem } from '@/components/Forms/FormItems/Filters';
+import type { GetHwListApiArg } from '@/types/api';
 import { useGetHwListQuery } from '@/redux/services/api';
 
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
-import { GetHomeworks_Response } from '@proto/assignments/homework_api';
 import { LessonSnippet } from '@types/proto';
 import { Flex } from 'antd';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
+import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';
 
 //GetHomeworks_Response
 
@@ -101,9 +93,16 @@ export function HWTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
-            <LessonTitleFormItem />
-            <DatePickerFormItem name={'dateFrom'} placeholder={'Дедлайн'} />
+            <TitleFormItem placeholder="Название ДЗ" />
+            <LessonSelectionFormItem type="filter" />
+            <DatePickerFormItem
+              name={'deadlineFrom'}
+              placeholder={'Дедлайн от'}
+            />
+            <DatePickerFormItem
+              name={'deadlineTo'}
+              placeholder={'Дедлайн до'}
+            />
           </>
         }
         tableProps={{

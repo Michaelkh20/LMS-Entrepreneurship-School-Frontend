@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -29,7 +31,15 @@ export default function CompetitionsPage() {
         </>
       }
     >
-      <CompetitionsTableWithFilter />
+      <CompetitionsTableWithFilter
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              router.push(`/admin/tasks/competitions/${record.id}`);
+            },
+          };
+        }}
+      />
     </BasePageLayout>
   );
 }

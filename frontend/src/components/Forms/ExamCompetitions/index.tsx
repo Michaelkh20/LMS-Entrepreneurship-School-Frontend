@@ -13,7 +13,6 @@ import type {
 } from '@/types/proto';
 import { useRouter } from 'next/navigation';
 import { formValuesToRequest, getResponseToFormValues } from './helpers';
-import { LessonSelectionFormItem } from '../FormItems/EntityForms/LessonSelectionFormItem';
 import type {
   ExamCompetition,
   ICreateUpdateExamCompetitionRequest,
@@ -166,7 +165,6 @@ export default function ExamCompetitionForm({
       >
         <Input />
       </Form.Item>
-      <LessonSelectionFormItem />
       <Form.Item
         label="Дата проведения"
         name="deadlineDate"

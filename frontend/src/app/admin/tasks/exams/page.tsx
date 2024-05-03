@@ -1,3 +1,5 @@
+'use client';
+
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
@@ -29,7 +31,15 @@ export default function ExamsPage() {
         </>
       }
     >
-      <ExamsTableWithFilter />
+      <ExamsTableWithFilter
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              router.push(`/admin/tasks/exams/${record.id}`);
+            },
+          };
+        }}
+      />
     </BasePageLayout>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { LessonPage } from '@/components/Pages/LessonPage';
 
 export default function LessonPageLearner({

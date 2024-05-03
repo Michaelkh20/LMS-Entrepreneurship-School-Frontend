@@ -30,7 +30,15 @@ export default function TestsPage() {
         </>
       }
     >
-      <TestsTableWithFilter />
+      <TestsTableWithFilter
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              router.push(`/admin/tasks/tests/${record.id}`);
+            },
+          };
+        }}
+      />
     </BasePageLayout>
   );
 }

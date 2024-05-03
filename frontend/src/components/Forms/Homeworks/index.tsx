@@ -141,7 +141,7 @@ export default function HomeworkForm({
           buttonStyle="solid"
         />
       </Form.Item>
-      <LessonSelectionFormItem />
+      <LessonSelectionFormItem type="form" label="Урок" />
       <Form.Item
         label="Дедлайн"
         name="deadlineDate"

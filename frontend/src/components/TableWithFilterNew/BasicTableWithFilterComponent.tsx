@@ -32,12 +32,17 @@ export function BasicTableWithFilter<T>({
   ) => {
     console.log('SORTER: ', sorter);
     setFormData((prevState) => {
+      const sortField = (sorter as SorterResult<any>).field;
+      const sortOrder = checkSorter(sorter as SorterResult<any>);
+
+      const sort =
+        sortField && sortOrder ? sortField + ',' + sortOrder : undefined;
+
       return {
         ...prevState,
         page: pagination.current,
         pageSize: pagination.pageSize,
-        sortProperty: (sorter as SorterResult<any>).field,
-        sortOrder: checkSorter(sorter as SorterResult<any>),
+        sort,
       };
     });
   };

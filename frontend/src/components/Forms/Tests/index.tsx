@@ -120,7 +120,7 @@ export default function TestForm({
       >
         <Input />
       </Form.Item>
-      <LessonSelectionFormItem />
+      <LessonSelectionFormItem type="form" label="Урок" />
       <Form.Item
         label="Дедлайн"
         name="deadlineDate"

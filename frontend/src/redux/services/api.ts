@@ -269,7 +269,7 @@ export const api = createApi({
           teamNumber: queryArg.teamNumber,
           teamProjectTheme: queryArg.teamProjectTheme,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
         responseHandler: getResponseHandler(TeamsListTransformer),
@@ -347,7 +347,7 @@ export const api = createApi({
           assignmentId: queryArg.assignmentId,
           assessmentType: queryArg.assessmentType,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -406,8 +406,8 @@ export const api = createApi({
         params: {
           title: queryArg.title,
           lessonId: queryArg.lessonId,
-          dateFrom: queryArg.dateFrom,
-          dateTo: queryArg.dateTo,
+          deadlineFrom: queryArg.deadlineFrom,
+          deadlineTo: queryArg.deadlineTo,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
@@ -577,8 +577,8 @@ export const api = createApi({
         url: `/exams/list`,
         params: {
           title: queryArg.title,
-          dateFrom: queryArg.dateFrom,
-          dateTo: queryArg.dateTo,
+          deadlineFrom: queryArg.deadlineFrom,
+          deadlineTo: queryArg.deadlineTo,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
@@ -616,7 +616,7 @@ export const api = createApi({
 
     updateExam: build.mutation<ICreateUpdateExamResponse, UpdateExamApiArg>({
       query: (queryArg) => ({
-        url: `/assignments/exams/${queryArg.id}`,
+        url: `/exams/${queryArg.id}`,
         method: 'PUT',
         headers: {
           'Content-Type': 'application/x-protobuf',
@@ -664,8 +664,8 @@ export const api = createApi({
         url: `/competitions/list`,
         params: {
           title: queryArg.title,
-          dateFrom: queryArg.dateFrom,
-          dateTo: queryArg.dateTo,
+          deadlineFrom: queryArg.deadlineFrom,
+          deadlineTo: queryArg.deadlineTo,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
@@ -719,7 +719,7 @@ export const api = createApi({
 
     deleteCompetitionById: build.mutation<undefined, string>({
       query: (id) => ({
-        url: `/assignments/competitions/${id}`,
+        url: `/competitions/${id}`,
         method: 'DELETE',
         responseHandler: getResponseHandler(
           DeleteCompetitionResponseTransformer
@@ -747,11 +747,10 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/lessons/list`,
         params: {
-          lessonNumber: queryArg.lessonNumber
-            ? queryArg.lessonNumber
-            : undefined,
-          title: queryArg.title ? queryArg.title : undefined,
-          publishDate: queryArg.publishDate,
+          lessonNumber: queryArg.lessonNumber,
+          title: queryArg.title,
+          publishDateFrom: queryArg.publishDateFrom,
+          publishDateTo: queryArg.publishDateTo,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
@@ -819,7 +818,7 @@ export const api = createApi({
     getLessonsSnippets: build.query<LessonSnippet[], void>({
       query: () => ({
         url: `/lessons/list`,
-        params: { size: 10_000 },
+        params: { page: 0, size: 999_999 },
         async responseHandler(response) {
           const buffer = await response.arrayBuffer();
           const decodedResponse = LessonsListTransformer.decode(
@@ -843,7 +842,7 @@ export const api = createApi({
           priceFrom: queryArg.priceFrom,
           priceTo: queryArg.priceTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -859,7 +858,7 @@ export const api = createApi({
           performerName: queryArg.performerName,
           lotStatus: queryArg.lotStatus,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -898,7 +897,7 @@ export const api = createApi({
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -927,7 +926,7 @@ export const api = createApi({
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -954,7 +953,7 @@ export const api = createApi({
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -985,7 +984,7 @@ export const api = createApi({
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),
@@ -1006,7 +1005,7 @@ export const api = createApi({
             dateFrom: queryArg.dateFrom,
             dateTo: queryArg.dateTo,
             sort: queryArg.sort,
-            page: queryArg.page,
+            page: queryArg.page && queryArg.page - 1,
             size: queryArg.size,
           },
         }),
@@ -1049,7 +1048,7 @@ export const api = createApi({
           learnerId: queryArg.learnerId,
           teamId: queryArg.teamId,
           sort: queryArg.sort,
-          page: queryArg.page,
+          page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
       }),

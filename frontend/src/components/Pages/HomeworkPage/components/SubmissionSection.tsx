@@ -2,8 +2,12 @@ import React from 'react';
 import styles from '../HomeworkPage.module.css';
 import { useGetSolutionByAssignmentIdAndLearnerIdQuery } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
-import { PaperClipOutlined, UploadOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+import {
+  InboxOutlined,
+  PaperClipOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
+import { Input, Upload } from 'antd';
 
 type Props = {
   hwId: string;
@@ -51,10 +55,17 @@ export default function SubmissionSection({ hwId }: Props) {
       </section>
       <section className={styles.section}>
         <p className={styles.section_title}>Загрузить ДЗ</p>
-        <Input type="file">
-          <UploadOutlined />
-          Загрузить ДЗ
-        </Input>
+        <Upload.Dragger name="files" action="/upload.do">
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+          <p className="ant-upload-hint">
+            Support for a single or bulk upload.
+          </p>
+        </Upload.Dragger>
       </section>
     </>
   );

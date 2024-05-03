@@ -11,7 +11,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 
 type CompetitionsColumnsDataType = {
   id: string;
@@ -21,7 +21,7 @@ type CompetitionsColumnsDataType = {
 
 const CompetitionsColumns: ColumnsType<CompetitionsColumnsDataType> = [
   {
-    title: 'Задание',
+    title: 'Название конкурса',
     dataIndex: 'title',
     key: 'title',
     sorter: true,
@@ -76,11 +76,14 @@ export function CompetitionsTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Название конкурса" />
             <DatePickerFormItem
-              name={'dateFrom'}
-              placeholder={'Дата проведения'}
+              name={'deadlineFrom'}
+              placeholder={'Дедлайн от'}
+            />
+            <DatePickerFormItem
+              name={'deadlineTo'}
+              placeholder={'Дедлайн до'}
             />
           </>
         }

@@ -13,7 +13,7 @@ export default function CompetitionDeleteBtn({ id }: { id: string }) {
   useEffect(() => {
     if (result.isSuccess) {
       message.success('Конкурс успешно удалён');
-      router.push('/admin/tasks/tests');
+      router.push('/admin/tasks/competitions');
     }
 
     if (result.isError) {

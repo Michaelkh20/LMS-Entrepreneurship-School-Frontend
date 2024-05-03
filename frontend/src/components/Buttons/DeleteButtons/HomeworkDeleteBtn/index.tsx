@@ -13,7 +13,7 @@ export default function HomeworkDeleteBtn({ id }: { id: string }) {
   useEffect(() => {
     if (result.isSuccess) {
       message.success('ДЗ успешно удалено');
-      router.push('/admin/tests');
+      router.push('/admin/tasks/homeworks');
     }
 
     if (result.isError) {

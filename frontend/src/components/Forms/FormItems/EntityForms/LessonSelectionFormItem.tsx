@@ -4,15 +4,30 @@ import React from 'react';
 import { Flex, Form, Select } from 'antd';
 import { useGetLessonsQuery } from '@/redux/services/api';
 
-export function LessonSelectionFormItem() {
+type Props =
+  | {
+      type: 'filter';
+      label?: undefined;
+    }
+  | {
+      type: 'form';
+      label: string;
+    };
+
+export function LessonSelectionFormItem({ type, label }: Props) {
   const { data, isFetching } = useGetLessonsQuery({ page: 0, size: 999_999 });
 
   return (
     <Form.Item
-      label="Урок"
+      label={label}
       name="lessonId"
-      rules={[{ required: true, message: 'Выберите урок' }]}
-      wrapperCol={{ span: 8 }}
+      rules={
+        type === 'form'
+          ? [{ required: true, message: 'Выберите урок' }]
+          : undefined
+      }
+      wrapperCol={type === 'form' ? { span: 8 } : undefined}
+      style={type === 'filter' ? { width: '250px' } : undefined}
     >
       <Select
         showSearch
@@ -34,6 +49,7 @@ export function LessonSelectionFormItem() {
         filterOption={(input, option) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
         }
+        allowClear={type === 'filter'}
       />
     </Form.Item>
   );

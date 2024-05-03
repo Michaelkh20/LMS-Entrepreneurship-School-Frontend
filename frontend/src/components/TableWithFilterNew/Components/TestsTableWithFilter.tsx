@@ -12,9 +12,10 @@ import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 import type { LessonSnippet } from '@types/proto';
 import { Flex } from 'antd';
+import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';
 
 type TestsColumnsDataType = {
   id: string;
@@ -25,7 +26,7 @@ type TestsColumnsDataType = {
 
 const TestsColumns: ColumnsType<TestsColumnsDataType> = [
   {
-    title: 'Задание',
+    title: 'Название теста',
     dataIndex: 'title',
     key: 'title',
     sorter: true,
@@ -80,6 +81,7 @@ export function TestsTableWithFilter({
     useGetTestListQuery(dataForReq);
 
   const dataForTable = useMemo(() => {
+    console.log(data?.tests);
     return data?.tests.map<TestsColumnsDataType>((test) => ({
       id: test.id,
       title: test.title,
@@ -98,11 +100,15 @@ export function TestsTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Название теста" />
+            <LessonSelectionFormItem type="filter" />
             <DatePickerFormItem
-              name={'dateFrom'}
-              placeholder={'Дата проведения'}
+              name={'deadlineFrom'}
+              placeholder={'Дедлайн от'}
+            />
+            <DatePickerFormItem
+              name={'deadlineTo'}
+              placeholder={'Дедлайн до'}
             />
           </>
         }

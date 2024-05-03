@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { Id, Date } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 
 import { useRouter } from 'next/navigation';
 

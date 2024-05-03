@@ -133,9 +133,9 @@ export type GetHwListApiArg = Partial<{
   /** Lesson id */
   lessonId: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -193,9 +193,9 @@ export type GetExamListApiArg = Partial<{
   /** Search title */
   title: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -208,9 +208,9 @@ export type GetCompetitionListApiArg = Partial<{
   /** Search title */
   title: string;
   /** The beginning of the desired interval */
-  dateFrom: string;
+  deadlineFrom: string;
   /** The end of the desired interval */
-  dateTo: string;
+  deadlineTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -225,7 +225,9 @@ export type GetLessonsApiArg = Partial<{
   /** Search lesson title */
   title: string;
   /** The beginning of the desired interval */
-  publishDate: string;
+  publishDateTo: string;
+
+  publishDateFrom: string;
   /** The end of the desired interval */
   dateTo: string;
   /** Sorting order in format 'sortProperty,sortOrder' */

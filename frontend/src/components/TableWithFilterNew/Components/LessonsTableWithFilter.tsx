@@ -10,7 +10,7 @@ import type { GetLessonsApiArg } from '@/types/api';
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonTitleFormItem } from '@/components/Forms/FormItems/Filters/LessonTitleFormItem';
+import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 
 import { useGetLessonsQuery } from '@/redux/services/api';
 import { GetLessons_Response } from '@proto/lessons/lessons_api';
@@ -89,10 +89,14 @@ export function LessonsTableWithFilter({
         filterFormItems={
           <>
             <LessonNumberFormItem />
-            <LessonTitleFormItem />
+            <TitleFormItem placeholder="Тема урока" />
             <DatePickerFormItem
-              name={'publishDate'}
-              placeholder={'Дата проведения'}
+              name={'publishDateFrom'}
+              placeholder={'Дата проведения от'}
+            />
+            <DatePickerFormItem
+              name={'publishDateTo'}
+              placeholder={'Дата проведения до'}
             />
           </>
         }
