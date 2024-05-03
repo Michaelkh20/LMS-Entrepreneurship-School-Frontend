@@ -1,0 +1,33 @@
+.FirstRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.Price {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: bold;
+  color: #1677ff;
+}
+
+.StatusApproval {
+  color: #1677ff;
+}
+
+.StatusActive {
+  color: #52c41a;
+}
+
+.StatusInactive {
+  color: #ff4d4f;
+}
+
+.Link {
+  cursor: pointer;
+  text-decoration: underline;
+}

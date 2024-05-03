@@ -1,0 +1,17 @@
+.PropertyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.PropertyTitle {
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: bold;
+}
+
+.PropertyValue {
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: normal;
+}
