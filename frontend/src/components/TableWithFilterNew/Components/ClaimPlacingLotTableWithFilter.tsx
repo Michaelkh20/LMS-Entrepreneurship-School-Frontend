@@ -116,9 +116,9 @@ export function ClaimPlacingLotTableWithFilter({
   });
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetListLotClaimsQuery(dataForReq);
-  const data = mockData;
+  const { data, isLoading, isError, isFetching } =
+    useGetListLotClaimsQuery(dataForReq);
+  // const data = mockData;
 
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimListLotColumnsDataType>((claim) => {

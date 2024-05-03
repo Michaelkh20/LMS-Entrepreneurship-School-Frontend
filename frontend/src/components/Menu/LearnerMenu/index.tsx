@@ -69,7 +69,7 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 
-export default function LearnerMenu() {
+export default function LearnerMenu({ onClose }: { onClose?: () => void }) {
   const [authState] = useAuth();
   const { data } = useGetUserBalanceByIdQuery(authState.userId!);
   const pathname = usePathname();
@@ -107,6 +107,7 @@ export default function LearnerMenu() {
         mode="inline"
         items={menuItems}
         defaultSelectedKeys={[pathname.split('/').at(-1)!]}
+        onClick={onClose}
       />
     </ConfigProvider>
   );

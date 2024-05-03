@@ -4,6 +4,7 @@ import React, { CSSProperties, useEffect } from 'react';
 import styles from './layout.module.css';
 import { Layout } from 'antd';
 import LearnerMenu from '../../components/Menu/LearnerMenu';
+import LayoutMenuWrapper from '@/components/Layouts/LayoutMenuWrapper';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -60,9 +61,8 @@ export default function LearnerLayout({
 
   return (
     <Layout hasSider style={OuterLayoutStyles}>
-      <Sider width="256px" style={SiderStyles}>
-        <LearnerMenu />
-      </Sider>
+      <LayoutMenuWrapper MenuComponent={LearnerMenu} />
+
       <Layout style={InnerLayoutStyles}>
         <Header style={HeaderStyles}></Header>
         <Content style={ContentStyles}>{children}</Content>

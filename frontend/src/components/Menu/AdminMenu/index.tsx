@@ -105,7 +105,7 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 
-export default function AdminMenu() {
+export default function AdminMenu({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   console.log(pathname, pathname.split('/').at(-1));
   return (
@@ -118,7 +118,7 @@ export default function AdminMenu() {
         },
       }}
     >
-      <div style={{ paddingRight: 4 }}>
+      <div style={{ padding: '0 4px' }}>
         <UserDropdown
           props={{
             name: undefined,
@@ -130,6 +130,7 @@ export default function AdminMenu() {
         mode="inline"
         items={menuItems}
         defaultSelectedKeys={[pathname.split('/').at(-1)!]}
+        onClick={onClose}
       />
     </ConfigProvider>
   );

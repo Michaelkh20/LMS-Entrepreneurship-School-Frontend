@@ -12,7 +12,7 @@ import Link from 'next/link';
 import dateToFormatString from '@/util/dateToFormatString';
 import {
   useApproveRejectClaimMutation,
-  useGetListLotClaimByIdQuery,
+  useGetBuyLotClaimByIdQuery,
 } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
 
@@ -20,22 +20,21 @@ import { TwoSidedClaimStatus } from '@/types/common';
 import { twoSidedClaimStatusToString } from '@/util/enumsToString';
 import { ModalProperty } from '@/components/Modals/Components/ModalProperty';
 import { ModalButtonsGroup } from '@/components/Modals/Components/ModalButtonsGroup';
-import { ModalContainer } from '@/components/Modals/Components/ModalContainer';
 import { ModalSectionTitle } from '@/components/Modals/Components/ModalSectionTitle';
 
 type Props = {
   claimId?: string | null;
   isOpen: boolean;
-  onExit?: MouseEventHandler;
-  onCancel?: MouseEventHandler;
-  onOk?: MouseEventHandler;
-  isOkLoading?: boolean;
-  isDeclineLoading?: boolean;
+  onExit: MouseEventHandler;
+  onCancel: MouseEventHandler;
+  onOk: MouseEventHandler;
+  isOkLoading: boolean;
+  isDeclineLoading: boolean;
 };
 
 const cx = cn.bind(styles);
 
-export function ClaimListLotViewModal({
+export function ClaimBuyLotViewModal({
   claimId,
   isOpen,
   onCancel,
@@ -44,7 +43,7 @@ export function ClaimListLotViewModal({
   isOkLoading,
   isDeclineLoading,
 }: Props) {
-  const { data } = useGetListLotClaimByIdQuery(
+  const { data } = useGetBuyLotClaimByIdQuery(
     claimId && isOpen ? claimId : skipToken
   );
 
@@ -52,13 +51,13 @@ export function ClaimListLotViewModal({
 
   return (
     <Modal
-      title={`Заявка на размещение лота №${data?.lot.id}`}
+      title={`Заявка на покупку лота №${data?.lot.number}`}
       open={isOpen}
       onCancel={onExit}
       footer={null}
       centered
     >
-      <ModalContainer>
+      <div className={styles.ModalContainer}>
         <ModalProperty
           title="Статус"
           value={
@@ -78,33 +77,43 @@ export function ClaimListLotViewModal({
           }
         />
         <ModalProperty
-          title="Дата"
-          value={dateToFormatString(data?.date) || '-'}
+          title="Покупатель"
+          value={
+            <Link
+              href={`/admin/users/${data?.buyer?.id}`}
+              className={cx('PropertyValue', 'Link')}
+            >
+              {data?.buyer.name || ''}
+            </Link>
+          }
+        />
+        <ModalProperty
+          title="Дата заявки"
+          value={dateToFormatString(data?.date) || ''}
         />
 
         <ModalSectionTitle>Информация о лоте</ModalSectionTitle>
-        <ModalProperty title="Название" value={data?.lot?.title || '-'} />
-        <ModalProperty title="Описание" value={data?.lot?.description || '-'} />
-        <ModalProperty title="Условия" value={data?.lot?.terms || '-'} />
+
+        <ModalProperty title="Название" value={data?.lot?.title || ''} />
+        <ModalProperty title="Описание" value={data?.lot?.description || ''} />
+        <ModalProperty title="Условия" value={data?.lot?.terms || ''} />
         <ModalProperty
           title="Исполнитель"
           value={
             <Link
-              href={`/admin/accounts/${data?.lot.performer.id}`}
+              href={`/admin/users/${data?.lot.performer.id}`}
               className={cx('PropertyValue', 'Link')}
             >
               {data?.lot.performer.name || ''}
             </Link>
           }
         />
-
         <ModalProperty
-          title="Дата"
-          value={dateToFormatString(data?.date || undefined) || '-'}
+          title="Дата размещения"
+          value={dateToFormatString(data?.lot.listingDate || undefined) || ''}
         />
         <ModalProperty title="Стоимость" value={data?.lot?.price + '' || ''} />
-      </ModalContainer>
-
+      </div>
       {isAdmin && data?.status === TwoSidedClaimStatus.WaitingAdmin && (
         <ModalButtonsGroup>
           <Button
