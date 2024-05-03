@@ -20,6 +20,7 @@ import styles from './LessonPage.module.css';
 import { EditOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { VideoSection } from './Components/VideoSection';
 import { PresentationsSection } from './Components/PresentationsSection';
+import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 type lessonType = {
   lessonTitle: string;
@@ -100,10 +101,14 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
   }, [data]);
 
   return (
-    <div className={styles.main__container}>
-      <h1 className={styles.main__header}>Урок {data?.lesson?.lessonNumber}</h1>
-
-      <h2>{data?.lesson?.title}</h2>
+    <BasePageLayout
+      header={
+        <>
+          <h1>Урок {data?.lesson?.lessonNumber}</h1>
+          <h2>{data?.lesson?.title}</h2>
+        </>
+      }
+    >
       {isAdmin && (
         <Space>
           <Button type="primary" size="large">
@@ -115,6 +120,6 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
         </Space>
       )}
       <Collapse items={collapseItems} defaultActiveKey={['1', '2']}></Collapse>
-    </div>
+    </BasePageLayout>
   );
 };
