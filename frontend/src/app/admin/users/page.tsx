@@ -35,7 +35,6 @@ export default function Users() {
         onRow={(record, rowIndex) => {
           return {
             onClick: (ev) => {
-              console.log('ABOBADOBSAODBSABD');
               router.push(`/admin/users/${record.id}`);
             },
           };

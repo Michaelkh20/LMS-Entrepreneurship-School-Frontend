@@ -75,6 +75,7 @@ export default function LayoutMenuWrapper({
           top: '1rem',
           right: '1rem',
           display: !isMenuBroken ? 'none' : 'block',
+          zIndex: 10,
         }}
       >
         <Button onClick={showDrawer}>

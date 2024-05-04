@@ -107,16 +107,15 @@ export default function LessonForm({
       initialValues={
         type === 'edit' ? getResponseToFormValues(lesson) : undefined
       }
+      style={{ maxWidth: 380 }}
     >
       <Form.Item
         label="Номер"
         name="lessonNumber"
         rules={[{ required: true, message: 'Введите номер урока' }]}
-        labelCol={{ span: 2 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <InputNumber min={1} />
+        <InputNumber style={{ width: '100%' }} min={1} placeholder="Номер" />
       </Form.Item>
       <Form.Item
         label="Тема урока"
@@ -132,21 +131,17 @@ export default function LessonForm({
             message: 'Тема урока не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Тема урока" />
       </Form.Item>
       <Form.Item
         label="Дата проведения"
         name="publishDate"
         rules={[{ required: true, message: 'Введите дату проведения' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <DatePicker locale={locale_ru.DatePicker} />
+        <DatePicker style={{ width: '100%' }} locale={locale_ru.DatePicker} />
       </Form.Item>
       <Form.Item
         label="Описание"
@@ -161,11 +156,9 @@ export default function LessonForm({
             message: 'Описание урока не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <Input.TextArea rows={4} maxLength={1000} />
+        <Input.TextArea placeholder="Описание" rows={4} maxLength={1000} />
       </Form.Item>
       <ListFormItem
         name="videoUrls"
@@ -183,12 +176,7 @@ export default function LessonForm({
       />
       <Form.Item>
         <Space>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: '1rem' }}
-            loading={result.isLoading}
-          >
+          <Button type="primary" htmlType="submit" loading={result.isLoading}>
             {type === 'create' ? 'Создать урок' : 'Изменить урок'}
           </Button>
         </Space>
