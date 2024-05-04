@@ -13,7 +13,7 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
-import type { LessonSnippet } from '@types/proto';
+import type { LessonSnippet } from '@projTypes/proto';
 import { Flex } from 'antd';
 import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';
 

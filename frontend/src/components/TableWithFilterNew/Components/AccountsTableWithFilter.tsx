@@ -5,7 +5,7 @@ import {
   TeamNumberFormItem,
   RoleFormItem,
 } from '@/components/Forms/FormItems/Filters';
-import { GetAccountsApiArg, TeamSnippet } from '@/types/api';
+import { GetAccountsApiArg } from '@/types/api';
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType } from 'antd/es/table';
@@ -16,6 +16,7 @@ import { Role, Sex } from '@/types/common';
 import { useRouter } from 'next/navigation';
 import { TableProps } from 'antd/lib';
 import { GetUsers_Response } from '@proto/users/users_api';
+import type { TeamSnippet } from '@projTypes/proto';
 
 type AccountColumnsDataType = {
   id: string;
