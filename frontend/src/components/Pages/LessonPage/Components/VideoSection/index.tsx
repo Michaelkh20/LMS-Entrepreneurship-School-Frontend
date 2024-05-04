@@ -18,12 +18,14 @@ export const VideoSection = ({
         return (
           <iframe
             key={index + videoUrl}
-            style={{
-              width: '100%',
-              minHeight: '300px',
-              maxWidth: '600px',
-              height: '70%',
-            }}
+            style={
+              {
+                // width: '100%',
+                // minHeight: '200px',
+                // maxWidth: '600px',
+                // height: '70%',
+              }
+            }
             src={`${videoUrl}`}
             title="YouTube video player"
             frameBorder="0"

@@ -5,8 +5,15 @@ import BaseDeleteButton from '../BaseDeleteButton';
 import { useDeleteHwByIdMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
+import { BaseButtonProps } from 'antd/es/button/button';
 
-export default function HomeworkDeleteBtn({ id }: { id: string }) {
+export default function HomeworkDeleteBtn({
+  id,
+  size,
+}: {
+  id: string;
+  size?: BaseButtonProps['size'];
+}) {
   const router = useRouter();
   const [deleteHomework, result] = useDeleteHwByIdMutation();
 
@@ -31,6 +38,7 @@ export default function HomeworkDeleteBtn({ id }: { id: string }) {
       description="Вы уверены, что хотите удалить ДЗ?"
       isLoading={result.isLoading}
       onConfirm={onConfirm}
+      size={size}
     />
   );
 }

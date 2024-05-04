@@ -186,12 +186,7 @@ export default function HomeworkForm({
       </Form.Item>
       <Form.Item>
         <Space>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: '1rem' }}
-            loading={result.isLoading}
-          >
+          <Button type="primary" htmlType="submit" loading={result.isLoading}>
             {type === 'create' ? 'Создать ДЗ' : 'Изменить ДЗ'}
           </Button>
         </Space>

@@ -144,6 +144,7 @@ export default function ExamCompetitionForm({
       initialValues={
         type === 'edit' ? getResponseToFormValues(examCompetition) : undefined
       }
+      style={{ maxWidth: 380 }}
     >
       <Form.Item
         label="Название"
@@ -159,30 +160,21 @@ export default function ExamCompetitionForm({
             message: 'Название не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Название" />
       </Form.Item>
       <Form.Item
         label="Дата проведения"
         name="deadlineDate"
         rules={[{ required: true, message: 'Введите дату проведения' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <DatePicker locale={locale_ru.DatePicker} />
+        <DatePicker style={{ width: '100%' }} locale={locale_ru.DatePicker} />
       </Form.Item>
       <Form.Item>
         <Space>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: '1rem' }}
-            loading={result.isLoading}
-          >
+          <Button type="primary" htmlType="submit" loading={result.isLoading}>
             {type === 'create'
               ? 'Создать'
               : 'Изменить' + ' ' + (entity === 'exam' ? 'экзамен' : 'конкурс')}
