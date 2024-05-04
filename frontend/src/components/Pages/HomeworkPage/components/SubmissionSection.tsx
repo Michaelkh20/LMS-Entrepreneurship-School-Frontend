@@ -8,6 +8,8 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 import { Input, Upload } from 'antd';
+import FileUploader from '@/components/FileUploader';
+import SubmissionLearnerForm from '@/components/Forms/SubmissionLearner';
 
 type Props = {
   hwId: string;
@@ -69,21 +71,7 @@ export default function SubmissionSection({ hwId }: Props) {
 
       <section className={styles.section}>
         <p className={styles.section_title}>Загрузить ДЗ</p>
-        <Upload.Dragger
-          style={{ marginTop: 8 }}
-          name="files"
-          action="/upload.do"
-        >
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">
-            Нажмите или перетащите файл в эту область для загрузки
-          </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload.
-          </p>
-        </Upload.Dragger>
+        <SubmissionLearnerForm hwId={hwId} />
       </section>
     </>
   );
