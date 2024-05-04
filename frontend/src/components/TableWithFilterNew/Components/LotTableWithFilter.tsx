@@ -1,18 +1,17 @@
 'use client';
 
 import {
-  ClaimStatusFormItem,
   UserSelectionFormItem,
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type { GetLotsApiArg, LotSnippetForTable, LotsPage } from '@/types/api';
+import type { GetLotsApiArg, LotSnippetForTable } from '@/types/api';
 import { useGetLotsQuery } from '@/redux/services/api';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { ClaimStatus, LotStatus } from '@/types/common';
+import { LotStatus } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { lotStatusToString } from '../../../util/enumsToString';
 
