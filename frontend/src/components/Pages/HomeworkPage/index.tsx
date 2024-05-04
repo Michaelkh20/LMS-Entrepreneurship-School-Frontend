@@ -75,10 +75,10 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         {homework.externalMaterialUrls.map((url, index) => {
           return (
             <a key={index + url} href="url">
-              urlx
+              {url}
             </a>
           );
-        })}
+        }) || '-'}
       </section>
 
       <section className={styles.section}>
@@ -86,15 +86,12 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         <div>{homework.isGroupWork ? 'Да' : 'Нет'}</div>
       </section>
 
-      {/* <Divider></Divider> */}
-
-      {!isAdmin && <SubmissionSection hwId={hwId} />}
-
-      {/* <div>{solutionData?.HW?.id}</div>
-      <div>{solutionData?.HW?.title}</div>
-      <div>{`${solutionData?.learner.name} ${solutionData?.learner.surname}`}</div>
-      <div>{solutionData?.id}</div> */}
-      {/* TODO: оценка и комменты */}
+      {!isAdmin && (
+        <>
+          <Divider />
+          <SubmissionSection hwId={hwId} />
+        </>
+      )}
     </div>
   );
 };

@@ -5,8 +5,15 @@ import BaseDeleteButton from '../BaseDeleteButton';
 import { useDeleteTestByIdMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
+import { BaseButtonProps } from 'antd/es/button/button';
 
-export default function TestDeleteBtn({ id }: { id: string }) {
+export default function TestDeleteBtn({
+  id,
+  size,
+}: {
+  id: string;
+  size: BaseButtonProps['size'];
+}) {
   const router = useRouter();
   const [deleteTest, result] = useDeleteTestByIdMutation();
 
@@ -31,6 +38,7 @@ export default function TestDeleteBtn({ id }: { id: string }) {
       description="Вы уверены, что хотите удалить тест?"
       isLoading={result.isLoading}
       onConfirm={onConfirm}
+      size={size}
     />
   );
 }

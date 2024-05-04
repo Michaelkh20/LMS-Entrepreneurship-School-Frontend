@@ -101,10 +101,11 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
             <Collapse
               defaultActiveKey={'0'}
               items={data?.lesson?.testIds.map((testId, index) => {
+                console.log('TEST ID: ', testId);
                 return {
                   key: index + 'Test' + testId,
                   label: `Тест ${index + 1}`,
-                  children: <TestPage TestId={testId}></TestPage>,
+                  children: <TestPage testId={testId}></TestPage>,
                 };
               })}
             ></Collapse>

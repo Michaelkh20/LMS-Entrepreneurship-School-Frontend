@@ -10,7 +10,7 @@ export const PresentationsSection = ({
       style={{
         display: 'flex',
         flexDirection: 'column',
-        fontSize: '1rem',
+        // fontSize: '1rem',
         paddingTop: '1.25rem',
       }}
     >
@@ -28,7 +28,7 @@ export const PresentationsSection = ({
             href={`${presUrl}`}
           >
             <PaperClipOutlined />
-            Преза_{index}
+            {presUrl}
           </a>
         );
       })}

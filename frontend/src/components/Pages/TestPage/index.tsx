@@ -5,14 +5,14 @@ import { Button, Divider, Space } from 'antd';
 
 import styles from '../HomeworkPage/HomeworkPage.module.css';
 import { useAuth } from '@/redux/features/authSlice';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, PaperClipOutlined } from '@ant-design/icons';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import { useRouter } from 'next/navigation';
 import TestDeleteBtn from '@/components/Buttons/DeleteButtons/TestDeleteBtn';
 
 export const TestPage = ({ testId }: { testId: string }) => {
   const router = useRouter();
-  const [_, __, { isAdmin }] = useAuth();
+  const [, , { isAdmin }] = useAuth();
   const { data, isSuccess, isError, isLoading } = useGetTestByIdQuery(testId);
 
   // TODO: у теста другие значимые поля. Посмотри форму создания теста.
@@ -30,30 +30,17 @@ export const TestPage = ({ testId }: { testId: string }) => {
 
   return (
     <div style={{ wordBreak: 'break-word' }}>
-      <Space>
+      <Space size={'middle'}>
         <h3>{test.title}</h3>
         {isAdmin && (
           <>
-            <Button
-              size="large"
-              icon={<EditOutlined />}
-              onClick={handleEditClick}
-            >
+            <Button icon={<EditOutlined />} onClick={handleEditClick}>
               Редактировать
             </Button>
-            <TestDeleteBtn id={testId} />
+            <TestDeleteBtn id={testId} size={'middle'} />
           </>
         )}
       </Space>
-      <section className={styles.section}>
-        <p className={styles.section_title}>Описание</p>
-        <div>{test.description}</div>
-      </section>
-
-      <section className={styles.section}>
-        <p className={styles.section_title}>Критерии</p>
-        <div>{test.gradingCriteria}</div>
-      </section>
       <section className={styles.section}>
         <p className={styles.section_title}>Дедлайн</p>
         <div>{test.deadlineDate?.toLocaleDateString('ru-RU')}</div>
@@ -65,17 +52,15 @@ export const TestPage = ({ testId }: { testId: string }) => {
       </section>
 
       <section className={styles.section}>
-        <p className={styles.section_title}>Дополнительные материалы</p>
+        <p className={styles.section_title}>Ссылка</p>
         {test.externalMaterialUrls.map((url, index) => {
           return (
-            <a href="url" key={index + url}>
-              urlx
+            <a href={url} key={index + url}>
+              {url}
             </a>
           );
         })}
       </section>
-
-      <Divider />
 
       {/* TODO: оценка и комменты */}
     </div>

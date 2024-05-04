@@ -92,8 +92,8 @@ const menuItems: MenuProps['items'] = [
         ],
       },
       {
-        key: 'attendance',
-        label: <Link href="/admin/attendance">Посещаемость</Link>,
+        key: 'submissions',
+        label: <Link href="/admin/submissions">Решения</Link>,
       },
       {
         key: 'final-grade-formula',
