@@ -26,10 +26,11 @@ export function LessonSelectionFormItem({ type, label }: Props) {
           ? [{ required: true, message: 'Выберите урок' }]
           : undefined
       }
-      wrapperCol={type === 'form' ? { span: 8 } : undefined}
-      style={type === 'filter' ? { width: '250px' } : undefined}
+      // wrapperCol={type === 'form' ? { span: 8 } : undefined}
+      style={type === 'filter' ? { minWidth: '240px' } : undefined}
     >
       <Select
+        style={{ width: '100%' }}
         showSearch
         placeholder="Выберите урок"
         loading={isFetching}

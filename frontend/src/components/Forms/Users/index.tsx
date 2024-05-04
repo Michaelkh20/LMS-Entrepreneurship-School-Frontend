@@ -16,6 +16,7 @@ import {
   IGetUserResponse,
 } from '@/types/proto';
 import { MutationResultType, UpdateUserApiArg } from '@/types/api';
+import styles from '@/app/admin/main.module.css';
 
 const sexOptions = [
   { label: sexToString(Sex.MALE), value: Sex.MALE },
@@ -126,6 +127,7 @@ export default function UserForm({
         type === 'edit' ? getResponseToFormValues(user) : undefined
       }
       layout="vertical"
+      style={{ maxWidth: 380 }}
     >
       <Form.Item
         label="Имя"
@@ -141,11 +143,9 @@ export default function UserForm({
             message: 'Имя не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 2 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Имя" />
       </Form.Item>
       <Form.Item
         label="Фамилия"
@@ -161,17 +161,13 @@ export default function UserForm({
             message: 'Фамилия не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Фамилия" />
       </Form.Item>
       <Form.Item
         label="Отчество"
         name="lastName"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         rules={[
           {
             whitespace: true,
@@ -180,14 +176,12 @@ export default function UserForm({
         ]}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Отчество" />
       </Form.Item>
       <Form.Item
         label="Пол"
         name="sex"
         rules={[{ required: true, message: 'Выберите пол' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 4 }}
         hasFeedback
       >
         <Radio.Group
@@ -200,8 +194,6 @@ export default function UserForm({
         label="Роль"
         name="role"
         rules={[{ required: true, message: 'Выберите роль' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 4 }}
         hasFeedback
       >
         <Radio.Group
@@ -213,12 +205,10 @@ export default function UserForm({
       <Form.Item
         label="Мессенджер"
         name="messenger"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 4 }}
         rules={[{ required: true, message: 'Введите мессенджер' }]}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Мессенджер" />
       </Form.Item>
       <Form.Item
         label="Телефон"
@@ -230,12 +220,10 @@ export default function UserForm({
             message: 'Неверный формат номера телефона',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 6 }}
         required
         hasFeedback
       >
-        <PhoneNumber />
+        <PhoneNumber placeholder="Телефон" />
       </Form.Item>
       <Form.Item
         label="Email"
@@ -244,25 +232,14 @@ export default function UserForm({
           { required: true, message: 'Введите email' },
           { type: 'email', message: 'Неверный формат email' },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 6 }}
         hasFeedback
       >
-        <Input />
+        <Input placeholder="Email" />
       </Form.Item>
       <Form.Item>
-        <Space>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: '1rem' }}
-            loading={result.isLoading}
-          >
-            {type === 'create'
-              ? 'Создать пользователя'
-              : 'Изменить пользователя'}
-          </Button>
-        </Space>
+        <Button type="primary" htmlType="submit" loading={result.isLoading}>
+          {type === 'create' ? 'Создать пользователя' : 'Изменить пользователя'}
+        </Button>
       </Form.Item>
     </Form>
   );

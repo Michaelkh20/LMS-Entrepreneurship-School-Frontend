@@ -39,15 +39,13 @@ export default function ListFormItem({
                 },
                 ...rules,
               ]}
-              labelCol={{ span: 6 }}
-              wrapperCol={{ span: 8 }}
             >
               <InputWithDelete
                 onDeleteClick={() => remove(restFieldProps.name)}
               />
             </Form.Item>
           ))}
-          <Form.Item wrapperCol={{ span: 8 }}>
+          <Form.Item>
             <Button
               type="dashed"
               onClick={() => add()}

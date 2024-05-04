@@ -106,6 +106,7 @@ export default function HomeworkForm({
       initialValues={
         type === 'edit' ? getResponseToFormValues(homework) : undefined
       }
+      style={{ maxWidth: 380 }}
     >
       <Form.Item
         label="Название"
@@ -121,8 +122,6 @@ export default function HomeworkForm({
             message: 'Название ДЗ не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
         <Input />
@@ -131,8 +130,6 @@ export default function HomeworkForm({
         label="Тип задания"
         name="isGroupWork"
         rules={[{ required: true, message: 'Выберите тип задания' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
         <Radio.Group
@@ -146,11 +143,9 @@ export default function HomeworkForm({
         label="Дедлайн"
         name="deadlineDate"
         rules={[{ required: true, message: 'Введите дедлайн' }]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
-        <DatePicker locale={locale_ru.DatePicker} />
+        <DatePicker style={{ width: '100%' }} locale={locale_ru.DatePicker} />
       </Form.Item>
       <Form.Item
         label="Описание"
@@ -166,8 +161,6 @@ export default function HomeworkForm({
             message: 'Описание ДЗ не может состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
         <Input.TextArea rows={4} maxLength={1000} />
@@ -187,8 +180,6 @@ export default function HomeworkForm({
             message: 'Критерии оценивания не могут состоять из одних пробелов',
           },
         ]}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 8 }}
         hasFeedback
       >
         <Input.TextArea rows={4} maxLength={1000} />
