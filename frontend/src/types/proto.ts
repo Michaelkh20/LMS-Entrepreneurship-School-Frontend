@@ -117,3 +117,16 @@ export {
   CreateOrUpdateCompetition_Response as CreateUpdateCompetitionResponseTransformer,
   DeleteCompetition_Response as DeleteCompetitionResponseTransformer,
 } from '@proto/assignments/competition_api';
+
+export {
+  type CreateSubmission_Request as ICreateSubmissionRequest,
+  type CreateSubmission_Response as ICreateSubmissionResponse,
+  type GetSubmission_Response as IGetSubmissionResponse,
+  type GetSubmissions_Response as ISubmissionsList,
+  type Submission,
+  type SubmissionPayload,
+  CreateSubmission_Request as CreateSubmissionRequestTransformer,
+  CreateSubmission_Response as CreateSubmissionResponseTransformer,
+  GetSubmission_Response as GetSubmissionResponseTransformer,
+  GetSubmissions_Response as SubmissionsListTransformer,
+} from '@proto/submissions/submissions_api';

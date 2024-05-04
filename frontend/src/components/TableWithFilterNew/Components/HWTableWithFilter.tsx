@@ -8,7 +8,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { LessonSnippet } from '@types/proto';
+import { LessonSnippet } from '@projTypes/proto';
 import { Flex } from 'antd';
 import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
 import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';

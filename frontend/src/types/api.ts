@@ -392,11 +392,13 @@ export type UpdateAttendanceApiArg = {
   updateRequestBody: AttendanceUpdateRequest;
 };
 
-export type GetSolutionsApiArg = Partial<{
+export type GetSubmissionsApiArg = Partial<{
   /** Assignment id */
   assignmentId: string;
   /** Learner id */
-  learnerId: string;
+  ownerId: string;
+  /** Publisher id */
+  publisherId: string;
   /** Team id */
   teamId: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
@@ -407,21 +409,16 @@ export type GetSolutionsApiArg = Partial<{
   size: number;
 }>;
 
-export type GetSolutionByAssignmentIdAndLearnerIdApiArg = {
+export type GetSubmissionByHWIdAndOwnerIdApiArg = {
   /** Assignment id */
-  assignmentId: string;
+  hwId: string;
   /** Learner id */
-  learnerId: string;
+  ownerId: string;
 };
 
 export type Pagination = {
   total_pages: number;
   total_elements: number;
-};
-
-export type TeamSnippet = {
-  id: string;
-  number: number;
 };
 
 export type UserSnippet = {
@@ -696,26 +693,6 @@ export type AttendanceUpdateRequest = {
     learnerstring: string;
     accruedСurrency: number | null;
   }[];
-};
-
-export type Solution = {
-  id: string;
-  learner: UserSnippet;
-  uploader: UserSnippet;
-  team: TeamSnippet;
-  HW: { id: string; title: string };
-  completeDateTime: string;
-  fileUrl: string;
-};
-
-export type SolutionsPage = {
-  pagination: Pagination;
-  content: Solution[];
-};
-
-export type SolutionCreateUpdateRequest = {
-  HWstring: string;
-  fileUrl: string;
 };
 
 export type EmailRequest = {

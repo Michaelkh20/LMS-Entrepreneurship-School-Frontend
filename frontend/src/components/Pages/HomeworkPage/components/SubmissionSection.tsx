@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../HomeworkPage.module.css';
-import { useGetSolutionByAssignmentIdAndLearnerIdQuery } from '@/redux/services/api';
+import { useGetSubmissionByHWIdAndOwnerIdQuery } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
 import {
   InboxOutlined,
@@ -15,9 +15,9 @@ type Props = {
 
 export default function SubmissionSection({ hwId }: Props) {
   const [authState] = useAuth();
-  const { data: solutionData } = useGetSolutionByAssignmentIdAndLearnerIdQuery({
-    assignmentId: hwId,
-    learnerId: authState.userId!,
+  const { data: solutionData } = useGetSubmissionByHWIdAndOwnerIdQuery({
+    hwId: hwId,
+    ownerId: authState.userId!,
   });
 
   return (

@@ -26,8 +26,8 @@ import type {
   GetListLotClaimsApiArg,
   GetLotsApiArg,
   GetLotsForMarketPlaceApiArg,
-  GetSolutionByAssignmentIdAndLearnerIdApiArg,
-  GetSolutionsApiArg,
+  GetSubmissionByHWIdAndOwnerIdApiArg,
+  GetSubmissionsApiArg,
   GetTeamsApiArg,
   GetTestListApiArg,
   GetTransactionsApiArg,
@@ -40,10 +40,6 @@ import type {
   LotsPage,
   ManualAccrualRequest,
   SetBonusRequest,
-  Solution,
-  SolutionCreateUpdateRequest,
-  SolutionsPage,
-  TeamPublicProfile,
   Transaction,
   TransactionsPage,
   TransferClaimsPage,
@@ -98,6 +94,10 @@ import type {
   ICreateUpdateExamResponse,
   ICreateUpdateTestResponse,
   ICreateUpdateHomeworkResponse,
+  ISubmissionsList,
+  IGetSubmissionResponse,
+  ICreateSubmissionResponse,
+  ICreateSubmissionRequest,
 } from '@/types/proto';
 
 import {
@@ -140,6 +140,10 @@ import {
   DeleteExamResponseTransformer,
   CreateUpdateCompetitionResponseTransformer,
   DeleteCompetitionResponseTransformer,
+  SubmissionsListTransformer,
+  GetSubmissionResponseTransformer,
+  CreateSubmissionRequestTransformer,
+  CreateSubmissionResponseTransformer,
 } from '@/types/proto';
 
 import { getResponseHandler } from './helpers/responseHandler';
@@ -153,7 +157,15 @@ export const api = createApi({
       headers.set('Accept', 'application/x-protobuf');
     },
   }),
-  tagTypes: ['User', 'Lesson', 'Homework', 'Test', 'Exam', 'Competition'],
+  tagTypes: [
+    'User',
+    'Lesson',
+    'Homework',
+    'Test',
+    'Exam',
+    'Competition',
+    'Submission',
+  ],
   endpoints: (build) => ({
     auth: build.mutation<ILoginResponse, AuthApiArg>({
       query: (queryArg) => ({
@@ -1040,43 +1052,62 @@ export const api = createApi({
       }),
     }),
 
-    getSolutions: build.query<SolutionsPage, GetSolutionsApiArg>({
+    getSubmissions: build.query<ISubmissionsList, GetSubmissionsApiArg>({
       query: (queryArg) => ({
-        url: `/solutions/list`,
+        url: `/submissions/list`,
         params: {
           assignmentId: queryArg.assignmentId,
-          learnerId: queryArg.learnerId,
+          ownerId: queryArg.ownerId,
+          publisherId: queryArg.publisherId,
           teamId: queryArg.teamId,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
           size: queryArg.size,
         },
+        responseHandler: getResponseHandler(SubmissionsListTransformer),
       }),
+      providesTags: ['Submission'],
     }),
 
-    getSolutionById: build.query<Solution, string>({
-      query: (id) => ({ url: `/solutions/${id}` }),
+    getSubmissionById: build.query<IGetSubmissionResponse, string>({
+      query: (id) => ({
+        url: `/submissions/${id}`,
+        responseHandler: getResponseHandler(GetSubmissionResponseTransformer),
+      }),
+      providesTags: ['Submission'],
     }),
 
-    getSolutionByAssignmentIdAndLearnerId: build.query<
-      Solution,
-      GetSolutionByAssignmentIdAndLearnerIdApiArg
+    getSubmissionByHWIdAndOwnerId: build.query<
+      IGetSubmissionResponse,
+      GetSubmissionByHWIdAndOwnerIdApiArg
     >({
       query: (queryArg) => ({
-        url: `/solutions`,
+        url: `/submissions`,
         params: {
-          assignmentId: queryArg.assignmentId,
-          learnerId: queryArg.learnerId,
+          hwId: queryArg.hwId,
+          ownerId: queryArg.ownerId,
         },
+        responseHandler: getResponseHandler(GetSubmissionResponseTransformer),
       }),
+      providesTags: ['Submission'],
     }),
 
-    createSolution: build.mutation<undefined, SolutionCreateUpdateRequest>({
+    createSubmission: build.mutation<
+      ICreateSubmissionResponse,
+      ICreateSubmissionRequest
+    >({
       query: (requestBody) => ({
-        url: `/solutions`,
+        url: `/submissions`,
         method: 'POST',
-        body: requestBody,
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
+        body: CreateSubmissionRequestTransformer.encode(requestBody).finish(),
+        responseHandler: getResponseHandler(
+          CreateSubmissionResponseTransformer
+        ),
       }),
+      invalidatesTags: ['Submission'],
     }),
 
     createEmail: build.mutation<undefined, EmailRequest>({
@@ -1166,9 +1197,9 @@ export const {
   useApproveRejectClaimMutation,
   useGetAttendanceQuery,
   useUpdateAttendanceMutation,
-  useGetSolutionsQuery,
-  useGetSolutionByIdQuery,
-  useGetSolutionByAssignmentIdAndLearnerIdQuery,
-  useCreateSolutionMutation,
+  useGetSubmissionsQuery,
+  useGetSubmissionByIdQuery,
+  useGetSubmissionByHWIdAndOwnerIdQuery,
+  useCreateSubmissionMutation,
   useCreateEmailMutation,
 } = api;
