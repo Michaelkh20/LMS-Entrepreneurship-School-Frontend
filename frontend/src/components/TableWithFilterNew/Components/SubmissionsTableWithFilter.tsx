@@ -1,26 +1,22 @@
 'use client';
 
 import {
-  ClaimStatusFormItem,
   UserSelectionFormItem,
   TaskSelectionFormItem,
-  DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
-import type {
-  FailedDeadlineClaimsPage,
-  GetFailedDeadlineClaimsApiArg,
-} from '@/types/api';
 
 import { useState, useMemo } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
+import type { GetSubmissionsApiArg } from '@/types/api';
+import { useGetSubmissionsQuery } from '@/redux/services/api';
+import type {
+  GetSubmissions_Response,
+  Submission,
+} from '@proto/submissions/submissions_api';
 
-import { useGetFailedDeadlineClaimsQuery } from '@/redux/services/api';
-import type { FailedDeadlineClaim } from '@/types/api';
-import { ClaimStatus } from '@/types/common';
-
-type SubmissionsColumnsDataType = FailedDeadlineClaim;
+type SubmissionsColumnsDataType = Submission;
 
 const SubmissionsColumns: ColumnsType<SubmissionsColumnsDataType> = [
   {
@@ -29,28 +25,48 @@ const SubmissionsColumns: ColumnsType<SubmissionsColumnsDataType> = [
     key: 'learner',
     sorter: true,
     render: (_value, record, _index) => {
-      return `${record.learner.surname} ${record.learner.name}`;
+      return `${record.owner?.surname} ${record.owner?.name}`;
     },
   },
-  { title: 'Дата сдачи', dataIndex: 'completeDate', key: 'completeDate' },
+  {
+    title: 'Дата сдачи',
+    dataIndex: 'completeDate',
+    key: 'completeDate',
+    render: (_value, record, _index) => {
+      return `${record.publishedAt?.toLocaleDateString('ru-RU')}`;
+    },
+  },
   {
     title: 'Задание',
     dataIndex: 'assignment',
     key: 'assignment',
     render: (_value, record, _index) => {
-      return `${record.assignment.title}`;
+      return `${record.homework?.title}`;
     },
   },
 ];
 
-const mockData: FailedDeadlineClaimsPage = {};
+const mockData: GetSubmissions_Response = {
+  page: undefined,
+  submissions: [
+    {
+      id: '',
+      homework: undefined,
+      owner: undefined,
+      publisher: undefined,
+      team: undefined,
+      publishedAt: undefined,
+      payload: undefined,
+    },
+  ],
+};
 
 export function SubmissionsTableWithFilter({
   onRow,
 }: {
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<GetFailedDeadlineClaimsApiArg>({
+  const [formData, setFormData] = useState<GetSubmissionsApiArg>({
     page: 1,
     size: 10,
   });
@@ -58,19 +74,20 @@ export function SubmissionsTableWithFilter({
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
   const { data, isLoading, isError, isFetching } =
-    useGetFailedDeadlineClaimsQuery(dataForReq);
+    useGetSubmissionsQuery(dataForReq);
 
   // const data = mockData;
 
   const dataForTable = useMemo(() => {
-    return data?.claims.map<SubmissionsColumnsDataType>((claim) => {
+    return data?.submissions.map<SubmissionsColumnsDataType>((submission) => {
       const res: SubmissionsColumnsDataType = {
-        id: claim.id,
-        status: claim.status,
-        learner: claim.learner,
-        completeDate: claim.completeDate,
-        delay: claim.delay,
-        assignment: claim.assignment,
+        id: submission.id,
+        homework: submission.homework,
+        owner: submission.owner,
+        publisher: submission.publisher,
+        team: submission.team,
+        publishedAt: submission.publishedAt,
+        payload: submission.payload,
       };
       return res;
     });
@@ -79,21 +96,20 @@ export function SubmissionsTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <UserSelectionFormItem
-              placeholder={'Кто сдал'}
-              name={'learnerId'}
+            <UserSelectionFormItem placeholder={'Кто сдал'} name={'ownerId'} />
+            <TaskSelectionFormItem
+              placeholder={'Задание'}
+              name={'assignmentId'}
             />
-            <TaskSelectionFormItem placeholder={'Задание'} name={'taskId'} />
-            <DatePickerFormItem name={'date'} placeholder={'Дата сдачи'} />
           </>
         }
         tableProps={{
           scroll: { x: true },
           columns: SubmissionsColumns,
-          pagination: { total: data?.pagination?.total_elements },
+          pagination: { total: data?.page?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

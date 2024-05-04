@@ -87,7 +87,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
                 return {
                   key: index + 'HW' + hwId,
                   label: `ДЗ ${index + 1}`,
-                  children: <HomeworkPage HwId={hwId}></HomeworkPage>,
+                  children: <HomeworkPage hwId={hwId}></HomeworkPage>,
                 };
               })}
             ></Collapse>
@@ -101,10 +101,11 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
             <Collapse
               defaultActiveKey={'0'}
               items={data?.lesson?.testIds.map((testId, index) => {
+                console.log('TEST ID: ', testId);
                 return {
                   key: index + 'Test' + testId,
                   label: `Тест ${index + 1}`,
-                  children: <TestPage TestId={testId}></TestPage>,
+                  children: <TestPage testId={testId}></TestPage>,
                 };
               })}
             ></Collapse>
@@ -122,15 +123,15 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
     borderRadius: 8,
     border: 'none',
     background: '#fafafa',
+    // fontWeight: 'normal',
   };
 
   return (
     <BasePageLayout
       header={
-        <>
-          <h1>Урок {data?.lesson?.lessonNumber}</h1>
-          <h2>{data?.lesson?.title}</h2>
-        </>
+        <h2>
+          Урок {data?.lesson?.lessonNumber}: {data?.lesson?.title}
+        </h2>
       }
     >
       {isAdmin && (

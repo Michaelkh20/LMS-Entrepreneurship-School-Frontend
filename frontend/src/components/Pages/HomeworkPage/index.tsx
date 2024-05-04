@@ -14,7 +14,7 @@ import HomeworkDeleteBtn from '@/components/Buttons/DeleteButtons/HomeworkDelete
 export const HomeworkPage = ({ hwId }: { hwId: string }) => {
   const router = useRouter();
   const { data, isSuccess, isError, isLoading } = useGetHwByIdQuery(hwId);
-  const [_, __, { isAdmin }] = useAuth();
+  const [, , { isAdmin }] = useAuth();
 
   const handleEditClick = () => {
     router.push(`/admin/tasks/homeworks/${hwId}/edit`);
@@ -28,18 +28,26 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
 
   return (
     <div style={{ wordBreak: 'break-word' }}>
-      <Space>
+      <Space
+        size={'middle'}
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          flexWrap: 'wrap',
+          paddingBottom: '.75rem',
+        }}
+      >
         <h3>{homework.title}</h3>
         {isAdmin && (
           <>
             <Button
-              size="large"
+              // size="large"
               icon={<EditOutlined />}
               onClick={handleEditClick}
             >
               Редактировать
             </Button>
-            <HomeworkDeleteBtn id={hwId} />
+            <HomeworkDeleteBtn size={'middle'} id={hwId} />
           </>
         )}
       </Space>
@@ -67,10 +75,10 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         {homework.externalMaterialUrls.map((url, index) => {
           return (
             <a key={index + url} href="url">
-              urlx
+              {url}
             </a>
           );
-        })}
+        }) || '-'}
       </section>
 
       <section className={styles.section}>
@@ -78,15 +86,12 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         <div>{homework.isGroupWork ? 'Да' : 'Нет'}</div>
       </section>
 
-      <Divider></Divider>
-
-      {!isAdmin && <SubmissionSection hwId={hwId} />}
-
-      {/* <div>{solutionData?.HW?.id}</div>
-      <div>{solutionData?.HW?.title}</div>
-      <div>{`${solutionData?.learner.name} ${solutionData?.learner.surname}`}</div>
-      <div>{solutionData?.id}</div> */}
-      {/* TODO: оценка и комменты */}
+      {!isAdmin && (
+        <>
+          <Divider />
+          <SubmissionSection hwId={hwId} />
+        </>
+      )}
     </div>
   );
 };

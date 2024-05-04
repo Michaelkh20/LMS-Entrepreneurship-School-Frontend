@@ -1,15 +1,18 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
+import { BaseButtonProps } from 'antd/es/button/button';
 
 export default function BaseDeleteButton({
   title,
   description,
   isLoading,
   onConfirm,
+  size = 'large',
 }: {
   title: string;
   description: string;
   isLoading: boolean;
+  size: BaseButtonProps['size'];
   onConfirm: (
     e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined
   ) => void;
@@ -25,7 +28,7 @@ export default function BaseDeleteButton({
       <Button
         type="dashed"
         danger
-        size="large"
+        size={size}
         // style={{
         //   width: '11rem',
         //   height: ' 3rem',
