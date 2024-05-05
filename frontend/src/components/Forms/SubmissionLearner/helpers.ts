@@ -8,8 +8,8 @@ export function formVlauesToRequest(
   return {
     homeworkId: hwId,
     payload: {
-      attachmentUrls: values.files.map((file) => file.name),
-      textAnswer: values.comment,
+      attachmentUrls: values.files?.map((file) => file.name) || [],
+      textAnswer: values.comment || '',
     },
     publishedAt: new Date(),
   };

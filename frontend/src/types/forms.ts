@@ -50,6 +50,6 @@ export type ExamCompetitionsFormValues = {
 };
 
 export type SubmissionFormValues = {
-  comment: string;
-  files: UploadFile[];
+  comment: string | undefined;
+  files: UploadFile[] | undefined;
 };

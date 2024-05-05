@@ -6,9 +6,11 @@ import styles from './LoadingErrorStub.module.css';
 export default function LoadingErrorStub({
   isLoading,
   isError,
+  errorText = 'Извините, что-то пошло не так.',
 }: {
   isLoading: boolean;
   isError: boolean;
+  errorText?: string;
 }) {
   if (isLoading) {
     return (
@@ -17,9 +19,7 @@ export default function LoadingErrorStub({
       </div>
     );
   } else if (isError) {
-    return (
-      <Result status="error" title={'Извините, что-то пошло не так.'}></Result>
-    );
+    return <Result status="error" title={errorText}></Result>;
   } else {
     return null;
   }

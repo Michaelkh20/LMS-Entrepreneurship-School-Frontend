@@ -12,7 +12,6 @@ import "ru/hse/lmsteam/proto/assignments/homework_api.proto";
 import "ru/hse/lmsteam/proto/users/users_api.proto";
 import "ru/hse/lmsteam/proto/common/team_snippet.proto";
 
-
 message GetSubmission {
   message Response {
     Submission submission = 1;
@@ -22,7 +21,7 @@ message GetSubmission {
 message CreateSubmission {
   message Request {
     string homework_id = 1;
-    google.protobuf.Timestamp publishedAt = 2;
+    google.protobuf.Timestamp published_at = 2;
     SubmissionPayload payload = 3;
   }
 
@@ -45,7 +44,7 @@ message Submission {
   ru.hse.lmsteam.proto.users.UserSnippet publisher = 4;
   // this field is set only if submission is on team homework
   ru.hse.lmsteam.proto.teams.TeamSnippet team = 5;
-  google.protobuf.Timestamp publishedAt = 6;
+  google.protobuf.Timestamp published_at = 6;
 
   SubmissionPayload payload = 7;
 }

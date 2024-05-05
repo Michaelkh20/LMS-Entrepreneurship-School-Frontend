@@ -47,8 +47,9 @@ export default function SubmissionLearnerForm({ hwId }: { hwId: string }) {
 
     if (result.isSuccess) {
       message.success('Решение успешно отправлено');
+      form.resetFields();
     }
-  }, [result]);
+  }, [form, result]);
 
   return (
     <Form<SubmissionFormValues>
@@ -67,6 +68,7 @@ export default function SubmissionLearnerForm({ hwId }: { hwId: string }) {
           },
         ]}
         hasFeedback
+        style={{ maxWidth: 500 }}
       >
         <Input.TextArea rows={4} maxLength={1_000} />
       </Form.Item>

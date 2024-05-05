@@ -23,11 +23,15 @@ const FileUploader = ({ hwId, userId, ...uploadProps }: Props) => {
       const url = await getPresignedUploadUrl(filePath);
 
       const xhr = new XMLHttpRequest();
-      xhr.open('PUT', url, true);
-      xhr.setRequestHeader('Content-Type', file.type);
-      xhr.send(file);
 
-      xhr.onprogress = onProgress!;
+      xhr.onprogress = (ev) => {
+        console.log(ev);
+        if (ev.lengthComputable && onProgress) {
+          (ev as Parameters<typeof onProgress>[0]).percent =
+            (ev.loaded * 100) / ev.total;
+          onProgress(ev);
+        }
+      };
       xhr.onerror = onError!;
 
       xhr.onload = () => {
@@ -36,6 +40,11 @@ const FileUploader = ({ hwId, userId, ...uploadProps }: Props) => {
           console.log('Response:', xhr.responseText);
         }
       };
+
+      xhr.open('PUT', url, true);
+      xhr.setRequestHeader('Content-Type', file.type);
+      xhr.setRequestHeader('Content-Disposition', 'attachment');
+      xhr.send(file);
     } catch (error) {
       // @ts-ignore
       onError?.(error);

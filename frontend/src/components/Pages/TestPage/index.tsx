@@ -1,14 +1,14 @@
 'use client';
 import { useGetTestByIdQuery } from '@/redux/services/api';
 
-import { Button, Divider, Space } from 'antd';
+import { Button, Space } from 'antd';
 
-import styles from '../HomeworkPage/HomeworkPage.module.css';
 import { useAuth } from '@/redux/features/authSlice';
-import { EditOutlined, PaperClipOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import { useRouter } from 'next/navigation';
 import TestDeleteBtn from '@/components/Buttons/DeleteButtons/TestDeleteBtn';
+import SimpleSection from '@/components/SimpleSection';
 
 export const TestPage = ({ testId }: { testId: string }) => {
   const router = useRouter();
@@ -41,18 +41,13 @@ export const TestPage = ({ testId }: { testId: string }) => {
           </>
         )}
       </Space>
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дедлайн</p>
+      <SimpleSection title="Дедлайн">
         <div>{test.deadlineDate?.toLocaleDateString('ru-RU')}</div>
-      </section>
-
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дата публикации</p>
+      </SimpleSection>
+      <SimpleSection title="Дата публикации">
         <div>{test.publishDate?.toLocaleDateString('ru-RU')}</div>
-      </section>
-
-      <section className={styles.section}>
-        <p className={styles.section_title}>Ссылка</p>
+      </SimpleSection>
+      <SimpleSection title="Ссылка">
         {test.externalMaterialUrls.map((url, index) => {
           return (
             <a href={url} key={index + url}>
@@ -60,7 +55,7 @@ export const TestPage = ({ testId }: { testId: string }) => {
             </a>
           );
         })}
-      </section>
+      </SimpleSection>
 
       {/* TODO: оценка и комменты */}
     </div>

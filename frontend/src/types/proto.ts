@@ -123,7 +123,7 @@ export {
   type CreateSubmission_Response as ICreateSubmissionResponse,
   type GetSubmission_Response as IGetSubmissionResponse,
   type GetSubmissions_Response as ISubmissionsList,
-  type Submission,
+  type Submission as SubmissionProto,
   type SubmissionPayload,
   CreateSubmission_Request as CreateSubmissionRequestTransformer,
   CreateSubmission_Response as CreateSubmissionResponseTransformer,

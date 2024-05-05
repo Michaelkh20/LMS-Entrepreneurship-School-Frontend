@@ -5,6 +5,8 @@ import styles from './layout.module.css';
 import { Layout } from 'antd';
 import AdminMenu from '@/components/Menu/AdminMenu';
 import LayoutMenuWrapper from '@/components/Layouts/LayoutMenuWrapper';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/redux/features/authSlice';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -52,6 +54,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const [, , { isAdmin }] = useAuth();
+
   useEffect(() => {
     document.documentElement.classList.add(styles.HTMLAdminLayout);
     document.body.classList.add(styles.BodyAdminLayout);
@@ -61,6 +66,11 @@ export default function AdminLayout({
       document.body.classList.remove(styles.BodyAdminLayout);
     };
   }, []);
+
+  if (!isAdmin) {
+    router.push('/login');
+    return null;
+  }
 
   return (
     <Layout hasSider style={OuterLayoutStyles}>
