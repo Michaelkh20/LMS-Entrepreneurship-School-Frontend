@@ -1,16 +1,23 @@
 import { Dropdown, Space, Button, Flex, Avatar } from 'antd';
-import { LogoutOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  LogoutOutlined,
+  DownOutlined,
+  UserOutlined,
+  LoginOutlined,
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/redux/features/authSlice';
+import { AuthState } from '../../../redux/features/authSlice/index';
+import { AuthStatus } from '@/types/redux';
 
 export default function UserDropdown({
-  props: { name = 'Администратор' },
+  props: { name = 'Guest' },
 }: {
   props: { name?: string };
 }) {
   const router = useRouter();
-  const [_, { logOut }] = useAuth();
+  const [AuthState, { logOut }, { isAdmin }] = useAuth();
 
   const handleLogOutClick = () => {
     logOut();
@@ -28,32 +35,76 @@ export default function UserDropdown({
 
   return (
     <>
-      <Dropdown menu={{ items }}>
+      {AuthState.status === AuthStatus.NOT_AUTHED ? (
         <Button
-          size="large"
-          type="text"
-          //   icon={<UserOutlined />}
           block
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            margin: '12px 0',
-          }}
+          type="text"
+          style={{ textAlign: 'start', height: '2.5rem', marginTop: '1rem' }}
           onClick={() => {
-            router.push('/learner/profile');
+            router.push('/login');
           }}
         >
-          <Space>
-            <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>
-              U
-            </Avatar>
-            {name}
-          </Space>
-
-          <DownOutlined />
+          <LoginOutlined />
+          Войти
         </Button>
-      </Dropdown>
+      ) : (
+        <>
+          {isAdmin ? (
+            <Space
+              style={{
+                display: 'flex',
+                // justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '7px 15px',
+                margin: '12px 0 8px 0',
+                fontSize: 16,
+              }}
+            >
+              <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>
+                A
+              </Avatar>
+              {'Администратор'}
+            </Space>
+          ) : (
+            <Button
+              size="large"
+              type="text"
+              block
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                margin: '12px 0 8px 0',
+              }}
+              onClick={() => {
+                !isAdmin && router.push('/learner/profile');
+              }}
+            >
+              <Space>
+                <Avatar
+                  style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}
+                >
+                  U
+                </Avatar>
+                {name}
+              </Space>
+            </Button>
+          )}
+          <Button
+            block
+            type="text"
+            style={{
+              textAlign: 'start',
+              height: '2.5rem',
+              paddingLeft: '1.5rem',
+            }}
+            onClick={handleLogOutClick}
+          >
+            <LogoutOutlined />
+            Выйти
+          </Button>
+        </>
+      )}
     </>
   );
 }

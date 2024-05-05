@@ -135,7 +135,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
       }
     >
       {isAdmin && (
-        <Space>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           <Button type="primary" size="large">
             Посещаемость
           </Button>
@@ -147,7 +147,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
             Редактировать
           </Button>
           <LessonDeleteBtn id={id} />
-        </Space>
+        </div>
       )}
       <Collapse
         bordered={false}
