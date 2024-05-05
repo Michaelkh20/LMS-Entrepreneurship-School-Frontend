@@ -84,15 +84,17 @@ export default function LearnerMenu({ onClose }: { onClose?: () => void }) {
         },
       }}
     >
-      <UserDropdown
-        props={{
-          // name: data?.name || 'Михаил',
-          name: 'Михаил',
-        }}
-      />
+      <div style={{ padding: '0 4px' }}>
+        <UserDropdown
+          props={{
+            // name: data?.name || 'Михаил',
+            name: 'Михаил',
+          }}
+        />
+      </div>
       <div
         style={{
-          padding: '12px 16px 12px 16px',
+          padding: '12px 16px 12px 24px',
           fontSize: '1rem',
           fontWeight: 'bold',
           display: 'flex',

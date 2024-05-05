@@ -13,6 +13,8 @@ import { ExamSnippet } from '@proto/assignments/exam_api';
 import { CompetitionSnippet } from '@proto/assignments/competition_api';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import { competitionsMockData, examsMockData, lessonsMockData } from './mock';
+import { CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { ReactNode } from 'react';
 
 export default function LessonsPage() {
   const { data: lessonsSnippets } = useGetLessonsSnippetsQuery();
@@ -22,6 +24,8 @@ export default function LessonsPage() {
   // lessonsSnippets = lessonsMockData;
   // examsSnippets = examsMockData;
   // competitionsSnippets = competitionsMockData;
+
+  //TODO: модалки для конкурсов и экзаменов
 
   return (
     <BasePageLayout>
@@ -67,6 +71,26 @@ export default function LessonsPage() {
   );
 }
 
+const CircleTag = ({ icon, text }: { icon: ReactNode; text: string }) => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div
+        style={{
+          border: '1px solid #d9d9d9',
+          // borderRadius: '16px',
+          borderRadius: 4,
+          padding: '4px 8px',
+          display: 'flex',
+          gap: 4,
+        }}
+      >
+        {icon}
+        {text}
+      </div>
+    </div>
+  );
+};
+
 const LessonCard = ({
   lessonData,
   to,
@@ -86,6 +110,10 @@ const LessonCard = ({
         Урок {lessonData.lessonNumber}
       </p>
       <p className={styles.lessonCard__body}>{lessonData.title}</p>
+      <CircleTag
+        icon={<CalendarOutlined />}
+        text={lessonData.publishDate?.toLocaleDateString('ru-RU') || ''}
+      />
     </div>
   );
 };
@@ -100,6 +128,10 @@ const ExamCard = ({ examData, to }: { examData: ExamSnippet; to: string }) => {
       className={styles.lessonCard__wrapper}
     >
       <p className={styles.lessonCard__header}>{examData.title}</p>
+      <CircleTag
+        icon={<CalendarOutlined />}
+        text={examData.deadlineDate?.toLocaleDateString('ru-RU') || ''}
+      />
     </div>
   );
 };
@@ -120,6 +152,10 @@ const CompetitionCard = ({
       className={styles.lessonCard__wrapper}
     >
       <p className={styles.lessonCard__header}>{competitionData.title}</p>
+      <CircleTag
+        icon={<CalendarOutlined />}
+        text={competitionData.deadlineDate?.toLocaleDateString('ru-RU') || ''}
+      />
     </div>
   );
 };

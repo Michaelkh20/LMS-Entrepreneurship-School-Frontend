@@ -70,16 +70,18 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         <div>{homework.publishDate?.toLocaleDateString('ru-RU')}</div>
       </section>
 
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дополнительные материалы</p>
-        {homework.externalMaterialUrls.map((url, index) => {
-          return (
-            <a key={index + url} href="url">
-              {url}
-            </a>
-          );
-        }) || '-'}
-      </section>
+      {homework.externalMaterialUrls.length > 0 && (
+        <section className={styles.section}>
+          <p className={styles.section_title}>Дополнительные материалы</p>
+          {homework.externalMaterialUrls.map((url, index) => {
+            return (
+              <a key={index + url} href="url">
+                {url}
+              </a>
+            );
+          })}
+        </section>
+      )}
 
       <section className={styles.section}>
         <p className={styles.section_title}>Командное задание</p>
