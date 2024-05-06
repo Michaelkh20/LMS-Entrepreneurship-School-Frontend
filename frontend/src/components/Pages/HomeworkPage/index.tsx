@@ -3,18 +3,19 @@ import { useGetHwByIdQuery } from '@/redux/services/api';
 
 import { Button, Divider, Space } from 'antd';
 
-import styles from './HomeworkPage.module.css';
 import { useAuth } from '@/redux/features/authSlice';
-import SubmissionSection from './components/SubmissionSection';
 import { EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import HomeworkDeleteBtn from '@/components/Buttons/DeleteButtons/HomeworkDeleteBtn';
+import SimpleSection from '@/components/SimpleSection';
+import UploadSubmissionSection from '@/components/UploadSubmissionSection';
+import LearnerSubmissionSection from '@/components/SubmissionSection/LearnerSubmissionSection';
 
 export const HomeworkPage = ({ hwId }: { hwId: string }) => {
   const router = useRouter();
+  const [, , { isAdmin, isLearner }] = useAuth();
   const { data, isSuccess, isError, isLoading } = useGetHwByIdQuery(hwId);
-  const [, , { isAdmin }] = useAuth();
 
   const handleEditClick = () => {
     router.push(`/admin/tasks/homeworks/${hwId}/edit`);
@@ -40,58 +41,42 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
         <h3>{homework.title}</h3>
         {isAdmin && (
           <>
-            <Button
-              // size="large"
-              icon={<EditOutlined />}
-              onClick={handleEditClick}
-            >
+            <Button icon={<EditOutlined />} onClick={handleEditClick}>
               Редактировать
             </Button>
             <HomeworkDeleteBtn size={'middle'} id={hwId} />
           </>
         )}
       </Space>
-      <section className={styles.section}>
-        <p className={styles.section_title}>Описание</p>
-        <div>{homework.description}</div>
-      </section>
 
-      <section className={styles.section}>
-        <p className={styles.section_title}>Критерии</p>
-        <div>{homework.gradingCriteria}</div>
-      </section>
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дедлайн</p>
-        <div>{homework.deadlineDate?.toLocaleDateString('ru-RU')}</div>
-      </section>
-
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дата публикации</p>
-        <div>{homework.publishDate?.toLocaleDateString('ru-RU')}</div>
-      </section>
-
+      <SimpleSection title="Описание">{homework.description}</SimpleSection>
+      <SimpleSection title="Критерии">{homework.gradingCriteria}</SimpleSection>
+      <SimpleSection title="Дедлайн">
+        {homework.deadlineDate?.toLocaleDateString('ru-RU')}
+      </SimpleSection>
+      <SimpleSection title="Дата публикации">
+        {homework.publishDate?.toLocaleDateString('ru-RU')}
+      </SimpleSection>
       {homework.externalMaterialUrls.length > 0 && (
-        <section className={styles.section}>
-          <p className={styles.section_title}>Дополнительные материалы</p>
+        <SimpleSection title="Дополнительные материалы">
           {homework.externalMaterialUrls.map((url, index) => {
             return (
               <a key={index + url} href="url">
                 {url}
               </a>
             );
-          })}
-        </section>
+          }) || '-'}
+        </SimpleSection>
       )}
+      <SimpleSection title="Командное задание">
+        {homework.isGroupWork ? 'Да' : 'Нет'}
+      </SimpleSection>
 
-      <section className={styles.section}>
-        <p className={styles.section_title}>Командное задание</p>
-        <div>{homework.isGroupWork ? 'Да' : 'Нет'}</div>
-      </section>
-
-      {!isAdmin && (
+      {isLearner && (
         <>
           <Divider />
-          <SubmissionSection hwId={hwId} />
+          <LearnerSubmissionSection hwId={hwId} />
+          <UploadSubmissionSection hwId={hwId} />
         </>
       )}
     </div>

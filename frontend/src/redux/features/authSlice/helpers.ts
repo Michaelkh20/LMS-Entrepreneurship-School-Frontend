@@ -10,6 +10,10 @@ export function serializeAuthStateToLocalStorage(authState: AuthState) {
 }
 
 export function deserializeAuthStateFromLocalStorage() {
+  if (!globalThis.localStorage) {
+    return undefined;
+  }
+
   const serializedState = localStorage.getItem(AUTH_STATE_LOCAL_STORAGE_KEY);
 
   if (!serializedState) {

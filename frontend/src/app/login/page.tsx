@@ -27,7 +27,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (isError) {
+    if (isError || data?.response?.result?.$case === 'failure') {
       form.setFields([
         {
           name: 'password',
@@ -35,7 +35,7 @@ export default function Home() {
         },
       ]);
     }
-  }, [form, isError]);
+  }, [data?.response?.result?.$case, form, isError]);
 
   useEffect(() => {
     if (isSuccess && data.response?.result?.$case === 'success') {

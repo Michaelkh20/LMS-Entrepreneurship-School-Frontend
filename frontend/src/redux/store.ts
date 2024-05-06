@@ -9,7 +9,7 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([api.middleware]),
+    getDefaultMiddleware({ serializableCheck: false }).concat([api.middleware]),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

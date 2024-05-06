@@ -54,6 +54,7 @@ import type {
   UpdateLotApiArg,
   UpdateTeamApiArg,
   UpdateTestApiArg,
+  SubmissionWithAttachments,
 } from '@/types/api';
 
 import type {
@@ -146,14 +147,26 @@ import {
   CreateSubmissionResponseTransformer,
 } from '@/types/proto';
 
-import { getResponseHandler } from './helpers/responseHandler';
+import { getResponseHandler } from './responseHandlers/baseResponseHandler';
 import { roleToSearchParam } from '@/util/enumsToString';
+import { RootState } from '../store';
+import { submissionSchema } from '@/validators/Submission';
+import SubmissionWithAttachmentsTransformer from '@/transformers/SubmissionWithAttachments';
+import { submissionResponseHandler } from './responseHandlers/submissionResponseHandler';
 
 export const api = createApi({
   reducerPath: 'API',
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1',
-    prepareHeaders(headers) {
+    prepareHeaders(headers, { getState }) {
+      const state = getState() as RootState;
+
+      const authToken = state.auth.token;
+
+      if (authToken) {
+        headers.set('Authorization', 'Bearer ' + authToken);
+      }
+
       headers.set('Accept', 'application/x-protobuf');
     },
   }),
@@ -1069,25 +1082,25 @@ export const api = createApi({
       providesTags: ['Submission'],
     }),
 
-    getSubmissionById: build.query<IGetSubmissionResponse, string>({
+    getSubmissionById: build.query<SubmissionWithAttachments, string>({
       query: (id) => ({
         url: `/submissions/${id}`,
-        responseHandler: getResponseHandler(GetSubmissionResponseTransformer),
+        responseHandler: submissionResponseHandler,
       }),
       providesTags: ['Submission'],
     }),
 
     getSubmissionByHWIdAndOwnerId: build.query<
-      IGetSubmissionResponse,
+      SubmissionWithAttachments,
       GetSubmissionByHWIdAndOwnerIdApiArg
     >({
       query: (queryArg) => ({
         url: `/submissions`,
         params: {
-          hwId: queryArg.hwId,
+          taskId: queryArg.hwId,
           ownerId: queryArg.ownerId,
         },
-        responseHandler: getResponseHandler(GetSubmissionResponseTransformer),
+        responseHandler: submissionResponseHandler,
       }),
       providesTags: ['Submission'],
     }),

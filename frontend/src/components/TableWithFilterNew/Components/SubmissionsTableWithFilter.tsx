@@ -29,11 +29,19 @@ const SubmissionsColumns: ColumnsType<SubmissionsColumnsDataType> = [
     },
   },
   {
-    title: 'Дата сдачи',
+    title: 'Время сдачи',
     dataIndex: 'completeDate',
     key: 'completeDate',
     render: (_value, record, _index) => {
-      return `${record.publishedAt?.toLocaleDateString('ru-RU')}`;
+      return `${record.publishedAt?.toLocaleString('ru-RU')}`;
+    },
+  },
+  {
+    title: 'Команда',
+    dataIndex: 'team',
+    key: 'team',
+    render: (_value, record, _index) => {
+      return `№${record.team?.number}`;
     },
   },
   {

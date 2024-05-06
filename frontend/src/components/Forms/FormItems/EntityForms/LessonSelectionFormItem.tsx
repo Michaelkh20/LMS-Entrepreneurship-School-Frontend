@@ -26,7 +26,6 @@ export function LessonSelectionFormItem({ type, label }: Props) {
           ? [{ required: true, message: 'Выберите урок' }]
           : undefined
       }
-      // wrapperCol={type === 'form' ? { span: 8 } : undefined}
       style={type === 'filter' ? { minWidth: '240px' } : undefined}
     >
       <Select

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { Role, Sex } from '@/types/common';
+import { UploadFile } from 'antd';
 
 export type UserFormValues = {
   firstName: string;
@@ -46,4 +47,9 @@ export type TestFormValues = {
 export type ExamCompetitionsFormValues = {
   deadlineDate: dayjs.Dayjs;
   title: string;
+};
+
+export type SubmissionFormValues = {
+  comment: string | undefined;
+  files: UploadFile[] | undefined;
 };

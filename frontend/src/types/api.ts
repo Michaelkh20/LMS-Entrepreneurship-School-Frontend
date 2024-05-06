@@ -29,6 +29,9 @@ import type {
   ICreateUpdateUserRequest,
 } from '@/types/proto';
 
+import { UserSnippet } from '@/validators/UserSnippet';
+import { Submission } from '@/validators/Submission';
+
 export type MutationResultType<ResponseType, ArgType> = TypedUseMutationResult<
   ResponseType,
   ArgType,
@@ -416,16 +419,26 @@ export type GetSubmissionByHWIdAndOwnerIdApiArg = {
   ownerId: string;
 };
 
+export { type Submission } from '@/validators/Submission';
+export { type HomeworkSnippet } from '@/validators/HomeworkSnippet';
+export { type LessonSnippet } from '@/validators/LessonSnippet';
+export { type TeamSnippet } from '@/validators/TeamSnippet';
+export { type UserSnippet } from '@/validators/UserSnippet';
+export { type SubmissionPayload } from '@/validators/SubmissionPayload';
+
+export type Attachment = {
+  name: string;
+  url: string;
+};
+
+export type SubmissionWithAttachments = Omit<Submission, 'payload'> & {
+  textAnswer: Submission['payload']['textAnswer'];
+  attachments: Attachment[];
+};
+
 export type Pagination = {
   total_pages: number;
   total_elements: number;
-};
-
-export type UserSnippet = {
-  id: string;
-  name: string;
-  surname: string;
-  patronymic: string | null;
 };
 
 export type PublicUserProfile = {
