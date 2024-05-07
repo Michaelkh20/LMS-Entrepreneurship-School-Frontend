@@ -53,47 +53,59 @@ export default function LessonsPage() {
 
   return (
     <BasePageLayout>
-      <h2 className={styles.main__header}>Уроки </h2>
-      <div className={styles.lessons_container}>
-        {lessonsSnippets?.map((lesson) => {
-          return (
-            <LessonCard
-              key={lesson.id}
-              to={`lessons/${lesson.id}`}
-              lessonData={lesson}
-            />
-          );
-        }) || (
-          <div style={{ paddingLeft: '1rem' }}>Уроки пока отсутствуют 🧑‍🎓</div>
-        )}
+      <div className={styles.mainSectionContainer}>
+        <h2 className={styles.main__header}>Уроки </h2>
+        <div className={styles.lessons_container}>
+          {lessonsSnippets?.map((lesson) => {
+            return (
+              <LessonCard
+                key={lesson.id}
+                to={`lessons/${lesson.id}`}
+                lessonData={lesson}
+              />
+            );
+          }) || (
+            <div style={{ paddingLeft: '1rem' }}>Уроки пока отсутствуют 🧑‍🎓</div>
+          )}
+        </div>
       </div>
-      <h2 className={styles.main__header}>Экзамены</h2>
-      <div className={styles.lessons_container}>
-        {examsSnippets?.map((exam) => {
-          return (
-            <ExamCard
-              key={exam.id}
-              onClick={() => handleOnRowClick(examId, null)}
-              examData={exam}
-            />
-          );
-        }) || (
-          <div style={{ paddingLeft: '1rem' }}>Экзаменов нет, выдыхаем 🤩</div>
-        )}
+
+      <div className={styles.mainSectionContainer}>
+        <h2 className={styles.main__header}>Экзамены</h2>
+        <div className={styles.lessons_container}>
+          {examsSnippets?.map((exam) => {
+            return (
+              <ExamCard
+                key={exam.id}
+                onClick={() => handleOnRowClick(examId, null)}
+                examData={exam}
+              />
+            );
+          }) || (
+            <div style={{ paddingLeft: '1rem' }}>
+              Экзаменов нет, выдыхаем 🤩
+            </div>
+          )}
+        </div>
       </div>
-      <h2 className={styles.main__header}>Конкурсы</h2>
-      <div className={styles.lessons_container}>
-        {competitionsSnippets?.map((competition) => {
-          return (
-            <CompetitionCard
-              key={competition.id}
-              competitionData={competition}
-              onClick={() => handleOnRowClick(examId, null)}
-            />
-          );
-        }) || (
-          <div style={{ paddingLeft: '1rem' }}>Конкурсы скоро начнутся...</div>
-        )}
+
+      <div className={styles.mainSectionContainer}>
+        <h2 className={styles.main__header}>Конкурсы</h2>
+        <div className={styles.lessons_container}>
+          {competitionsSnippets?.map((competition) => {
+            return (
+              <CompetitionCard
+                key={competition.id}
+                competitionData={competition}
+                onClick={() => handleOnRowClick(examId, null)}
+              />
+            );
+          }) || (
+            <div style={{ paddingLeft: '1rem' }}>
+              Конкурсы скоро начнутся...
+            </div>
+          )}
+        </div>
       </div>
       <ExamCompetitionsViewModal
         isOpen={isExamCompetitionModalOpen}
@@ -112,7 +124,7 @@ const CircleTag = ({ icon, text }: { icon: ReactNode; text: string }) => {
         style={{
           border: '1px solid #d9d9d9',
           // borderRadius: '16px',
-          borderRadius: 4,
+          borderRadius: 16,
           padding: '4px 8px',
           display: 'flex',
           gap: 4,
@@ -162,6 +174,7 @@ const ExamCard = ({
   return (
     <div onClick={onClick} className={styles.lessonCard__wrapper}>
       <p className={styles.lessonCard__header}>{examData.title}</p>
+      <p  className={styles.lessonCard__body}></p>
       <CircleTag
         icon={<CalendarOutlined />}
         text={examData.deadlineDate?.toLocaleDateString('ru-RU') || ''}
@@ -181,6 +194,7 @@ const CompetitionCard = ({
   return (
     <div onClick={onClick} className={styles.lessonCard__wrapper}>
       <p className={styles.lessonCard__header}>{competitionData.title}</p>
+      <p  className={styles.lessonCard__body}></p>
       <CircleTag
         icon={<CalendarOutlined />}
         text={competitionData.deadlineDate?.toLocaleDateString('ru-RU') || ''}
