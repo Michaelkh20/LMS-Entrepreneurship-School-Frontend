@@ -118,6 +118,10 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
     router.push(`/admin/lessons/${id}/edit`);
   };
 
+  const handleAttendanceClick = () => {
+    router.push(`/admin/lessons/${id}/attendance`);
+  };
+
   const panelStyle: React.CSSProperties = {
     marginBottom: 24,
     borderRadius: 8,
@@ -136,7 +140,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
     >
       {isAdmin && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          <Button type="primary" size="large">
+          <Button type="primary" size="large" onClick={handleAttendanceClick}>
             Посещаемость
           </Button>
           <Button
@@ -152,7 +156,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
       <Collapse
         bordered={false}
         items={collapseItems(panelStyle)}
-        defaultActiveKey={['1', '2']}
+        defaultActiveKey={['1', '2', '3', '4']}
         style={{ background: '#fff' }}
       ></Collapse>
     </BasePageLayout>

@@ -6,6 +6,7 @@ import {
   Sex,
   TwoSidedClaimStatus,
   AssignmentType,
+  TransactionType,
 } from '@/types/common';
 
 export function roleToString(role: Role | undefined) {
@@ -117,3 +118,29 @@ export function AssignmentTypeToString(
       return '-';
   }
 }
+
+export function transactionTypeToString(
+  transactionType: TransactionType | undefined
+) {
+  switch (transactionType) {
+    case TransactionType.Activity:
+      return 'Активность';
+    case TransactionType.AdminOutcome:
+      return 'Списание админом';
+    case TransactionType.AdminIncome:
+      return 'Подарок админа';
+    case TransactionType.BuyLot:
+      return 'Покупка лота';
+    case TransactionType.FailedDeadline:
+      return 'Дедлайн';
+    case TransactionType.SellLot:
+      return 'Продажа лота';
+    case TransactionType.TransferIncome:
+      return 'Получение перевода';
+    case TransactionType.TransferOutcome:
+      return 'Перевод';
+    default:
+      return '-';
+  }
+}
+

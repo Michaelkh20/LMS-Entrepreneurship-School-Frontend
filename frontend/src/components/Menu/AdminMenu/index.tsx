@@ -22,8 +22,8 @@ const menuItems: MenuProps['items'] = [
         icon: <TeamOutlined />,
       },
       {
-        key: 'assessments',
-        label: <Link href="/admin/assessments">Оценки</Link>,
+        key: 'grades',
+        label: <Link href="/admin/grades">Оценки</Link>,
       },
       {
         key: 'claims',
@@ -119,11 +119,7 @@ export default function AdminMenu({ onClose }: { onClose?: () => void }) {
       }}
     >
       <div style={{ padding: '0 4px' }}>
-        <UserDropdown
-          props={{
-            name: undefined,
-          }}
-        />
+        <UserDropdown/>
       </div>
       {/* <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} /> */}
       <Menu

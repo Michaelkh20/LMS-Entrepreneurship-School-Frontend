@@ -74,7 +74,8 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
 
       {isLearner && (
         <>
-          <Divider />
+          <Divider style={{margin: '16px 0'}} />
+          <h3>Решение</h3>
           <LearnerSubmissionSection hwId={hwId} />
           <UploadSubmissionSection hwId={hwId} />
         </>

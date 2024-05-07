@@ -1,6 +1,6 @@
 'use client';
 
-import { Key, useEffect, useState } from 'react';
+import { Key, useEffect, useMemo, useState } from 'react';
 import { ColumnsType, TableProps } from 'antd/es/table';
 
 // @ts-ignore
@@ -17,89 +17,18 @@ import tableStyles from '../table.module.css';
 import { AttendanceInfo } from '@/types/api';
 
 import { useGetAttendanceQuery } from '@/redux/services/api';
+import { useUpdateAttendanceMutation } from '@/redux/services/api';
+// import { UpdateAttendanceApiArg } from '@/types/api';
+import type { AttendanceUpdateRequest } from '@/types/api';
 
 export type AttendanceColumnsDataType = {
-  key: number;
+  key: string;
   learner: string;
   email: string;
   didCome: boolean;
   accruedCurrency?: number | null;
   cachedAccruedCurrency?: number;
 };
-
-const dataD: AttendanceColumnsDataType[] = [
-  {
-    key: 1,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-  {
-    key: 22,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: true,
-    accruedCurrency: 300,
-  },
-  {
-    key: 2,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-  {
-    key: 33,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: true,
-    accruedCurrency: 300,
-  },
-  {
-    key: 3,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-  {
-    key: 44,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: true,
-    accruedCurrency: 300,
-  },
-  {
-    key: 5,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-  {
-    key: 55,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: true,
-    accruedCurrency: 300,
-  },
-  {
-    key: 6,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-  {
-    key: 66,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: true,
-    accruedCurrency: 300,
-  },
-  {
-    key: 7,
-    learner: 'Ivan',
-    email: 'Ivan@email.com',
-    didCome: false,
-  },
-];
 
 export function AttendanceTable({
   lessonId,
@@ -108,17 +37,48 @@ export function AttendanceTable({
   lessonId: string;
   onRow?: TableProps['onRow'];
 }) {
-  const [formData, setFormData] = useState<AttendanceInfo>({
-    // lessonId: 123,
+  const [formData, setFormData] = useState<AttendanceUpdateRequest>({
+    lessonId: lessonId,
     learners: [],
   });
+
   const { data, isLoading, isError, isFetching } =
     useGetAttendanceQuery(lessonId);
 
-  const [dataTable, setDataTable] =
-    useState<AttendanceColumnsDataType[]>(dataD);
-  // const [trigger, { isLoading: isL, isSuccess: isS }] =
-  //   useUpdateAttendanceMutation();
+  const [dataForTable, setDataForTable] = useState<AttendanceColumnsDataType[]>(
+    []
+  );
+
+  const [trigger, { isLoading: isL, isSuccess: isS }] =
+    useUpdateAttendanceMutation();
+
+  useEffect(() => {
+    console.log('ATTEN DATA: ', data);
+    const d = data?.learners.map<AttendanceColumnsDataType>((learner) => {
+      const res: AttendanceColumnsDataType = {
+        key: learner.learner.id,
+        learner: learner.learner.name,
+        email: learner.learner.email,
+        didCome: learner.hasCome,
+        accruedCurrency: learner.accruedСurrency,
+      };
+      return res;
+    });
+    setDataForTable(d || []);
+  }, [data]);
+
+  // const dataForTable = useMemo(() => {
+  //   return data?.learners.map<AttendanceColumnsDataType>((learner) => {
+  //     const res: AttendanceColumnsDataType = {
+  //       key: learner.learner.id,
+  //       learner: learner.learner.name,
+  //       email: learner.learner.email,
+  //       didCome: learner.hasCome,
+  //       accruedCurrency: learner.accruedСurrency,
+  //     };
+  //     return res;
+  //   });
+  // }, [data]);
 
   const AttendanceColumns: ColumnsType<AttendanceColumnsDataType> = [
     {
@@ -150,7 +110,7 @@ export function AttendanceTable({
                   } else {
                     record.accruedCurrency = 0;
                   }
-                  setDataTable((prevState) => [
+                  setDataForTable((prevState) => [
                     ...prevState.map((student) =>
                       student.key === record.key ? record : student
                     ),
@@ -164,28 +124,33 @@ export function AttendanceTable({
     },
   ];
 
+  // useEffect(() => {
+  //   console.log('FormData:', formData);
+  // }, [formData]);
+
   useEffect(() => {
-    console.log('FormData:', formData);
-  }, [formData]);
-  useEffect(() => {
-    console.log('Table:', dataTable);
-    setFormData((prevState): AttendanceInfo => {
+    console.log('Table:', dataForTable);
+    setFormData((prevState): AttendanceUpdateRequest => {
       return {
         ...prevState,
-        learners: dataTable
+        learners: dataForTable
           .filter((st) => st.didCome)
           .map((st) => {
-            return {
+            const res: {
+              learnerId: string;
+              accruedСurrency: number | null;
+            } = {
               learnerId: st.key,
-              accruedCurrency: st.accruedCurrency || null,
+              accruedСurrency: st.accruedCurrency!,
             };
+            return res;
           }),
       };
     });
-  }, [dataTable]);
+  }, [dataForTable]);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>(() => {
-    const students = dataTable.filter((e) => e.didCome).map((e) => e.key);
+    const students = dataForTable.filter((e) => e.didCome).map((e) => e.key);
     console.log('students did come:', students);
     return students;
   });
@@ -210,7 +175,7 @@ export function AttendanceTable({
       record.accruedCurrency = 0;
     }
 
-    setDataTable((prevState) => [
+    setDataForTable((prevState) => [
       ...prevState.map((student) =>
         student.key === record.key ? record : student
       ),
@@ -231,7 +196,7 @@ export function AttendanceTable({
       <div>Lesson ID: {lessonId}</div>
       <Table
         columns={AttendanceColumns}
-        dataSource={dataTable}
+        dataSource={dataForTable}
         pagination={false}
         // loading={isFetching || isLoading}
         className={tableStyles.table}
@@ -255,7 +220,7 @@ export function AttendanceTable({
         <Space size={32}>
           <div>Выбрано: {selectedRowKeys.length}</div>
           {/* <Button size={'large'} onClick={() => trigger(formData)}> */}
-          <Button size={'large'} onClick={() => {}}>
+          <Button size={'large'} onClick={() => trigger(formData)}>
             Подтвердить
           </Button>
         </Space>

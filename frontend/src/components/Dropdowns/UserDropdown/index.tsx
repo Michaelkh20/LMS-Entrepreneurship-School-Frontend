@@ -11,11 +11,7 @@ import { useAuth } from '@/redux/features/authSlice';
 import { AuthState } from '../../../redux/features/authSlice/index';
 import { AuthStatus } from '@/types/redux';
 
-export default function UserDropdown({
-  props: { name = 'Guest' },
-}: {
-  props: { name?: string };
-}) {
+export default function UserDropdown() {
   const router = useRouter();
   const [AuthState, { logOut }, { isAdmin }] = useAuth();
 
@@ -86,7 +82,7 @@ export default function UserDropdown({
                 >
                   U
                 </Avatar>
-                {name}
+                {AuthState.name}
               </Space>
             </Button>
           )}

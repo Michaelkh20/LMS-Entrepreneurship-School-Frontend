@@ -701,9 +701,9 @@ export type AttendanceInfo = {
 };
 
 export type AttendanceUpdateRequest = {
-  lessonstring: string;
+  lessonId: string;
   learners: {
-    learnerstring: string;
+    learnerId: string;
     accruedСurrency: number | null;
   }[];
 };

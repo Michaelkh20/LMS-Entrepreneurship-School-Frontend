@@ -18,23 +18,26 @@ export const VideoSection = ({
       >
         {videoUrls?.map((videoUrl, index) => {
           return (
-            <iframe
-              key={index + videoUrl}
-              style={
-                {
-                  // width: '100%',
-                  // minHeight: '200px',
-                  // maxWidth: '600px',
-                  // height: '70%',
-                }
-              }
-              src={`${videoUrl}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen={true}
-            ></iframe>
+            <div style={{
+              width: '100%',
+              aspectRatio:'16/9',
+              maxWidth: 450
+            }}>
+              <iframe
+                key={index + videoUrl}
+                style={{
+                  display: 'block',
+                  width: ' 100%',
+                  height: '100%',
+                }}
+                src={`${videoUrl}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen={true}
+              ></iframe>
+            </div>
           );
         })}
       </div>
