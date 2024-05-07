@@ -1,6 +1,6 @@
 import React from 'react';
 import { Result } from 'antd';
-import { RingLoader } from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
 import styles from './LoadingErrorStub.module.css';
 
 export default function LoadingErrorStub({
@@ -15,7 +15,7 @@ export default function LoadingErrorStub({
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
-        <RingLoader loading color="#8be4ff" size={'10rem'} />
+        <BeatLoader loading color="#8be4ff"  />
       </div>
     );
   } else if (isError) {

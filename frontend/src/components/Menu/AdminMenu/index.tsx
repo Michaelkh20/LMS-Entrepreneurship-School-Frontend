@@ -119,11 +119,7 @@ export default function AdminMenu({ onClose }: { onClose?: () => void }) {
       }}
     >
       <div style={{ padding: '0 4px' }}>
-        <UserDropdown
-          props={{
-            name: undefined,
-          }}
-        />
+        <UserDropdown/>
       </div>
       {/* <Menu mode="inline" items={menuItems} style={{ height: '100vh' }} /> */}
       <Menu

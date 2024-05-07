@@ -3,12 +3,12 @@ import { useGetExamByIdQuery } from '@/redux/services/api';
 
 import { Button, Divider, Space } from 'antd';
 
-import styles from '../HomeworkPage/HomeworkPage.module.css';
 import { useAuth } from '@/redux/features/authSlice';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import { EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import ExamDeleteBtn from '@/components/Buttons/DeleteButtons/ExamDeleteBtn';
+import SimpleSection from '@/components/SimpleSection';
 
 export const ExamPage = ({ examId: examId }: { examId: string }) => {
   const router = useRouter();
@@ -48,10 +48,10 @@ export const ExamPage = ({ examId: examId }: { examId: string }) => {
         )}
       </Space>
       <h3>{exam.title}</h3>
-      <section className={styles.section}>
-        <p className={styles.section_title}>Дедлайн</p>
+      <SimpleSection title="Дедлайн">
+        {' '}
         <div>{exam.deadlineDate?.toLocaleDateString('ru-RU')}</div>
-      </section>
+      </SimpleSection>
 
       <Divider />
 

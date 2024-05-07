@@ -4,75 +4,87 @@ import {
   NameFormItem,
   EmailFormItem,
 } from '@/components/Forms/FormItems/Filters';
-// import { accountsColumns } from '@/components/TableWithFilter/TableColumns';
-// import { useGetTransactionsQuery } from '@/redux/services/adminApi';
-import type { GetTransactionsApiArg } from '@/types/requests';
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import {
-  Name,
-  Email,
-  TeamNumber,
-  Role,
-  Balance,
-  Id,
-  TransactionType,
-} from '@/types/common';
+import { TransactionType } from '@/types/common';
+
 import { ColumnsType, TableProps } from 'antd/es/table';
 
 import type {
-  AdminTransactionTableItem,
-  UserSelectionItem,
-} from '@/types/responses';
+  GetTransactionsApiArg,
+  Transaction,
+  TransactionsPage,
+} from '@/types/api';
+import { useGetTransactionsQuery } from '@/redux/services/api';
+import { transactionTypeToString } from '@/util/enumsToString';
 
-type TransactionsColumnsDataType = {
-  id: AdminTransactionTableItem['id'];
-  user: UserSelectionItem['name'];
-  type: TransactionType;
-  description: AdminTransactionTableItem['description'];
-  dateTime: AdminTransactionTableItem['dateTime'];
-  sum: AdminTransactionTableItem['sum'];
-};
-
+type TransactionsColumnsDataType = Transaction;
 const TransactionsColumns: ColumnsType<TransactionsColumnsDataType> = [
   {
     title: 'Имя',
     dataIndex: 'user',
     key: 'user',
     sorter: true,
+    render: (_value, record, _index) => {
+      return `${record.learner.surname} ${record.learner.name}`;
+    },
   },
-  { title: 'Тип', dataIndex: 'type', key: 'type' },
-  { title: 'Описание', dataIndex: 'description', key: 'description' },
-  { title: 'Дата', dataIndex: 'dateTime', key: 'dateTime' },
-  { title: 'Сумма', dataIndex: 'sum', key: 'sum' },
+  {
+    title: 'Тип',
+    dataIndex: 'type',
+    key: 'type',
+    render: (_value, record, _index) => {
+      return `${transactionTypeToString(record.type)}`;
+    },
+  },
+  {
+    title: 'Описание',
+    dataIndex: 'description',
+    key: 'description',
+    render: (_value, record, _index) => {
+      return `${record.description}`;
+    },
+  },
+  //TODO: Дата сейчас в строках
+  {
+    title: 'Дата',
+    dataIndex: 'dateTime',
+    key: 'dateTime',
+    render: (_value, record, _index) => {
+      return `${record.date}`;
+    },
+  },
+  {
+    title: 'Сумма',
+    dataIndex: 'sum',
+    key: 'sum',
+    render: (_value, record, _index) => {
+      return `${record.sum}`;
+    },
+  },
 ];
 
-const mockData: TransactionsColumnsDataType[] = [
-  {
-    id: 12,
-    type: TransactionType.Activity,
-    user: 'Иван Обучающийся',
-    dateTime: '123123',
-    description: 'Aboba Aboba Aboba Aboba Aboba Aboba Aboba Aboba ',
-    sum: 5000,
+const mockData: TransactionsPage = {
+  pagination: {
+    total_pages: 0,
+    total_elements: 0,
   },
-  {
-    id: 123,
-    type: TransactionType.AdminIncome,
-    user: 'Иван Обучающийся',
-    dateTime: '123123',
-    description: 'Aboba Aboba Aboba Aboba Aboba Aboba Aboba Aboba ',
-    sum: 5000,
-  },
-  {
-    id: 124,
-    type: TransactionType.BuyLot,
-    user: 'Иван Обучающийся',
-    dateTime: '123123',
-    description: 'Aboba Aboba Aboba Aboba Aboba Aboba Aboba Aboba ',
-    sum: 5000,
-  },
-];
+  content: [
+    {
+      id: '',
+      learner: {
+        id: '',
+        name: '',
+        surname: '',
+      },
+      type: TransactionType.Activity,
+      description: null,
+      date: '',
+      sum: 0,
+    },
+  ],
+};
 
 export function TransactionsTableWithFilters({
   onRow,
@@ -81,23 +93,32 @@ export function TransactionsTableWithFilters({
 }) {
   const [formData, setFormData] = useState<GetTransactionsApiArg>({
     page: 1,
-    pageSize: 10,
+    size: 10,
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const [dataTable, setDataTable] =
-    useState<TransactionsColumnsDataType[]>(mockData);
-  // const { data, isLoading, isError, isFetching } =
-  //   useGetTransactionsQuery(dataForReq);
 
-  useEffect(() => {
-    console.log('FormData1:', formData);
-  }, [formData]);
+  const { data, isLoading, isError, isFetching } =
+    useGetTransactionsQuery(dataForReq);
+
+  const dataForTable = useMemo(() => {
+    return data?.content.map<TransactionsColumnsDataType>((transaction) => {
+      const res: TransactionsColumnsDataType = {
+        id: transaction.id,
+        learner: transaction.learner,
+        type: transaction.type,
+        description: transaction.description,
+        date: transaction.date,
+        sum: transaction.sum,
+      };
+      return res;
+    });
+  }, [data]);
 
   return (
     <>
       <BasicTableWithFilter
-        // totalNumber={data?.totalElems}
+        totalNumber={data?.pagination.total_elements}
         filterFormItems={
           <>
             <NameFormItem />
@@ -107,8 +128,8 @@ export function TransactionsTableWithFilters({
         tableProps={{
           scroll: { x: true },
           columns: TransactionsColumns,
-          // pagination: { total: data?.pagination?.totalElements },
-          dataSource: dataTable,
+          pagination: { total: data?.pagination?.total_elements },
+          dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
         }}

@@ -55,6 +55,7 @@ import type {
   UpdateTeamApiArg,
   UpdateTestApiArg,
   SubmissionWithAttachments,
+  AttendanceUpdateRequest,
 } from '@/types/api';
 
 import type {
@@ -1057,11 +1058,11 @@ export const api = createApi({
       query: (id) => ({ url: `/lessons/${id}/attendance` }),
     }),
 
-    updateAttendance: build.mutation<undefined, UpdateAttendanceApiArg>({
+    updateAttendance: build.mutation<undefined, AttendanceUpdateRequest>({
       query: (queryArg) => ({
-        url: `/lessons/${queryArg.id}/attendance`,
+        url: `/lessons/${queryArg.lessonId}/attendance`,
         method: 'PUT',
-        body: queryArg.updateRequestBody,
+        body: queryArg,
       }),
     }),
 

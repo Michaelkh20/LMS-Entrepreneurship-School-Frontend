@@ -98,7 +98,7 @@ const mockData: ListLotClaimsPage = {
           id: 'id1',
           name: 'name1',
           surname: 'surname1',
-          patronymic: null,
+          patronymic: '',
         },
       },
     },
