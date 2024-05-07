@@ -22,8 +22,8 @@ const menuItems: MenuProps['items'] = [
         icon: <TeamOutlined />,
       },
       {
-        key: 'assessments',
-        label: <Link href="/admin/assessments">Оценки</Link>,
+        key: 'grades',
+        label: <Link href="/admin/grades">Оценки</Link>,
       },
       {
         key: 'claims',

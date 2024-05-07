@@ -12,7 +12,7 @@ type Props = {
 export default function SubmissionSection({ submission }: Props) {
   return (
     <>
-      <h3>Решение</h3>
+      {/* <h3>Решение</h3> */}
       <SimpleSection title="Статус">
         <div>{submission ? 'Загружено' : 'Не загружено'}</div>
       </SimpleSection>
