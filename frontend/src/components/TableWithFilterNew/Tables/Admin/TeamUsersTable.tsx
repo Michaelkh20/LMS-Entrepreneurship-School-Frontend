@@ -1,6 +1,12 @@
 'use client';
 
-import { User } from '@proto/users/users_api';
+import { useAuth } from '@/redux/features/authSlice';
+import { GetTeam_Response } from '@proto/teams/teams_api';
+import {
+  User,
+  UserRoleNamespace_Role,
+  UserSexNamespace_Sex,
+} from '@proto/users/users_api';
 import { Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useRouter } from 'next/navigation';
@@ -13,35 +19,97 @@ type TeamUsersColumnsType = {
   userBalance: string;
 };
 
-const TeamUsersColumns: ColumnsType<TeamUsersColumnsType> = [
+const TeamUsersColumns: (
+  isAdmin: boolean
+) => ColumnsType<TeamUsersColumnsType> = (isAdmin) => [
   { title: 'Имя', dataIndex: 'userName', key: 'userName' },
   { title: 'Email', dataIndex: 'userEmail', key: 'userEmail' },
-  { title: 'Баланс', dataIndex: 'userBalance', key: 'userBalance' },
+  { title: 'Баланс', dataIndex: 'userBalance', key: 'userBalance', hidden: !isAdmin },
 ];
 
-const mockData: TeamUsersColumnsType[] = [
+// const mockData: GetTeam_Response = {
+//   team: {
+//     id: 't1',
+//     number: 1,
+//     projectTheme: 'тема_проекта',
+//     description: '__описание__',
+//     students: [
+//       {
+//         id: 'us1',
+//         name: 'Petya',
+//         surname: 'Петоров',
+//         patronymic: '-',
+//         messengerContact: 'meess',
+//         sex: UserSexNamespace_Sex.MALE,
+//         email: '@email',
+//         phoneNumber: '+7 999 999 99 99',
+//         balance: '100',
+//         role: UserRoleNamespace_Role.LEARNER,
+//         memberOfTeams: [],
+//       },
+//       {
+//         id: 'us2',
+//         name: 'Petya2',
+//         surname: 'Петоров2',
+//         patronymic: '-',
+//         messengerContact: 'meess',
+//         sex: UserSexNamespace_Sex.MALE,
+//         email: '@email',
+//         phoneNumber: '+7 999 999 99 99',
+//         balance: '100',
+//         role: UserRoleNamespace_Role.LEARNER,
+//         memberOfTeams: [],
+//       },
+//     ],
+//     trackers: [
+//       {
+//         id: 'us3',
+//         name: 'Petya',
+//         surname: 'Трекеров',
+//         patronymic: '-',
+//         messengerContact: 'meess',
+//         sex: UserSexNamespace_Sex.MALE,
+//         email: '@email',
+//         phoneNumber: '+7 999 999 99 99',
+//         balance: '100',
+//         role: UserRoleNamespace_Role.TRACKER,
+//         memberOfTeams: [],
+//       },
+//     ],
+//   },
+// };
+
+const mockData: User[] = [
   {
-    userId: '1',
-    userName: 'Лёха Петров',
-    userEmail: 'lexa@edu.hse.ru',
-    userBalance: '0',
+    id: 'us1',
+    name: 'Petya',
+    surname: 'Петоров',
+    patronymic: '-',
+    messengerContact: 'meess',
+    sex: UserSexNamespace_Sex.MALE,
+    email: '@email',
+    phoneNumber: '+7 999 999 99 99',
+    balance: '100',
+    role: UserRoleNamespace_Role.LEARNER,
+    memberOfTeams: [],
   },
   {
-    userId: '2',
-    userName: 'Ванёк Петров',
-    userEmail: 'ioann@edu.hse.ru',
-    userBalance: '55',
-  },
-  {
-    userId: '3',
-    userName: 'Саня Петров',
-    userEmail: 'sanek@edu.hse.ru',
-    userBalance: '110',
+    id: 'us2',
+    name: 'Petya2',
+    surname: 'Петоров2',
+    patronymic: '-',
+    messengerContact: 'meess',
+    sex: UserSexNamespace_Sex.MALE,
+    email: '@email',
+    phoneNumber: '+7 999 999 99 99',
+    balance: '100',
+    role: UserRoleNamespace_Role.LEARNER,
+    memberOfTeams: [],
   },
 ];
 
 export const TeamUsersTable = ({
-  users,
+  users = mockData,
   onRow,
 }: {
   users?: User[];
@@ -50,6 +118,7 @@ export const TeamUsersTable = ({
   //TODO: user type
 
   const router = useRouter();
+  const [, , { isAdmin }] = useAuth();
 
   const [userDataTable, setUserDataTable] = useState<TeamUsersColumnsType[]>(
     []
@@ -72,10 +141,11 @@ export const TeamUsersTable = ({
 
   return (
     <Table
-      columns={TeamUsersColumns}
+      columns={TeamUsersColumns(isAdmin)}
       dataSource={userDataTable || mockData}
       pagination={false}
       rowKey={'userId'}
+      style={{width: '100%'}}
       onRow={
         onRow ||
         function (record, rowIndex) {
