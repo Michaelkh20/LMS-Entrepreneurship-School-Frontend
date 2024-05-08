@@ -24,60 +24,13 @@ const TeamUsersColumns: (
 ) => ColumnsType<TeamUsersColumnsType> = (isAdmin) => [
   { title: 'Имя', dataIndex: 'userName', key: 'userName' },
   { title: 'Email', dataIndex: 'userEmail', key: 'userEmail' },
-  { title: 'Баланс', dataIndex: 'userBalance', key: 'userBalance', hidden: !isAdmin },
+  {
+    title: 'Баланс',
+    dataIndex: 'userBalance',
+    key: 'userBalance',
+    hidden: !isAdmin,
+  },
 ];
-
-// const mockData: GetTeam_Response = {
-//   team: {
-//     id: 't1',
-//     number: 1,
-//     projectTheme: 'тема_проекта',
-//     description: '__описание__',
-//     students: [
-//       {
-//         id: 'us1',
-//         name: 'Petya',
-//         surname: 'Петоров',
-//         patronymic: '-',
-//         messengerContact: 'meess',
-//         sex: UserSexNamespace_Sex.MALE,
-//         email: '@email',
-//         phoneNumber: '+7 999 999 99 99',
-//         balance: '100',
-//         role: UserRoleNamespace_Role.LEARNER,
-//         memberOfTeams: [],
-//       },
-//       {
-//         id: 'us2',
-//         name: 'Petya2',
-//         surname: 'Петоров2',
-//         patronymic: '-',
-//         messengerContact: 'meess',
-//         sex: UserSexNamespace_Sex.MALE,
-//         email: '@email',
-//         phoneNumber: '+7 999 999 99 99',
-//         balance: '100',
-//         role: UserRoleNamespace_Role.LEARNER,
-//         memberOfTeams: [],
-//       },
-//     ],
-//     trackers: [
-//       {
-//         id: 'us3',
-//         name: 'Petya',
-//         surname: 'Трекеров',
-//         patronymic: '-',
-//         messengerContact: 'meess',
-//         sex: UserSexNamespace_Sex.MALE,
-//         email: '@email',
-//         phoneNumber: '+7 999 999 99 99',
-//         balance: '100',
-//         role: UserRoleNamespace_Role.TRACKER,
-//         memberOfTeams: [],
-//       },
-//     ],
-//   },
-// };
 
 const mockData: User[] = [
   {
@@ -109,14 +62,12 @@ const mockData: User[] = [
 ];
 
 export const TeamUsersTable = ({
-  users = mockData,
+  users,
   onRow,
 }: {
   users?: User[];
   onRow?: TableProps['onRow'];
 }) => {
-  //TODO: user type
-
   const router = useRouter();
   const [, , { isAdmin }] = useAuth();
 
@@ -145,13 +96,13 @@ export const TeamUsersTable = ({
       dataSource={userDataTable || mockData}
       pagination={false}
       rowKey={'userId'}
-      style={{width: '100%'}}
+      style={{ width: '100%' }}
       onRow={
         onRow ||
         function (record, rowIndex) {
           return {
             onClick: (event) => {
-              router.push(`/admin/users/${record.userId}`);
+              isAdmin && router.push(`/admin/users/${record.userId}`);
             },
           };
         }

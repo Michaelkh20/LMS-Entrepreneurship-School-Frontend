@@ -14,7 +14,6 @@ type TeamViewModalProps = {
   setModalOpen: (open: boolean) => void;
 };
 
-//TODO: Добавить таблицы с учениками и трекерами
 export default function TeamViewModal({
   isOpen,
   teamId,
@@ -28,9 +27,9 @@ export default function TeamViewModal({
     setModalOpen(false);
   };
 
-  // if (!isSuccess) {
-  //   return <LoadingErrorStub isError={isError} isLoading={isLoading} />;
-  // }
+  if (!isSuccess) {
+    return <LoadingErrorStub isError={isError} isLoading={isLoading} />;
+  }
 
   return (
     <Modal
