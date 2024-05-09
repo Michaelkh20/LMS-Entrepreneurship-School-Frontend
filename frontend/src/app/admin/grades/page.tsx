@@ -5,7 +5,7 @@ import { GradeAdminTableWithFilter } from '@/components/TableWithFilterNew/Compo
 import GradeViewModal from '@/components/Modals/Grades/GradeViewModal';
 
 export default function AttendenceLessonsPage() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitionId, setSubmitionId] = React.useState<string | null>(null);
 
   const handleOnRowClick = (id: string) => {

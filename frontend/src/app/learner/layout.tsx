@@ -73,7 +73,7 @@ export default function LearnerLayout({
       <LayoutMenuWrapper MenuComponent={LearnerMenu} />
 
       <Layout style={InnerLayoutStyles}>
-        <Header style={HeaderStyles}></Header>
+        {/* <Header style={HeaderStyles}></Header> */}
         <Content style={ContentStyles}>{children}</Content>
         <Footer style={FooterStyles}></Footer>
       </Layout>
