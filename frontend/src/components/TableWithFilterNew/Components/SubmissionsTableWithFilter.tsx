@@ -41,7 +41,7 @@ const SubmissionsColumns: ColumnsType<SubmissionsColumnsDataType> = [
     dataIndex: 'team',
     key: 'team',
     render: (_value, record, _index) => {
-      return `№${record.team?.number}`;
+      return record.team ? `№${record.team?.number}` : 'Не в команде';
     },
   },
   {
