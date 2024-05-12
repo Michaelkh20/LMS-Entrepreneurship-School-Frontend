@@ -1,4 +1,4 @@
-import { AssessmentType, AssignmentType } from '@/types/common';
+import { taskTypeToString } from '@/util/enumsToString';
 import { Form, Select } from 'antd';
 
 export function TaskTypeFormItem({
@@ -11,14 +11,14 @@ export function TaskTypeFormItem({
   return (
     <Form.Item name={name}>
       <Select allowClear placeholder={placeholder} style={{ minWidth: 100 }}>
-        <Select.Option value={AssignmentType.HW}>
-          Домашнее задание
+        <Select.Option value={'homework'}>
+          {taskTypeToString('homework')}
         </Select.Option>
-        <Select.Option value={AssignmentType.Test}>Тест</Select.Option>
-        <Select.Option value={AssignmentType.Competition}>
-          Конкурс
+        <Select.Option value={'test'}>{taskTypeToString('test')}</Select.Option>
+        <Select.Option value={'competition'}>
+          {taskTypeToString('competition')}
         </Select.Option>
-        <Select.Option value={AssignmentType.Exam}>Экзамен</Select.Option>
+        <Select.Option value={'exam'}>{taskTypeToString('exam')}</Select.Option>
       </Select>
     </Form.Item>
   );

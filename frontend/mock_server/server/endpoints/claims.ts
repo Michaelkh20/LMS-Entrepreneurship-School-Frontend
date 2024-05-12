@@ -12,7 +12,7 @@ export default function injectClaimsEndpoints(
   app: ReturnType<typeof express>,
   db: DB
 ) {
-  app.post('/learner/claims/buy-lot', async (req, res) => {
+  app.post('/claims/buy-lot', async (req, res) => {
     const requst = ClaimBuyLotRequest.decode(req.body);
     const claim = BuyLotClaim.fromDto(requst);
     const isApproved = await db.proccessBuyLotClaim(claim);

@@ -52,7 +52,7 @@ export default function LearnerLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [, , { isLearner }] = useAuth();
+  const [, , { isLearner, isTracker }] = useAuth();
   useEffect(() => {
     document.documentElement.classList.add(styles.HTMLAdminLayout);
     document.body.classList.add(styles.BodyAdminLayout);
@@ -63,7 +63,7 @@ export default function LearnerLayout({
     };
   }, []);
 
-  if (!isLearner) {
+  if (!isLearner && !isTracker) {
     router.push('/login');
     return null;
   }

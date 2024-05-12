@@ -1,17 +1,34 @@
-import { z } from 'zod';
-import { homeworkSnippetSchema } from './HomeworkSnippet';
-import { userSnippetSchema } from './UserSnippet';
-import { teamSnippetSchema } from './TeamSnippet';
-import { submissionPayloadSchema } from './SubmissionPayload';
+import type { Submission as SubmissionFinal } from '@/types/api';
+import type { Submission as SubmissionProto } from '@/types/proto';
 
-export const submissionSchema = z.object({
-  id: z.string(),
-  homework: homeworkSnippetSchema,
-  owner: userSnippetSchema,
-  publisher: userSnippetSchema,
-  team: teamSnippetSchema.optional(),
-  publishedAt: z.date(),
-  payload: submissionPayloadSchema,
-});
+import HomeworkSnippetValidator from './HomeworkSnippet';
 
-export type Submission = z.infer<typeof submissionSchema>;
+export default function validator(
+  object: SubmissionProto | undefined
+): object is SubmissionFinal {
+  if (!object) {
+    return false;
+  }
+
+  if (!HomeworkSnippetValidator(object.homework)) {
+    return false;
+  }
+
+  if (!object.owner) {
+    return false;
+  }
+
+  if (!object.publisher) {
+    return false;
+  }
+
+  if (!object.publishedAt) {
+    return false;
+  }
+
+  if (!object.payload) {
+    return false;
+  }
+
+  return true;
+}

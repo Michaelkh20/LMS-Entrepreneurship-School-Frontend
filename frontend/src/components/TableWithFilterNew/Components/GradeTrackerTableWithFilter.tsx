@@ -1,8 +1,7 @@
 'use client';
 
 import {
-  UserSelectionFormItem,
-  TaskSelectionFormItem,
+  IsGradedFormItem,
   TaskTypeFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
@@ -10,74 +9,25 @@ import { useState, useMemo } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import type { GetSubmissionsApiArg } from '@/types/api';
-import { useGetSubmissionsQuery } from '@/redux/services/api';
-import type {
-  GetSubmissions_Response,
-  Submission,
-} from '@proto/submissions/submissions_api';
+import type { GetGradesApiArg, Grade } from '@/types/api';
+import { useGetGradesQuery } from '@/redux/services/api';
+import { getTitleFromTask } from '@/util/getTaskTitleFromGrade';
+import { useAuth } from '@/redux/features/authSlice';
+import { TaskSelectionFormItem } from '@/components/Forms/FormItems/Selection/TaskSelectionFormItem';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { TeamSelectionFormItem } from '@/components/Forms/FormItems/Selection/TeamSelectionFormItem';
+import type { Props as ModalProps } from '@/components/Modals/Grades/TrackerGradeViewModal';
+import TrackerGradeViewModal from '@/components/Modals/Grades/TrackerGradeViewModal';
 
-type GradeTrackerColumnsDataType = Submission;
+type GradeTrackerColumnsDataType = Grade;
 
-const GradeTrackerColumns: ColumnsType<GradeTrackerColumnsDataType> = [
-  {
-    title: 'Задание',
-    dataIndex: 'assignment',
-    key: 'assignment',
-    render: (_value, record, _index) => {
-      return `${record.homework?.title}`;
-    },
-  },
-  {
-    title: 'Ученик',
-    dataIndex: 'learner',
-    key: 'learner',
-    sorter: true,
-    render: (_value, record, _index) => {
-      return `${record.owner?.surname} ${record.owner?.name}`;
-    },
-  },
-  {
-    title: 'Статус',
-    dataIndex: 'gradeStatus',
-    key: 'gradeStatus',
-    render: (_value, record, _index) => {
-      return `${'todo' /* record.grades.some((gradeData) => gradeData.trackerId === currentId) ? 'Проверено' : 'Не проверено'*/}`;
-    },
-  },
-  {
-    title: 'Оценка',
-    dataIndex: 'grade',
-    key: 'grade',
-    render: (_value, record, _index) => {
-      return `${
-        'todo' /* record.grades.find((gradeData) => gradeData.trackerId === currentId)).grade */
-      }`;
-    },
-  },
-];
-
-const mockData: GetSubmissions_Response = {
-  page: undefined,
-  submissions: [
-    {
-      id: '',
-      homework: undefined,
-      owner: undefined,
-      publisher: undefined,
-      team: undefined,
-      publishedAt: undefined,
-      payload: undefined,
-    },
-  ],
+type Props = {
+  onRow?: TableProps['onRow'];
+  modalProps: Omit<ModalProps, 'requestParameters'>;
 };
 
-export function GradeTrackerTableWithFilter({
-  onRow,
-}: {
-  onRow?: TableProps['onRow'];
-}) {
-  const [formData, setFormData] = useState<GetSubmissionsApiArg>({
+export function GradeTrackerTableWithFilter({ onRow, modalProps }: Props) {
+  const [formData, setFormData] = useState<GetGradesApiArg>({
     page: 1,
     size: 10,
   });
@@ -85,24 +35,58 @@ export function GradeTrackerTableWithFilter({
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
   const { data, isLoading, isError, isFetching } =
-    useGetSubmissionsQuery(dataForReq);
+    useGetGradesQuery(dataForReq);
 
-  // const data = mockData;
+  const [authState] = useAuth();
 
-  const dataForTable = useMemo(() => {
-    return data?.submissions.map<GradeTrackerColumnsDataType>((submission) => {
-      const res: GradeTrackerColumnsDataType = {
-        id: submission.id,
-        homework: submission.homework,
-        owner: submission.owner,
-        publisher: submission.publisher,
-        team: submission.team,
-        publishedAt: submission.publishedAt,
-        payload: submission.payload,
-      };
-      return res;
-    });
-  }, [data]);
+  const colums = useMemo<ColumnsType<GradeTrackerColumnsDataType>>(
+    () => [
+      {
+        title: 'Задание',
+        dataIndex: 'assignment',
+        key: 'assignment',
+        render: (_value, record, _index) => {
+          return `${getTitleFromTask(record.task)}`;
+        },
+      },
+      {
+        title: 'Ученик',
+        dataIndex: 'learner',
+        key: 'learner',
+        sorter: true,
+        render: (_value, record, _index) => {
+          return `${record.gradeOwner.surname} ${record.gradeOwner.name}`;
+        },
+      },
+      {
+        title: 'Статус',
+        dataIndex: 'gradeStatus',
+        key: 'gradeStatus',
+        render: (_value, record, _index) => {
+          return `${
+            record.trackerGrades.some(
+              (trackerGrade) => trackerGrade.tracker.id === authState.userId
+            )
+              ? 'Проверено'
+              : 'Не проверено'
+          }`;
+        },
+      },
+      {
+        title: 'Оценка',
+        dataIndex: 'grade',
+        key: 'grade',
+        render: (_value, record, _index) => {
+          return `${
+            record.trackerGrades.find(
+              (trackerGrade) => trackerGrade.tracker.id === authState.userId
+            )?.grade || '-'
+          }`;
+        },
+      },
+    ],
+    [authState.userId]
+  );
 
   return (
     <>
@@ -111,15 +95,29 @@ export function GradeTrackerTableWithFilter({
         filterFormItems={
           <>
             <TaskTypeFormItem name="taskType" />
-            <UserSelectionFormItem placeholder={'Ученик'} name={'learnerId'} />
-            {/* <>Оценено / не оценено</> */}
+            <TaskSelectionFormItem
+              name="taskId"
+              type="filter"
+              placeholder={'Задание'}
+            />
+            <LearnerSelectionFormItem
+              name="ownerId"
+              type="filter"
+              placeholder={'Ученик'}
+            />
+            <TeamSelectionFormItem
+              name="teamId"
+              type="filter"
+              placeholder={'Команда'}
+            />
+            <IsGradedFormItem name="graded" />
           </>
         }
         tableProps={{
           scroll: { x: true },
-          columns: GradeTrackerColumns,
-          pagination: { total: data?.page?.totalElements },
-          dataSource: dataForTable,
+          columns: colums,
+          pagination: { total: data?.page.totalElements },
+          dataSource: data?.grades,
           rowKey: 'id',
           onRow: onRow,
         }}
@@ -127,6 +125,7 @@ export function GradeTrackerTableWithFilter({
         setFormData={setFormData}
         setDataForReq={setDataForReq}
       />
+      <TrackerGradeViewModal {...modalProps} requestParameters={dataForReq} />
     </>
   );
 }

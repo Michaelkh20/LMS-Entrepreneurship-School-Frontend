@@ -16,7 +16,7 @@ import type {
   FinalGrades,
   GetAccountsApiArg,
   GetUserSnippetListApiArg,
-  GetAssessmentsApiArg,
+  GetGradesApiArg,
   GetBuyLotClaimsApiArg,
   GetCompetitionListApiArg,
   GetExamListApiArg,
@@ -45,7 +45,7 @@ import type {
   TransferClaimsPage,
   TransferRequest,
   UpdateUserApiArg,
-  UpdateAssessmentApiArg,
+  UpdateGradeApiArg,
   UpdateAttendanceApiArg,
   UpdateCompetitionApiArg,
   UpdateExamApiArg,
@@ -56,6 +56,9 @@ import type {
   UpdateTestApiArg,
   SubmissionWithAttachments,
   AttendanceUpdateRequest,
+  ISubmissionsList,
+  IGradesList,
+  TaskSnippet,
 } from '@/types/api';
 
 import type {
@@ -96,10 +99,9 @@ import type {
   ICreateUpdateExamResponse,
   ICreateUpdateTestResponse,
   ICreateUpdateHomeworkResponse,
-  ISubmissionsList,
-  IGetSubmissionResponse,
   ICreateSubmissionResponse,
   ICreateSubmissionRequest,
+  IUpdateGradeResponse,
 } from '@/types/proto';
 
 import {
@@ -146,23 +148,36 @@ import {
   GetSubmissionResponseTransformer,
   CreateSubmissionRequestTransformer,
   CreateSubmissionResponseTransformer,
+  GradesListTransformer,
+  UpdateGradeRequestTransformer,
+  UpdateGradeResponseTransformer,
 } from '@/types/proto';
 
-import { getResponseHandler } from './responseHandlers/baseResponseHandler';
+import GetSubmissionResponseValidator from '@/validators/GetSubmissionResponse';
+import SubmissionsListValidator from '@/validators/SubmissionsList';
+import GradesListValidator from '@/validators/GradesList';
+
+import {
+  getResponseHandler,
+  getResponseHandlerWithValidator,
+  getResponseHandlerWithValidatorAndTransformer,
+} from './responseHandlers/baseResponseHandler';
 import { roleToSearchParam } from '@/util/enumsToString';
 import { RootState } from '../store';
-import { submissionSchema } from '@/validators/Submission';
 import SubmissionWithAttachmentsTransformer from '@/transformers/SubmissionWithAttachments';
-import { submissionResponseHandler } from './responseHandlers/submissionResponseHandler';
+import { useMemo } from 'react';
 
 export const api = createApi({
   reducerPath: 'API',
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1',
-    prepareHeaders(headers, { getState }) {
+    prepareHeaders(headers, { getState, type }) {
       const state = getState() as RootState;
-
       const authToken = state.auth.token;
+
+      if (type === 'mutation') {
+        headers.set('Content-Type', 'application/x-protobuf');
+      }
 
       if (authToken) {
         headers.set('Authorization', 'Bearer ' + authToken);
@@ -282,7 +297,7 @@ export const api = createApi({
       {
         query: (queryArg) => ({
           url: `/users/snippets`,
-          params: { role: queryArg.role },
+          params: { role: roleToSearchParam(queryArg.role), sort: 'name,asc' },
           responseHandler: getResponseHandler(UserSnippetListTransformer),
         }),
       }
@@ -350,55 +365,36 @@ export const api = createApi({
       }),
     }),
 
-    getTeamsForSelect: build.query<TeamSnippet[], void>({
+    getTeamSnippetList: build.query<ITeamsList, void>({
       query: () => ({
         url: `/teams/list`,
-        params: { size: 10_000 },
-        responseHandler: async (response) => {
-          const buffer = await response.arrayBuffer();
-          const decodedResponse = TeamsListTransformer.decode(
-            new Uint8Array(buffer)
-          );
-          return decodedResponse.teams;
-        },
+        params: { size: 999_999, sort: 'teamNumber,asc' },
+        responseHandler: getResponseHandler(TeamsListTransformer),
       }),
     }),
 
-    getAssessments: build.query<AssessmentsPage, GetAssessmentsApiArg>({
+    getGrades: build.query<IGradesList, GetGradesApiArg>({
       query: (queryArg) => ({
-        url: `/assessments/list`,
+        url: `/grades/list`,
         params: {
-          learnerId: queryArg.learnerId,
-          teamId: queryArg.teamId,
-          assignmentId: queryArg.assignmentId,
-          assessmentType: queryArg.assessmentType,
-          sort: queryArg.sort,
+          ...queryArg,
           page: queryArg.page && queryArg.page - 1,
-          size: queryArg.size,
         },
+        responseHandler: getResponseHandlerWithValidator(
+          GradesListTransformer,
+          GradesListValidator
+        ),
       }),
     }),
 
-    createAssessment: build.mutation<undefined, AssessmentCreateUpdateRequest>({
-      query: (requestBody) => ({
-        url: `/assessments`,
-        method: 'POST',
-        body: requestBody,
-      }),
-    }),
-
-    updateAssessment: build.mutation<undefined, UpdateAssessmentApiArg>({
+    updateGrade: build.mutation<IUpdateGradeResponse, UpdateGradeApiArg>({
       query: (queryArg) => ({
-        url: `/assessments/${queryArg.id}`,
-        method: 'PUT',
-        body: queryArg.updateRequestBody,
-      }),
-    }),
-
-    deleteAssessmentById: build.mutation<undefined, string>({
-      query: (id) => ({
-        url: `/assessments/${id}`,
-        method: 'DELETE',
+        url: `/grades/${queryArg.id}`,
+        method: 'PATCH',
+        body: UpdateGradeRequestTransformer.encode(
+          queryArg.updateRequestBody
+        ).finish(),
+        responseHandler: getResponseHandler(UpdateGradeResponseTransformer),
       }),
     }),
 
@@ -733,6 +729,9 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/competitions/${queryArg.id}`,
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/x-protobuf',
+        },
         body: CreateUpdateCompetitionRequestTransformer.encode(
           queryArg.updateRequestBody
         ).finish(),
@@ -844,7 +843,7 @@ export const api = createApi({
     getLessonsSnippets: build.query<LessonSnippet[], void>({
       query: () => ({
         url: `/lessons/list`,
-        params: { page: 0, size: 999_999 },
+        params: { page: 0, size: 999_999, sort: 'lessonNumber' },
         async responseHandler(response) {
           const buffer = await response.arrayBuffer();
           const decodedResponse = LessonsListTransformer.decode(
@@ -1070,15 +1069,13 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/submissions/list`,
         params: {
-          assignmentId: queryArg.assignmentId,
-          ownerId: queryArg.ownerId,
-          publisherId: queryArg.publisherId,
-          teamId: queryArg.teamId,
-          sort: queryArg.sort,
+          ...queryArg,
           page: queryArg.page && queryArg.page - 1,
-          size: queryArg.size,
         },
-        responseHandler: getResponseHandler(SubmissionsListTransformer),
+        responseHandler: getResponseHandlerWithValidator(
+          SubmissionsListTransformer,
+          SubmissionsListValidator
+        ),
       }),
       providesTags: ['Submission'],
     }),
@@ -1086,7 +1083,11 @@ export const api = createApi({
     getSubmissionById: build.query<SubmissionWithAttachments, string>({
       query: (id) => ({
         url: `/submissions/${id}`,
-        responseHandler: submissionResponseHandler,
+        responseHandler: getResponseHandlerWithValidatorAndTransformer(
+          GetSubmissionResponseTransformer,
+          GetSubmissionResponseValidator,
+          SubmissionWithAttachmentsTransformer
+        ),
       }),
       providesTags: ['Submission'],
     }),
@@ -1101,7 +1102,11 @@ export const api = createApi({
           taskId: queryArg.hwId,
           ownerId: queryArg.ownerId,
         },
-        responseHandler: submissionResponseHandler,
+        responseHandler: getResponseHandlerWithValidatorAndTransformer(
+          GetSubmissionResponseTransformer,
+          GetSubmissionResponseValidator,
+          SubmissionWithAttachmentsTransformer
+        ),
       }),
       providesTags: ['Submission'],
     }),
@@ -1150,11 +1155,9 @@ export const {
   useGetTeamByIdQuery,
   useDeleteTeamByIdMutation,
   useGetTeamPublicProfileByIdQuery,
-  useGetTeamsForSelectQuery,
-  useGetAssessmentsQuery,
-  useCreateAssessmentMutation,
-  useUpdateAssessmentMutation,
-  useDeleteAssessmentByIdMutation,
+  useGetTeamSnippetListQuery,
+  useGetGradesQuery,
+  useUpdateGradeMutation,
   useGetFinalGradesByLearnerIdQuery,
   useGetFinalGradeFormulaQuery,
   useUpdateFinalGradeFormulaMutation,
@@ -1217,3 +1220,47 @@ export const {
   useCreateSubmissionMutation,
   useCreateEmailMutation,
 } = api;
+
+export function useGetTaskSnippetList() {
+  const { data: hws, isFetching: isFetchingHWs } = useGetHWSnippetsQuery();
+  const { data: tests, isFetching: isFetchingTests } =
+    useGetTestSnippetsQuery();
+  const { data: exams, isFetching: isFetchingExams } =
+    useGetExamSnippetsQuery();
+  const { data: competitions, isFetching: isFetchingCompetitions } =
+    useGetCompetitionSnippetsQuery();
+
+  const taskSnippets = useMemo<TaskSnippet[] | undefined>(() => {
+    if (hws && tests && exams && competitions) {
+      return [
+        ...hws.map<TaskSnippet>((hw) => ({
+          id: hw.id,
+          title: hw.title,
+          taskType: 'homework',
+        })),
+        ...tests.map<TaskSnippet>((test) => ({
+          id: test.id,
+          title: test.title,
+          taskType: 'test',
+        })),
+        ...exams.map<TaskSnippet>((exam) => ({
+          id: exam.id,
+          title: exam.title,
+          taskType: 'exam',
+        })),
+        ...competitions.map<TaskSnippet>((competition) => ({
+          id: competition.id,
+          title: competition.title,
+          taskType: 'competition',
+        })),
+      ];
+    }
+
+    return undefined;
+  }, [hws, tests, exams, competitions]);
+
+  return {
+    taskSnippets,
+    isFetching: isFetchingHWs || isFetchingTests || isFetchingExams,
+  };
+}

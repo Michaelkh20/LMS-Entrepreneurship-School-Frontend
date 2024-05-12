@@ -1,8 +1,8 @@
 type Decoder<T> = { decode: (input: Uint8Array) => T };
-type Validator<T> = (data: unknown) => T;
-type Transformer<T, U> = (input: T) => Promise<U>;
+type Validator<T, U extends T> = (data: T) => data is U;
+type Transformer<T, U> = (data: T) => Promise<U>;
 
-export function getResponseHandler<T extends Decoder<U>, U>(decoder: T) {
+export function getResponseHandler<T>(decoder: Decoder<T>) {
   return async (response: Response) => {
     if (!response.ok) {
       return await response.text();
@@ -16,11 +16,10 @@ export function getResponseHandler<T extends Decoder<U>, U>(decoder: T) {
   };
 }
 
-export function getResponseHandlerWithValidator<
-  T extends Decoder<any>,
-  U extends Validator<Y>,
-  Y,
->(decoder: T, validator: U) {
+export function getResponseHandlerWithValidator<T, U extends T>(
+  decoder: Decoder<T>,
+  validator: Validator<T, U>
+) {
   return async (response: Response) => {
     if (!response.ok) {
       return await response.text();
@@ -30,9 +29,44 @@ export function getResponseHandlerWithValidator<
     const decodedResponse = decoder.decode(new Uint8Array(buffer));
     console.log(decodedResponse);
 
-    const parsedResponse = validator(decodedResponse);
-    console.log(parsedResponse);
+    const validationResult = validator(decodedResponse);
+    console.log(validationResult);
 
-    return parsedResponse;
+    if (!validationResult) {
+      throw new Error('Validation failed');
+    }
+
+    return decodedResponse;
+  };
+}
+
+export function getResponseHandlerWithValidatorAndTransformer<
+  T,
+  U extends T,
+  V,
+>(
+  decoder: Decoder<T>,
+  validator: Validator<T, U>,
+  tranformer: Transformer<U, V>
+) {
+  return async (response: Response) => {
+    if (!response.ok) {
+      return await response.text();
+    }
+
+    const buffer = await response.arrayBuffer();
+    const decodedResponse = decoder.decode(new Uint8Array(buffer));
+    console.log(decodedResponse);
+
+    const validationResult = validator(decodedResponse);
+    console.log(validationResult);
+
+    if (!validationResult) {
+      throw new Error('Validation failed');
+    }
+
+    const transformedResponse = await tranformer(decodedResponse);
+
+    return transformedResponse;
   };
 }

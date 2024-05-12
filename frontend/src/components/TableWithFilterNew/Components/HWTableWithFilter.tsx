@@ -11,7 +11,7 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 import { LessonSnippet } from '@projTypes/proto';
 import { Flex } from 'antd';
 import { TitleFormItem } from '@/components/Forms/FormItems/Filters/TitleFormItem';
-import { LessonSelectionFormItem } from '@/components/Forms/FormItems/EntityForms/LessonSelectionFormItem';
+import { LessonSelectionFormItem } from '@/components/Forms/FormItems/Selection/LessonSelectionFormItem';
 
 //GetHomeworks_Response
 

@@ -1,3 +1,5 @@
+import { Grade } from './api';
+
 export { Role, Sex } from './proto';
 
 export enum AssessmentType {
@@ -5,12 +7,7 @@ export enum AssessmentType {
   TrackerGrade = 'TrackerGrade',
 }
 
-export enum AssignmentType {
-  HW = 'HW',
-  Test = 'Test',
-  Competition = 'Competition',
-  Exam = 'Exam',
-}
+export type TaskType = Grade['task']['$case'];
 
 export enum LotStatus {
   Approval = 'Approval',

@@ -1,14 +1,8 @@
-import { Dropdown, Space, Button, Flex, Avatar } from 'antd';
-import {
-  LogoutOutlined,
-  DownOutlined,
-  UserOutlined,
-  LoginOutlined,
-} from '@ant-design/icons';
+import { Space, Button, Avatar } from 'antd';
+import { LogoutOutlined, LoginOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/redux/features/authSlice';
-import { AuthState } from '../../../redux/features/authSlice/index';
 import { AuthStatus } from '@/types/redux';
 
 export default function UserDropdown() {
@@ -17,7 +11,6 @@ export default function UserDropdown() {
 
   const handleLogOutClick = () => {
     logOut();
-    router.push('/login');
   };
 
   const items: MenuProps['items'] = [
@@ -73,7 +66,7 @@ export default function UserDropdown() {
                 margin: '12px 0 8px 0',
               }}
               onClick={() => {
-                !isAdmin && router.push('/learner/profile');
+                !isAdmin && router.push('/profile');
               }}
             >
               <Space>
@@ -82,7 +75,7 @@ export default function UserDropdown() {
                 >
                   U
                 </Avatar>
-                {AuthState.name}
+                {`${AuthState.surname} ${AuthState.name}`}
               </Space>
             </Button>
           )}

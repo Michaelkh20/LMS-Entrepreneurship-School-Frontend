@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package ru.hse.lmsteam.proto.grades;
+
+option java_multiple_files = true;
+option java_package = "ru.hse.lmsteam.schema.api.grades";
+
+import "google/protobuf/wrappers.proto";
+import "ru/hse/lmsteam/proto/common/pageable.proto";
+import "ru/hse/lmsteam/proto/users/users_api.proto";
+import "ru/hse/lmsteam/proto/submissions/submissions_api.proto";
+import "ru/hse/lmsteam/proto/assignments/homework_api.proto";
+import "ru/hse/lmsteam/proto/assignments/exam_api.proto";
+import "ru/hse/lmsteam/proto/assignments/competition_api.proto";
+import "ru/hse/lmsteam/proto/assignments/test_api.proto";
+
+message UpdateGrade {
+  message Request {
+    int32 grade = 1;
+    google.protobuf.StringValue comment = 2;
+  }
+
+  message Response {
+    Grade grade = 1;
+  }
+}
+
+message GetGrade {
+  message Response {
+    Grade grade = 1;
+  }
+}
+
+message GetGrades {
+  message Response {
+    ru.hse.lmsteam.proto.common.Page page = 1;
+    repeated Grade grades = 2;
+  }
+}
+
+message Grade {
+  string id = 1;
+  ru.hse.lmsteam.proto.users.UserSnippet grade_owner = 2;
+  oneof task {
+    ru.hse.lmsteam.proto.homeworks.HomeworkSnippet homework = 3;
+    ru.hse.lmsteam.proto.exams.ExamSnippet exam = 4;
+    ru.hse.lmsteam.proto.competitions.CompetitionSnippet competition = 5;
+    ru.hse.lmsteam.proto.tests.TestSnippet test = 6;
+  }
+  // this is optional, present only if task is a homework
+  ru.hse.lmsteam.proto.submissions.Submission submission_for_grading = 7;
+
+  google.protobuf.Int32Value admin_grade = 8;
+  google.protobuf.StringValue admin_comment = 9;
+  repeated TrackerGrade tracker_grades = 10;
+}
+
+message TrackerGrade {
+  string id = 1;
+  ru.hse.lmsteam.proto.users.UserSnippet tracker = 2;
+  google.protobuf.Int32Value grade = 3;
+  google.protobuf.StringValue comment = 4;
+}
