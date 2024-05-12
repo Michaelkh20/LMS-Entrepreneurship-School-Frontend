@@ -1,10 +1,8 @@
-import { z } from 'zod';
+import type { LessonSnippet as LessonSnippetFinal } from '@/types/api';
+import type { LessonSnippet as LessonSnippetProto } from '@/types/proto';
 
-export const lessonSnippetSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  lessonNumber: z.number(),
-  publishDate: z.date(),
-});
-
-export type LessonSnippet = z.infer<typeof lessonSnippetSchema>;
+export default function validator(
+  object: LessonSnippetProto | undefined
+): object is LessonSnippetFinal {
+  return Boolean(object && object.publishDate !== undefined);
+}

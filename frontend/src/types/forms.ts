@@ -53,3 +53,8 @@ export type SubmissionFormValues = {
   comment: string | undefined;
   files: UploadFile[] | undefined;
 };
+
+export type GradeFormValues = {
+  grade: number;
+  comment: string | undefined;
+};

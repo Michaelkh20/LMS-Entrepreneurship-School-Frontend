@@ -2,6 +2,8 @@ export { UserRoleNamespace_Role as Role } from '@proto/users/users_api';
 
 export { UserSexNamespace_Sex as Sex } from '@proto/users/users_api';
 
+export { type Page } from '@proto/common/pageable';
+
 export {
   type Login_Response as ILoginResponse,
   type Success as ISuccessAuthResponse,
@@ -21,6 +23,7 @@ export {
   type GetUserBalance_Response as IUserBalanceResponse,
   type GetUserNameList_Response as IUserSnippetList,
   type User,
+  type UserSnippet,
   type CreateOrUpdateUser_Response as ICreateUpdateUserResponse,
   type DeleteUser_Response as IDeleteUserResponse,
   CreateOrUpdateUser_Request as CreateUpdateUserRequestTransformer,
@@ -123,10 +126,23 @@ export {
   type CreateSubmission_Response as ICreateSubmissionResponse,
   type GetSubmission_Response as IGetSubmissionResponse,
   type GetSubmissions_Response as ISubmissionsList,
-  type Submission as SubmissionProto,
+  type Submission,
   type SubmissionPayload,
   CreateSubmission_Request as CreateSubmissionRequestTransformer,
   CreateSubmission_Response as CreateSubmissionResponseTransformer,
   GetSubmission_Response as GetSubmissionResponseTransformer,
   GetSubmissions_Response as SubmissionsListTransformer,
 } from '@proto/submissions/submissions_api';
+
+export {
+  type UpdateGrade_Request as IUpdateGradeRequest,
+  type UpdateGrade_Response as IUpdateGradeResponse,
+  type GetGrade_Response as IGetGradeResponse,
+  type GetGrades_Response as IGradesList,
+  type Grade,
+  type TrackerGrade,
+  UpdateGrade_Request as UpdateGradeRequestTransformer,
+  UpdateGrade_Response as UpdateGradeResponseTransformer,
+  GetGrade_Response as GetGradeResponseTransformers,
+  GetGrades_Response as GradesListTransformer,
+} from '@proto/grades';

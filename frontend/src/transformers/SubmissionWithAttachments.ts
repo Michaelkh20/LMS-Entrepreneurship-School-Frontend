@@ -1,14 +1,14 @@
 import getSubmissionFilesUrls from '@/s3/getSubmissionFilesUrls';
-import { SubmissionWithAttachments, Submission } from '@/types/api';
+import { SubmissionWithAttachments, IGetSubmissionResponse } from '@/types/api';
 
 export default async function SubmissionWithAttachmentsTransformer(
-  submisssion: Submission
+  response: IGetSubmissionResponse
 ): Promise<SubmissionWithAttachments> {
   const {
     homework: { id: homeworkId },
     owner: { id: ownerId },
     payload: { textAnswer, attachmentUrls },
-  } = submisssion;
+  } = response.submission;
 
   const fileNames = attachmentUrls.map(
     (fileName) => `${ownerId}/${homeworkId}/${fileName}`
@@ -22,12 +22,12 @@ export default async function SubmissionWithAttachmentsTransformer(
   }));
 
   return {
-    id: submisssion.id,
-    homework: submisssion.homework,
-    owner: submisssion.owner,
-    publisher: submisssion.publisher,
-    team: submisssion.team,
-    publishedAt: submisssion.publishedAt,
+    id: response.submission.id,
+    homework: response.submission.homework,
+    owner: response.submission.owner,
+    publisher: response.submission.publisher,
+    team: response.submission.team,
+    publishedAt: response.submission.publishedAt,
     attachments,
     textAnswer,
   };

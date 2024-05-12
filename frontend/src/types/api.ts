@@ -13,6 +13,7 @@ import {
   ClaimStatus,
   ClaimAction,
   EmailGroupingTypes,
+  TaskType,
 } from './common';
 
 import { Role } from './proto';
@@ -27,10 +28,12 @@ import type {
   ICreateUpdateTeamRequest,
   ICreateUpdateTestRequest,
   ICreateUpdateUserRequest,
+  IUpdateGradeRequest,
+  Page,
+  SubmissionPayload,
+  TeamSnippet,
+  UserSnippet,
 } from '@/types/proto';
-
-import { UserSnippet } from '@/validators/UserSnippet';
-import { Submission } from '@/validators/Submission';
 
 export type MutationResultType<ResponseType, ArgType> = TypedUseMutationResult<
   ResponseType,
@@ -106,15 +109,14 @@ export type UpdateTeamApiArg = {
   updateRequestBody: ICreateUpdateTeamRequest;
 };
 
-export type GetAssessmentsApiArg = Partial<{
+export type GetGradesApiArg = Partial<{
+  taskType: TaskType;
   /** Learner id */
-  learnerId: string;
+  ownerId: string;
   /** Team id */
   teamId: string;
   /** Assignment id */
-  assignmentId: string;
-  /** Search assessment type */
-  assessmentType: AssessmentType;
+  taskId: string;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
   /** Page number */
@@ -123,11 +125,11 @@ export type GetAssessmentsApiArg = Partial<{
   size: number;
 }>;
 
-export type UpdateAssessmentApiArg = {
+export type UpdateGradeApiArg = {
   /** id */
   id: string;
   /** Assessment to update */
-  updateRequestBody: AssessmentCreateUpdateRequest;
+  updateRequestBody: IUpdateGradeRequest;
 };
 
 export type GetHwListApiArg = Partial<{
@@ -397,7 +399,7 @@ export type UpdateAttendanceApiArg = {
 
 export type GetSubmissionsApiArg = Partial<{
   /** Assignment id */
-  assignmentId: string;
+  taskId: string;
   /** Learner id */
   ownerId: string;
   /** Publisher id */
@@ -419,12 +421,25 @@ export type GetSubmissionByHWIdAndOwnerIdApiArg = {
   ownerId: string;
 };
 
-export { type Submission } from '@/validators/Submission';
-export { type HomeworkSnippet } from '@/validators/HomeworkSnippet';
-export { type LessonSnippet } from '@/validators/LessonSnippet';
-export { type TeamSnippet } from '@/validators/TeamSnippet';
-export { type UserSnippet } from '@/validators/UserSnippet';
-export { type SubmissionPayload } from '@/validators/SubmissionPayload';
+export interface Submission {
+  id: string;
+  homework: HomeworkSnippet;
+  owner: UserSnippet;
+  publisher: UserSnippet;
+  /** this field is set only if submission is on team homework */
+  team: TeamSnippet | undefined;
+  publishedAt: Date;
+  payload: SubmissionPayload;
+}
+
+export interface IGetSubmissionResponse {
+  submission: Submission;
+}
+
+export interface ISubmissionsList {
+  page: Page;
+  submissions: Submission[];
+}
 
 export type Attachment = {
   name: string;
@@ -436,10 +451,76 @@ export type SubmissionWithAttachments = Omit<Submission, 'payload'> & {
   attachments: Attachment[];
 };
 
-export type Pagination = {
-  total_pages: number;
-  total_elements: number;
+export interface LessonSnippet {
+  /** required */
+  id: string;
+  title: string;
+  lessonNumber: number;
+  publishDate: Date;
+}
+
+export interface HomeworkSnippet {
+  id: string;
+  lesson: LessonSnippet;
+  title: string;
+  deadlineDate: Date;
+}
+
+export interface ExamSnippet {
+  id: string;
+  title: string;
+  deadlineDate: Date;
+}
+
+export interface CompetitionSnippet {
+  id: string;
+  title: string;
+  deadlineDate: Date;
+}
+
+export interface TestSnippet {
+  id: string;
+  lesson: LessonSnippet;
+  title: string;
+  deadlineDate: Date;
+}
+
+export interface IGetGradeResponse {
+  grade: Grade;
+}
+
+export interface IGradesList {
+  page: Page;
+  grades: Grade[];
+}
+
+export type TaskSnippet = {
+  id: string;
+  title: string;
+  taskType: TaskType;
 };
+
+export interface Grade {
+  id: string;
+  gradeOwner: UserSnippet;
+  task:
+    | { $case: 'homework'; homework: HomeworkSnippet }
+    | { $case: 'exam'; exam: ExamSnippet }
+    | { $case: 'competition'; competition: CompetitionSnippet }
+    | { $case: 'test'; test: TestSnippet };
+  /** this is optional, present only if task is a homework */
+  submissionForGrading: Submission | undefined;
+  adminGrade: number | undefined;
+  adminComment: string | undefined;
+  trackerGrades: TrackerGrade[];
+}
+
+export interface TrackerGrade {
+  id: string;
+  tracker: UserSnippet;
+  grade: number;
+  comment: string | undefined;
+}
 
 export type PublicUserProfile = {
   id: string;
@@ -473,7 +554,7 @@ export type AssessmentTableSnippet = {
 };
 
 export type AssessmentsPage = {
-  pagination: Pagination;
+  pagination: Page;
   content: AssessmentTableSnippet[];
 };
 
@@ -526,7 +607,7 @@ export type LotSnippetForTable = {
 };
 
 export type LotsPage = {
-  pagination: Pagination;
+  pagination: Page;
   lots: LotSnippetForTable[];
 };
 
@@ -564,7 +645,7 @@ export type Transaction = {
 };
 
 export type TransactionsPage = {
-  pagination: Pagination;
+  pagination: Page;
   content: Transaction[];
 };
 
@@ -590,7 +671,7 @@ export type BuyLotClaimSnippet = {
 };
 
 export type BuyLotClaimsPage = {
-  pagination: Pagination;
+  pagination: Page;
   claims: BuyLotClaimSnippet[];
 };
 
@@ -623,7 +704,7 @@ export type ListLotClaimSnippet = {
 };
 
 export type ListLotClaimsPage = {
-  pagination: Pagination;
+  pagination: Page;
   claims: ListLotClaimSnippet[];
 };
 
@@ -657,7 +738,7 @@ export type FailedDeadlineClaim = {
 };
 
 export type FailedDeadlineClaimsPage = {
-  pagination: Pagination;
+  pagination: Page;
   claims: FailedDeadlineClaim[];
 };
 
@@ -669,7 +750,7 @@ export type TransferClaim = {
 };
 
 export type TransferClaimsPage = {
-  pagination: Pagination;
+  pagination: Page;
   claims: TransferClaim[];
 };
 

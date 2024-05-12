@@ -53,11 +53,11 @@ export default function Home() {
       }
 
       if (authState.role === Role.LEARNER || authState.role === Role.TRACKER) {
-        router.push(`/learner/profile`);
+        router.push(`/profile`);
         return;
       }
     }
-  }, [authState.status, router]);
+  }, [authState.role, authState.status, router]);
 
   return (
     <div className={styles.main}>

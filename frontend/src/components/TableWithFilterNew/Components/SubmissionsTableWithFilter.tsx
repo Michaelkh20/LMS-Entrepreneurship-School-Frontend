@@ -1,10 +1,5 @@
 'use client';
 
-import {
-  UserSelectionFormItem,
-  TaskSelectionFormItem,
-} from '@/components/Forms/FormItems/Filters';
-
 import { useState, useMemo } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -15,6 +10,8 @@ import type {
   GetSubmissions_Response,
   Submission,
 } from '@proto/submissions/submissions_api';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { TaskSelectionFormItem } from '@/components/Forms/FormItems/Selection/TaskSelectionFormItem';
 
 type SubmissionsColumnsDataType = Submission;
 
@@ -107,10 +104,15 @@ export function SubmissionsTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <UserSelectionFormItem placeholder={'Кто сдал'} name={'ownerId'} />
+            <LearnerSelectionFormItem
+              type="filter"
+              placeholder={'Кто сдал'}
+              name={'ownerId'}
+            />
             <TaskSelectionFormItem
+              type="filter"
               placeholder={'Задание'}
-              name={'assignmentId'}
+              name={'taskId'}
             />
           </>
         }

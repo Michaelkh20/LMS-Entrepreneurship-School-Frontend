@@ -29,7 +29,7 @@ type Props = {
 
 export default function AccountProfile({ id, isEditable = false }: Props) {
   const { data } = useGetUserByIdQuery(id);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teamId, setTeamId] = useState<string>();
 
@@ -108,7 +108,9 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
                 <PhoneOutlined></PhoneOutlined>
                 <p className={styles.propertyTitle}>Телефон</p>
               </span>
-              <p className={styles.propertyValue}>{data?.user?.phoneNumber}</p>
+              <p className={styles.propertyValue}>
+                {data?.user?.phoneNumber ? '+7' + data.user.phoneNumber : '-'}
+              </p>
             </div>
             <div className={styles.property}>
               <span className={styles.propertyTitle}>

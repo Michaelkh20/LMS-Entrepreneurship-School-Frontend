@@ -5,8 +5,8 @@ import {
   Role,
   Sex,
   TwoSidedClaimStatus,
-  AssignmentType,
   TransactionType,
+  TaskType,
 } from '@/types/common';
 
 export function roleToString(role: Role | undefined) {
@@ -102,23 +102,6 @@ export function twoSidedClaimStatusToString(
   }
 }
 
-export function AssignmentTypeToString(
-  assignmentType: AssignmentType | undefined
-) {
-  switch (assignmentType) {
-    case AssignmentType.Exam:
-      return 'Экзамен';
-    case AssignmentType.Competition:
-      return 'Конкурс';
-    case AssignmentType.HW:
-      return 'ДЗ';
-    case AssignmentType.Test:
-      return 'Тест';
-    default:
-      return '-';
-  }
-}
-
 export function transactionTypeToString(
   transactionType: TransactionType | undefined
 ) {
@@ -144,3 +127,15 @@ export function transactionTypeToString(
   }
 }
 
+export function taskTypeToString(taskType: TaskType) {
+  switch (taskType) {
+    case 'competition':
+      return 'Конкурс';
+    case 'exam':
+      return 'Экзамен';
+    case 'homework':
+      return 'ДЗ';
+    case 'test':
+      return 'Тест';
+  }
+}

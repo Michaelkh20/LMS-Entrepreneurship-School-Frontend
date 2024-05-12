@@ -12,7 +12,7 @@ import {
 } from '@/types/proto';
 import { useRouter } from 'next/navigation';
 import { formValuesToRequest, getResponseToFormValues } from './helpers';
-import { LessonSelectionFormItem } from '../FormItems/EntityForms/LessonSelectionFormItem';
+import { LessonSelectionFormItem } from '../FormItems/Selection/LessonSelectionFormItem';
 import { MutationResultType, UpdateHwApiArg } from '@/types/api';
 
 type HomeworkFormProps = {

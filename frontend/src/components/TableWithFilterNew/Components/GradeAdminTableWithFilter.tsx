@@ -1,23 +1,25 @@
 'use client';
 
 import {
-  UserSelectionFormItem,
-  TaskSelectionFormItem,
+  IsGradedFormItem,
   TaskTypeFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import type { GetSubmissionsApiArg } from '@/types/api';
-import { useGetSubmissionsQuery } from '@/redux/services/api';
-import type {
-  GetSubmissions_Response,
-  Submission,
-} from '@proto/submissions/submissions_api';
+import type { GetGradesApiArg, Grade } from '@/types/api';
+import { useGetGradesQuery } from '@/redux/services/api';
+import { taskTypeToString } from '@/util/enumsToString';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { TeamSelectionFormItem } from '@/components/Forms/FormItems/Selection/TeamSelectionFormItem';
+import { TaskSelectionFormItem } from '@/components/Forms/FormItems/Selection/TaskSelectionFormItem';
+import { getTitleFromTask } from '@/util/getTaskTitleFromGrade';
+import AdminGradeViewModal from '@/components/Modals/Grades/AdminGradeViewModal';
+import type { Props as ModalProps } from '@/components/Modals/Grades/AdminGradeViewModal';
 
-type GradeAdminColumnsDataType = Submission;
+type GradeAdminColumnsDataType = Grade;
 
 const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
   {
@@ -25,7 +27,7 @@ const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
     dataIndex: 'assignment',
     key: 'assignment',
     render: (_value, record, _index) => {
-      return `${record.homework?.title}`;
+      return `${getTitleFromTask(record.task)}`;
     },
   },
   {
@@ -33,8 +35,9 @@ const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
     dataIndex: 'assignment',
     key: 'assignment',
     render: (_value, record, _index) => {
-      return `${record.homework?.title}`;
+      return `${taskTypeToString(record.task.$case)}`;
     },
+    width: 150,
   },
   {
     title: 'Ученик',
@@ -42,7 +45,7 @@ const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
     key: 'learner',
     sorter: true,
     render: (_value, record, _index) => {
-      return `${record.owner?.surname} ${record.owner?.name}`;
+      return `${record.gradeOwner.surname} ${record.gradeOwner.name}`;
     },
   },
   {
@@ -50,7 +53,7 @@ const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
     dataIndex: 'gradeStatus',
     key: 'gradeStatus',
     render: (_value, record, _index) => {
-      return `${'todo' /* record.finalGrade ? 'Проверено' : 'Не проверено'*/}`;
+      return `${record.adminGrade ? 'Проверено' : 'Не проверено'}`;
     },
   },
   {
@@ -58,33 +61,19 @@ const GradeAdminColumns: ColumnsType<GradeAdminColumnsDataType> = [
     dataIndex: 'grade',
     key: 'grade',
     render: (_value, record, _index) => {
-      return `${'todo' /* record.finalGrade */}`;
+      return `${record.adminGrade || '-'}`;
     },
+    width: 50,
   },
- 
 ];
 
-const mockData: GetSubmissions_Response = {
-  page: undefined,
-  submissions: [
-    {
-      id: '',
-      homework: undefined,
-      owner: undefined,
-      publisher: undefined,
-      team: undefined,
-      publishedAt: undefined,
-      payload: undefined,
-    },
-  ],
+type Props = {
+  onRow?: TableProps['onRow'];
+  modalProps: Omit<ModalProps, 'requestParameters'>;
 };
 
-export function GradeAdminTableWithFilter({
-  onRow,
-}: {
-  onRow?: TableProps['onRow'];
-}) {
-  const [formData, setFormData] = useState<GetSubmissionsApiArg>({
+export function GradeAdminTableWithFilter({ onRow, modalProps }: Props) {
+  const [formData, setFormData] = useState<GetGradesApiArg>({
     page: 1,
     size: 10,
   });
@@ -92,24 +81,9 @@ export function GradeAdminTableWithFilter({
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
   const { data, isLoading, isError, isFetching } =
-    useGetSubmissionsQuery(dataForReq);
+    useGetGradesQuery(dataForReq);
 
-  // const data = mockData;
-
-  const dataForTable = useMemo(() => {
-    return data?.submissions.map<GradeAdminColumnsDataType>((submission) => {
-      const res: GradeAdminColumnsDataType = {
-        id: submission.id,
-        homework: submission.homework,
-        owner: submission.owner,
-        publisher: submission.publisher,
-        team: submission.team,
-        publishedAt: submission.publishedAt,
-        payload: submission.payload,
-      };
-      return res;
-    });
-  }, [data]);
+  const dataForTable = data?.grades;
 
   return (
     <>
@@ -117,9 +91,23 @@ export function GradeAdminTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <TaskTypeFormItem name='taskType'/>
-            <UserSelectionFormItem placeholder={'Ученик'} name={'learnerId'} />
-            {/* <>Оценено / не оценено</> */}
+            <TaskTypeFormItem name="taskType" />
+            <TaskSelectionFormItem
+              name="taskId"
+              type="filter"
+              placeholder={'Задание'}
+            />
+            <LearnerSelectionFormItem
+              name="ownerId"
+              type="filter"
+              placeholder={'Ученик'}
+            />
+            <TeamSelectionFormItem
+              name="teamId"
+              type="filter"
+              placeholder={'Команда'}
+            />
+            <IsGradedFormItem name="graded" />
           </>
         }
         tableProps={{
@@ -134,6 +122,7 @@ export function GradeAdminTableWithFilter({
         setFormData={setFormData}
         setDataForReq={setDataForReq}
       />
+      <AdminGradeViewModal {...modalProps} requestParameters={dataForReq} />
     </>
   );
 }

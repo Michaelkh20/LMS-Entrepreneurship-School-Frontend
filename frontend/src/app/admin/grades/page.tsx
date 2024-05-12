@@ -2,30 +2,30 @@
 import React, { useState } from 'react';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import { GradeAdminTableWithFilter } from '@/components/TableWithFilterNew/Components/GradeAdminTableWithFilter';
-import GradeViewModal from '@/components/Modals/Grades/GradeViewModal';
 
-export default function AttendenceLessonsPage() {
+export default function GradesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitionId, setSubmitionId] = React.useState<string | null>(null);
+  const [gradeId, setGradeId] = React.useState<string | null>(null);
 
   const handleOnRowClick = (id: string) => {
-    setSubmitionId(id);
+    setGradeId(id);
     setIsModalOpen(true);
   };
+
   return (
     <BasePageLayout header={<h2>Оценки</h2>}>
       <GradeAdminTableWithFilter
-        onRow={(record, rowindex) => {
+        onRow={(record) => {
           return {
             onClick: () => handleOnRowClick(record.id),
           };
         }}
-      />
-      <GradeViewModal
-        submissionId={submitionId}
-        isOpen={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        onOk={() => setIsModalOpen(false)}
+        modalProps={{
+          gradeId,
+          isOpen: isModalOpen,
+          onCancel: () => setIsModalOpen(false),
+          onOk: () => setIsModalOpen(false),
+        }}
       />
     </BasePageLayout>
   );

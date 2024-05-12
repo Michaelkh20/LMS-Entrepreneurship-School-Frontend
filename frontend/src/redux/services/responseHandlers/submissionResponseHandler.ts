@@ -1,6 +1,6 @@
 import SubmissionWithAttachmentsTransformer from '@/transformers/SubmissionWithAttachments';
 import { GetSubmissionResponseTransformer } from '@/types/proto';
-import { submissionSchema } from '@/validators/Submission';
+import GetSubmissionResponseValidator from '@/validators/GetSubmissionResponse';
 
 export async function submissionResponseHandler(response: Response) {
   if (!response.ok) {
@@ -13,11 +13,15 @@ export async function submissionResponseHandler(response: Response) {
   );
   console.log(decodedResponse);
 
-  const parsedResponse = submissionSchema.parse(decodedResponse.submission);
-  console.log(parsedResponse);
+  const validationResult = GetSubmissionResponseValidator(decodedResponse);
+  console.log(validationResult);
+
+  if (!validationResult) {
+    throw new Error('Validation failed');
+  }
 
   const transformedResponse = await SubmissionWithAttachmentsTransformer(
-    parsedResponse
+    decodedResponse
   );
   console.log(transformedResponse);
 
