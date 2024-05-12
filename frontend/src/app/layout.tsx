@@ -2,8 +2,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Mulish } from 'next/font/google';
 
-import StyledComponentsRegistry from '../lib/AntdRegistry';
+// import StyledComponentsRegistry from '../lib/AntdRegistry';
 import { ReduxProvider } from '@/redux/provider';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const mulish = Mulish({
   weight: ['300', '500', '600', '700'],
@@ -25,7 +26,7 @@ export default function RootLayout({
     <html lang="ru">
       <body className={mulish.className}>
         <ReduxProvider>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <AntdRegistry>{children}</AntdRegistry>
         </ReduxProvider>
       </body>
     </html>

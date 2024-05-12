@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
+    "@ant-design/nextjs-registry": "^1.0.0",
     "@aws-sdk/client-s3": "^3.574.0",
     "@aws-sdk/s3-request-presigner": "^3.574.0",
     "@reduxjs/toolkit": "^1.9.7",
@@ -23,7 +24,7 @@
     "eslint-config-next": "13.4.10",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
-    "next": "^13.5.6",
+    "next": "^14.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-quill": "^2.0.0",
