@@ -28,6 +28,18 @@ type lessonType = {
   lessonDescription: string;
 };
 
+type GetCollapseItemsType = (
+  panelStyle: CSSProperties
+) => CollapseProps['items'];
+
+const panelStyle: React.CSSProperties = {
+  marginBottom: 24,
+  borderRadius: 8,
+  border: 'none',
+  background: '#fafafa',
+  // fontWeight: 'normal',
+};
+
 export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
   const router = useRouter();
   const { data } = useGetLessonByIdQuery(id);
@@ -35,84 +47,82 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
 
   const [, , { isAdmin }] = useAuth();
 
-  const collapseItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (
-    panelStyle
-  ) =>
-    useMemo(() => {
-      return [
-        {
-          key: '1',
-          label: 'Описание',
-          style: panelStyle,
-          // children: <div>{data?.lesson?.description}</div>,
-          children: (
-            <div
-              style={{
-                // whiteSpace: 'pre',
-                paddingLeft: '1rem',
-                // fontSize: '1rem',
-                wordBreak: 'break-word',
-              }}
-              dangerouslySetInnerHTML={
-                data?.lesson?.description !== undefined
-                  ? {
-                      __html: DOMPurify.sanitize(data.lesson.description),
-                    }
-                  : undefined
-              }
-            ></div>
-          ),
-        },
-        {
-          key: '2',
-          label: 'Материалы',
-          style: panelStyle,
-          children: (
-            <div>
-              <VideoSection videoUrls={data?.lesson?.videoUrls!} />
-              <PresentationsSection
-                presentationUrls={data?.lesson?.presentationUrls!}
-              />
-            </div>
-          ),
-        },
-        {
-          key: '3',
-          label: 'Домашнее задание',
-          style: panelStyle,
-          children: (
-            <Collapse
-              defaultActiveKey={'0'}
-              items={data?.lesson?.homeworkIds.map((hwId, index) => {
-                return {
-                  key: index + 'HW' + hwId,
-                  label: `ДЗ ${index + 1}`,
-                  children: <HomeworkPage hwId={hwId}></HomeworkPage>,
-                };
-              })}
-            ></Collapse>
-          ),
-        },
-        {
-          key: '4',
-          label: 'Тест',
-          style: panelStyle,
-          children: (
-            <Collapse
-              defaultActiveKey={'0'}
-              items={data?.lesson?.testIds.map((testId, index) => {
-                console.log('TEST ID: ', testId);
-                return {
-                  key: index + 'Test' + testId,
-                  label: `Тест ${index + 1}`,
-                  children: <TestPage testId={testId}></TestPage>,
-                };
-              })}
-            ></Collapse>
-          ),
-        },
-      ];
-    }, [data]);
+  const collapseItems = useMemo<CollapseProps['items']>(
+    () => [
+      {
+        key: '1',
+        label: 'Описание',
+        style: panelStyle,
+        // children: <div>{data?.lesson?.description}</div>,
+        children: (
+          <div
+            style={{
+              // whiteSpace: 'pre',
+              paddingLeft: '1rem',
+              // fontSize: '1rem',
+              wordBreak: 'break-word',
+            }}
+            dangerouslySetInnerHTML={
+              data?.lesson?.description !== undefined
+                ? {
+                    __html: DOMPurify.sanitize(data.lesson.description),
+                  }
+                : undefined
+            }
+          ></div>
+        ),
+      },
+      {
+        key: '2',
+        label: 'Материалы',
+        style: panelStyle,
+        children: (
+          <div>
+            <VideoSection videoUrls={data?.lesson?.videoUrls!} />
+            <PresentationsSection
+              presentationUrls={data?.lesson?.presentationUrls!}
+            />
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: 'Домашнее задание',
+        style: panelStyle,
+        children: (
+          <Collapse
+            defaultActiveKey={'0'}
+            items={data?.lesson?.homeworkIds.map((hwId, index) => {
+              return {
+                key: index + 'HW' + hwId,
+                label: `ДЗ ${index + 1}`,
+                children: <HomeworkPage hwId={hwId}></HomeworkPage>,
+              };
+            })}
+          ></Collapse>
+        ),
+      },
+      {
+        key: '4',
+        label: 'Тест',
+        style: panelStyle,
+        children: (
+          <Collapse
+            defaultActiveKey={'0'}
+            items={data?.lesson?.testIds.map((testId, index) => {
+              console.log('TEST ID: ', testId);
+              return {
+                key: index + 'Test' + testId,
+                label: `Тест ${index + 1}`,
+                children: <TestPage testId={testId}></TestPage>,
+              };
+            })}
+          ></Collapse>
+        ),
+      },
+    ],
+    [data]
+  );
 
   const handleEditClick = () => {
     router.push(`/admin/lessons/${id}/edit`);
@@ -120,14 +130,6 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
 
   const handleAttendanceClick = () => {
     router.push(`/admin/lessons/${id}/attendance`);
-  };
-
-  const panelStyle: React.CSSProperties = {
-    marginBottom: 24,
-    borderRadius: 8,
-    border: 'none',
-    background: '#fafafa',
-    // fontWeight: 'normal',
   };
 
   return (
