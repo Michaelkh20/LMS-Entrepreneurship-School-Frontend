@@ -67,10 +67,12 @@ export default function AdminLayout({
     };
   }, []);
 
-  if (!isAdmin) {
-    router.push('/login');
-    return null;
-  }
+  useEffect(() => {
+    console.log("isAdmin: ", isAdmin)
+    if (!isAdmin) {
+      router.push('/login');
+    }
+  }, [isAdmin, router]);
 
   return (
     <Layout hasSider style={OuterLayoutStyles}>

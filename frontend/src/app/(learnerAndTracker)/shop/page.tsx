@@ -68,7 +68,7 @@ export default function Home() {
             pageSize={pageSize}
             pageSizeOptions={pageSizes}
             showSizeChanger
-            total={data?.pagination.total_elements}
+            total={data?.pagination.totalElements}
             onChange={handlePageChange}
             locale={{ items_per_page: pageSizesPostfix }}
           />

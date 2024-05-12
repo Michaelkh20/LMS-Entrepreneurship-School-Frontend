@@ -2,7 +2,6 @@
 
 import {
   ClaimStatusFormItem,
-  UserSelectionFormItem,
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
@@ -16,6 +15,7 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { TwoSidedClaimStatus } from '@/types/common';
 import type { ListLotClaimSnippet } from '@/types/api';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
 type ClaimListLotColumnsDataType = ListLotClaimSnippet;
 
@@ -82,8 +82,8 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
 
 const mockData: ListLotClaimsPage = {
   pagination: {
-    total_pages: 1,
-    total_elements: 1,
+    totalPages: 1,
+    totalElements: 1,
   },
   claims: [
     {
@@ -135,13 +135,14 @@ export function ClaimPlacingLotTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
             <LotNumberFormItem />
-            <UserSelectionFormItem
+            <LearnerSelectionFormItem
               placeholder={'Исполнитель'}
               name={'receiverId'}
+              type="filter"
             />
             <ClaimStatusFormItem />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
@@ -151,7 +152,7 @@ export function ClaimPlacingLotTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimPlacingLotColumns,
-          pagination: { total: data?.pagination?.total_elements },
+          pagination: { total: data?.pagination?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

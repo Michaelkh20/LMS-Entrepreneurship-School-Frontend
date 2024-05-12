@@ -1,10 +1,11 @@
 'use client';
 
 import {
-  ClaimStatusFormItem,
-  UserSelectionFormItem,
-  TaskSelectionFormItem,
+  ClaimStatusFormItem
 } from '@/components/Forms/FormItems/Filters';
+
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+
 import type {
   FailedDeadlineClaimsPage,
   GetFailedDeadlineClaimsApiArg,
@@ -18,6 +19,7 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 import { useGetFailedDeadlineClaimsQuery } from '@/redux/services/api';
 import type { FailedDeadlineClaim } from '@/types/api';
 import { ClaimStatus } from '@/types/common';
+import { TaskSelectionFormItem } from '@/components/Forms/FormItems/Selection/TaskSelectionFormItem';
 
 type ClaimDeadlineColumnsDataType = FailedDeadlineClaim;
 
@@ -66,8 +68,8 @@ const ClaimDeadlineColumns: ColumnsType<ClaimDeadlineColumnsDataType> = [
 
 const mockData: FailedDeadlineClaimsPage = {
   pagination: {
-    total_pages: 1,
-    total_elements: 3,
+    totalPages: 1,
+    totalElements: 3,
   },
   claims: [
     {
@@ -77,7 +79,7 @@ const mockData: FailedDeadlineClaimsPage = {
         id: '1',
         name: 'asd',
         surname: 'asd',
-        patronymic: null,
+        patronymic: undefined,
       },
       completeDate: '12/12/12',
       delay: 0,
@@ -124,18 +126,18 @@ export function ClaimDeadlineTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
-            <UserSelectionFormItem placeholder={'Ученик'} name={'learnerId'} />
-            <TaskSelectionFormItem placeholder={'Задание'} name={'taskId'} />
+            <LearnerSelectionFormItem type='filter' placeholder={'Ученик'} name={'learnerId'} />
+            <TaskSelectionFormItem  type='filter' placeholder={'Задание'} name={'taskId'} />
             <ClaimStatusFormItem />
           </>
         }
         tableProps={{
           scroll: { x: true },
           columns: ClaimDeadlineColumns,
-          pagination: { total: data?.pagination?.total_elements },
+          pagination: { total: data?.pagination?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

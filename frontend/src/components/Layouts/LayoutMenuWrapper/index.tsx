@@ -21,7 +21,7 @@ export default function LayoutMenuWrapper({
   MenuComponent: ComponentType<{ onClose: () => void }>;
 }) {
   const [isMenuBroken, setIsMenuBroken] = useState<boolean>(
-    window.innerWidth >= 992 ? false : true
+    Boolean(globalThis.innerWidth) && window.innerWidth < 992
   );
   const [openMenu, setOpenMenu] = useState(false);
 

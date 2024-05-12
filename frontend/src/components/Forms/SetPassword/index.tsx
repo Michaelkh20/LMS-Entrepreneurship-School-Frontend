@@ -18,7 +18,7 @@ export default function SetPasswordForm({ className }: { className?: string }) {
   const [_, { logIn }] = useAuth();
 
   useEffect(() => {
-    if (isSuccess && data.response?.result?.$case === 'success') {
+    if (isSuccess && data?.response?.result?.$case === 'success') {
       logIn(data.response.result.success);
       router.push('/login');
     }

@@ -2,16 +2,16 @@
 
 import {
   ClaimStatusFormItem,
-  UserSelectionFormItem,
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
 import type {
   BuyLotClaimsPage,
   GetBuyLotClaimsApiArg,
-  UserSnippet,
 } from '@/types/api';
+
 
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -86,8 +86,8 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
 
 const mockData: BuyLotClaimsPage = {
   pagination: {
-    total_pages: 1,
-    total_elements: 3,
+    totalPages: 1,
+    totalElements: 3,
   },
   claims: [
     {
@@ -97,7 +97,7 @@ const mockData: BuyLotClaimsPage = {
         id: '1',
         name: 'asd',
         surname: 'sdf',
-        patronymic: null,
+        patronymic: '',
       },
       date: '12.12.12',
       lot: {
@@ -108,7 +108,7 @@ const mockData: BuyLotClaimsPage = {
           id: '2',
           name: 'sdf',
           surname: 'sdf',
-          patronymic: null,
+          patronymic: 'null',
         },
       },
     },
@@ -147,13 +147,14 @@ export function ClaimBuyingLotTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
             <LotNumberFormItem />
-            <UserSelectionFormItem
+            <LearnerSelectionFormItem
               placeholder={'Покупатель'}
               name={'receiverId'}
+              type='filter'
             />
             <ClaimStatusFormItem />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
@@ -163,7 +164,7 @@ export function ClaimBuyingLotTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimBuyingLotColumns,
-          pagination: { total: data?.pagination.total_elements },
+          pagination: { total: data?.pagination.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: (record) => {
