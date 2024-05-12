@@ -3,6 +3,8 @@
 import {
   NameFormItem,
   EmailFormItem,
+  TransactionTypeFormItem,
+  DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -122,7 +124,9 @@ export function TransactionsTableWithFilters({
         filterFormItems={
           <>
             <NameFormItem />
-            <EmailFormItem />
+            <TransactionTypeFormItem />
+            <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
+            <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
           </>
         }
         tableProps={{

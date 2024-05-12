@@ -91,11 +91,12 @@ export default function AccountProfile({ id, isEditable = false }: Props) {
               </span>
 
               {data?.user?.memberOfTeams[0]
-                ? data?.user?.memberOfTeams.map((team) => {
+                ? data?.user?.memberOfTeams.map((team, index) => {
                     return (
                       <p
                         onClick={() => handleTeamClick(team.id)}
                         className={cx('propertyValue', 'teamValue')}
+                        key={'team' + index}
                       >
                         {team.number}
                       </p>

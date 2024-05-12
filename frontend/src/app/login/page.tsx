@@ -38,7 +38,7 @@ export default function Home() {
   }, [data?.response?.result?.$case, form, isError]);
 
   useEffect(() => {
-    if (isSuccess && data.response?.result?.$case === 'success') {
+    if (isSuccess && data?.response?.result?.$case === 'success') {
       console.log(data);
       logIn(data.response.result.success);
     }

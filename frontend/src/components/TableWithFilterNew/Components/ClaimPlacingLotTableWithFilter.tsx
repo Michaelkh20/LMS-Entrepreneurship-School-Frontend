@@ -140,7 +140,7 @@ export function ClaimPlacingLotTableWithFilter({
           <>
             <LotNumberFormItem />
             <UserSelectionFormItem
-              placeholder={'Покупатель'}
+              placeholder={'Исполнитель'}
               name={'receiverId'}
             />
             <ClaimStatusFormItem />
