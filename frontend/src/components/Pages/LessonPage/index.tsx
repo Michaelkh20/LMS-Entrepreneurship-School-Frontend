@@ -157,7 +157,7 @@ export const LessonPage = ({ params: { id } }: { params: { id: string } }) => {
       )}
       <Collapse
         bordered={false}
-        items={collapseItems(panelStyle)}
+        items={collapseItems}
         defaultActiveKey={['1', '2', '3', '4']}
         style={{ background: '#fff' }}
       ></Collapse>
