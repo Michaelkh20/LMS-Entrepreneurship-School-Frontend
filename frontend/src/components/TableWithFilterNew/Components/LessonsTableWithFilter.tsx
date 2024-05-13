@@ -88,7 +88,7 @@ export function LessonsTableWithFilter({
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <LessonNumberFormItem />
+            <LessonNumberFormItem  />
             <TitleFormItem placeholder="Тема урока" />
             <DatePickerFormItem
               name={'publishDateFrom'}

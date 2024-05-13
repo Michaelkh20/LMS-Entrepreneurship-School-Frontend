@@ -5,10 +5,12 @@ export const BasicFilter = ({
   onChangeEvent,
   children,
   total = 0,
+  initialValues
 }: {
   onChangeEvent: any;
   children?: React.ReactNode;
   total?: number;
+  initialValues?: any
 }) => {
   return (
     <div className={formStyles.wrapper}>
@@ -25,6 +27,7 @@ export const BasicFilter = ({
         onValuesChange={onChangeEvent}
         className={''}
         style={{ rowGap: 12 }}
+        initialValues={initialValues}
       >
         {children}
       </Form>

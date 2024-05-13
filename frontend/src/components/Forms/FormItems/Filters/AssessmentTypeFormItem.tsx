@@ -8,7 +8,7 @@ export function AssessmentTypeFormItem() {
         <Select.Option value={AssessmentType.TrackerGrade}>
           Оценка трекера
         </Select.Option>
-        <Select.Option value={AssessmentType.FinalGrade}>
+        <Select.Option value={AssessmentType.AdminGrade}>
           Оц. в ведомость
         </Select.Option>
       </Select>

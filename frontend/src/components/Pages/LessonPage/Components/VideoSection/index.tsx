@@ -18,13 +18,15 @@ export const VideoSection = ({
       >
         {videoUrls?.map((videoUrl, index) => {
           return (
-            <div style={{
-              width: '100%',
-              aspectRatio:'16/9',
-              maxWidth: 450
-            }}>
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '16/9',
+                maxWidth: 450,
+              }}
+              key={index + videoUrl}
+            >
               <iframe
-                key={index + videoUrl}
                 style={{
                   display: 'block',
                   width: ' 100%',

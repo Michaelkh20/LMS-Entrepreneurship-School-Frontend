@@ -3,6 +3,8 @@
 import {
   NameFormItem,
   EmailFormItem,
+  TransactionTypeFormItem,
+  DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -67,8 +69,8 @@ const TransactionsColumns: ColumnsType<TransactionsColumnsDataType> = [
 
 const mockData: TransactionsPage = {
   pagination: {
-    total_pages: 0,
-    total_elements: 0,
+    totalPages: 0,
+    totalElements: 0,
   },
   content: [
     {
@@ -77,6 +79,7 @@ const mockData: TransactionsPage = {
         id: '',
         name: '',
         surname: '',
+        patronymic: undefined
       },
       type: TransactionType.Activity,
       description: null,
@@ -118,17 +121,19 @@ export function TransactionsTableWithFilters({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
             <NameFormItem />
-            <EmailFormItem />
+            <TransactionTypeFormItem />
+            <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
+            <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
           </>
         }
         tableProps={{
           scroll: { x: true },
           columns: TransactionsColumns,
-          pagination: { total: data?.pagination?.total_elements },
+          pagination: { total: data?.pagination?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

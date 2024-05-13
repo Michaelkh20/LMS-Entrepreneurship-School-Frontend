@@ -1,18 +1,20 @@
 'use client';
 
-import { ClaimStatus, DateTime } from '@/types/common';
+import { ClaimStatus } from '@/types/common';
 import { DeleteOutlined } from '@ant-design/icons';
-import { dto } from '@dto';
+
 import { Button, Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useUpdateTeamMutation } from '@/redux/services/api';
+import { User, UserSnippet } from '@proto/users/users_api';
 
 type TeamUsersEditColumnsType = {
-  userId: number | string;
+  userId: string;
   userName: string;
   userEmail: string;
-  userBalance: number;
+  userBalance: string;
 };
 
 const TeamUsersEditColumns: ColumnsType<TeamUsersEditColumnsType> = [
@@ -45,19 +47,19 @@ const mockData: TeamUsersEditColumnsType[] = [
     userId: '1',
     userName: 'Лёха Петров',
     userEmail: 'lexa@edu.hse.ru',
-    userBalance: 0,
+    userBalance: '0',
   },
   {
     userId: '2',
     userName: 'Ванёк Петров',
     userEmail: 'ioann@edu.hse.ru',
-    userBalance: 55,
+    userBalance:'55',
   },
   {
     userId: '3',
     userName: 'Саня Петров',
     userEmail: 'sanek@edu.hse.ru',
-    userBalance: 110,
+    userBalance: '110',
   },
 ];
 
@@ -65,7 +67,7 @@ export const TeamUsersEditTable = ({
   users,
   onRow,
 }: {
-  users?: dto.TeamResponse.IPersonShortInfo[];
+  users?: User[];
   onRow?: TableProps['onRow'];
 }) => {
   //TODO: user type
@@ -79,7 +81,7 @@ export const TeamUsersEditTable = ({
   useEffect(() => {
     const u = users?.map((user) => ({
       userId: user.id,
-      userName: user.partName,
+      userName: user.surname + user.surname,
       userEmail: user.email,
       userBalance: user.balance,
     })) as TeamUsersEditColumnsType[];

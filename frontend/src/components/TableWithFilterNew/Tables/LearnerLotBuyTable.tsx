@@ -1,4 +1,4 @@
-import { ClaimStatus, DateTime } from '@/types/common';
+import { ClaimStatus } from '@/types/common';
 import { Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 
@@ -6,7 +6,7 @@ type LearnerLotBuyColumnsType = {
   id: number | string;
   lotNumber: number;
   status: ClaimStatus; //TODO: LotStaus
-  date: DateTime;
+  date: string;
   ownerName: string;
   sum: number;
 };

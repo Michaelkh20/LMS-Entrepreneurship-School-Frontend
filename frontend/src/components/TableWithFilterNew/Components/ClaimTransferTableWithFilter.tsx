@@ -2,15 +2,10 @@
 
 import {
   ClaimStatusFormItem,
-  UserSelectionFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type {
-  GetTransferClaimsApiArg,
-  TransferClaimsPage,
-  UserSnippet,
-} from '@/types/api';
+import type { GetTransferClaimsApiArg, TransferClaimsPage } from '@/types/api';
 
 import { useState, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -20,6 +15,8 @@ import { Space, Popconfirm, Button } from 'antd';
 import { useGetTransferClaimsQuery } from '@/redux/services/api';
 import { ClaimStatus } from '@/types/common';
 import { useAuth } from '../../../redux/features/authSlice';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { UserSnippet } from '@proto/users/users_api';
 
 type ClaimTransferColumnsDataType = {
   id: string;
@@ -58,8 +55,8 @@ const ConfirmButtons = ({
 
 const mockData: TransferClaimsPage = {
   pagination: {
-    total_pages: 1,
-    total_elements: 1,
+    totalPages: 1,
+    totalElements: 1,
   },
   claims: [
     {
@@ -68,13 +65,13 @@ const mockData: TransferClaimsPage = {
         id: '1',
         name: 'Иван',
         surname: 'Обучающийся',
-        patronymic: null,
+        patronymic: undefined,
       },
       receiver: {
         id: '2',
         name: 'Иван',
         surname: 'Получающий',
-        patronymic: null,
+        patronymic: undefined,
       },
       sum: 100,
     },
@@ -175,16 +172,18 @@ export function ClaimTransferTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
-            <UserSelectionFormItem
+            <LearnerSelectionFormItem
               placeholder={'Отправитель'}
               name={'learnerId'}
+              type="filter"
             />
-            <UserSelectionFormItem
+            <LearnerSelectionFormItem
               placeholder={'Получатель'}
               name={'receiverId'}
+              type="filter"
             />
             <ClaimStatusFormItem />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
@@ -194,7 +193,7 @@ export function ClaimTransferTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimTransferColumns,
-          pagination: { total: data?.pagination?.total_elements },
+          pagination: { total: data?.pagination?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

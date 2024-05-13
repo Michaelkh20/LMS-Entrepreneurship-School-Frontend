@@ -17,6 +17,8 @@ export function BasicTableWithFilter<T>({
   setFormData,
   setDataForReq,
   totalNumber,
+  filterInitialValues,
+  tableInitialValues
 }: {
   filterFormItems: React.ReactElement;
   tableProps: TableProps;
@@ -24,6 +26,8 @@ export function BasicTableWithFilter<T>({
   setFormData: React.Dispatch<SetStateAction<T>>;
   setDataForReq: React.Dispatch<SetStateAction<T>>;
   totalNumber?: number;
+  filterInitialValues?: any
+  tableInitialValues?: any
 }) {
   const handleTableChange: TableProps<any>['onChange'] = (
     pagination,
@@ -83,13 +87,14 @@ export function BasicTableWithFilter<T>({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <BasicFilter onChangeEvent={handleFilterChanges} total={totalNumber}>
+      <BasicFilter onChangeEvent={handleFilterChanges} total={totalNumber} initialValues={filterInitialValues}>
         {filterFormItems}
       </BasicFilter>
       <Table
         className={tableStyles.table}
         scroll={{ x: true }}
         onChange={handleTableChange}
+        // sortDirections={tableInitialValues}
         {...tableProps}
       ></Table>
     </div>

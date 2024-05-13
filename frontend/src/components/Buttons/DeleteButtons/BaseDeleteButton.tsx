@@ -12,7 +12,7 @@ export default function BaseDeleteButton({
   title: string;
   description: string;
   isLoading: boolean;
-  size: BaseButtonProps['size'];
+  size?: BaseButtonProps['size'];
   onConfirm: (
     e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined
   ) => void;

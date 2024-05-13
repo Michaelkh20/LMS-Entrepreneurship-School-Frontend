@@ -63,10 +63,11 @@ export default function LearnerLayout({
     };
   }, []);
 
-  if (!isLearner && !isTracker) {
-    router.push('/login');
-    return null;
-  }
+  useEffect(() => {
+    if (!isLearner && !isTracker) {
+      router.push('/login');
+    }
+  }, [isLearner, isTracker, router]);
 
   return (
     <Layout hasSider style={OuterLayoutStyles}>

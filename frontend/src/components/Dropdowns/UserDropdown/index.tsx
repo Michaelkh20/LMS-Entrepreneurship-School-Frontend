@@ -1,3 +1,4 @@
+'use client'
 import { Space, Button, Avatar } from 'antd';
 import { LogoutOutlined, LoginOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';

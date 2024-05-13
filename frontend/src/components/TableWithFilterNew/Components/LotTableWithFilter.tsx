@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  UserSelectionFormItem,
   LotNumberFormItem,
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
@@ -14,6 +13,7 @@ import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { LotStatus } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { lotStatusToString } from '../../../util/enumsToString';
+import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
 type LotColumnsDataType = LotSnippetForTable;
 
@@ -90,8 +90,8 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
 
 // const mockData: LotsPage = {
 //   pagination: {
-//     total_pages: 0,
-//     total_elements: 0,
+//     totalPages: 0,
+//     totalElements: 0,
 //   },
 //   lots: [
 //     {
@@ -136,13 +136,14 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.total_elements}
+        totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
             <LotNumberFormItem />
-            <UserSelectionFormItem
+            <LearnerSelectionFormItem
               placeholder={'Исполнитель'}
               name={'performerId'}
+              type="filter"
             />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
             <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
@@ -151,7 +152,7 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
         tableProps={{
           scroll: { x: true },
           columns: LotColumns,
-          pagination: { total: data?.pagination.total_elements },
+          pagination: { total: data?.pagination.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,
