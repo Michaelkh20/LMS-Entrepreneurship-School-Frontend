@@ -1,11 +1,21 @@
+'use client';
+
 import { TeamTableWithFilter } from '@/components/TableWithFilterNew';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
+import TeamCreateModal from '@/components/Modals/TeamCreateModal';
+
 export default function TeamsPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOnClick = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <BasePageLayout
       header={
@@ -15,6 +25,7 @@ export default function TeamsPage() {
             icon={<PlusOutlined height={10} />}
             size="large"
             type="primary"
+            onClick={() => handleOnClick()}
           >
             Создать
           </Button>
@@ -22,6 +33,7 @@ export default function TeamsPage() {
       }
     >
       <TeamTableWithFilter />
+      <TeamCreateModal isOpen={isModalOpen} setModalOpen={setIsModalOpen} />
     </BasePageLayout>
   );
 }

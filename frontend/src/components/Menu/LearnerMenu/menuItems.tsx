@@ -50,10 +50,10 @@ const baseMenuItem: MenuItemGroupType = {
         },
       ],
     },
-    {
-      key: 'transactions',
-      label: <Link href="/transactions">Транзакции</Link>,
-    },
+    // {
+    //   key: 'transactions',
+    //   label: <Link href="/transactions">Транзакции</Link>,
+    // },
   ],
 };
 

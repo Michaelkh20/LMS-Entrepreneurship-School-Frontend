@@ -5,6 +5,7 @@ import { Form, Select } from 'antd';
 type Props = {
   placeholder?: string;
   name?: string;
+  onSelect?: () => void;
 } & (
   | {
       type: 'filter';
@@ -21,6 +22,7 @@ export function LearnerSelectionFormItem({
   label,
   placeholder = 'Выберите ученика',
   name = 'learnerId',
+  onSelect,
 }: Props) {
   const { data, isFetching } = useGetUserSnippetListQuery({
     role: Role.LEARNER,
@@ -51,6 +53,7 @@ export function LearnerSelectionFormItem({
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
         }
         allowClear={type === 'filter'}
+        onSelect={onSelect}
       />
     </Form.Item>
   );
