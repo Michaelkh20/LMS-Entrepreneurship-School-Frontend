@@ -1,62 +1,39 @@
 'use client';
 
-import styles from '@/app/admin/main.module.css';
-import { Button } from 'antd';
-import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
-import { TeamUsersEditTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
-import { useState } from 'react';
-import { useGetTeamByIdQuery } from '@/redux/services/api';
+import {
+  useGetTeamByIdQuery,
+  useUpdateTeamMutation,
+} from '@/redux/services/api';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+
+import TeamForm from '@/components/Forms/Teams';
+import LoadingErrorStub from '@/components/LoadingErrorStub';
+import { ICreateUpdateTeamRequest } from '@/types/proto';
 
 export default function TeamPage({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const { data } = useGetTeamByIdQuery(id);
-  const [formData, setFormData] = useState({}); //TODO: form for edit team members
+  const { data, isSuccess, isLoading, isError } = useGetTeamByIdQuery(id);
+  const [updateTeam, result] = useUpdateTeamMutation();
 
-  console.log('data', data);
+  const handleFinish = (values: ICreateUpdateTeamRequest) => {
+    updateTeam({ id: data?.team?.id!, updateRequestBody: values });
+  };
+
   return (
-    <BasePageLayout header={<h2>Редактировать команду {id}</h2>}>
-      <h3 className={styles.header}>
-        Тема проекта: {data?.team?.projectTheme || ' -'}
-      </h3>
-
-      <section className={styles.section}>
-        <div className={styles.header}>
-          <h3>Ученики</h3>
-          <Button icon={<PlusOutlined />} size="large">
-            Добавить ученика
-          </Button>
-        </div>
-
-        <TeamUsersEditTable users={data?.team?.students} />
-      </section>
-
-      <section className={styles.section}>
-        <div className={styles.header}>
-          <h3>Трекеры</h3>
-          <Button icon={<PlusOutlined />} size="large">
-            Добавить трекера
-          </Button>
-        </div>
-
-        <TeamUsersEditTable users={data?.team?.trackers}></TeamUsersEditTable>
-      </section>
-
-      <div className={styles.buttons_group}>
-        <Button icon={<CheckOutlined />} size="large" danger>
-          Удалить команду
-        </Button>
-      </div>
-
-      <div className={styles.buttons_group_end}>
-        <Button size="large">Назад</Button>
-        <Button type="primary" icon={<CheckOutlined />} size="large">
-          Подтвердить
-        </Button>
-      </div>
+    <BasePageLayout>
+      {isSuccess ? (
+        <TeamForm
+          type="edit"
+          data={data}
+          result={result}
+          onFinish={handleFinish}
+        />
+      ) : (
+        <LoadingErrorStub isError={isError} isLoading={isLoading} />
+      )}
     </BasePageLayout>
   );
 }

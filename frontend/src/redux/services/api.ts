@@ -194,6 +194,7 @@ export const api = createApi({
     'Exam',
     'Competition',
     'Submission',
+    'Team',
   ],
   endpoints: (build) => ({
     auth: build.mutation<ILoginResponse, AuthApiArg>({
@@ -315,6 +316,7 @@ export const api = createApi({
         },
         responseHandler: getResponseHandler(TeamsListTransformer),
       }),
+      providesTags: ['Team'],
     }),
 
     createTeam: build.mutation<
@@ -332,12 +334,13 @@ export const api = createApi({
           CreateUpdateTeamResponseTransformer
         ),
       }),
+      invalidatesTags: ['Team'],
     }),
 
     updateTeam: build.mutation<ICreateUpdateTeamResponse, UpdateTeamApiArg>({
       query: (queryArg) => ({
         url: `/teams/${queryArg.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: CreateUpdateTeamRequestTransformer.encode(
           queryArg.updateRequestBody
         ).finish(),
@@ -345,6 +348,7 @@ export const api = createApi({
           CreateUpdateTeamResponseTransformer
         ),
       }),
+      invalidatesTags: ['Team'],
     }),
 
     getTeamById: build.query<IGetTeamResponse, string>({
@@ -352,10 +356,12 @@ export const api = createApi({
         url: `/teams/${id}`,
         responseHandler: getResponseHandler(GetTeamResponseTransformer),
       }),
+      providesTags: ['Team'],
     }),
 
     deleteTeamById: build.mutation<undefined, string>({
       query: (id) => ({ url: `/teams/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Team'],
     }),
 
     getTeamPublicProfileById: build.query<IGetTeamResponse, string>({
