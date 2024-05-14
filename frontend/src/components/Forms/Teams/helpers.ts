@@ -1,7 +1,16 @@
 import { TeamUsersEditColumnsType } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
 import { ICreateUpdateTeamRequest } from '@/types/proto';
 
-export default function formValuesToRequest(values: {
+export function getUserIds(
+  students: TeamUsersEditColumnsType[],
+  trackers: TeamUsersEditColumnsType[]
+): string[] {
+  const studentsIds = students.map((student) => student.userId);
+  const trackersIds = trackers.map((tracker) => tracker.userId);
+  return [...studentsIds, ...trackersIds];
+}
+
+export function formValuesToRequest(values: {
   description: string;
   projectTheme: string;
   number: number;
@@ -9,13 +18,13 @@ export default function formValuesToRequest(values: {
   trackers: TeamUsersEditColumnsType[];
 }): ICreateUpdateTeamRequest {
   const { students, trackers, description, projectTheme, number } = values;
-  const studentsIds = students.map((student) => student.userId);
-  const trackersIds = trackers.map((tracker) => tracker.userId);
+
+  const userIds = getUserIds(students, trackers);
 
   return {
     description: description,
     number: number,
     projectTheme: projectTheme,
-    userIds: [...studentsIds, ...trackersIds],
+    userIds: userIds,
   };
 }

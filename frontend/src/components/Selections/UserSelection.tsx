@@ -6,6 +6,7 @@ type Props = {
   placeholder?: string;
   onSelect?: (value: string, option: Option) => void;
   type: 'filter' | 'form';
+  selectedUsersIds?: string[];
 };
 
 export type Option = {
@@ -17,6 +18,7 @@ export function UserSelection({
   type,
   placeholder = 'Выберите ученика',
   onSelect,
+  selectedUsersIds = [],
 }: Props) {
   const { data, isFetching } = useGetUserSnippetListQuery({
     role: Role.LEARNER,
@@ -28,10 +30,12 @@ export function UserSelection({
       showSearch
       placeholder={placeholder}
       loading={isFetching}
-      options={data?.items.map<Option>((user) => ({
-        label: `${user.surname} ${user.name}`,
-        value: user.id,
-      }))}
+      options={data?.items
+        .map<Option>((user) => ({
+          label: `${user.surname} ${user.name}`,
+          value: user.id,
+        }))
+        .filter((user) => !selectedUsersIds.includes(user.value))}
       optionFilterProp="label"
       filterOption={(input, option) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())

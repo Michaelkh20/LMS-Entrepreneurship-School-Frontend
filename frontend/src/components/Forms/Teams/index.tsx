@@ -1,22 +1,26 @@
-import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import {
   TeamUsersEditColumnsType,
   TeamUsersEditTable,
 } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
-import { useUpdateTeamMutation } from '@/redux/services/api';
-import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Form, message, Button, Input, InputNumber } from 'antd';
+import { useDeleteTeamByIdMutation } from '@/redux/services/api';
+import { CheckOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, message, Button, Input, InputNumber, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { IGetTeamResponse } from '@/types/proto';
+import {
+  ICreateUpdateTeamRequest,
+  ICreateUpdateTeamResponse,
+  IGetTeamResponse,
+} from '@/types/proto';
 import {
   UserSelection,
   type Option as UserSelectionOption,
 } from '@/components/Selections/UserSelection';
 
 import styles from '@/app/admin/main.module.css';
-import formValuesToRequest from './helpers';
+import {formValuesToRequest, getUserIds} from './helpers';
 import { useForm } from 'antd/es/form/Form';
 import { useRouter } from 'next/navigation';
+import { MutationResultType, UpdateTeamApiArg } from '@/types/api';
 
 type FormFields = {
   description: string;
@@ -24,9 +28,32 @@ type FormFields = {
   projectTheme: string;
 };
 
-export default function TeamForm({ data }: { data: IGetTeamResponse }) {
+type TeamFormProps = {
+  onFinish: (values: ICreateUpdateTeamRequest) => void;
+} & (
+  | {
+      type: 'create';
+      data?: undefined;
+      result: MutationResultType<
+        ICreateUpdateTeamResponse,
+        ICreateUpdateTeamRequest
+      >;
+    }
+  | {
+      type: 'edit';
+      data: IGetTeamResponse;
+      result: MutationResultType<ICreateUpdateTeamResponse, UpdateTeamApiArg>;
+    }
+);
+
+export default function TeamForm({
+  onFinish,
+  result,
+  type,
+  data,
+}: TeamFormProps) {
   const [students, setStudents] = useState(
-    data.team?.students.map<TeamUsersEditColumnsType>((student) => ({
+    data?.team?.students.map<TeamUsersEditColumnsType>((student) => ({
       userId: student.id,
       userBalance: student.balance,
       userEmail: student.email,
@@ -35,7 +62,7 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
   );
 
   const [trackers, setTrackers] = useState(
-    data.team?.trackers.map<TeamUsersEditColumnsType>((tracker) => ({
+    data?.team?.trackers.map<TeamUsersEditColumnsType>((tracker) => ({
       userId: tracker.id,
       userBalance: tracker.balance,
       userEmail: tracker.email,
@@ -44,30 +71,68 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
   );
 
   const [form] = useForm<FormFields>();
-  const [updateTeam, result] = useUpdateTeamMutation();
+  const [deleteTeam, deleteResult] = useDeleteTeamByIdMutation();
+
   const router = useRouter();
 
   useEffect(() => {
     if (result.isError) {
-      message.error('Что-то пошло не так', 5);
+      const errorDetails = result.error;
+
+      if ('status' in errorDetails && errorDetails.status === 409) {
+        let fieldsError = [];
+        console.log(errorDetails.data);
+
+        fieldsError.push({
+          name: 'title',
+          errors: ['Команда с таким номером уже существует'],
+        });
+        message.error('Команда с таким номером уже существует', 5);
+
+        form.setFields(fieldsError);
+      } else {
+        message.error('Что-то пошло не так', 5);
+      }
     }
 
-    if (result.isLoading) {
+    if (result.isLoading || deleteResult.isLoading) {
       message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
     } else {
       message.destroy('Loading');
     }
 
     if (result.isSuccess) {
-      const teamId = data.team?.id;
-      message.success('Команда успешно изменена');
+      const teamId = data?.team?.id;
+      type === 'edit'
+        ? message.success('Команда успешно изменена')
+        : message.success('Команда успешно создана');
+
       router.push(`/admin/teams/${teamId}`);
     }
-  }, [data.team?.id, result, router]);
+
+    if (deleteResult.isError) {
+      const errorDetails = deleteResult.error;
+      console.log('ERR DETAILS: ', errorDetails);
+
+      if (
+        'originalStatus' in errorDetails &&
+        errorDetails.originalStatus === 200
+      ) {
+        message.success('Команда успешно удалена');
+        router.push(`/admin/teams/`);
+      } else {
+        message.error('Что-то пошло не так', 5);
+      }
+    }
+    if (deleteResult.isSuccess) {
+      message.success('Команда успешно удалена');
+      router.push(`/admin/teams/`);
+    }
+  }, [data?.team?.id, result, deleteResult, router, type, form]);
 
   console.log('data', data);
 
-  const handleEdit = () => {
+  const handleFinish = () => {
     const { number, description, projectTheme } = form.getFieldsValue();
     const request = formValuesToRequest({
       students,
@@ -76,7 +141,11 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
       description,
       projectTheme,
     });
-    updateTeam({ id: data.team?.id!, updateRequestBody: request });
+    onFinish(request);
+  };
+
+  const handleDeleteTeam = (id: string) => {
+    deleteTeam(id);
   };
 
   const handleDeleteStudent = (id: string) => {
@@ -89,7 +158,7 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
 
   const handleSelectStudent = (value: string, option: UserSelectionOption) => {
     setStudents((prev) => [
-      ...prev,
+      ...prev.filter((student) => student.userId !== option.value),
       {
         userName: option.label,
         userId: option.value,
@@ -101,7 +170,7 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
 
   const handleSelectTracker = (value: string, option: UserSelectionOption) => {
     setTrackers((prev) => [
-      ...prev,
+      ...prev.filter((tracker) => tracker.userId !== option.value),
       {
         userName: option.label,
         userId: option.value,
@@ -113,7 +182,11 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
 
   return (
     <>
-      <h2>Редактировать команду №{data.team?.number}</h2>
+      {type === 'edit' && (
+        <>
+          <h2>Редактировать команду №{data?.team?.number}</h2>
+        </>
+      )}
 
       <Form<FormFields> layout="vertical" form={form}>
         <Form.Item
@@ -160,8 +233,9 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
 
           <UserSelection
             type="filter"
-            placeholder="Выберите ученика"
+            placeholder="Добавить ученика"
             onSelect={handleSelectStudent}
+            selectedUsersIds={getUserIds(students, trackers)}
           />
         </div>
 
@@ -176,8 +250,9 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
           <h3>Трекеры</h3>
           <UserSelection
             type="filter"
-            placeholder="Выберите трекера"
+            placeholder="Добавить трекера"
             onSelect={handleSelectTracker}
+            selectedUsersIds={getUserIds(students, trackers)}
           />
         </div>
 
@@ -188,16 +263,26 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
       </section>
 
       <div className={styles.buttons_group_end}>
-        <Button icon={<DeleteOutlined />} size="large" danger>
-          Удалить команду
-        </Button>
+        {type === 'edit' && (
+          <Popconfirm
+            title={'Вы действительно хотите удалить команду?'}
+            onConfirm={() => handleDeleteTeam(data.team?.id!)}
+            okText={'Удалить'}
+            cancelText={'Назад'}
+          >
+            <Button icon={<DeleteOutlined />} size="large" danger>
+              Удалить команду
+            </Button>
+          </Popconfirm>
+        )}
+
         <Button
           type="primary"
-          icon={<CheckOutlined />}
+          icon={type === 'edit' ? <CheckOutlined /> : <PlusOutlined />}
           size="large"
-          onClick={handleEdit}
+          onClick={handleFinish}
         >
-          Изменить
+          {type === 'edit' ? 'Изменить' : 'Создать'}
         </Button>
       </div>
     </>

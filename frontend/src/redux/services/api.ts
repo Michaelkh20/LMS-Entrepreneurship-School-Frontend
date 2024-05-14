@@ -194,7 +194,7 @@ export const api = createApi({
     'Exam',
     'Competition',
     'Submission',
-    'Team'
+    'Team',
   ],
   endpoints: (build) => ({
     auth: build.mutation<ILoginResponse, AuthApiArg>({
@@ -361,6 +361,7 @@ export const api = createApi({
 
     deleteTeamById: build.mutation<undefined, string>({
       query: (id) => ({ url: `/teams/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Team'],
     }),
 
     getTeamPublicProfileById: build.query<IGetTeamResponse, string>({

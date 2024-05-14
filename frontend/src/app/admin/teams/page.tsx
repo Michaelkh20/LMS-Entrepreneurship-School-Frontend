@@ -8,9 +8,17 @@ import React, { useState } from 'react';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 
 import TeamCreateModal from '@/components/Modals/TeamCreateModal';
+import { useCreateTeamMutation } from '@/redux/services/api';
+import { ICreateUpdateTeamRequest } from '@/types/proto';
 
 export default function TeamsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // const [createTeam, result] = useCreateTeamMutation();
+
+  // const handleFinish = (values: ICreateUpdateTeamRequest) => {
+  //   createTeam(values);
+  // };
 
   const handleOnClick = () => {
     setIsModalOpen(true);

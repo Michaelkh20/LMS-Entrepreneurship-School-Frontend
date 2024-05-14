@@ -1,28 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Button, Flex, Form, Input, InputNumber, Modal, message } from 'antd';
+import { Modal, message } from 'antd';
 import { ModalContainer } from '../Components/ModalContainer';
 import { useCreateTeamMutation } from '@/redux/services/api';
 import { ICreateUpdateTeamRequest } from '@/types/proto';
 import { useRouter } from 'next/navigation';
-
-type TeamCreateFormValues = {
-  number: number | undefined;
-  projectTheme: string | undefined;
-  description: string | undefined;
-};
-
-const formValuesToRequest = (
-  values: TeamCreateFormValues
-): ICreateUpdateTeamRequest => {
-  return {
-    number: values.number,
-    projectTheme: values.projectTheme,
-    description: values.description,
-    userIds: [],
-  };
-};
+import TeamForm from '@/components/Forms/Teams';
 
 type TeamCreateModalProps = {
   isOpen: boolean;
@@ -52,13 +36,13 @@ export default function TeamCreateModal({
     }
 
     if (result.isSuccess) {
-      message.success('Оценка успешно выставлена');
-      router.push(`/admin/teams/`)
+      router.push(`/admin/teams/`);
+      setModalOpen(false);
     }
-  }, [result]);
+  }, [result, router, setModalOpen]);
 
-  const handleOnFinish = (values: TeamCreateFormValues) => {
-    createTeam(formValuesToRequest(values));
+  const handleFinish = (values: ICreateUpdateTeamRequest) => {
+    createTeam(values);
   };
 
   return (
@@ -70,47 +54,7 @@ export default function TeamCreateModal({
       centered
     >
       <ModalContainer>
-        <Form<TeamCreateFormValues> layout="vertical" onFinish={handleOnFinish}>
-          <Form.Item name={'number'} label={'Номер команды'}>
-            <InputNumber
-              style={{ minWidth: '150px' }}
-              placeholder="Номер команды"
-            />
-          </Form.Item>
-          <Form.Item
-            name={'projectTheme'}
-            label={'Тема проекта'}
-            rules={[
-              {
-                max: 200,
-                message: 'Комментарий должен иметь длину не более 200 символов',
-              },
-            ]}
-          >
-            <Input placeholder="Тема проекта" />
-          </Form.Item>
-          <Form.Item
-            name={'description'}
-            label={'Описание'}
-            rules={[
-              {
-                max: 1_000,
-                message:
-                  'Комментарий должен иметь длину не более 1000 символов',
-              },
-            ]}
-          >
-            <Input.TextArea rows={4} placeholder="Описание" />
-          </Form.Item>
-
-
-
-          <Flex justify="flex-end">
-            <Button type="primary" htmlType="submit" loading={result.isLoading}>
-              Создать команду
-            </Button>
-          </Flex>
-        </Form>
+        <TeamForm type="create" result={result} onFinish={handleFinish} />
       </ModalContainer>
     </Modal>
   );
