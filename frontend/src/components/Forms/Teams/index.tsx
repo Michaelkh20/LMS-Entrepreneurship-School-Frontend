@@ -17,7 +17,7 @@ import {
 } from '@/components/Selections/UserSelection';
 
 import styles from '@/app/admin/main.module.css';
-import {formValuesToRequest, getUserIds} from './helpers';
+import { formValuesToRequest, getUserIds } from './helpers';
 import { useForm } from 'antd/es/form/Form';
 import { useRouter } from 'next/navigation';
 import { MutationResultType, UpdateTeamApiArg } from '@/types/api';
@@ -129,8 +129,6 @@ export default function TeamForm({
       router.push(`/admin/teams/`);
     }
   }, [data?.team?.id, result, deleteResult, router, type, form]);
-
-  console.log('data', data);
 
   const handleFinish = () => {
     const { number, description, projectTheme } = form.getFieldsValue();

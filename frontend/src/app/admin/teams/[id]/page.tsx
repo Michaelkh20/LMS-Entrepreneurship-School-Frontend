@@ -13,7 +13,7 @@ import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayo
 import { useRouter } from 'next/navigation';
 import { User } from '@proto/users/users_api';
 
-const usersToTableItem = (users: User[]): TeamUsersColumnsType[] => {
+export const usersToTeamTableItem = (users: User[]): TeamUsersColumnsType[] => {
   return users.map<TeamUsersColumnsType>((user) => ({
     userId: user.id,
     userBalance: user.balance,
@@ -62,13 +62,13 @@ export default function TeamPage({
       <section className={styles.section}>
         <h3 className={styles.header}>Ученики</h3>
         <TeamUsersTable
-          tableData={usersToTableItem(data?.team?.students || [])}
+          tableData={usersToTeamTableItem(data?.team?.students || [])}
         ></TeamUsersTable>
       </section>
       <section className={styles.section}>
         <h3 className={styles.header}>Трекеры</h3>
         <TeamUsersTable
-          tableData={usersToTableItem(data?.team?.trackers || [])}
+          tableData={usersToTeamTableItem(data?.team?.trackers || [])}
         ></TeamUsersTable>
       </section>
     </BasePageLayout>

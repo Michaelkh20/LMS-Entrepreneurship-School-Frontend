@@ -7,6 +7,7 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useGetTeamPublicProfileByIdQuery } from '@/redux/services/api';
 import LoadingErrorStub from '@/components/LoadingErrorStub';
 import { TeamUsersTable } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersTable';
+import { usersToTeamTableItem } from '@/app/admin/teams/[id]/page';
 
 type TeamViewModalProps = {
   isOpen: boolean;
@@ -63,11 +64,15 @@ export default function TeamViewModal({
         )}
         <div className={styles.property}>
           <p className={styles.propertyName}>Ученики</p>
-          <TeamUsersTable users={data?.team?.students} />
+          <TeamUsersTable
+            tableData={usersToTeamTableItem(data.team?.students || [])}
+          />
         </div>
         <div className={styles.property}>
           <p className={styles.propertyName}>Трекеры</p>
-          <TeamUsersTable users={data?.team?.trackers} />
+          <TeamUsersTable
+            tableData={usersToTeamTableItem(data.team?.trackers || [])}
+          />
         </div>
       </div>
     </Modal>

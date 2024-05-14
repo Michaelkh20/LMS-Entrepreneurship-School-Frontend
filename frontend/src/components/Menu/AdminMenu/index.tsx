@@ -58,10 +58,6 @@ const menuItems: MenuProps['items'] = [
         ],
       },
       {
-        key: 'transactions',
-        label: <Link href="/admin/transactions">Транзакции</Link>,
-      },
-      {
         key: 'lots',
         label: <Link href="/admin/lots">Лоты</Link>,
       },
