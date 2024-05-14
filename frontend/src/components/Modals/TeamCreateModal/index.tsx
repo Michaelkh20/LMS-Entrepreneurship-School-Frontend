@@ -5,6 +5,7 @@ import { Button, Flex, Form, Input, InputNumber, Modal, message } from 'antd';
 import { ModalContainer } from '../Components/ModalContainer';
 import { useCreateTeamMutation } from '@/redux/services/api';
 import { ICreateUpdateTeamRequest } from '@/types/proto';
+import { useRouter } from 'next/navigation';
 
 type TeamCreateFormValues = {
   number: number | undefined;
@@ -33,6 +34,7 @@ export default function TeamCreateModal({
   setModalOpen,
 }: TeamCreateModalProps) {
   const [createTeam, result] = useCreateTeamMutation();
+  const router = useRouter();
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -51,6 +53,7 @@ export default function TeamCreateModal({
 
     if (result.isSuccess) {
       message.success('Оценка успешно выставлена');
+      router.push(`/admin/teams/`)
     }
   }, [result]);
 

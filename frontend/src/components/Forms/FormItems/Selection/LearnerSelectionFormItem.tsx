@@ -1,6 +1,5 @@
-import { useGetUserSnippetListQuery } from '@/redux/services/api';
-import { Role } from '@/types/common';
-import { Form, Select } from 'antd';
+import { UserSelection } from '@/components/Selections/UserSelection';
+import { Form } from 'antd';
 
 type Props = {
   placeholder?: string;
@@ -24,10 +23,6 @@ export function LearnerSelectionFormItem({
   name = 'learnerId',
   onSelect,
 }: Props) {
-  const { data, isFetching } = useGetUserSnippetListQuery({
-    role: Role.LEARNER,
-  });
-
   return (
     <Form.Item
       label={label}
@@ -39,22 +34,7 @@ export function LearnerSelectionFormItem({
       }
       style={type === 'filter' ? { minWidth: '240px' } : undefined}
     >
-      <Select
-        style={{ width: '100%' }}
-        showSearch
-        placeholder={placeholder}
-        loading={isFetching}
-        options={data?.items.map((user) => ({
-          label: `${user.surname} ${user.name}`,
-          value: user.id,
-        }))}
-        optionFilterProp="label"
-        filterOption={(input, option) =>
-          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-        }
-        allowClear={type === 'filter'}
-        onSelect={onSelect}
-      />
+      <UserSelection type={type} placeholder={placeholder} />
     </Form.Item>
   );
 }

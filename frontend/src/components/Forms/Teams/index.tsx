@@ -3,16 +3,26 @@ import {
   TeamUsersEditColumnsType,
   TeamUsersEditTable,
 } from '@/components/TableWithFilterNew/Tables/Admin/TeamUsersEditTable';
-import {
-  useGetTeamByIdQuery,
-  useUpdateTeamMutation,
-} from '@/redux/services/api';
-import { UpdateTeamApiArg } from '@/types/api';
-import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
-import { Form, message, Button } from 'antd';
+import { useUpdateTeamMutation } from '@/redux/services/api';
+import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Form, message, Button, Input, InputNumber } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { LearnerSelectionFormItem } from '../FormItems/Selection/LearnerSelectionFormItem';
 import { IGetTeamResponse } from '@/types/proto';
+import {
+  UserSelection,
+  type Option as UserSelectionOption,
+} from '@/components/Selections/UserSelection';
+
+import styles from '@/app/admin/main.module.css';
+import formValuesToRequest from './helpers';
+import { useForm } from 'antd/es/form/Form';
+import { useRouter } from 'next/navigation';
+
+type FormFields = {
+  description: string;
+  number: number;
+  projectTheme: string;
+};
 
 export default function TeamForm({ data }: { data: IGetTeamResponse }) {
   const [students, setStudents] = useState(
@@ -21,7 +31,7 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
       userBalance: student.balance,
       userEmail: student.email,
       userName: `${student.surname} ${student.name}`,
-    }))
+    })) || []
   );
 
   const [trackers, setTrackers] = useState(
@@ -30,11 +40,12 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
       userBalance: tracker.balance,
       userEmail: tracker.email,
       userName: `${tracker.surname} ${tracker.name}`,
-    }))
+    })) || []
   );
+
+  const [form] = useForm<FormFields>();
   const [updateTeam, result] = useUpdateTeamMutation();
-  const [open, setOpen] = useState(false);
-  const [formLearner] = Form.useForm();
+  const router = useRouter();
 
   useEffect(() => {
     if (result.isError) {
@@ -48,14 +59,24 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
     }
 
     if (result.isSuccess) {
-      message.success('Оценка успешно выставлена');
+      const teamId = data.team?.id;
+      message.success('Команда успешно изменена');
+      router.push(`/admin/teams/${teamId}`);
     }
-  }, [result]);
+  }, [data.team?.id, result, router]);
 
   console.log('data', data);
 
-  const showModal = () => {
-    setOpen(true);
+  const handleEdit = () => {
+    const { number, description, projectTheme } = form.getFieldsValue();
+    const request = formValuesToRequest({
+      students,
+      trackers,
+      number,
+      description,
+      projectTheme,
+    });
+    updateTeam({ id: data.team?.id!, updateRequestBody: request });
   };
 
   const handleDeleteStudent = (id: string) => {
@@ -66,32 +87,82 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
     setTrackers((prev) => prev?.filter((tracker) => tracker.userId !== id));
   };
 
+  const handleSelectStudent = (value: string, option: UserSelectionOption) => {
+    setStudents((prev) => [
+      ...prev,
+      {
+        userName: option.label,
+        userId: option.value,
+        userBalance: '',
+        userEmail: '',
+      },
+    ]);
+  };
 
-  const handleOnSelect = () => {};
+  const handleSelectTracker = (value: string, option: UserSelectionOption) => {
+    setTrackers((prev) => [
+      ...prev,
+      {
+        userName: option.label,
+        userId: option.value,
+        userBalance: '',
+        userEmail: '',
+      },
+    ]);
+  };
 
   return (
-    <BasePageLayout header={<h2>Редактировать команду {id}</h2>}>
-      <h3 className={styles.header}>
-        Тема проекта: {data?.team?.projectTheme || ' -'}
-      </h3>
+    <>
+      <h2>Редактировать команду №{data.team?.number}</h2>
+
+      <Form<FormFields> layout="vertical" form={form}>
+        <Form.Item
+          name={'number'}
+          label={'Номер команды'}
+          initialValue={data?.team?.number}
+        >
+          <InputNumber
+            style={{ minWidth: '150px' }}
+            placeholder="Номер команды"
+          />
+        </Form.Item>
+        <Form.Item
+          name={'projectTheme'}
+          label={'Тема проекта'}
+          rules={[
+            {
+              max: 200,
+              message: 'Тема должна иметь длину не более 200 символов',
+            },
+          ]}
+          initialValue={data?.team?.projectTheme}
+        >
+          <Input placeholder="Тема проекта" />
+        </Form.Item>
+        <Form.Item
+          name={'description'}
+          label={'Описание'}
+          rules={[
+            {
+              max: 1_000,
+              message: 'Описание должно иметь длину не более 1000 символов',
+            },
+          ]}
+          initialValue={data?.team?.description}
+        >
+          <Input.TextArea rows={4} placeholder="Описание" />
+        </Form.Item>
+      </Form>
 
       <section className={styles.section}>
         <div className={styles.header}>
           <h3>Ученики</h3>
 
-          <Form form={formLearner}>
-            <LearnerSelectionFormItem
-              placeholder="Выберите ученика"
-              type={'form'}
-              name="learnerId"
-              label=""
-              onSelect={() => {}}
-            />
-          </Form>
-
-          {/* <Button icon={<PlusOutlined />} size="large">
-              Добавить ученика
-            </Button> */}
+          <UserSelection
+            type="filter"
+            placeholder="Выберите ученика"
+            onSelect={handleSelectStudent}
+          />
         </div>
 
         <TeamUsersEditTable
@@ -103,9 +174,11 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
       <section className={styles.section}>
         <div className={styles.header}>
           <h3>Трекеры</h3>
-          <Button icon={<PlusOutlined />} size="large">
-            Добавить трекера
-          </Button>
+          <UserSelection
+            type="filter"
+            placeholder="Выберите трекера"
+            onSelect={handleSelectTracker}
+          />
         </div>
 
         <TeamUsersEditTable
@@ -114,38 +187,19 @@ export default function TeamForm({ data }: { data: IGetTeamResponse }) {
         />
       </section>
 
-      <div className={styles.buttons_group}>
-        <Button icon={<CheckOutlined />} size="large" danger>
+      <div className={styles.buttons_group_end}>
+        <Button icon={<DeleteOutlined />} size="large" danger>
           Удалить команду
         </Button>
-      </div>
-
-      <div className={styles.buttons_group_end}>
-        <Button size="large">Назад</Button>
-        <Button type="primary" icon={<CheckOutlined />} size="large">
-          Подтвердить
+        <Button
+          type="primary"
+          icon={<CheckOutlined />}
+          size="large"
+          onClick={handleEdit}
+        >
+          Изменить
         </Button>
       </div>
-
-      {/* <Modal
-          open={open}
-          title="Title"
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={(_, { OkBtn, CancelBtn }) => (
-            <>
-              <Button>Custom Button</Button>
-              <CancelBtn />
-              <OkBtn />
-            </>
-          )}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal> */}
-    </BasePageLayout>
+    </>
   );
 }

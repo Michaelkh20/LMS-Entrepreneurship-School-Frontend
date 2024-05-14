@@ -1,14 +1,10 @@
 'use client';
 
-import { ClaimStatus } from '@/types/common';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import { Button, Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { useUpdateTeamMutation } from '@/redux/services/api';
-import { User, UserSnippet } from '@proto/users/users_api';
+import { useMemo } from 'react';
 
 export type TeamUsersEditColumnsType = {
   userId: string;
@@ -34,6 +30,7 @@ export const TeamUsersEditTable = ({
         title: 'Удалить',
         dataIndex: '_',
         key: '_',
+        width: 90,
         render(value, record, index) {
           return (
             <Button
