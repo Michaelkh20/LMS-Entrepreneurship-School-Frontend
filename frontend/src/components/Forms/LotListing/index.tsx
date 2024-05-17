@@ -1,56 +1,32 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import type { TestFormValues } from '@/types/forms';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Space,
-  message,
-} from 'antd';
+import React from 'react';
+import type { ListingLotFormValues, TestFormValues } from '@/types/forms';
+import { Button, Form, Input, InputNumber, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import locale_ru from 'antd/locale/ru_RU';
-import type {
-  ICreateUpdateCompetitionRequest,
-  ICreateUpdateCompetitionResponse,
-  ICreateUpdateExamRequest,
-  ICreateUpdateExamResponse,
-} from '@/types/proto';
-import { useRouter } from 'next/navigation';
-import { formValuesToRequest, getResponseToFormValues } from './helpers';
-import type {
-  ExamCompetition,
-  ICreateUpdateExamCompetitionRequest,
-  MutationResultType,
-  UpdateCompetitionApiArg,
-  UpdateExamApiArg,
-} from '@/types/api';
-import { LearnerSelectionFormItem } from '../FormItems/Selection/LearnerSelectionFormItem';
 
 type Props = {
-  onFinish: () => void;
+  onFinish: (values: ListingLotFormValues) => void;
 };
 
 export default function LotListingForm({ onFinish }: Props) {
-  const [form] = useForm<TestFormValues>();
+  const [form] = useForm<ListingLotFormValues>();
 
-  const handleValuesChange = (_: any, values: TestFormValues) => {
+  const handleValuesChange = (_: any, values: ListingLotFormValues) => {
     console.log(values);
   };
 
-  const handleFinish = () => {
-    onFinish();
+  const handleFinish = (values: ListingLotFormValues) => {
+    onFinish(values);
+    form.resetFields();
   };
 
   return (
-    <Form<TestFormValues>
+    <Form<ListingLotFormValues>
       form={form}
       layout="vertical"
       onValuesChange={handleValuesChange}
+      onFinish={handleFinish}
       style={{ maxWidth: 380 }}
     >
       <Form.Item
@@ -63,7 +39,7 @@ export default function LotListingForm({ onFinish }: Props) {
       </Form.Item>
       <Form.Item
         label="Описание лота"
-        name="title"
+        name="description"
         rules={[{ required: true, message: 'Введите описание лота' }]}
         hasFeedback
       >
@@ -79,8 +55,8 @@ export default function LotListingForm({ onFinish }: Props) {
       </Form.Item>
       <Form.Item
         label="Стоимость"
-        name="terms"
-        rules={[{ required: true, message: 'Введите Стоимость' }]}
+        name="price"
+        rules={[{ required: true, message: 'Введите cтоимость' }]}
         hasFeedback
       >
         <InputNumber />

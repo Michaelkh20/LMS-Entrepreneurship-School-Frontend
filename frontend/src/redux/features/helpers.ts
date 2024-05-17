@@ -1,6 +1,3 @@
-import { AuthState } from './authSlice';
-import { AUTH_STATE_LOCAL_STORAGE_KEY } from './authSlice/constants';
-
 export function serializeStateToLocalStorage(state: any, key: string) {
   localStorage.removeItem(key);
 
@@ -14,11 +11,16 @@ export function deserializeStateFromLocalStorage<T>(key: string) {
     return undefined;
   }
 
-  const serializedState = localStorage.getItem(AUTH_STATE_LOCAL_STORAGE_KEY);
+  const serializedState = localStorage.getItem(key);
 
   if (!serializedState) {
     return undefined;
   }
 
-  return JSON.parse(serializedState) as T;
+  return JSON.parse(serializedState, (key, value) => {
+    if (key.includes('date') || key.includes('Date')) {
+      return new Date(value);
+    }
+    return value;
+  }) as T;
 }

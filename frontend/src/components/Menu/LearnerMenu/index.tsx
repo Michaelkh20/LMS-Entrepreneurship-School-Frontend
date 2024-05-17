@@ -9,13 +9,16 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import dollarSvg from '../../../../public/dollar.svg';
 import useLearnerTrackerMenuItems from './menuItems';
+import { useGetBalance } from '@/redux/features/marketSlice';
 
 export default function LearnerMenu({ onClose }: { onClose?: () => void }) {
   const [authState] = useAuth();
   const menuItems = useLearnerTrackerMenuItems();
-  const { data } = useGetUserBalanceByIdQuery(authState.userId!, {
-    pollingInterval: 60 * 1_000,
-  });
+  // const { data } = useGetUserBalanceByIdQuery(authState.userId!, {
+  //   pollingInterval: 60 * 1_000,
+  // });
+
+  const data = useGetBalance();
   const pathname = usePathname();
 
   return (
@@ -42,7 +45,7 @@ export default function LearnerMenu({ onClose }: { onClose?: () => void }) {
       >
         {/* <DollarOutlined /> */}
         <Image width={20} height={20} src={dollarSvg} alt="asd" />{' '}
-        {data?.balance || '0'}
+        {data.toFixed(2) || '0'}
       </div>
       <Menu
         mode="inline"

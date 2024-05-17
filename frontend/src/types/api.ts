@@ -293,8 +293,6 @@ export type GetSellingLotsApiArg = Partial<{
   lotNumber: number;
   /** Search lot title */
   lotTitle: string;
-  /** Owner id */
-  performerId: string;
   /** The beginning of the desired interval */
   status: LotStatus;
   priceFrom: number;
@@ -650,6 +648,15 @@ export type LotsPage = {
   lots: Lot[];
 };
 
+export type LotWithBuyDate = Lot & {
+  buyDate: Date | null;
+};
+
+export type LotsLearnerPage = {
+  page: Page;
+  lots: LotWithBuyDate[];
+};
+
 export type LotCreateUpdateRequest = {
   title: string;
   description: string;
@@ -733,6 +740,7 @@ export type BuyLotClaim = {
   buyer: UserSnippet;
   date: Date;
   lot: Lot;
+  approveDate: Date | null;
 };
 
 export type ListLotClaimSnippet = {
