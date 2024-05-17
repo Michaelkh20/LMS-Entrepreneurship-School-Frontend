@@ -30,6 +30,7 @@ import { BuyLotClaim, ListLotClaim, Lot } from '@/types/api';
 import { useAuth } from '../authSlice';
 import { deserializeStateFromLocalStorage } from '../helpers';
 import { MARKET_STATE_LOCAL_STORAGE_KEY } from './constants';
+import { UserSnippet } from '@proto/users/users_api';
 
 export type MarketStateType = {
   lots: Lot[];
@@ -40,6 +41,36 @@ export type MarketStateType = {
     userId: string;
     balance: number;
   }[];
+};
+
+const mockDataLotInit: Lot = {
+  id: '1',
+  number: 1,
+  status: LotStatus.Approval,
+  title: 'Курс по основам программирования',
+  description:
+    'Обучение основам программирования на языке Python для начинающих',
+  terms: 'Длительность курса 4 недели, занятия по вечерам 2 раза в неделю',
+  price: 500,
+  performer: {
+    id: 'u11',
+    name: 'Жуйков Никита',
+  },
+  listingDate: new Date(2024, 4, 15),
+};
+
+const user1: UserSnippet = {
+  id: 'u12',
+  name: 'Михаил',
+  surname: 'Хооллгм',
+  patronymic: undefined,
+};
+
+const user2: UserSnippet = {
+  id: 'u11',
+  name: 'Никита',
+  surname: 'Жуйков',
+  patronymic: undefined,
 };
 
 const defaultInitialState: MarketStateType = {

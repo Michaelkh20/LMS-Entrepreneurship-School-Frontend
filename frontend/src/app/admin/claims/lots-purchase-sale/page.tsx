@@ -8,14 +8,17 @@ import { ClaimBuyLotViewModal } from '@/components/Modals';
 import { useApproveRejectClaimMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { ClaimAction } from '@/types/common';
+import { useApproveBuyLotClaim, useRejectBuyLotClaim, useRejectListLotClaim } from '@/redux/features/marketSlice';
 
 export default function LotsPurchaseSalePage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [claimId, setClaimId] = React.useState<string | null>(null);
+  const [claimId, setClaimId] = React.useState<string>('');
 
-  //TODO: переделать под хук useApproveRejectClaimMutation
-  // const [approve, approveResult] = useApproveClaimMutation();
-  // const [decline, declineResult] = useDeclineClaimMutation();
+  const [trigger, result] = useApproveRejectClaimMutation();
+
+  const triggerApprove = useApproveBuyLotClaim()
+  const triggerReject = useRejectBuyLotClaim()
 
   const handleRowClick = (id: string) => {
     console.log(id);
@@ -23,58 +26,54 @@ export default function LotsPurchaseSalePage() {
     setClaimId(id);
   };
 
-  // const handleDecline = () => {
-  //   if (!claimId) return;
-  //   decline(claimId);
-  // };
+  const handleDecline = () => {
+    if (!claimId) return;
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Reject,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerReject(claimId)
+  };
 
-  // const handleApprove = () => {
-  //   if (!claimId) return;
-  //   approve(claimId);
-  // };
+  const handleApprove = () => {
+    if (!claimId) return;
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Approve,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerApprove(claimId)
+  };
 
-  // const handleExit = () => {
-  //   setIsModalOpen(false);
-  // };
+  const handleExit = () => {
+    setIsModalOpen(false);
+  };
 
-  // useEffect(() => {
-  //   if (approveResult.isSuccess) {
-  //     message.success('Заявка успешно одобрена');
-  //     setIsModalOpen(false);
-  //   }
-  // }, [approveResult.isSuccess]);
-
-  // useEffect(() => {
-  //   if (declineResult.isSuccess) {
-  //     message.success('Заявка успешно отклонена');
-  //     setIsModalOpen(false);
-  //   }
-  // }, [declineResult.isSuccess]);
-
-  // useEffect(() => {
-  //   if (approveResult.isError) {
-  //     message.error('Ошибка при одобрении заявки');
-  //   }
-  // }, [approveResult.isError]);
-
-  // useEffect(() => {
-  //   if (declineResult.isError) {
-  //     message.error('Ошибка при отклонении заявки');
-  //   }
-  // }, [declineResult.isError]);
+  useEffect(() => {
+    if (result.isSuccess) {
+      message.success('Успешно');
+      setIsModalOpen(false);
+    }
+    if (result.isError) {
+      message.error('Ошибка');
+    }
+  }, [result.isError, result.isSuccess]);
 
   return (
-    <BasePageLayout header={<h2>Заявки: Купля-продажа лотов</h2>}>
+    <BasePageLayout header={<h2>Заявки: Покупка лотов</h2>}>
       <ClaimBuyingLotTableWithFilter onRowClick={handleRowClick} />
-      {/* <ClaimBuyLotViewModal
+      <ClaimBuyLotViewModal
         claimId={claimId}
         isOpen={isModalOpen}
-        // onCancel={handleDecline}
-        // onOk={handleApprove}
-        // isOkLoading={approveResult.isLoading}
-        // isDeclineLoading={declineResult.isLoading}
-        // onExit={handleExit}
-      /> */}
+        onCancel={handleDecline}
+        onOk={handleApprove}
+        isOkLoading={result.isLoading}
+        isDeclineLoading={result.isLoading}
+        onExit={handleExit}
+      />
     </BasePageLayout>
   );
 }

@@ -22,6 +22,9 @@ const TeamUsersColumns: (
     dataIndex: 'userBalance',
     key: 'userBalance',
     hidden: !isAdmin,
+    render: (_value, record, _index) => {
+        return(record.userBalance || '0')
+    },
   },
 ];
 

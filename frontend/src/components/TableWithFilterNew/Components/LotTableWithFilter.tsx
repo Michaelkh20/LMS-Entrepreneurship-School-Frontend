@@ -5,7 +5,7 @@ import {
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type { GetLotsApiArg, LotSnippetForTable } from '@/types/api';
+import type { GetLotsApiArg, LotSnippetForTable, LotsPage } from '@/types/api';
 import { useGetLotsQuery } from '@/redux/services/api';
 
 import { useState, useMemo } from 'react';
@@ -14,6 +14,8 @@ import { LotStatus } from '@/types/common';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { lotStatusToString } from '../../../util/enumsToString';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { useLotsList } from '@/redux/features/marketSlice';
+import { dateToLocalString } from '@/util/dateToLocalString';
 
 type LotColumnsDataType = LotSnippetForTable;
 
@@ -24,7 +26,7 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
     key: 'lotNumber',
     sorter: true,
     render: (_value, record, _index) => {
-      return `${record.number}`;
+      return `№${record.number}`;
     },
   },
   {
@@ -90,24 +92,25 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
 
 // const mockData: LotsPage = {
 //   pagination: {
-//     totalPages: 0,
-//     totalElements: 0,
+//     totalPages: 1,
+//     totalElements: 1,
 //   },
 //   lots: [
 //     {
-//       id: '',
-//       number: null,
-//       title: '',
-//       status: LotStatus.Approval,
-//       listingDate: null,
-//       price: 0,
+//       id: '1',
+//       number: 23,
+//       title: 'Курс по основам программирования',
+//       status: LotStatus.OnSale,
+//       listingDate: ne,
+//       price: 500,
 //       performer: {
-//         id: null,
-//         name: '',
+//         id: 'id1',
+//         name: 'Жуйков Никита',
 //       },
 //     },
 //   ],
 // };
+
 
 export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   const [formData, setFormData] = useState<GetLotsApiArg>({
@@ -116,8 +119,25 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const { data, isLoading, isError, isFetching } = useGetLotsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } = useGetLotsQuery(dataForReq);
+  const data = useLotsList(dataForReq)
 
+  // const data = mockData
+
+  // const dataForTable = useMemo(() => {
+  //   return data?.lots.map<LotColumnsDataType>((lot) => {
+  //     const res: LotColumnsDataType = {
+  //       id: lot.id,
+  //       number: lot.number,
+  //       title: lot.title,
+  //       status: lot.status,
+  //       listingDate: lot.listingDate,
+  //       price: lot.price,
+  //       performer: lot.performer,
+  //     };
+  //     return res;
+  //   });
+  // }, [data]);
   const dataForTable = useMemo(() => {
     return data?.lots.map<LotColumnsDataType>((lot) => {
       const res: LotColumnsDataType = {
@@ -125,7 +145,7 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
         number: lot.number,
         title: lot.title,
         status: lot.status,
-        listingDate: lot.listingDate,
+        listingDate: dateToLocalString(lot.listingDate!),
         price: lot.price,
         performer: lot.performer,
       };
@@ -136,7 +156,8 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.totalElements}
+        totalNumber={data?.page.totalElements}
+        // totalNumber={data?.pagination.totalElements}
         filterFormItems={
           <>
             <LotNumberFormItem />
@@ -145,6 +166,7 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
               name={'performerId'}
               type="filter"
             />
+            {/* TODO: LotStatusFrotmItem */}
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
             <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
           </>
@@ -152,7 +174,8 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
         tableProps={{
           scroll: { x: true },
           columns: LotColumns,
-          pagination: { total: data?.pagination.totalElements },
+          pagination: { total: data?.page.totalElements },
+          // pagination: { total: data?.pagination.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

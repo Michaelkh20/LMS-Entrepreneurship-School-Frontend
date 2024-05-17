@@ -17,6 +17,11 @@ import { ClaimStatus } from '@/types/common';
 import { useAuth } from '../../../redux/features/authSlice';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 import { UserSnippet } from '@proto/users/users_api';
+import {
+  useApproveTransferClaim,
+  useRejectTransferClaim,
+  useTransferClaims,
+} from '@/redux/features/marketSlice';
 
 type ClaimTransferColumnsDataType = {
   id: string;
@@ -29,8 +34,12 @@ type ClaimTransferColumnsDataType = {
 
 const ConfirmButtons = ({
   record,
+  onApprove,
+  onReject,
 }: {
   record: ClaimTransferColumnsDataType;
+  onApprove: (id: string) => void;
+  onReject: (id: string) => void;
 }) => {
   return (
     <Space>
@@ -38,7 +47,7 @@ const ConfirmButtons = ({
         cancelText="Нет"
         okText="Да"
         title={'Отклонить заявку?'}
-        onConfirm={() => console.log('Reject', record.id, record.sum)}
+        onConfirm={() => onReject(record.id)}
       >
         <Button>Нет</Button>
       </Popconfirm>
@@ -46,7 +55,7 @@ const ConfirmButtons = ({
         title={'Одобрить заявку?'}
         cancelText="Нет"
         okText="Да"
-        onConfirm={() => console.log('Approve', record.id, record.sum)}
+        onConfirm={() => onApprove(record.id)}
       >
         <Button>Да</Button>
       </Popconfirm>
@@ -122,16 +131,44 @@ export function ClaimTransferTableWithFilter({
   });
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
-  const { data, isLoading, isError, isFetching } =
-    useGetTransferClaimsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetTransferClaimsQuery(dataForReq);
+
+  // const data = mockData;
+
+  const data = useTransferClaims(dataForReq);
+
+  const approveTrigger = useApproveTransferClaim();
+  const rejectTrigger = useRejectTransferClaim();
+
+  const handleApprove = (id: string) => {
+    approveTrigger(id);
+  };
+  const handleReject = (id: string) => {
+    rejectTrigger(id);
+  };
+  // const dataForTable = useMemo(() => {
+  //   return data?.claims.map<ClaimTransferColumnsDataType>((claim) => {
+  //     const res: ClaimTransferColumnsDataType = {
+  //       id: claim.id,
+  //       claimStatus:
+  //         claim.id === '11' ? ClaimStatus.Approved : ClaimStatus.Waiting,
+  //       sender: claim.sender,
+  //       receiver: claim.receiver,
+  //       sum: claim.sum,
+  //     };
+  //     return res;
+  //   });
+  // }, [data]);
 
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimTransferColumnsDataType>((claim) => {
       const res: ClaimTransferColumnsDataType = {
         id: claim.id,
-        claimStatus: ClaimStatus.Waiting,
+        claimStatus: claim.status,
         sender: claim.sender,
         receiver: claim.receiver,
+        date: claim.date,
         sum: claim.sum,
       };
       return res;
@@ -206,7 +243,11 @@ export function ClaimTransferTableWithFilter({
         return (
           <>
             {record.claimStatus === ClaimStatus.Waiting && (
-              <ConfirmButtons record={record} />
+              <ConfirmButtons
+                record={record}
+                onApprove={handleApprove}
+                onReject={handleReject}
+              />
             )}
           </>
         );

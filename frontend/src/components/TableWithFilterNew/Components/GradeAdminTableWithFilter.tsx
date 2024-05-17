@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import type { GetGradesApiArg, Grade } from '@/types/api';
+import type { GetGradesApiArg, Grade, IGradesList } from '@/types/api';
 import { useGetGradesQuery } from '@/redux/services/api';
 import { taskTypeToString } from '@/util/enumsToString';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
@@ -72,6 +72,131 @@ type Props = {
   modalProps: Omit<ModalProps, 'requestParameters'>;
 };
 
+const mockData: IGradesList = {
+  page: {
+    totalPages: 0,
+    totalElements: 0,
+  },
+  grades: [
+    {
+      id: '',
+      gradeOwner: {
+        id: '',
+        name: 'Михаил',
+        surname: 'Хооллгм',
+        patronymic: undefined,
+      },
+      task: {
+        $case: 'homework',
+        homework: {
+          id: '1',
+          lesson: {
+            id: '11',
+            title: 'Урок №1, Введение в предпринимательство',
+            lessonNumber: 1,
+            publishDate: new Date(2024, 4, 15),
+          },
+          title: 'Домашнее задание №1',
+          deadlineDate: new Date(2024, 4, 23),
+        },
+      },
+      submissionForGrading: {
+        homework: {
+          id: '',
+          lesson: {
+            id: '',
+            title: '',
+            lessonNumber: 0,
+            publishDate: new Date(2024, 4, 15),
+          },
+          title: '',
+          deadlineDate: new Date(2024, 4, 20),
+        },
+        id: '',
+        owner: {
+          id: '',
+          name: '',
+          surname: '',
+          patronymic: undefined,
+        },
+        payload: {
+          textAnswer: '',
+          attachmentUrls: [],
+        },
+        publishedAt: new Date(2024, 4, 15),
+        publisher: {
+          id: '',
+          name: 'Михаил',
+          surname: 'Хооллгм',
+          patronymic: undefined,
+        },
+        team: undefined,
+      },
+      adminGrade: undefined,
+      adminComment: undefined,
+      trackerGrades: [],
+    },
+    {
+      id: '',
+      gradeOwner: {
+        id: '',
+        name: 'Михаил',
+        surname: 'Хооллгм',
+        patronymic: undefined,
+      },
+      task: {
+        $case: 'homework',
+        homework: {
+          id: '1',
+          lesson: {
+            id: '11',
+            title: 'Урок №1, Введение в предпринимательство',
+            lessonNumber: 1,
+            publishDate: new Date(2024, 4, 15),
+          },
+          title: 'Домашнее задание №2',
+          deadlineDate: new Date(2024, 4, 23),
+        },
+      },
+      submissionForGrading: {
+        homework: {
+          id: '',
+          lesson: {
+            id: '',
+            title: '',
+            lessonNumber: 0,
+            publishDate: new Date(2024, 4, 15),
+          },
+          title: '',
+          deadlineDate: new Date(2024, 4, 20),
+        },
+        id: '',
+        owner: {
+          id: '',
+          name: '',
+          surname: '',
+          patronymic: undefined,
+        },
+        payload: {
+          textAnswer: '',
+          attachmentUrls: [],
+        },
+        publishedAt: new Date(2024, 4, 15),
+        publisher: {
+          id: '',
+          name: 'Михаил',
+          surname: 'Хооллгм',
+          patronymic: undefined,
+        },
+        team: undefined,
+      },
+      adminGrade: 7,
+      adminComment: undefined,
+      trackerGrades: [],
+    },
+  ],
+};
+
 export function GradeAdminTableWithFilter({ onRow, modalProps }: Props) {
   const [formData, setFormData] = useState<GetGradesApiArg>({
     page: 1,
@@ -82,7 +207,8 @@ export function GradeAdminTableWithFilter({ onRow, modalProps }: Props) {
 
   const { data, isLoading, isError, isFetching } =
     useGetGradesQuery(dataForReq);
-
+  // const data = mockData;
+  
   const dataForTable = data?.grades;
 
   return (

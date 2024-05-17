@@ -7,7 +7,11 @@ import {
   LotTitleFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type { GetListLotClaimsApiArg, ListLotClaimsPage } from '@/types/api';
+import type {
+  BuyLotClaimsPage,
+  GetListLotClaimsApiArg,
+  ListLotClaimsPage,
+} from '@/types/api';
 import { useGetListLotClaimsQuery } from '@/redux/services/api';
 
 import { useState, useMemo } from 'react';
@@ -17,10 +21,11 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 import { ClaimStatus, TwoSidedClaimStatus } from '@/types/common';
 import type { ListLotClaimSnippet } from '@/types/api';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
+import { useBuyLotClaims, useListLotClaims } from '@/redux/features/marketSlice';
 
 type ClaimListLotColumnsDataType = {
   id: number | string;
-  number: string;
+  number: number | null;
   status: ClaimStatus; //TODO: LotStaus
   date: Date;
   title: string;
@@ -34,7 +39,7 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
     key: 'lot',
     sorter: true,
     render: (value, record, index) => {
-      return `${record.number}`;
+      return `№${record.number}`;
     },
   },
   {
@@ -88,7 +93,7 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
 const mockData: ClaimListLotColumnsDataType[] = [
   {
     id: 10,
-    number: '10',
+    number: 10,
     title: 'Создание видеоролика',
     price: 2500,
     date: new Date(2024, 2, 7),
@@ -96,7 +101,7 @@ const mockData: ClaimListLotColumnsDataType[] = [
   },
   {
     id: 11,
-    number: '11',
+    number: 11,
     title: 'Консультация по ведению социальных сетей',
     price: 250,
     date: new Date(2024, 3, 16),
@@ -104,7 +109,7 @@ const mockData: ClaimListLotColumnsDataType[] = [
   },
   {
     id: 12,
-    number: '12',
+    number: 12,
     title: 'Разработка мобильного приложения',
     price: 10000,
     date: new Date(2024, 3, 18),
@@ -123,9 +128,10 @@ export function ClaimPlacingLotTableWithFilter({
   });
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
-  const { data, isLoading, isError, isFetching } =
-    useGetListLotClaimsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetListLotClaimsQuery(dataForReq);
   // const data = mockData;
+  const data = useListLotClaims(dataForReq);
 
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimListLotColumnsDataType>((claim) => {
@@ -133,7 +139,9 @@ export function ClaimPlacingLotTableWithFilter({
         id: claim.id,
         status: claim.status,
         date: claim.date,
-        lot: claim.lot,
+        number: claim.lot.number,
+        title: claim.lot.title,
+        price: claim.lot.price
       };
       return res;
     });
