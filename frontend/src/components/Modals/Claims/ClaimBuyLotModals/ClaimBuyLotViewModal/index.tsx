@@ -16,7 +16,7 @@ import {
 } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
 
-import { TwoSidedClaimStatus } from '@/types/common';
+import { ClaimStatus, TwoSidedClaimStatus } from '@/types/common';
 import { twoSidedClaimStatusToString } from '@/util/enumsToString';
 import { ModalProperty } from '@/components/Modals/Components/ModalProperty';
 import { ModalButtonsGroup } from '@/components/Modals/Components/ModalButtonsGroup';
@@ -63,13 +63,9 @@ export function ClaimBuyLotViewModal({
           value={
             <p
               className={cx('PropertyValue', {
-                StatusApproval:
-                  data?.status === TwoSidedClaimStatus.WaitingAdmin ||
-                  data?.status === TwoSidedClaimStatus.WaitingLearner,
-                StatusActive: data?.status === TwoSidedClaimStatus.Approved,
-                StatusInactive:
-                  data?.status === TwoSidedClaimStatus.DeclinedAdmin ||
-                  data?.status === TwoSidedClaimStatus.DeclinedLearner,
+                StatusApproval: data?.status === ClaimStatus.Waiting,
+                StatusActive: data?.status === ClaimStatus.Approved,
+                StatusInactive: data?.status === ClaimStatus.Declined,
               })}
             >
               {twoSidedClaimStatusToString(data?.status)}
@@ -83,20 +79,20 @@ export function ClaimBuyLotViewModal({
               href={`/admin/users/${data?.buyer?.id}`}
               className={cx('PropertyValue', 'Link')}
             >
-              {data?.buyer.name || ''}
+              {data?.buyer.name || '-'}
             </Link>
           }
         />
         <ModalProperty
           title="Дата заявки"
-          value={dateToFormatString(data?.date) || ''}
+          value={dateToFormatString(data?.date) || '-'}
         />
 
         <ModalSectionTitle>Информация о лоте</ModalSectionTitle>
 
-        <ModalProperty title="Название" value={data?.lot?.title || ''} />
-        <ModalProperty title="Описание" value={data?.lot?.description || ''} />
-        <ModalProperty title="Условия" value={data?.lot?.terms || ''} />
+        <ModalProperty title="Название" value={data?.lot?.title || '-'} />
+        <ModalProperty title="Описание" value={data?.lot?.description || '-'} />
+        <ModalProperty title="Условия" value={data?.lot?.terms || '-'} />
         <ModalProperty
           title="Исполнитель"
           value={
@@ -104,15 +100,15 @@ export function ClaimBuyLotViewModal({
               href={`/admin/users/${data?.lot.performer.id}`}
               className={cx('PropertyValue', 'Link')}
             >
-              {data?.lot.performer.name || ''}
+              {data?.lot.performer.name || '-'}
             </Link>
           }
         />
         <ModalProperty
           title="Дата размещения"
-          value={dateToFormatString(data?.lot.listingDate || undefined) || ''}
+          value={dateToFormatString(data?.lot.listingDate || undefined) || '-'}
         />
-        <ModalProperty title="Стоимость" value={data?.lot?.price + '' || ''} />
+        <ModalProperty title="Стоимость" value={data?.lot?.price + '' || '-'} />
       </div>
       {isAdmin && data?.status === TwoSidedClaimStatus.WaitingAdmin && (
         <ModalButtonsGroup>

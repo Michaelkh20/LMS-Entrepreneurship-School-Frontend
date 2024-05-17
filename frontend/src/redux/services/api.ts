@@ -310,7 +310,7 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/teams/list`,
         params: {
-          teamNumber: queryArg.teamNumber,
+          groupNumber: queryArg.teamNumber,
           teamProjectTheme: queryArg.teamProjectTheme,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,

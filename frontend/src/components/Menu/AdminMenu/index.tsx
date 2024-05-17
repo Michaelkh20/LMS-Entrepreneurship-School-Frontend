@@ -33,7 +33,7 @@ const menuItems: MenuProps['items'] = [
             key: 'claims:lots-purchase-sale',
             label: (
               <Link href="/admin/claims/lots-purchase-sale">
-                Купля-Продажа лотов
+                Покупка лотов
               </Link>
             ),
           },

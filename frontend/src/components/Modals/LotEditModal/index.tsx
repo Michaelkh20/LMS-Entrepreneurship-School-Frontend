@@ -1,21 +1,40 @@
 'use client';
-import { Button, Form, Input, InputNumber, Modal, Space } from 'antd';
+import { Button, Form, Input, InputNumber, Modal, Space, message } from 'antd';
 import cn from 'classnames/bind';
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useEffect } from 'react';
 
-import styles from './LotViewModal.module.css';
+import styles from './LotCreateModal.module.css';
 
 import { LotStatus } from '@/types/common';
-import { Lot } from '@/types/api';
+import { Lot, LotCreateUpdateRequest } from '@/types/api';
 import { UserSelection } from '@/components/Selections/UserSelection';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import { useGetLotByIdQuery } from '@/redux/services/api';
+import { skipToken } from '@reduxjs/toolkit/query';
+
+import {
+  useDeleteLotByIdMutation,
+  useUpdateLotMutation,
+} from '@/redux/services/api';
+import { useForm } from 'antd/es/form/Form';
 
 type Props = {
-  lotId?: string | null;
+  lotId: string;
   isOpen: boolean;
   onCancel?: MouseEventHandler;
   onOk?: MouseEventHandler;
-  isClaimLoading: boolean;
+};
+
+type FormLotUpdateFields = {
+  title: string;
+  description: string;
+  terms: string;
+  price: number;
 };
 
 const mockData: Lot = {
@@ -36,18 +55,66 @@ const mockData: Lot = {
 
 const cx = cn.bind(styles);
 
-export default function LotCreateEditModal({
-  lotId,
-  isOpen,
-  onCancel,
-  onOk,
-  isClaimLoading,
-}: Props) {
-  // const { data } = useGetLotByIdQuery(lotId && isOpen ? lotId : skipToken);
-  const data = mockData;
+export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
+  const { data = mockData } = useGetLotByIdQuery(
+    lotId && isOpen ? lotId : skipToken
+  );
+
+  const [form] = useForm<FormLotUpdateFields>();
+  const [deleteTrigger, resultDelete] = useDeleteLotByIdMutation();
+  const [updateTrigger, resultUpdate] = useUpdateLotMutation();
+
+  const handleDelete = () => {
+    deleteTrigger(lotId);
+  };
+
+  const handleUpdate = () => {
+    const { title, description, price, terms } = form.getFieldsValue();
+
+    const req: LotCreateUpdateRequest = {
+      description: description,
+      performer: { id: data.performer.id, name: null },
+      price: price,
+      terms: terms,
+      title: title,
+    };
+    updateTrigger({ id: lotId, updateRequestBody: req });
+  };
+
+  useEffect(() => {
+    if (resultDelete.isError) {
+      message.error('Что-то пошло не так', 5);
+    }
+
+    if (resultDelete.isLoading) {
+      message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
+    } else {
+      message.destroy('Loading');
+    }
+
+    if (resultDelete.isSuccess) {
+      message.success('Лот успешно удалён');
+    }
+  }, [resultDelete]);
+
+  useEffect(() => {
+    if (resultUpdate.isError) {
+      message.error('Что-то пошло не так', 5);
+    }
+
+    if (resultUpdate.isLoading) {
+      message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
+    } else {
+      message.destroy('Loading');
+    }
+
+    if (resultUpdate.isSuccess) {
+      message.success('Лот успешно изменён');
+    }
+  }, [resultUpdate]);
+
   return (
     <Modal
-      // title={`Создать лот`}
       title={`Редактировать лот №${data?.number}`}
       open={isOpen}
       onCancel={onCancel}
@@ -55,7 +122,7 @@ export default function LotCreateEditModal({
       centered
     >
       <div className={styles.ModalContainer}>
-        <Form layout="vertical">
+        <Form<FormLotUpdateFields> layout="vertical" form={form}>
           <Form.Item
             label="Название"
             name="title"
@@ -64,7 +131,7 @@ export default function LotCreateEditModal({
           >
             <Input placeholder="Название" />
           </Form.Item>
-         
+
           <Form.Item
             label="Стоимость"
             name="deadlineDate"
@@ -113,39 +180,33 @@ export default function LotCreateEditModal({
             hasFeedback
             initialValue={data.terms}
           >
-            <Input.TextArea value={data.terms} rows={4} maxLength={1000} placeholder="Условия" />
+            <Input.TextArea
+              value={data.terms}
+              rows={4}
+              maxLength={1000}
+              placeholder="Условия"
+            />
           </Form.Item>
         </Form>
       </div>
       <div className={styles.Actions}>
-        {/* <Button
-          size="large"
-          type="default"
-          
-          onClick={onCancel}
-        >
-          Назад
-        </Button> */}
         <Button
           size="large"
           icon={<DeleteOutlined />}
           danger
           type="default"
-          onClick={onCancel}
+          onClick={handleDelete}
         >
           Удалить
         </Button>
         <Button
           size="large"
           type="primary"
-          onClick={onOk}
-          icon={<EditOutlined />}
-          // icon={<PlusOutlined/>}
-          loading={isClaimLoading}
+          onClick={handleUpdate}
+          icon={<CheckOutlined />}
+          // loading={isClaimLoading}
         >
-          {/* Подать заявку */}
-          {/* Создать */}
-          Редактировать
+          Изменить
         </Button>
       </div>
     </Modal>

@@ -147,6 +147,7 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
               name={'performerId'}
               type="filter"
             />
+            {/* TODO: LotStatusFrotmItem */}
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
             <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />
           </>
