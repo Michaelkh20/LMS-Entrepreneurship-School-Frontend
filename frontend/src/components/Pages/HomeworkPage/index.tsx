@@ -11,6 +11,8 @@ import HomeworkDeleteBtn from '@/components/Buttons/DeleteButtons/HomeworkDelete
 import SimpleSection from '@/components/SimpleSection';
 import UploadSubmissionSection from '@/components/UploadSubmissionSection';
 import LearnerSubmissionSection from '@/components/SubmissionSection/LearnerSubmissionSection';
+import GradeSection from '../GradeSection';
+import { Grade } from '@/types/api';
 
 export const HomeworkPage = ({ hwId }: { hwId: string }) => {
   const router = useRouter();
@@ -74,10 +76,13 @@ export const HomeworkPage = ({ hwId }: { hwId: string }) => {
 
       {isLearner && (
         <>
-          <Divider style={{margin: '16px 0'}} />
+          <Divider style={{ margin: '16px 0' }} />
           <h3>Решение</h3>
           <LearnerSubmissionSection hwId={hwId} />
           <UploadSubmissionSection hwId={hwId} />
+          <Divider style={{ margin: '16px 0' }} />
+          <h3>Оценка</h3>
+          <GradeSection />
         </>
       )}
     </div>

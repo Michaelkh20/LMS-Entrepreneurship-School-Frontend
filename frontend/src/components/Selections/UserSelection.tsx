@@ -1,13 +1,14 @@
 import { useGetUserSnippetListQuery } from '@/redux/services/api';
 import { Role } from '@/types/common';
 import { Form, Select } from 'antd';
+import { ComponentProps } from 'react';
 
 type Props = {
   placeholder?: string;
   onSelect?: (value: string, option: Option) => void;
   type: 'filter' | 'form';
   selectedUsersIds?: string[];
-};
+} & ComponentProps<typeof Select>;
 
 export type Option = {
   label: string;
@@ -19,6 +20,7 @@ export function UserSelection({
   placeholder = 'Выберите ученика',
   onSelect,
   selectedUsersIds = [],
+  ...selectProps
 }: Props) {
   const { data, isFetching } = useGetUserSnippetListQuery({
     role: Role.LEARNER,
@@ -26,6 +28,7 @@ export function UserSelection({
 
   return (
     <Select
+      {...selectProps}
       style={{ width: '100%' }}
       showSearch
       placeholder={placeholder}

@@ -8,6 +8,7 @@ import { Grade } from '@/types/api';
 import { getTitleFromTask } from '@/util/getTaskTitleFromGrade';
 import GradeForm from '@/components/Forms/Grades';
 import { GradeFormValues } from '@/types/forms';
+import SubmissionSection from '@/components/SubmissionSection';
 
 type Props = {
   grade: Grade;
@@ -36,9 +37,10 @@ export default function GradeViewModalContent({ grade, currentGrade }: Props) {
 
       {grade.submissionForGrading && (
         <>
-          <AdminSubmissionSection
+          {/* <AdminSubmissionSection
             submissionId={grade.submissionForGrading.id}
-          />
+          /> */}
+          <SubmissionSection submission={grade.submissionForGrading} />
           <Divider style={{ margin: '8px 0' }} />
         </>
       )}

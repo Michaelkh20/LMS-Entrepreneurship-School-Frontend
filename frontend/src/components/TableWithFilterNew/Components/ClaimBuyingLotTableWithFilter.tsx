@@ -7,15 +7,11 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
-import type {
-  BuyLotClaimsPage,
-  GetBuyLotClaimsApiArg,
-} from '@/types/api';
-
+import type { BuyLotClaimsPage, GetBuyLotClaimsApiArg } from '@/types/api';
 
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
-import { TwoSidedClaimStatus } from '@/types/common';
+import { ClaimStatus, TwoSidedClaimStatus } from '@/types/common';
 
 import { ColumnsType } from 'antd/es/table';
 import { useGetBuyLotClaimsQuery } from '@/redux/services/api';
@@ -23,51 +19,59 @@ import type { BuyLotClaimSnippet } from '@/types/api';
 
 import dateToFormatString from '@/util/dateToFormatString';
 
-type ClaimBuyingLotColumnsDataType = BuyLotClaimSnippet;
+type ClaimBuyingLotColumnsDataType = {
+  id: number | string;
+  number: string;
+  status: ClaimStatus; //TODO: LotStaus
+  date: Date;
+  title: string;
+  performer: string;
+  price: number;
+};
 
 const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
   {
-    title: 'Лот',
+    title: 'Лот №',
     dataIndex: 'lot',
     key: 'lot',
     sorter: true,
     render: (value, record, index) => {
-      return `${record.lot.number}`;
+      return `${record.number}`;
     },
   },
   {
-    title: 'Покупатель',
-    dataIndex: 'buyer',
-    key: 'buyer',
-    render: (value, record, index) => {
-      return `${record.buyer.surname} ${record.buyer.name}`;
+    title: 'Название лота',
+    dataIndex: 'title',
+    key: 'title',
+    width: '500px',
+  },
+  { title: 'Продавец', dataIndex: 'performer', key: 'performer' },
+  {
+    title: 'Дата подачи',
+    dataIndex: 'date',
+    key: 'date',
+    render: (_, record) => {
+      return record.date.toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: '2-digit',
+        day: 'numeric',
+      });
     },
   },
-  { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
-    dataIndex: 'claimStatus',
-    key: 'claimStatus',
-    render: (_, record: ClaimBuyingLotColumnsDataType) => {
+    dataIndex: 'status',
+    key: 'status',
+    render: (_, record) => {
       return (
         <>
-          {record.status === TwoSidedClaimStatus.WaitingAdmin && (
-            <p style={{ color: 'var(--color-primary)' }}>Ожидание админа</p>
+          {record.status === ClaimStatus.Waiting && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
           )}
-          {record.status === TwoSidedClaimStatus.WaitingLearner && (
-            <p style={{ color: 'var(--color-primary)' }}>
-              Ожидание пользователя
-            </p>
+          {record.status === ClaimStatus.Declined && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
           )}
-          {record.status === TwoSidedClaimStatus.DeclinedAdmin && (
-            <p style={{ color: 'var(--color-error)' }}>Отклонено админом</p>
-          )}
-          {record.status === TwoSidedClaimStatus.DeclinedLearner && (
-            <p style={{ color: 'var(--color-error)' }}>
-              Отклонено пользователем
-            </p>
-          )}
-          {record.status === TwoSidedClaimStatus.Approved && (
+          {record.status === ClaimStatus.Approved && (
             <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
           )}
         </>
@@ -75,45 +79,44 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     },
   },
   {
-    title: 'Стоимость',
+    title: 'Стоимость лота',
     dataIndex: 'price',
     key: 'price',
     render: (value, record, index) => {
-      return `${record.lot.price}`;
+      return `${record.price}`;
     },
   },
 ];
 
-const mockData: BuyLotClaimsPage = {
-  pagination: {
-    totalPages: 1,
-    totalElements: 3,
+const mockData: ClaimBuyingLotColumnsDataType[] = [
+  {
+    id: 7,
+    number: '7',
+    title: 'SEO-оптимизация веб-сайта',
+    price: 1200,
+    performer: 'Жуйков Никита',
+    date: new Date(2024, 3, 17),
+    status: ClaimStatus.Approved,
   },
-  claims: [
-    {
-      id: '',
-      status: TwoSidedClaimStatus.WaitingAdmin,
-      buyer: {
-        id: '1',
-        name: 'asd',
-        surname: 'sdf',
-        patronymic: '',
-      },
-      date: '12.12.12',
-      lot: {
-        number: null,
-        title: '1',
-        price: 20,
-        performer: {
-          id: '2',
-          name: 'sdf',
-          surname: 'sdf',
-          patronymic: 'null',
-        },
-      },
-    },
-  ],
-};
+  {
+    id: 8,
+    number: '8',
+    title: 'Обучение игре на гитаре',
+    price: 400,
+    performer: 'Кирносов Илья',
+    date: new Date(2024, 2, 13),
+    status: ClaimStatus.Declined,
+  },
+  {
+    id: 9,
+    number: '9',
+    title: 'Разработка мобильного приложения',
+    price: 5000,
+    performer: 'Дубин Василий',
+    date: new Date(2024, 3, 18),
+    status: ClaimStatus.Waiting,
+  },
+];
 
 export function ClaimBuyingLotTableWithFilter({
   onRowClick,
@@ -144,6 +147,8 @@ export function ClaimBuyingLotTableWithFilter({
     });
   }, [data]);
 
+  // const data = mockData;
+
   return (
     <>
       <BasicTableWithFilter
@@ -152,9 +157,9 @@ export function ClaimBuyingLotTableWithFilter({
           <>
             <LotNumberFormItem />
             <LearnerSelectionFormItem
-              placeholder={'Покупатель'}
+              placeholder={'Продавец'}
               name={'receiverId'}
-              type='filter'
+              type="filter"
             />
             <ClaimStatusFormItem />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />

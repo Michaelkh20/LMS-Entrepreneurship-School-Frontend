@@ -59,6 +59,8 @@ export const authSlice = createSlice({
         role: action.payload.role,
       };
 
+      console.log('AuthState', newState);
+
       serializeAuthStateToLocalStorage(newState);
 
       return newState;

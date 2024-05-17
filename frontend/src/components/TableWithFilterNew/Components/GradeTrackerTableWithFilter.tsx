@@ -9,7 +9,12 @@ import { useState, useMemo } from 'react';
 
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import { ColumnsType, TableProps } from 'antd/es/table';
-import type { GetGradesApiArg, Grade } from '@/types/api';
+import type {
+  GetGradesApiArg,
+  Grade,
+  HomeworkSnippet,
+  Submission,
+} from '@/types/api';
 import { useGetGradesQuery } from '@/redux/services/api';
 import { getTitleFromTask } from '@/util/getTaskTitleFromGrade';
 import { useAuth } from '@/redux/features/authSlice';
@@ -94,7 +99,6 @@ export function GradeTrackerTableWithFilter({ onRow, modalProps }: Props) {
         totalNumber={data?.page?.totalElements}
         filterFormItems={
           <>
-            <TaskTypeFormItem name="taskType" />
             <TaskSelectionFormItem
               name="taskId"
               type="filter"

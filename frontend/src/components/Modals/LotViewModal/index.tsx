@@ -13,25 +13,28 @@ import { EditOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import dateToFormatString from '@/util/dateToFormatString';
 import { LotStatus } from '@/types/common';
+import { LotCardViewType } from '@/components/LotCard/mock';
 
 type Props = {
-  lotId?: string | null;
+  // lotId?: string | null;
   isOpen: boolean;
   onCancel: MouseEventHandler;
   onOk: MouseEventHandler;
-  isClaimLoading: boolean;
+  // isClaimLoading: boolean;
+  lot: LotCardViewType;
 };
 
 const cx = cn.bind(styles);
 
 export default function LotViewModal({
-  lotId,
+  // lotId,
   isOpen,
   onCancel,
   onOk,
-  isClaimLoading,
+  // isClaimLoading,
+  lot: data,
 }: Props) {
-  const { data } = useGetLotByIdQuery(lotId && isOpen ? lotId : skipToken);
+  // const { data } = useGetLotByIdQuery(lotId && isOpen ? lotId : skipToken);
 
   return (
     <Modal
@@ -55,21 +58,26 @@ export default function LotViewModal({
               {lotStatusToString(data?.status)}
             </p>
           </div>
+          <Property title="Название" value={data?.title || ''} />
           <div className={styles.PropertyContainer}>
             <p className={styles.PropertyTitle}>Стоимость</p>
             <p className={cx('PropertyValue', 'Price')}>
-              от {data?.price} ШП
+              {data?.price} ШП
               <PriceQuestionTooltip />
             </p>
           </div>
         </div>
-        <Property title="Название" value={data?.title || ''} />
+
         <Property title="Описание" value={data?.description || ''} />
         <Property title="Условия" value={data?.terms || ''} />
-        <Property title="Исполнитель" value={data?.performer?.name || ''} />
+        <Property title="Исполнитель" value={data?.performer || ''} />
         <Property
           title="Дата размещения"
-          value={dateToFormatString(data?.listingDate!)}
+          value={data?.date.toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: 'numeric',
+          })}
         />
       </div>
       <div className={styles.Actions}>
@@ -81,7 +89,7 @@ export default function LotViewModal({
           type="primary"
           onClick={onOk}
           icon={<EditOutlined />}
-          loading={isClaimLoading}
+          // loading={isClaimLoading}
         >
           Подать заявку
         </Button>

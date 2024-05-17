@@ -7,6 +7,7 @@ import { useAuth } from '@/redux/features/authSlice';
 import { GetGradesApiArg } from '@/types/api';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { GradeFormValues } from '@/types/forms';
+import { mockGrades } from '@/mock/mock';
 
 export type Props = {
   gradeId: string | null;

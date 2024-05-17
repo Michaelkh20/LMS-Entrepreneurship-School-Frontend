@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { ClaimBuyingLotTableWithFilter } from '@/components/TableWithFilterNew';
 
 import styles from '@/app/admin/main.module.css';
-import {ClaimBuyLotViewModal} from '@/components/Modals';
+import { ClaimBuyLotViewModal } from '@/components/Modals';
 import { useApproveRejectClaimMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
@@ -62,7 +62,7 @@ export default function LotsPurchaseSalePage() {
   // }, [declineResult.isError]);
 
   return (
-    <BasePageLayout header={<h2>Заявки: Купля-продажа лотов</h2>}>
+    <BasePageLayout header={<h2>Заявки: Покупка лотов</h2>}>
       <ClaimBuyingLotTableWithFilter onRowClick={handleRowClick} />
       {/* <ClaimBuyLotViewModal
         claimId={claimId}
