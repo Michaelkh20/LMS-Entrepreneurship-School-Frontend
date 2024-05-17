@@ -8,24 +8,16 @@ import LotViewModal from '../Modals/LotViewModal';
 import PriceQuestionTooltip from './components/QuestionTooltip';
 import { useCreateBuyLotClaimMutation } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
+import { LotCardViewType } from './mock';
 
 type LotCardProps = {
-  id: string;
-  number: number | null;
-  title: string;
-  performer: string;
-  price: number;
+  lot: LotCardViewType;
 };
 
 const cx = cn.bind(styles);
 
-export default function LotCard({
-  id,
-  number,
-  title,
-  performer,
-  price,
-}: LotCardProps) {
+export default function LotCard({ lot }: LotCardProps) {
+  const { id, number, title, performer, price } = lot;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [createBuyLotClaim, { isError, isLoading, isSuccess }] =
     useCreateBuyLotClaimMutation();
@@ -71,7 +63,7 @@ export default function LotCard({
         <div className={cx('Property')}>
           <p className={cx('PropertyTitle')}>Цена</p>
           <p className={cx('PropertyValue', 'Price')}>
-            от {price} ШП
+            {price} ШП
             <PriceQuestionTooltip />
           </p>
         </div>
@@ -86,11 +78,11 @@ export default function LotCard({
         </Button>
       </div>
       <LotViewModal
-        lotId={id}
+        lot={lot}
         isOpen={isModalOpen}
         onCancel={handleModalCancel}
         onOk={handleCreateClaimClick}
-        isClaimLoading={isLoading}
+        // isClaimLoading={isLoading}
       />
       {contextHolder}
     </div>

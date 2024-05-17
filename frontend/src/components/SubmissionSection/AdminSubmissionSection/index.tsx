@@ -15,5 +15,5 @@ export default function AdminSubmissionSection({ submissionId }: Props) {
     return <LoadingErrorStub isError={isError} isLoading={isLoading} />;
   }
 
-  return <SubmissionSection submission={data} />;
+  return <SubmissionSection submission={data.submission} />;
 }

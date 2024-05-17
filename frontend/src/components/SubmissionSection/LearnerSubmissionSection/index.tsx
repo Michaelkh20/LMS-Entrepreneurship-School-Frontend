@@ -16,7 +16,7 @@ export default function LearnerSubmissionSection({ hwId }: Props) {
       ownerId: authState.userId!,
     });
 
-  console.log(error);
+  console.log(data);
 
   if (error && 'status' in error && error.status === 404) {
     return <SubmissionSection submission={undefined} />;
@@ -26,5 +26,5 @@ export default function LearnerSubmissionSection({ hwId }: Props) {
     return <LoadingErrorStub isError={isError} isLoading={isLoading} />;
   }
 
-  return <SubmissionSection submission={data} />;
+  return <SubmissionSection submission={data.submission} />;
 }

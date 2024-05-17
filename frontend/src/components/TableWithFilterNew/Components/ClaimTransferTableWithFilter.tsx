@@ -23,6 +23,7 @@ type ClaimTransferColumnsDataType = {
   claimStatus: ClaimStatus;
   sender: UserSnippet;
   receiver: UserSnippet;
+  date: Date;
   sum: number;
 };
 
@@ -53,30 +54,62 @@ const ConfirmButtons = ({
   );
 };
 
-const mockData: TransferClaimsPage = {
-  pagination: {
-    totalPages: 1,
-    totalElements: 1,
-  },
-  claims: [
-    {
+const mockData: ClaimTransferColumnsDataType[] = [
+  {
+    id: '1',
+    sender: {
       id: '1',
-      sender: {
-        id: '1',
-        name: 'Иван',
-        surname: 'Обучающийся',
-        patronymic: undefined,
-      },
-      receiver: {
-        id: '2',
-        name: 'Иван',
-        surname: 'Получающий',
-        patronymic: undefined,
-      },
-      sum: 100,
+      name: 'Сергей',
+      surname: 'Никитин',
+      patronymic: undefined,
     },
-  ],
-};
+    receiver: {
+      id: '2',
+      name: 'Михаил',
+      surname: 'Хооллгм',
+      patronymic: undefined,
+    },
+    sum: 1000,
+    date: new Date(2024, 3, 16),
+    claimStatus: ClaimStatus.Approved,
+  },
+  {
+    id: '2',
+    sender: {
+      id: '2',
+      name: 'Михаил',
+      surname: 'Хооллгм',
+      patronymic: undefined,
+    },
+    receiver: {
+      id: '2',
+      name: 'Никита',
+      surname: 'Жуйков',
+      patronymic: undefined,
+    },
+    sum: 300,
+    date: new Date(2024, 1, 9),
+    claimStatus: ClaimStatus.Declined,
+  },
+  {
+    id: '3',
+    sender: {
+      id: '2',
+      name: 'Михаил',
+      surname: 'Хооллгм',
+      patronymic: undefined,
+    },
+    receiver: {
+      id: '2',
+      name: 'Михаил',
+      surname: 'Лукашевич',
+      patronymic: undefined,
+    },
+    sum: 500,
+    date: new Date(2024, 3, 19),
+    claimStatus: ClaimStatus.Waiting,
+  },
+];
 
 export function ClaimTransferTableWithFilter({
   onRow,
@@ -146,6 +179,18 @@ export function ClaimTransferTableWithFilter({
             )}
           </>
         );
+      },
+    },
+    {
+      title: 'Дата подачи',
+      dataIndex: 'date',
+      key: 'date',
+      render: (_, record) => {
+        return record.date.toLocaleDateString('ru-RU', {
+          year: 'numeric',
+          month: '2-digit',
+          day: 'numeric',
+        });
       },
     },
 

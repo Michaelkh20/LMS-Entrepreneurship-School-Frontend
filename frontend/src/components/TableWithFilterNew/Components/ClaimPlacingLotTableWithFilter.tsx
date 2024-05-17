@@ -4,6 +4,7 @@ import {
   ClaimStatusFormItem,
   LotNumberFormItem,
   DatePickerFormItem,
+  LotTitleFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
 import type { GetListLotClaimsApiArg, ListLotClaimsPage } from '@/types/api';
@@ -13,57 +14,61 @@ import { useState, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 
 import { ColumnsType, TableProps } from 'antd/es/table';
-import { TwoSidedClaimStatus } from '@/types/common';
+import { ClaimStatus, TwoSidedClaimStatus } from '@/types/common';
 import type { ListLotClaimSnippet } from '@/types/api';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
-type ClaimListLotColumnsDataType = ListLotClaimSnippet;
+type ClaimListLotColumnsDataType = {
+  id: number | string;
+  number: string;
+  status: ClaimStatus; //TODO: LotStaus
+  date: Date;
+  title: string;
+  price: number;
+};
 
 const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
   {
-    title: 'Лот',
+    title: 'Лот №',
     dataIndex: 'lot',
     key: 'lot',
     sorter: true,
     render: (value, record, index) => {
-      return <>{record.lot.title}</>;
+      return `${record.number}`;
     },
   },
   {
-    title: 'Исполнитель',
-    dataIndex: 'performer',
-    key: 'performer',
-    render: (value, record, index) => {
-      return (
-        <>{`${record.lot.performer.surname} ${record.lot.performer.name}`}</>
-      );
+    title: 'Название лота',
+    dataIndex: 'title',
+    key: 'title',
+    width: '500px',
+  },
+  {
+    title: 'Дата подачи',
+    dataIndex: 'date',
+    key: 'date',
+    render: (_, record) => {
+      return record.date.toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: '2-digit',
+        day: 'numeric',
+      });
     },
   },
-  { title: 'Дата', dataIndex: 'date', key: 'date' },
   {
     title: 'Статус',
-    dataIndex: 'claimStatus',
-    key: 'claimStatus',
-    render: (_, record: ClaimListLotColumnsDataType) => {
+    dataIndex: 'status',
+    key: 'status',
+    render: (_, record) => {
       return (
         <>
-          {record.status === TwoSidedClaimStatus.WaitingAdmin && (
-            <p style={{ color: 'var(--color-primary)' }}>Ожидание админа</p>
+          {record.status === ClaimStatus.Waiting && (
+            <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
           )}
-          {record.status === TwoSidedClaimStatus.WaitingLearner && (
-            <p style={{ color: 'var(--color-primary)' }}>
-              Ожидание пользователя
-            </p>
+          {record.status === ClaimStatus.Declined && (
+            <p style={{ color: 'var(--color-error)' }}>Отклонено</p>
           )}
-          {record.status === TwoSidedClaimStatus.DeclinedAdmin && (
-            <p style={{ color: 'var(--color-error)' }}>Отклонено админом</p>
-          )}
-          {record.status === TwoSidedClaimStatus.DeclinedLearner && (
-            <p style={{ color: 'var(--color-error)' }}>
-              Отклонено пользователем
-            </p>
-          )}
-          {record.status === TwoSidedClaimStatus.Approved && (
+          {record.status === ClaimStatus.Approved && (
             <p style={{ color: 'var(--color-success)' }}>Одобрено</p>
           )}
         </>
@@ -71,39 +76,41 @@ const ClaimPlacingLotColumns: ColumnsType<ClaimListLotColumnsDataType> = [
     },
   },
   {
-    title: 'Стоимость',
+    title: 'Стоимость лота',
     dataIndex: 'price',
     key: 'price',
-    render: (_value, record, _index) => {
-      return <>{record.lot.price}</>;
+    render: (value, record, index) => {
+      return `${record.price}`;
     },
   },
 ];
 
-const mockData: ListLotClaimsPage = {
-  pagination: {
-    totalPages: 1,
-    totalElements: 1,
+const mockData: ClaimListLotColumnsDataType[] = [
+  {
+    id: 10,
+    number: '10',
+    title: 'Создание видеоролика',
+    price: 2500,
+    date: new Date(2024, 2, 7),
+    status: ClaimStatus.Approved,
   },
-  claims: [
-    {
-      id: '1',
-      status: TwoSidedClaimStatus.WaitingAdmin,
-      date: '12/12/12',
-      lot: {
-        number: 23,
-        title: 'lot-23',
-        price: 100,
-        performer: {
-          id: 'id1',
-          name: 'name1',
-          surname: 'surname1',
-          patronymic: '',
-        },
-      },
-    },
-  ],
-};
+  {
+    id: 11,
+    number: '11',
+    title: 'Консультация по ведению социальных сетей',
+    price: 250,
+    date: new Date(2024, 3, 16),
+    status: ClaimStatus.Declined,
+  },
+  {
+    id: 12,
+    number: '12',
+    title: 'Разработка мобильного приложения',
+    price: 10000,
+    date: new Date(2024, 3, 18),
+    status: ClaimStatus.Waiting,
+  },
+];
 
 export function ClaimPlacingLotTableWithFilter({
   onRow,
@@ -132,6 +139,8 @@ export function ClaimPlacingLotTableWithFilter({
     });
   }, [data]);
 
+  // const data = mockData;
+
   return (
     <>
       <BasicTableWithFilter
@@ -139,11 +148,7 @@ export function ClaimPlacingLotTableWithFilter({
         filterFormItems={
           <>
             <LotNumberFormItem />
-            <LearnerSelectionFormItem
-              placeholder={'Исполнитель'}
-              name={'receiverId'}
-              type="filter"
-            />
+            <LotTitleFormItem />
             <ClaimStatusFormItem />
             <DatePickerFormItem name={'dateFrom'} placeholder={'Дата от'} />
             <DatePickerFormItem name={'dateTo'} placeholder={'Дата до'} />

@@ -36,9 +36,7 @@ const baseMenuItem: MenuItemGroupType = {
       children: [
         {
           key: 'claims:lots-purchase-sale',
-          label: (
-            <Link href="/claims/lots-purchase-sale">Купля-Продажа лотов</Link>
-          ),
+          label: <Link href="/claims/lots-purchase-sale">Покупка лотов</Link>,
         },
         {
           key: 'claims:lots-listing',

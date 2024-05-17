@@ -1,5 +1,6 @@
 import { UserSelection } from '@/components/Selections/UserSelection';
 import { Form } from 'antd';
+import { ComponentProps } from 'react';
 
 type Props = {
   placeholder?: string;
@@ -14,7 +15,8 @@ type Props = {
       type: 'form';
       label: string;
     }
-);
+) &
+  ComponentProps<typeof Form.Item>;
 
 export function LearnerSelectionFormItem({
   type,
@@ -22,15 +24,15 @@ export function LearnerSelectionFormItem({
   placeholder = 'Выберите ученика',
   name = 'learnerId',
   onSelect,
+  ...formItemProps
 }: Props) {
   return (
     <Form.Item
+      {...formItemProps}
       label={label}
       name={name}
       rules={
-        type === 'form'
-          ? [{ required: true, message: 'Выберите ученика' }]
-          : undefined
+        type === 'form' ? [{ required: true, message: placeholder }] : undefined
       }
       style={type === 'filter' ? { minWidth: '240px' } : undefined}
     >

@@ -59,6 +59,8 @@ import type {
   ISubmissionsList,
   IGradesList,
   TaskSnippet,
+  Submission,
+  IGetSubmissionResponse,
 } from '@/types/api';
 
 import type {
@@ -1086,20 +1088,19 @@ export const api = createApi({
       providesTags: ['Submission'],
     }),
 
-    getSubmissionById: build.query<SubmissionWithAttachments, string>({
+    getSubmissionById: build.query<IGetSubmissionResponse, string>({
       query: (id) => ({
         url: `/submissions/${id}`,
-        responseHandler: getResponseHandlerWithValidatorAndTransformer(
+        responseHandler: getResponseHandlerWithValidator(
           GetSubmissionResponseTransformer,
-          GetSubmissionResponseValidator,
-          SubmissionWithAttachmentsTransformer
+          GetSubmissionResponseValidator
         ),
       }),
       providesTags: ['Submission'],
     }),
 
     getSubmissionByHWIdAndOwnerId: build.query<
-      SubmissionWithAttachments,
+      IGetSubmissionResponse,
       GetSubmissionByHWIdAndOwnerIdApiArg
     >({
       query: (queryArg) => ({
@@ -1108,10 +1109,9 @@ export const api = createApi({
           taskId: queryArg.hwId,
           ownerId: queryArg.ownerId,
         },
-        responseHandler: getResponseHandlerWithValidatorAndTransformer(
+        responseHandler: getResponseHandlerWithValidator(
           GetSubmissionResponseTransformer,
-          GetSubmissionResponseValidator,
-          SubmissionWithAttachmentsTransformer
+          GetSubmissionResponseValidator
         ),
       }),
       providesTags: ['Submission'],

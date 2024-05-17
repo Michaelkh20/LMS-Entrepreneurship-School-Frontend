@@ -3,10 +3,11 @@
 import React from 'react';
 import { PaperClipOutlined } from '@ant-design/icons';
 import SimpleSection from '@/components/SimpleSection';
-import { SubmissionWithAttachments } from '@/types/api';
+import { Submission } from '@/types/api';
+import DownloadFileLink from '../DownloadFileLink';
 
 type Props = {
-  submission: SubmissionWithAttachments | undefined;
+  submission: Submission | undefined;
 };
 
 export default function SubmissionSection({ submission }: Props) {
@@ -29,22 +30,17 @@ export default function SubmissionSection({ submission }: Props) {
             <div>{submission.publishedAt.toLocaleString('ru-RU')}</div>
           </SimpleSection>
           <SimpleSection title="Комментарий">
-            <div>{submission.textAnswer || '-'}</div>
+            <div>{submission.payload.textAnswer || '-'}</div>
           </SimpleSection>
           <SimpleSection title="Файлы">
-            {submission.attachments.map(({ url, name }) => {
+            {submission.payload.attachmentUrls.map((fileName) => {
               return (
-                <div style={{ display: 'flex', gap: 4 }} key={url}>
+                <div style={{ display: 'flex', gap: 4 }} key={fileName}>
                   <PaperClipOutlined />
-                  <span>
-                    <a
-                      style={{ textDecoration: 'underline' }}
-                      href={url}
-                      download
-                    >
-                      {name}
-                    </a>
-                  </span>
+                  <DownloadFileLink
+                    fileName={fileName}
+                    url={`${submission.owner.id}/${submission.homework.id}/${fileName}`}
+                  />
                 </div>
               );
             }) || '-'}

@@ -3,17 +3,38 @@ import { ClaimPlacingLotTableWithFilter } from '@/components/TableWithFilterNew'
 import React, { useState } from 'react';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import { ClaimListLotViewModal } from '@/components/Modals';
+import { Button, Modal } from 'antd';
+import LotListingForm from '@/components/Forms/LotListing';
 
 export default function LotsListingPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalViewOpen, setIsModalViewOpen] = useState(false);
+  const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [claimId, setClaimId] = React.useState<string | null>(null);
 
   const handleOnRowClick = (id: string) => {
     setClaimId(id);
-    setIsModalOpen(true);
+    setIsModalViewOpen(true);
   };
+
+  const handlePlaceClaimClick = () => {
+    setIsModalFormOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalFormOpen(false);
+  };
+
+  const header = (
+    <>
+      <h2>Заявки: Размещение лотов</h2>
+      <Button type="primary" size="large" onClick={handlePlaceClaimClick}>
+        Подать заявку
+      </Button>
+    </>
+  );
+
   return (
-    <BasePageLayout header={<h2>Заявки: Размещение лотов</h2>}>
+    <BasePageLayout header={header}>
       <ClaimPlacingLotTableWithFilter
         onRow={(record, rowindex) => {
           return {
@@ -23,10 +44,19 @@ export default function LotsListingPage() {
       />
       <ClaimListLotViewModal
         claimId={claimId}
-        isOpen={isModalOpen}
+        isOpen={isModalViewOpen}
         onCancel={() => {}}
-        onExit={() => setIsModalOpen(false)}
+        onExit={() => setIsModalViewOpen(false)}
       />
+      <Modal
+        open={isModalFormOpen}
+        footer={null}
+        title="Подача заявки на размещение лота"
+        centered
+        onCancel={handleCancel}
+      >
+        <LotListingForm onFinish={handleCancel} />
+      </Modal>
     </BasePageLayout>
   );
 }
