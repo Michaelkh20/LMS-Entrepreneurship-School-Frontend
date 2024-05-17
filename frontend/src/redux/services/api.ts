@@ -871,7 +871,6 @@ export const api = createApi({
           lotNumber: queryArg.lotNumber,
           lotTitle: queryArg.lotTitle,
           performerId: queryArg.performerId,
-          performerName: queryArg.performerName,
           priceFrom: queryArg.priceFrom,
           priceTo: queryArg.priceTo,
           sort: queryArg.sort,
@@ -888,7 +887,6 @@ export const api = createApi({
           lotNumber: queryArg.lotNumber,
           lotTitle: queryArg.lotTitle,
           performerId: queryArg.performerId,
-          performerName: queryArg.performerName,
           lotStatus: queryArg.lotStatus,
           sort: queryArg.sort,
           page: queryArg.page && queryArg.page - 1,
@@ -952,7 +950,7 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/claims/buy-lot`,
         params: {
-          twoSidedClaimStatus: queryArg.twoSidedClaimStatus,
+          twoSidedClaimStatus: queryArg.status,
           lotNumber: queryArg.lotNumber,
           buyerId: queryArg.buyerId,
           sellerId: queryArg.sellerId,
@@ -981,8 +979,7 @@ export const api = createApi({
       query: (queryArg) => ({
         url: `/claims/list-lot`,
         params: {
-          twoSidedClaimStatus: queryArg.twoSidedClaimStatus,
-          performerId: queryArg.performerId,
+          status: queryArg.status,
           dateFrom: queryArg.dateFrom,
           dateTo: queryArg.dateTo,
           sort: queryArg.sort,

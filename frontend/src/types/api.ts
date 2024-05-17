@@ -257,9 +257,46 @@ export type GetLotsForMarketPlaceApiArg = Partial<{
   lotTitle: string;
   /** Owner id */
   performerId: string;
-  /** Performer name */
-  performerName: string;
   /** The beginning of the desired interval */
+  priceFrom: number;
+  /** The end of the desired interval */
+  priceTo: number;
+  /** Sorting order in format 'sortProperty,sortOrder' */
+  sort: string;
+  /** Page number */
+  page: number;
+  /** The size of the page to be returned */
+  size: number;
+}>;
+
+export type GetBuyedLotsApiArg = Partial<{
+  /** Search lot number */
+  lotNumber: number;
+  /** Search lot title */
+  lotTitle: string;
+  /** Owner id */
+  performerId: string;
+  /** The beginning of the desired interval */
+  priceFrom: number;
+  /** The end of the desired interval */
+  priceTo: number;
+  /** Sorting order in format 'sortProperty,sortOrder' */
+  sort: string;
+  /** Page number */
+  page: number;
+  /** The size of the page to be returned */
+  size: number;
+}>;
+
+export type GetSellingLotsApiArg = Partial<{
+  /** Search lot number */
+  lotNumber: number;
+  /** Search lot title */
+  lotTitle: string;
+  /** Owner id */
+  performerId: string;
+  /** The beginning of the desired interval */
+  status: LotStatus;
   priceFrom: number;
   /** The end of the desired interval */
   priceTo: number;
@@ -278,12 +315,12 @@ export type GetLotsApiArg = Partial<{
   lotTitle: string;
   /** Owner id */
   performerId: string;
-  /** Performer name */
-  performerName: string;
   /** Search lot status */
   lotStatus: LotStatus;
   /** Sorting order in format 'sortProperty,sortOrder' */
   sort: string;
+  dateFrom: string;
+  dateTo: string;
   /** Page number */
   page: number;
   /** The size of the page to be returned */
@@ -316,7 +353,7 @@ export type GetTransactionsApiArg = Partial<{
 
 export type GetBuyLotClaimsApiArg = Partial<{
   /** Search two-sided claim status */
-  twoSidedClaimStatus: TwoSidedClaimStatus;
+  status: ClaimStatus;
   /** Search lot number */
   lotNumber: number;
   /** Buyer id */
@@ -337,9 +374,11 @@ export type GetBuyLotClaimsApiArg = Partial<{
 
 export type GetListLotClaimsApiArg = Partial<{
   /** Search two-sided claim status */
-  twoSidedClaimStatus: TwoSidedClaimStatus;
-  /** Owner id */
-  performerId: string;
+  status: ClaimStatus;
+  /** Search lot number */
+  lotNumber: number;
+  /** Search lot title */
+  lotTitle: string;
   /** The beginning of the desired interval */
   dateFrom: string;
   /** The end of the desired interval */
@@ -607,8 +646,8 @@ export type LotSnippetForTable = {
 };
 
 export type LotsPage = {
-  pagination: Page;
-  lots: LotSnippetForTable[];
+  page: Page;
+  lots: Lot[];
 };
 
 export type LotCreateUpdateRequest = {
@@ -632,7 +671,7 @@ export type Lot = {
   terms: string;
   price: number;
   performer: PerformerSnippet;
-  listingDate: string | null;
+  listingDate: Date | null;
 };
 
 export type Transaction = {
@@ -671,8 +710,8 @@ export type BuyLotClaimSnippet = {
 };
 
 export type BuyLotClaimsPage = {
-  pagination: Page;
-  claims: BuyLotClaimSnippet[];
+  page: Page;
+  claims: BuyLotClaim[];
 };
 
 export type BuyLotRequest = {
@@ -690,9 +729,9 @@ export type LotSnippetForClaim = {
 
 export type BuyLotClaim = {
   id: string;
-  status: TwoSidedClaimStatus;
+  status: ClaimStatus;
   buyer: UserSnippet;
-  date: string;
+  date: Date;
   lot: Lot;
 };
 
@@ -704,8 +743,8 @@ export type ListLotClaimSnippet = {
 };
 
 export type ListLotClaimsPage = {
-  pagination: Page;
-  claims: ListLotClaimSnippet[];
+  page: Page;
+  claims: ListLotClaim[];
 };
 
 export type ListLotRequest = {
@@ -715,11 +754,26 @@ export type ListLotRequest = {
   price: number;
 };
 
+export type ListLotCreateRequestAdmin = {
+  title: string;
+  description: string;
+  terms: string;
+  price: number;
+  performer: UserSnippet;
+};
+
+export type ListLotUpdateRequestAdmin = Omit<
+  ListLotCreateRequestAdmin,
+  'performer'
+> & {
+  id: string;
+};
+
 export type ListLotClaim = {
   id: string;
-  status: TwoSidedClaimStatus;
-  date: string;
-  lot: LotSnippetForClaim;
+  status: ClaimStatus;
+  date: Date;
+  lot: Lot;
 };
 
 export type HwSnippetWithDeadline = {
@@ -744,18 +798,20 @@ export type FailedDeadlineClaimsPage = {
 
 export type TransferClaim = {
   id: string;
+  status: ClaimStatus;
   sender: UserSnippet;
   receiver: UserSnippet;
   sum: number;
+  date: Date;
 };
 
 export type TransferClaimsPage = {
-  pagination: Page;
+  page: Page;
   claims: TransferClaim[];
 };
 
 export type TransferRequest = {
-  receiverstring: string;
+  receiver: UserSnippet;
   sum: number;
 };
 
