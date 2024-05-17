@@ -152,7 +152,7 @@ export function ClaimBuyingLotTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.totalElements}
+        totalNumber={data?.page.totalElements}
         filterFormItems={
           <>
             <LotNumberFormItem />
@@ -169,7 +169,7 @@ export function ClaimBuyingLotTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimBuyingLotColumns,
-          pagination: { total: data?.pagination.totalElements },
+          pagination: { total: data?.page.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: (record) => {

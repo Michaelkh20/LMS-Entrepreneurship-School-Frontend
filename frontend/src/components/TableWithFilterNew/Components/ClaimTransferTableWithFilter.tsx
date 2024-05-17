@@ -217,7 +217,7 @@ export function ClaimTransferTableWithFilter({
   return (
     <>
       <BasicTableWithFilter
-        totalNumber={data?.pagination.totalElements}
+        totalNumber={data?.page.totalElements}
         filterFormItems={
           <>
             <LearnerSelectionFormItem
@@ -238,7 +238,7 @@ export function ClaimTransferTableWithFilter({
         tableProps={{
           scroll: { x: true },
           columns: ClaimTransferColumns,
-          pagination: { total: data?.pagination?.totalElements },
+          pagination: { total: data?.page?.totalElements },
           dataSource: dataForTable,
           rowKey: 'id',
           onRow: onRow,

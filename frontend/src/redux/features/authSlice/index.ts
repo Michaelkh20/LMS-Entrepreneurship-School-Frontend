@@ -8,9 +8,10 @@ import { AuthStatus } from '@/types/redux';
 import { ISuccessAuthResponse } from '@/types/proto';
 import { useCallback } from 'react';
 import {
-  deserializeAuthStateFromLocalStorage,
-  serializeAuthStateToLocalStorage,
-} from './helpers';
+  deserializeStateFromLocalStorage,
+  serializeStateToLocalStorage,
+} from '../helpers';
+import { AUTH_STATE_LOCAL_STORAGE_KEY } from './constants';
 
 export type AuthState =
   | {
@@ -42,7 +43,9 @@ const defaultInitialState: AuthState = {
   role: undefined,
 };
 
-const deserializedInitialState = deserializeAuthStateFromLocalStorage();
+const deserializedInitialState = deserializeStateFromLocalStorage<AuthState>(
+  AUTH_STATE_LOCAL_STORAGE_KEY
+);
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -61,7 +64,7 @@ export const authSlice = createSlice({
 
       console.log('AuthState', newState);
 
-      serializeAuthStateToLocalStorage(newState);
+      serializeStateToLocalStorage(newState, AUTH_STATE_LOCAL_STORAGE_KEY);
 
       return newState;
     },
@@ -76,7 +79,7 @@ export const authSlice = createSlice({
         role: undefined,
       };
 
-      serializeAuthStateToLocalStorage(newState);
+      serializeStateToLocalStorage(newState, AUTH_STATE_LOCAL_STORAGE_KEY);
 
       return newState;
     },
