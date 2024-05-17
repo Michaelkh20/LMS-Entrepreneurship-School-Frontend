@@ -125,11 +125,14 @@ export function ClaimTransferTableWithFilter({
   const { data, isLoading, isError, isFetching } =
     useGetTransferClaimsQuery(dataForReq);
 
+  // const data = mockData;
+
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimTransferColumnsDataType>((claim) => {
       const res: ClaimTransferColumnsDataType = {
         id: claim.id,
-        claimStatus: ClaimStatus.Waiting,
+        claimStatus:
+          claim.id === '11' ? ClaimStatus.Approved : ClaimStatus.Waiting,
         sender: claim.sender,
         receiver: claim.receiver,
         sum: claim.sum,

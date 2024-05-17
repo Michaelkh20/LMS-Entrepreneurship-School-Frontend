@@ -63,13 +63,22 @@ const AccountsColumns: ColumnsType<AccountColumnsDataType> = [
     key: 'name',
     sorter: true,
   },
-  { title: 'Email', dataIndex: 'email', key: 'email' },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    render(value, record, index) {
+      return record.email;
+    },
+  },
   {
     title: 'Команда',
     dataIndex: 'team',
     key: 'team',
     render(value, record, index) {
-      return record.teams.map((team) => `№${team.number} `) || '-';
+      return record.teams.length > 0
+        ? record.teams.map((team) => `№${team.number} `)
+        : 'Не в команде';
     },
   },
   {
@@ -117,10 +126,6 @@ export function AccountsTableWithFilter({
       };
     });
   }, [data]);
-
-  // useEffect(() => {
-  //   console.log('FormData1:', dataForReq);
-  // }, [dataForReq]);
 
   return (
     <>

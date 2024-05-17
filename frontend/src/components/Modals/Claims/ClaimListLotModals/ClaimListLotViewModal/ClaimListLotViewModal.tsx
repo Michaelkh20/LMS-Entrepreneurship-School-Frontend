@@ -22,6 +22,7 @@ import { ModalProperty } from '@/components/Modals/Components/ModalProperty';
 import { ModalButtonsGroup } from '@/components/Modals/Components/ModalButtonsGroup';
 import { ModalContainer } from '@/components/Modals/Components/ModalContainer';
 import { ModalSectionTitle } from '@/components/Modals/Components/ModalSectionTitle';
+import { ListLotClaim } from '@/types/api';
 
 type Props = {
   claimId?: string | null;
@@ -35,6 +36,26 @@ type Props = {
 
 const cx = cn.bind(styles);
 
+const mockData: ListLotClaim = {
+  id: 'lot2',
+  status: TwoSidedClaimStatus.Approved,
+  date: '15.05.2024',
+  lot: {
+    id: '23',
+    title: 'Курс по основам программирования',
+    description:
+      'Обучение основам программирования на языке Python для начинающих',
+    terms: 'Длительность курса 4 недели, занятия по вечерам 2 раза в неделю',
+    price: 500,
+    performer: {
+      id: 'id2',
+      name: 'Никита',
+      surname: 'Жуйков',
+      patronymic: undefined,
+    },
+  },
+};
+
 export function ClaimListLotViewModal({
   claimId,
   isOpen,
@@ -44,10 +65,10 @@ export function ClaimListLotViewModal({
   isOkLoading,
   isDeclineLoading,
 }: Props) {
-  const { data } = useGetListLotClaimByIdQuery(
-    claimId && isOpen ? claimId : skipToken
-  );
-
+  // const { data } = useGetListLotClaimByIdQuery(
+  //   claimId && isOpen ? claimId : skipToken
+  // );
+  const data = mockData;
   const [, , { isAdmin }] = useAuth();
 
   return (
@@ -93,7 +114,7 @@ export function ClaimListLotViewModal({
               href={`/admin/accounts/${data?.lot.performer.id}`}
               className={cx('PropertyValue', 'Link')}
             >
-              {data?.lot.performer.name || ''}
+              {`${data?.lot.performer.surname} ${data?.lot.performer.name}` || ''}
             </Link>
           }
         />

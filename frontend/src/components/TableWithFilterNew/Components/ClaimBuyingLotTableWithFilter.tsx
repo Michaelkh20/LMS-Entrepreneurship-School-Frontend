@@ -17,7 +17,7 @@ import { ColumnsType } from 'antd/es/table';
 import { useGetBuyLotClaimsQuery } from '@/redux/services/api';
 import type { BuyLotClaimSnippet } from '@/types/api';
 
-import dateToFormatString from '@/util/dateToFormatString';
+// type ClaimBuyingLotColumnsDataType = BuyLotClaimSnippet;
 
 type ClaimBuyingLotColumnsDataType = {
   id: number | string;
@@ -36,7 +36,7 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     key: 'lot',
     sorter: true,
     render: (value, record, index) => {
-      return `${record.number}`;
+      return `№${record.lot.number}`;
     },
   },
   {
@@ -117,6 +117,37 @@ const mockData: ClaimBuyingLotColumnsDataType[] = [
     status: ClaimStatus.Waiting,
   },
 ];
+
+// const mockData: BuyLotClaimsPage = {
+//   pagination: {
+//     totalPages: 1,
+//     totalElements: 3,
+//   },
+//   claims: [
+//     {
+//       id: '',
+//       status: TwoSidedClaimStatus.WaitingAdmin,
+//       buyer: {
+//         id: '1',
+//         name: 'Михаил',
+//         surname: 'Хооллгм',
+//         patronymic: '',
+//       },
+//       date: '15.05.2024',
+//       lot: {
+//         number: 23,
+//         title: '23',
+//         price: 500,
+//         performer: {
+//           id: '2',
+//           name: 'Никита',
+//           surname: 'Жуйков',
+//           patronymic: 'null',
+//         },
+//       },
+//     },
+//   ],
+// };
 
 export function ClaimBuyingLotTableWithFilter({
   onRowClick,

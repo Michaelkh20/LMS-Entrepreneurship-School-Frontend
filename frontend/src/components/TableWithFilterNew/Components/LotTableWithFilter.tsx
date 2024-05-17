@@ -5,7 +5,7 @@ import {
   DatePickerFormItem,
 } from '@/components/Forms/FormItems/Filters';
 
-import type { GetLotsApiArg, LotSnippetForTable } from '@/types/api';
+import type { GetLotsApiArg, LotSnippetForTable, LotsPage } from '@/types/api';
 import { useGetLotsQuery } from '@/redux/services/api';
 
 import { useState, useMemo } from 'react';
@@ -24,7 +24,7 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
     key: 'lotNumber',
     sorter: true,
     render: (_value, record, _index) => {
-      return `${record.number}`;
+      return `№${record.number}`;
     },
   },
   {
@@ -88,26 +88,27 @@ const LotColumns: ColumnsType<LotColumnsDataType> = [
   },
 ];
 
-// const mockData: LotsPage = {
-//   pagination: {
-//     totalPages: 0,
-//     totalElements: 0,
-//   },
-//   lots: [
-//     {
-//       id: '',
-//       number: null,
-//       title: '',
-//       status: LotStatus.Approval,
-//       listingDate: null,
-//       price: 0,
-//       performer: {
-//         id: null,
-//         name: '',
-//       },
-//     },
-//   ],
-// };
+const mockData: LotsPage = {
+  pagination: {
+    totalPages: 1,
+    totalElements: 1,
+  },
+  lots: [
+    {
+      id: '1',
+      number: 23,
+      title: 'Курс по основам программирования',
+      status: LotStatus.OnSale,
+      listingDate: '15.05.2024',
+      price: 500,
+      performer: {
+        id: 'id1',
+        name: 'Жуйков Никита',
+      },
+    },
+  ],
+};
+
 
 export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   const [formData, setFormData] = useState<GetLotsApiArg>({
@@ -118,6 +119,7 @@ export function LotTableWithFilter({ onRow }: { onRow?: TableProps['onRow'] }) {
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
   const { data, isLoading, isError, isFetching } = useGetLotsQuery(dataForReq);
 
+  // const data = mockData
   const dataForTable = useMemo(() => {
     return data?.lots.map<LotColumnsDataType>((lot) => {
       const res: LotColumnsDataType = {

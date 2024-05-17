@@ -202,8 +202,8 @@ export default function TeamForm({
           label={'Тема проекта'}
           rules={[
             {
-              max: 200,
-              message: 'Тема должна иметь длину не более 200 символов',
+              max: 128,
+              message: 'Тема должна иметь длину не более 128 символов',
             },
           ]}
           initialValue={data?.team?.projectTheme}
@@ -215,8 +215,8 @@ export default function TeamForm({
           label={'Описание'}
           rules={[
             {
-              max: 1_000,
-              message: 'Описание должно иметь длину не более 1000 символов',
+              max: 256,
+              message: 'Описание должно иметь длину не более 256 символов',
             },
           ]}
           initialValue={data?.team?.description}
