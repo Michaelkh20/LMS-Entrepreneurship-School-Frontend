@@ -9,12 +9,16 @@ import { useApproveRejectClaimMutation } from '@/redux/services/api';
 import { message } from 'antd';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
 import { ClaimAction } from '@/types/common';
+import { useApproveBuyLotClaim, useRejectBuyLotClaim, useRejectListLotClaim } from '@/redux/features/marketSlice';
 
 export default function LotsPurchaseSalePage() {
-  const [isModalOpen, setIsModalOpen] = React.useState(true);
-  const [claimId, setClaimId] = React.useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [claimId, setClaimId] = React.useState<string>('');
 
   const [trigger, result] = useApproveRejectClaimMutation();
+
+  const triggerApprove = useApproveBuyLotClaim()
+  const triggerReject = useRejectBuyLotClaim()
 
   const handleRowClick = (id: string) => {
     console.log(id);
@@ -24,22 +28,24 @@ export default function LotsPurchaseSalePage() {
 
   const handleDecline = () => {
     if (!claimId) return;
-    trigger({
-      id: claimId,
-      action: ClaimAction.Reject,
-      fine: null,
-      newPrice: null,
-    });
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Reject,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerReject(claimId)
   };
 
   const handleApprove = () => {
     if (!claimId) return;
-    trigger({
-      id: claimId,
-      action: ClaimAction.Approve,
-      fine: null,
-      newPrice: null,
-    });
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Approve,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerApprove(claimId)
   };
 
   const handleExit = () => {

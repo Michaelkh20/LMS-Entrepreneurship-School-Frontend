@@ -10,10 +10,17 @@ import LotEditModal from '@/components/Modals/LotEditModal';
 import LotCreateModal from '@/components/Modals/LotCreateModal';
 
 export default function LotsPage() {
-  const [isViewLotModalOpen, setViewLotModalOpen] = useState<boolean>(true);
+  const [lotId, setLotId] = React.useState<string>('');
+  const [isViewLotModalOpen, setViewLotModalOpen] = useState<boolean>(false);
   const [isCreateLotModalOpen, setIsCreateLotModalOpen] =
     useState<boolean>(false);
-  const [isEditLotModalOpen, setIsEditLotModalOpen] = useState<boolean>(true);
+  const [isEditLotModalOpen, setIsEditLotModalOpen] = useState<boolean>(false);
+
+
+  const handleOnRowClick = (id: string) => {
+    setLotId(id);
+    setViewLotModalOpen(true);
+  };
 
   const handleCancel = () => {
     setViewLotModalOpen(false);
@@ -52,15 +59,20 @@ export default function LotsPage() {
         </>
       }
     >
-      <LotTableWithFilter />
+      <LotTableWithFilter onRow={(record) => {
+          return {
+            onClick: () => handleOnRowClick(record.id),
+          };
+        }}/>
       <LotViewModal
+        lotId={lotId}
         isOpen={isViewLotModalOpen}
         onCancel={handleCancel}
         onOk={() => {}}
         handleOnEdit={handleEditLot}
       />
       <LotEditModal
-        lotId={''}
+        lotId={lotId}
         isOpen={isEditLotModalOpen}
         onCancel={handleCloseEditLotModal}
       />

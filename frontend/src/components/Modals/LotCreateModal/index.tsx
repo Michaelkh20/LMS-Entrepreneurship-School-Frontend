@@ -5,12 +5,13 @@ import React, { MouseEventHandler, useEffect } from 'react';
 
 import styles from './LotCreateModal.module.css';
 
-import { LotCreateUpdateRequest } from '@/types/api';
+import { ListLotCreateRequestAdmin, LotCreateUpdateRequest } from '@/types/api';
 import { UserSelection } from '@/components/Selections/UserSelection';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useCreateLotMutation } from '@/redux/services/api';
 import { useForm } from 'antd/es/form/Form';
+import { useCreateLotAdmin } from '@/redux/features/marketSlice';
 
 type Props = {
   isOpen: boolean;
@@ -30,39 +31,55 @@ const cx = cn.bind(styles);
 
 export default function LotCreateModal({ isOpen, onCancel, onOk }: Props) {
   const [form] = useForm<FormLotCreateUpdateFields>();
-  const [createTrigger, result] = useCreateLotMutation();
+  // const [createTrigger, result] = useCreateLotMutation();
+
+  const trigger = useCreateLotAdmin();
 
   const handleSubmit = () => {
     const { title, description, performerId, price, terms } =
       form.getFieldsValue();
 
-    const req: LotCreateUpdateRequest = {
+    // const req: LotCreateUpdateRequest = {
+    //   description: description,
+    //   performer: { id: performerId, name: null },
+    //   price: price,
+    //   terms: terms,
+    //   title: title,
+    // };
+
+    // createTrigger(req);
+    const req: ListLotCreateRequestAdmin = {
       description: description,
-      performer: { id: performerId, name: null },
+      performer: {
+        id: performerId,
+        name: 'Администратор',
+        surname: '',
+        patronymic: undefined,
+      },
       price: price,
       terms: terms,
       title: title,
     };
-
-    createTrigger(req);
+    trigger(req);
+    onCancel && onCancel()
   };
 
-  useEffect(() => {
-    if (result.isError) {
-      message.error('Что-то пошло не так', 5);
-    }
+  // useEffect(() => {
+  //   if (result.isError) {
+  //     message.error('Что-то пошло не так', 5);
+  //   }
 
-    if (result.isLoading) {
-      message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
-    } else {
-      message.destroy('Loading');
-    }
+  //   if (result.isLoading) {
+  //     message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
+  //   } else {
+  //     message.destroy('Loading');
+  //   }
 
-    if (result.isSuccess) {
-      message.success('Лот успешно создан');
-      // onCancel && onCancel();
-    }
-  }, [onCancel, result]);
+  //   if (result.isSuccess) {
+  //     message.success('Лот успешно создан');
+  //     // onCancel && onCancel();
+  //   }
+  // }, [onCancel, result]);
 
   return (
     <Modal
@@ -147,7 +164,7 @@ export default function LotCreateModal({ isOpen, onCancel, onOk }: Props) {
           type="primary"
           onClick={handleSubmit}
           icon={<PlusOutlined />}
-          loading={result.isLoading}
+          // loading={result.isLoading}
         >
           Создать
         </Button>

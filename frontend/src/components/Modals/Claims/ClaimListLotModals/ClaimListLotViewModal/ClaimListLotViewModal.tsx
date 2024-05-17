@@ -16,16 +16,21 @@ import {
 } from '@/redux/services/api';
 import { useAuth } from '@/redux/features/authSlice';
 
-import { TwoSidedClaimStatus } from '@/types/common';
-import { twoSidedClaimStatusToString } from '@/util/enumsToString';
+import { ClaimStatus, LotStatus, TwoSidedClaimStatus } from '@/types/common';
+import {
+  claimStatusToString,
+  twoSidedClaimStatusToString,
+} from '@/util/enumsToString';
 import { ModalProperty } from '@/components/Modals/Components/ModalProperty';
 import { ModalButtonsGroup } from '@/components/Modals/Components/ModalButtonsGroup';
 import { ModalContainer } from '@/components/Modals/Components/ModalContainer';
 import { ModalSectionTitle } from '@/components/Modals/Components/ModalSectionTitle';
 import { ListLotClaim } from '@/types/api';
+import { useGetListLotClaimById } from '@/redux/features/marketSlice';
+import { dateToLocalString } from '@/util/dateToLocalString';
 
 type Props = {
-  claimId?: string | null;
+  claimId: string;
   isOpen: boolean;
   onExit?: MouseEventHandler;
   onCancel?: MouseEventHandler;
@@ -38,8 +43,8 @@ const cx = cn.bind(styles);
 
 const mockData: ListLotClaim = {
   id: 'lot2',
-  status: TwoSidedClaimStatus.Approved,
-  date: '15.05.2024',
+  status: ClaimStatus.Approved,
+  date: new Date(),
   lot: {
     id: '23',
     title: 'Курс по основам программирования',
@@ -50,9 +55,10 @@ const mockData: ListLotClaim = {
     performer: {
       id: 'id2',
       name: 'Никита',
-      surname: 'Жуйков',
-      patronymic: undefined,
     },
+    number: null,
+    status: LotStatus.Approval,
+    listingDate: null,
   },
 };
 
@@ -68,7 +74,8 @@ export function ClaimListLotViewModal({
   // const { data } = useGetListLotClaimByIdQuery(
   //   claimId && isOpen ? claimId : skipToken
   // );
-  const data = mockData;
+  // const data = mockData;
+  const data = useGetListLotClaimById(claimId);
   const [, , { isAdmin }] = useAuth();
 
   return (
@@ -85,22 +92,18 @@ export function ClaimListLotViewModal({
           value={
             <p
               className={cx('PropertyValue', {
-                StatusApproval:
-                  data?.status === TwoSidedClaimStatus.WaitingAdmin ||
-                  data?.status === TwoSidedClaimStatus.WaitingLearner,
-                StatusActive: data?.status === TwoSidedClaimStatus.Approved,
-                StatusInactive:
-                  data?.status === TwoSidedClaimStatus.DeclinedAdmin ||
-                  data?.status === TwoSidedClaimStatus.DeclinedLearner,
+                StatusApproval: data?.status === ClaimStatus.Waiting,
+                StatusActive: data?.status === ClaimStatus.Approved,
+                StatusInactive: data?.status === ClaimStatus.Declined,
               })}
             >
-              {twoSidedClaimStatusToString(data?.status)}
+              {claimStatusToString(data?.status)}
             </p>
           }
         />
         <ModalProperty
           title="Дата"
-          value={dateToFormatString(data?.date) || '-'}
+          value={dateToLocalString(data?.date!) || '-'}
         />
 
         <ModalSectionTitle>Информация о лоте</ModalSectionTitle>
@@ -114,19 +117,20 @@ export function ClaimListLotViewModal({
               href={`/admin/accounts/${data?.lot.performer.id}`}
               className={cx('PropertyValue', 'Link')}
             >
-              {`${data?.lot.performer.surname} ${data?.lot.performer.name}` || ''}
+              {/* {`${data?.lot.performer.surname} ${data?.lot.performer.name}` || */}
+              {`${data?.lot.performer.name}` || ''}
             </Link>
           }
         />
 
         <ModalProperty
           title="Дата"
-          value={dateToFormatString(data?.date || undefined) || '-'}
+          value={dateToLocalString(data?.date!) || '-'}
         />
         <ModalProperty title="Стоимость" value={data?.lot?.price + '' || ''} />
       </ModalContainer>
 
-      {isAdmin && data?.status === TwoSidedClaimStatus.WaitingAdmin && (
+      {isAdmin && data?.status === ClaimStatus.Waiting && (
         <ModalButtonsGroup>
           <Button
             size="large"

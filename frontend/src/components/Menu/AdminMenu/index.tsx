@@ -43,14 +43,14 @@ const menuItems: MenuProps['items'] = [
               <Link href="/admin/claims/lots-listing">Размещение лотов</Link>
             ),
           },
-          {
-            key: 'claims:overdue-deadlines',
-            label: (
-              <Link href="/admin/claims/overdue-deadlines">
-                Просроченные дедлайны
-              </Link>
-            ),
-          },
+          // {
+          //   key: 'claims:overdue-deadlines',
+          //   label: (
+          //     <Link href="/admin/claims/overdue-deadlines">
+          //       Просроченные дедлайны
+          //     </Link>
+          //   ),
+          // },
           {
             key: 'claims:transfers',
             label: <Link href="/admin/claims/transfers">Переводы ШПрот</Link>,

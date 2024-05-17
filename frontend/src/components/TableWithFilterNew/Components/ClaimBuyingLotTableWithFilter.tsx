@@ -7,7 +7,7 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 
-import type { BuyLotClaimsPage, GetBuyLotClaimsApiArg } from '@/types/api';
+import type { BuyLotClaimsPage, GetBuyLotClaimsApiArg, Lot } from '@/types/api';
 
 import { useState, useEffect, useMemo } from 'react';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
@@ -16,17 +16,20 @@ import { ClaimStatus, TwoSidedClaimStatus } from '@/types/common';
 import { ColumnsType } from 'antd/es/table';
 import { useGetBuyLotClaimsQuery } from '@/redux/services/api';
 import type { BuyLotClaimSnippet } from '@/types/api';
+import { useBuyLotClaims } from '@/redux/features/marketSlice';
 
 // type ClaimBuyingLotColumnsDataType = BuyLotClaimSnippet;
 
 type ClaimBuyingLotColumnsDataType = {
   id: number | string;
-  number: string;
+  number: number | null;
   status: ClaimStatus; //TODO: LotStaus
   date: Date;
   title: string;
   performer: string;
   price: number;
+  lot: Lot;
+  buyer: string;
 };
 
 const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
@@ -45,7 +48,22 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
     key: 'title',
     width: '500px',
   },
-  { title: 'Продавец', dataIndex: 'performer', key: 'performer' },
+  {
+    title: 'Покупатель',
+    dataIndex: 'buyer',
+    key: 'buyer',
+    render: (value, record, index) => {
+      return `${record.buyer}`;
+    },
+  },
+  {
+    title: 'Продавец',
+    dataIndex: 'performer',
+    key: 'performer',
+    render: (value, record, index) => {
+      return `${record.lot.performer.name}`;
+    },
+  },
   {
     title: 'Дата подачи',
     dataIndex: 'date',
@@ -88,35 +106,35 @@ const ClaimBuyingLotColumns: ColumnsType<ClaimBuyingLotColumnsDataType> = [
   },
 ];
 
-const mockData: ClaimBuyingLotColumnsDataType[] = [
-  {
-    id: 7,
-    number: '7',
-    title: 'SEO-оптимизация веб-сайта',
-    price: 1200,
-    performer: 'Жуйков Никита',
-    date: new Date(2024, 3, 17),
-    status: ClaimStatus.Approved,
-  },
-  {
-    id: 8,
-    number: '8',
-    title: 'Обучение игре на гитаре',
-    price: 400,
-    performer: 'Кирносов Илья',
-    date: new Date(2024, 2, 13),
-    status: ClaimStatus.Declined,
-  },
-  {
-    id: 9,
-    number: '9',
-    title: 'Разработка мобильного приложения',
-    price: 5000,
-    performer: 'Дубин Василий',
-    date: new Date(2024, 3, 18),
-    status: ClaimStatus.Waiting,
-  },
-];
+// const mockData: ClaimBuyingLotColumnsDataType[] = [
+//   {
+//     id: 7,
+//     number: '7',
+//     title: 'SEO-оптимизация веб-сайта',
+//     price: 1200,
+//     performer: 'Жуйков Никита',
+//     date: new Date(2024, 3, 17),
+//     status: ClaimStatus.Approved,
+//   },
+//   {
+//     id: 8,
+//     number: '8',
+//     title: 'Обучение игре на гитаре',
+//     price: 400,
+//     performer: 'Кирносов Илья',
+//     date: new Date(2024, 2, 13),
+//     status: ClaimStatus.Declined,
+//   },
+//   {
+//     id: 9,
+//     number: '9',
+//     title: 'Разработка мобильного приложения',
+//     price: 5000,
+//     performer: 'Дубин Василий',
+//     date: new Date(2024, 3, 18),
+//     status: ClaimStatus.Waiting,
+//   },
+// ];
 
 // const mockData: BuyLotClaimsPage = {
 //   pagination: {
@@ -161,18 +179,24 @@ export function ClaimBuyingLotTableWithFilter({
 
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
-  const { data, isLoading, isError, isFetching } =
-    useGetBuyLotClaimsQuery(dataForReq);
+  // const { data, isLoading, isError, isFetching } =
+  //   useGetBuyLotClaimsQuery(dataForReq);
   // const data = mockData;
+
+  const data = useBuyLotClaims(dataForReq);
 
   const dataForTable = useMemo(() => {
     return data?.claims.map<ClaimBuyingLotColumnsDataType>((claim) => {
       const res: ClaimBuyingLotColumnsDataType = {
         id: claim.id,
         status: claim.status,
-        buyer: claim.buyer,
+        buyer: `${claim.buyer.surname} ${claim.buyer.name}`,
         date: claim.date,
         lot: claim.lot,
+        number: claim.lot.number,
+        title: claim.lot.title,
+        performer: `${claim.lot.performer.name}`,
+        price: claim.lot.price,
       };
       return res;
     });

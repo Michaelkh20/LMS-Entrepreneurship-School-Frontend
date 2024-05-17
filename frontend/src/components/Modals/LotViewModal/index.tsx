@@ -13,9 +13,11 @@ import { useGetLotById } from '@/redux/features/marketSlice';
 import { LotCardViewType } from '@/components/LotCard/mock';
 import { Lot } from '@/types/api';
 import { useAuth } from '@/redux/features/authSlice';
+import { useGetLotById } from '@/redux/features/marketSlice';
+import { dateToLocalString } from '@/util/dateToLocalString';
 
 type Props = {
-  lotId: string | null;
+  lotId: string;
   isOpen: boolean;
   onCancel: MouseEventHandler;
   onOk: MouseEventHandler;
@@ -47,15 +49,13 @@ export default function LotViewModal({
   isOpen,
   onCancel,
   onOk, // isClaimLoading,
-  handleOnEdit
-} // lot: data,
-: Props) {
+  handleOnEdit, // lot: data,
+}: Props) {
   const [, , { isAdmin, isLearner, isTracker }] = useAuth();
   // const { data = mockDataLot, isLoading } = useGetLotByIdQuery(
   //   lotId && isOpen ? lotId : skipToken
   // );
-
-  const data = useGetLotById(lotId)
+  const data = useGetLotById(lotId);
 
   // const handleDelete = () => {};
 
@@ -98,16 +98,14 @@ export default function LotViewModal({
         <Property title="Исполнитель" value={data?.performer.name || ''} />
         <Property
           title="Дата размещения"
+          // value={data?.listingDate?.toLocaleDateString('ru-RU', {
+          //   year: 'numeric',
+          //   month: '2-digit',
+          //   day: 'numeric',
+          // })}
           value={
-            data?.listingDate
-              ? data.listingDate.toLocaleDateString('ru-RU', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: 'numeric',
-                })
-              : '-'
+            data?.listingDate ? dateToLocalString(data?.listingDate!) : '-'
           }
-
         />
       </div>
       {isAdmin ? (

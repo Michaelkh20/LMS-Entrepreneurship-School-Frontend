@@ -4,14 +4,40 @@ import { ClaimPlacingLotTableWithFilter } from '@/components/TableWithFilterNew'
 import React, { useState } from 'react';
 import { ClaimListLotViewModal } from '@/components/Modals';
 import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayout';
+import { useApproveListLotClaim, useRejectListLotClaim } from '@/redux/features/marketSlice';
 
 export default function LotsListingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [claimId, setClaimId] = React.useState<string | null>(null);
+  const [claimId, setClaimId] = React.useState<string>('');
+
+  const triggerApprove = useApproveListLotClaim()
+  const triggerReject = useRejectListLotClaim()
 
   const handleOnRowClick = (id: string) => {
     setClaimId(id);
     setIsModalOpen(true);
+  };
+
+  const handleDecline = () => {
+    if (!claimId) return;
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Reject,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerReject(claimId)
+  };
+
+  const handleApprove = () => {
+    if (!claimId) return;
+    // trigger({
+    //   id: claimId,
+    //   action: ClaimAction.Approve,
+    //   fine: null,
+    //   newPrice: null,
+    // });
+    triggerApprove(claimId)
   };
 
   return (
@@ -26,7 +52,8 @@ export default function LotsListingPage() {
       <ClaimListLotViewModal
         claimId={claimId}
         isOpen={isModalOpen}
-        onCancel={() => {}}
+        onCancel={handleDecline}
+        onOk={handleApprove}
         onExit={() => setIsModalOpen(false)}
       />
     </BasePageLayout>

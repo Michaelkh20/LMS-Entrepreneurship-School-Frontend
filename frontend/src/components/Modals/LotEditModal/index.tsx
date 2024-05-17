@@ -6,7 +6,11 @@ import React, { MouseEventHandler, useEffect } from 'react';
 import styles from './LotCreateModal.module.css';
 
 import { LotStatus } from '@/types/common';
-import { Lot, LotCreateUpdateRequest } from '@/types/api';
+import {
+  ListLotUpdateRequestAdmin,
+  Lot,
+  LotCreateUpdateRequest,
+} from '@/types/api';
 import { UserSelection } from '@/components/Selections/UserSelection';
 import {
   CheckOutlined,
@@ -22,11 +26,12 @@ import {
   useUpdateLotMutation,
 } from '@/redux/services/api';
 import { useForm } from 'antd/es/form/Form';
+import { useGetLotById, useUpdateLotAdmin } from '@/redux/features/marketSlice';
 
 type Props = {
   lotId: string;
   isOpen: boolean;
-  onCancel?: MouseEventHandler;
+  onCancel?: () => void;
   onOk?: MouseEventHandler;
 };
 
@@ -50,35 +55,52 @@ const mockData: Lot = {
     id: '11',
     name: 'Жуйков Никита',
   },
-  listingDate: '15.05.2024',
+  listingDate: new Date(),
 };
 
 const cx = cn.bind(styles);
 
 export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
-  const { data = mockData } = useGetLotByIdQuery(
-    lotId && isOpen ? lotId : skipToken
-  );
+  // const { data = mockData } = useGetLotByIdQuery(
+  //   lotId && isOpen ? lotId : skipToken
+  // );
+  const data = useGetLotById(lotId);
 
   const [form] = useForm<FormLotUpdateFields>();
   const [deleteTrigger, resultDelete] = useDeleteLotByIdMutation();
-  const [updateTrigger, resultUpdate] = useUpdateLotMutation();
+  // const [updateTrigger, resultUpdate] = useUpdateLotMutation();
+  const updateTrigger = useUpdateLotAdmin();
 
   const handleDelete = () => {
     deleteTrigger(lotId);
   };
 
+  // const handleUpdate = () => {
+  //   const { title, description, price, terms } = form.getFieldsValue();
+  //   if (!data) return;
+
+  //   const req: LotCreateUpdateRequest = {
+  //     description: description,
+  //     performer: { id: data.performer.id, name: null },
+  //     price: price,
+  //     terms: terms,
+  //     title: title,
+  //   };
+  //   updateTrigger({ id: lotId, updateRequestBody: req });
+  // };
   const handleUpdate = () => {
     const { title, description, price, terms } = form.getFieldsValue();
+    if (!data) return;
 
-    const req: LotCreateUpdateRequest = {
+    const req: ListLotUpdateRequestAdmin = {
       description: description,
-      performer: { id: data.performer.id, name: null },
       price: price,
       terms: terms,
       title: title,
+      id: lotId,
     };
-    updateTrigger({ id: lotId, updateRequestBody: req });
+    updateTrigger(req);
+    onCancel && onCancel();
   };
 
   useEffect(() => {
@@ -97,21 +119,21 @@ export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
     }
   }, [resultDelete]);
 
-  useEffect(() => {
-    if (resultUpdate.isError) {
-      message.error('Что-то пошло не так', 5);
-    }
+  // useEffect(() => {
+  //   if (resultUpdate.isError) {
+  //     message.error('Что-то пошло не так', 5);
+  //   }
 
-    if (resultUpdate.isLoading) {
-      message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
-    } else {
-      message.destroy('Loading');
-    }
+  //   if (resultUpdate.isLoading) {
+  //     message.loading({ content: 'Загрузка...', duration: 0, key: 'Loading' });
+  //   } else {
+  //     message.destroy('Loading');
+  //   }
 
-    if (resultUpdate.isSuccess) {
-      message.success('Лот успешно изменён');
-    }
-  }, [resultUpdate]);
+  //   if (resultUpdate.isSuccess) {
+  //     message.success('Лот успешно изменён');
+  //   }
+  // }, [resultUpdate]);
 
   return (
     <Modal
@@ -127,17 +149,17 @@ export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
             label="Название"
             name="title"
             rules={[{ required: true, message: 'Выберите название' }]}
-            initialValue={data.title}
+            initialValue={data?.title || ''}
           >
             <Input placeholder="Название" />
           </Form.Item>
 
           <Form.Item
             label="Стоимость"
-            name="deadlineDate"
+            name="price"
             rules={[{ required: true, message: 'Введите дедлайн' }]}
             hasFeedback
-            initialValue={data.price}
+            initialValue={data?.price}
           >
             <InputNumber placeholder="Стоимость" />
           </Form.Item>
@@ -157,13 +179,13 @@ export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
               },
             ]}
             hasFeedback
-            initialValue={data.description}
+            initialValue={data?.description}
           >
             <Input.TextArea rows={4} maxLength={1000} placeholder="Описание" />
           </Form.Item>
           <Form.Item
             label="Условия"
-            name="gradingCriteria"
+            name="terms"
             rules={[
               { required: true, message: 'Введите критерии оценивания' },
               {
@@ -178,10 +200,10 @@ export default function LotEditModal({ lotId, isOpen, onCancel, onOk }: Props) {
               },
             ]}
             hasFeedback
-            initialValue={data.terms}
+            initialValue={data?.terms}
           >
             <Input.TextArea
-              value={data.terms}
+              value={data?.terms}
               rows={4}
               maxLength={1000}
               placeholder="Условия"
