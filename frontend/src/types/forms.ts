@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { Role, Sex } from '@/types/common';
 import { UploadFile } from 'antd';
+import { UserSnippet } from './proto';
 
 export type UserFormValues = {
   firstName: string;
@@ -57,4 +58,16 @@ export type SubmissionFormValues = {
 export type GradeFormValues = {
   grade: number;
   comment: string | undefined;
+};
+
+export type ListingLotFormValues = {
+  title: string;
+  description: string;
+  terms: string;
+  price: number;
+};
+
+export type TransferFormValues = {
+  receiver: { label: string; value: string };
+  sum: number;
 };

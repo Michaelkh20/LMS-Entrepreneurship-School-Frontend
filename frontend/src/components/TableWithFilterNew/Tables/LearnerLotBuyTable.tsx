@@ -1,5 +1,6 @@
-import { ClaimStatus } from '@/types/common';
-import { Form, InputNumber, Table } from 'antd';
+'use client';
+
+import { Form, InputNumber } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import {
@@ -8,64 +9,58 @@ import {
 } from '@/components/Forms/FormItems/Filters';
 import { LearnerSelectionFormItem } from '@/components/Forms/FormItems/Selection/LearnerSelectionFormItem';
 import { useState } from 'react';
+import { GetBuyedLotsApiArg, LotWithBuyDate } from '@/types/api';
+import { useBuyedLots } from '@/redux/features/marketSlice';
 
-type LearnerLotBuyColumnsType = {
-  id: number;
-  number: string;
-  date: Date;
-  performer: string;
-  price: number;
-  title: string;
-};
+type LearnerLotBuyColumnsType = LotWithBuyDate;
 
 const LearnerLotBuyColumns: ColumnsType<LearnerLotBuyColumnsType> = [
-  { title: 'Лот №', dataIndex: 'number', key: 'number' },
+  {
+    title: 'Лот №',
+    dataIndex: 'number',
+    key: 'number',
+    render: (_, record) => {
+      return record.number;
+    },
+  },
   {
     title: 'Название',
     dataIndex: 'title',
     key: 'title',
     width: '400px',
+    render: (_, record) => {
+      return record.title;
+    },
   },
-  { title: 'Владелец', dataIndex: 'performer', key: 'performer' },
+  {
+    title: 'Владелец',
+    dataIndex: 'performer',
+    key: 'performer',
+    render: (_, record) => {
+      return record.performer.name;
+    },
+  },
   {
     title: 'Дата покупки',
     dataIndex: 'date',
     key: 'date',
-    render: (_, record) => {
-      return record.date.toLocaleDateString('ru-RU', {
-        year: 'numeric',
-        month: '2-digit',
-        day: 'numeric',
-      });
+    render: (_, { buyDate }) => {
+      return buyDate
+        ? buyDate.toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: 'numeric',
+          })
+        : '-';
     },
   },
-  { title: 'Стоимость', dataIndex: 'price', key: 'price' },
-];
-
-const mockData: LearnerLotBuyColumnsType[] = [
   {
-    id: 4,
-    number: '4',
-    title: 'Организация корпоративного мероприятия',
-    price: 2000,
-    performer: 'Кривоус Тарас',
-    date: new Date(2024, 1, 12),
-  },
-  {
-    id: 5,
-    number: '5',
-    title: 'Профессиональная фотосъемка',
-    price: 150,
-    performer: 'Лукашевич Михаил',
-    date: new Date(2024, 3, 11),
-  },
-  {
-    id: 6,
-    number: '6',
-    title: 'Перевод документов с английского на русский',
-    price: 50,
-    performer: 'Волкова Полина',
-    date: new Date(2024, 2, 25),
+    title: 'Стоимость',
+    dataIndex: 'price',
+    key: 'price',
+    render: (_, record) => {
+      return record.price;
+    },
   },
 ];
 
@@ -74,32 +69,34 @@ export const LearnerLotBuyTable = ({
 }: {
   onRow?: TableProps['onRow'];
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<GetBuyedLotsApiArg>({
     page: 1,
     size: 10,
   });
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
+  const data = useBuyedLots(dataForReq);
+
   return (
     <BasicTableWithFilter
-      totalNumber={3}
+      totalNumber={data.page.totalElements}
       filterFormItems={
         <>
           <LotNumberFormItem />
           <LotTitleFormItem />
           <LearnerSelectionFormItem
-            name="learner"
+            name="performerId"
             type="filter"
             placeholder="Исполнитель"
           />
-          <Form.Item name={'lotNumber'}>
+          <Form.Item name="priceFrom">
             <InputNumber
               style={{ minWidth: 130 }}
               min={1}
               placeholder={'Цена от'}
             />
           </Form.Item>
-          <Form.Item name={'lotNumber'}>
+          <Form.Item name="priceTo">
             <InputNumber
               style={{ minWidth: 130 }}
               min={1}
@@ -111,8 +108,8 @@ export const LearnerLotBuyTable = ({
       tableProps={{
         scroll: { x: true },
         columns: LearnerLotBuyColumns,
-        pagination: false,
-        dataSource: mockData,
+        pagination: { total: data.page.totalElements },
+        dataSource: data.lots,
         rowKey: 'id',
         onRow: onRow,
       }}

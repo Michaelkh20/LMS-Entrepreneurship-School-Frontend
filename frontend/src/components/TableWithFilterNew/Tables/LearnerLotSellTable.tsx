@@ -1,5 +1,5 @@
-import { ClaimStatus } from '@/types/common';
-import { Form, InputNumber, Select, Table } from 'antd';
+import { LotStatus } from '../../../types/common';
+import { Form, InputNumber } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import { BasicTableWithFilter } from '../BasicTableWithFilterComponent';
 import {
@@ -7,36 +7,29 @@ import {
   LotTitleFormItem,
 } from '@/components/Forms/FormItems/Filters';
 import { useState } from 'react';
+import { GetSellingLotsApiArg, Lot } from '@/types/api';
+import { LotStatusFormItem } from '@/components/Forms/FormItems/Filters/LotStatusFormItem';
+import { useSellingLots } from '@/redux/features/marketSlice';
 
-type LearnerLotSellColumnsType = {
-  id: number | string;
-  number: string;
-  status: ClaimStatus; //TODO: LotStaus
-  date: Date;
-  title: string;
-  // ownerName: string;
-  price: number;
-};
+type LearnerLotSellColumnsType = Lot;
 
 const LearnerLotSellColumns: ColumnsType<LearnerLotSellColumnsType> = [
-  { title: 'Лот №', dataIndex: 'number', key: 'number', width: '100px' },
-  // { title: 'Владелец', dataIndex: 'ownerName', key: 'ownerName' },
+  {
+    title: 'Лот №',
+    dataIndex: 'number',
+    key: 'number',
+    width: '100px',
+    render: (_, record) => {
+      return record.number;
+    },
+  },
   {
     title: 'Название',
     dataIndex: 'title',
     key: 'title',
     width: '500px',
-  },
-  {
-    title: 'Дата выставления',
-    dataIndex: 'date',
-    key: 'date',
-    render: (_, record: LearnerLotSellColumnsType) => {
-      return record.date.toLocaleDateString('ru-RU', {
-        year: 'numeric',
-        month: '2-digit',
-        day: 'numeric',
-      });
+    render: (_, record) => {
+      return record.title;
     },
   },
   {
@@ -46,47 +39,41 @@ const LearnerLotSellColumns: ColumnsType<LearnerLotSellColumnsType> = [
     render: (_, record: LearnerLotSellColumnsType) => {
       return (
         <>
-          {record.status === ClaimStatus.Waiting && (
+          {record.status === LotStatus.Approval && (
             <p style={{ color: 'var(--color-primary)' }}>Ожидание</p>
           )}
-          {record.status === ClaimStatus.Declined && (
+          {record.status === LotStatus.Withdrawn && (
             <p style={{ color: 'var(--color-error)' }}>Снят с продажи</p>
           )}
-          {record.status === ClaimStatus.Approved && (
+          {record.status === LotStatus.OnSale && (
             <p style={{ color: 'var(--color-success)' }}>В продаже</p>
           )}
         </>
       );
     },
   },
-  { title: 'Стоимость', dataIndex: 'price', key: 'price', width: '200px' },
-];
-
-const mockData: LearnerLotSellColumnsType[] = [
   {
-    id: 1,
-    number: '1',
-    title: 'Организация корпоративного мероприятия',
-    price: 2000,
-    date: new Date(2024, 1, 12),
-    status: ClaimStatus.Declined,
-  },
-
-  {
-    id: 2,
-    number: '2',
-    title: 'Разработка дизайна логотипа',
-    price: 300,
-    date: new Date(2024, 3, 11),
-    status: ClaimStatus.Approved,
+    title: 'Дата выставления',
+    dataIndex: 'date',
+    key: 'date',
+    render: (_, { listingDate }) => {
+      return listingDate
+        ? listingDate.toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: 'numeric',
+          })
+        : '-';
+    },
   },
   {
-    id: 3,
-    number: '3',
-    title: 'Курс по основам программирования',
-    price: 500,
-    date: new Date(2024, 3, 23),
-    status: ClaimStatus.Waiting,
+    title: 'Стоимость',
+    dataIndex: 'price',
+    key: 'price',
+    width: '200px',
+    render: (_, record) => {
+      return record.price;
+    },
   },
 ];
 
@@ -95,34 +82,34 @@ export const LearnerLotSellTable = ({
 }: {
   onRow?: TableProps['onRow'];
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<GetSellingLotsApiArg>({
     page: 1,
     size: 10,
   });
   const [dataForReq, setDataForReq] = useState<typeof formData>(formData);
 
+  const data = useSellingLots(dataForReq);
+
   return (
     <BasicTableWithFilter
-      totalNumber={3}
+      totalNumber={data.page.totalElements}
       filterFormItems={
         <>
           <LotNumberFormItem />
           <LotTitleFormItem />
-          <Form.Item name={'lotNumber'}>
-            <Select style={{ minWidth: 130 }} placeholder="Cтатус" />
-          </Form.Item>
-          <Form.Item name={'lotNumber'}>
+          <LotStatusFormItem />
+          <Form.Item name="priceFrom">
             <InputNumber
               style={{ minWidth: 130 }}
               min={1}
-              placeholder={'Цена от'}
+              placeholder="Цена от"
             />
           </Form.Item>
-          <Form.Item name={'lotNumber'}>
+          <Form.Item name="priceTo">
             <InputNumber
               style={{ minWidth: 130 }}
               min={1}
-              placeholder={'Цена до'}
+              placeholder="Цена до"
             />
           </Form.Item>
         </>
@@ -130,8 +117,8 @@ export const LearnerLotSellTable = ({
       tableProps={{
         scroll: { x: true },
         columns: LearnerLotSellColumns,
-        pagination: false,
-        dataSource: mockData,
+        pagination: { total: data.page.totalElements },
+        dataSource: data.lots,
         rowKey: 'id',
         onRow: onRow,
       }}

@@ -4,61 +4,50 @@ import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { Button, message } from 'antd';
 import cn from 'classnames/bind';
 import styles from './LotCard.module.css';
-import LotViewModal from '../Modals/LotViewModal';
 import PriceQuestionTooltip from './components/QuestionTooltip';
-import { useCreateBuyLotClaimMutation } from '@/redux/services/api';
-import { useAuth } from '@/redux/features/authSlice';
-import { LotCardViewType } from './mock';
+import { Lot } from '@/types/api';
 
 type LotCardProps = {
-  lot: LotCardViewType;
+  lot: Lot;
+  onCreateBuyLotClaimClick: (id: string) => boolean;
+  onCardClick: () => void;
 };
 
 const cx = cn.bind(styles);
 
-export default function LotCard({ lot }: LotCardProps) {
+export default function LotCard({
+  lot,
+  onCreateBuyLotClaimClick,
+  onCardClick,
+}: LotCardProps) {
   const { id, number, title, performer, price } = lot;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [createBuyLotClaim, { isError, isLoading, isSuccess }] =
-    useCreateBuyLotClaimMutation();
-  const [authState] = useAuth();
+  const [isError, setIsError] = useState<boolean | null>(null);
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleLotClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleModalCancel: MouseEventHandler = (e) => {
-    e.stopPropagation();
-    setIsModalOpen(false);
-  };
-
   const handleCreateClaimClick: MouseEventHandler = (e) => {
     e.stopPropagation();
-    createBuyLotClaim({ lotId: id });
+    setIsError(onCreateBuyLotClaimClick(id));
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isError === false) {
       messageApi.success('Заявка успешно подана');
-      setIsModalOpen(false);
     }
 
-    if (isError) {
+    if (isError === true) {
       messageApi.error('Не удалось подать заявку. Недостаточно средств');
-      setIsModalOpen(false);
     }
-  }, [isSuccess, isError]);
+  }, [isError, messageApi]);
 
   return (
-    <div className={cx('LotCard')} onClick={handleLotClick}>
+    <div className={cx('LotCard')} onClick={onCardClick}>
       <div className={cx('LotNumber')}>{`Лот №${number || '-'}`}</div>
       <div className={cx('LotContent')}>
         <p className={cx('LotTitle')}>{title}</p>
         <div className={cx('Property')}>
           <p className={cx('PropertyTitle')}>Исполнитель</p>
-          <p className={cx('PropertyValue')}>{performer}</p>
+          <p className={cx('PropertyValue')}>{performer.name}</p>
         </div>
         <div className={cx('Property')}>
           <p className={cx('PropertyTitle')}>Цена</p>
@@ -69,21 +58,10 @@ export default function LotCard({ lot }: LotCardProps) {
         </div>
       </div>
       <div className={cx('Actions')}>
-        <Button
-          size="large"
-          onClick={handleCreateClaimClick}
-          loading={isLoading}
-        >
+        <Button size="large" onClick={handleCreateClaimClick}>
           Подать заявку
         </Button>
       </div>
-      <LotViewModal
-        lot={lot}
-        isOpen={isModalOpen}
-        onCancel={handleModalCancel}
-        onOk={handleCreateClaimClick}
-        // isClaimLoading={isLoading}
-      />
       {contextHolder}
     </div>
   );

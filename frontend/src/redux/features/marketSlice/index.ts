@@ -16,6 +16,8 @@ import {
   TransferRequest,
   ListLotUpdateRequestAdmin,
   GetLotsApiArg,
+  LotsLearnerPage,
+  LotWithBuyDate,
 } from './../../../types/api';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -41,7 +43,10 @@ export type MarketStateType = {
 };
 
 const defaultInitialState: MarketStateType = {
-  balances: [],
+  balances: [
+    { userId: '2c6ae16d-4ff4-4951-bd3a-f983c67f03b3', balance: 1000 },
+    { userId: '5d39cf0e-4b5d-4141-b4bc-407c95187758', balance: 1000 },
+  ],
   buyLotClaims: [],
   listLotClaims: [],
   lots: [],
@@ -54,7 +59,7 @@ const deserializedState = deserializeStateFromLocalStorage<MarketStateType>(
 
 export const marketSlice = createSlice({
   name: 'market',
-  initialState: defaultInitialState,
+  initialState: deserializedState || defaultInitialState,
   reducers: {
     createBuyLotClaim: (
       state,
@@ -95,6 +100,7 @@ export const marketSlice = createSlice({
       );
       if (claimToApprove) {
         claimToApprove.status = ClaimStatus.Approved;
+        claimToApprove.approveDate = new Date();
       }
     },
     rejectBuyLotClaim: (state, action: PayloadAction<{ id: string }>) => {
@@ -130,6 +136,7 @@ export const marketSlice = createSlice({
       );
       if (claimToReject) {
         claimToReject.status = ClaimStatus.Declined;
+        claimToReject.lot.status = LotStatus.Withdrawn;
       }
     },
     approveTransferClaim: (state, action: PayloadAction<{ id: string }>) => {
@@ -233,7 +240,7 @@ export function useBuyedLots({
   priceFrom,
   priceTo,
   size = 10,
-}: GetBuyedLotsApiArg): LotsPage {
+}: GetBuyedLotsApiArg): LotsLearnerPage {
   const [authState] = useAuth();
   const userClaims = useSelector(
     (state: RootState) => state.market.buyLotClaims
@@ -245,7 +252,10 @@ export function useBuyedLots({
         claim.buyer.id === authState.userId &&
         claim.status === ClaimStatus.Approved
     )
-    .map((claim) => claim.lot);
+    .map<LotWithBuyDate>((claim) => ({
+      ...claim.lot,
+      buyDate: claim.approveDate,
+    }));
 
   const filteredLots = lots.filter((lot) => {
     return (
@@ -270,7 +280,6 @@ export function useSellingLots({
   lotNumber,
   lotTitle,
   page = 1,
-  performerId,
   priceFrom,
   priceTo,
   status,
@@ -280,15 +289,13 @@ export function useSellingLots({
   const lots = useSelector((state: RootState) => state.market.lots);
 
   const lotsInSale = lots.filter(
-    (lot) =>
-      lot.performer.id === authState.userId && lot.status === LotStatus.OnSale
+    (lot) => lot.performer.id === authState.userId
   );
 
   const filteredLots = lotsInSale.filter((lot) => {
     return (
       (!lotNumber || lot.number === lotNumber) &&
       (!lotTitle || lot.title.includes(lotTitle)) &&
-      (!performerId || lot.performer.id === performerId) &&
       (!priceFrom || lot.price >= priceFrom) &&
       (!priceTo || lot.price <= priceTo) &&
       (!status || lot.status === status)
@@ -315,6 +322,7 @@ export function useBuyLotClaims({
   size = 10,
 }: GetBuyLotClaimsApiArg): BuyLotClaimsPage {
   const claims = useSelector((state: RootState) => state.market.buyLotClaims);
+  console.log(claims);
 
   const dateFromDate = dateFrom ? new Date(dateFrom) : null;
   const dateToDate = dateTo ? new Date(dateTo) : null;
@@ -495,8 +503,9 @@ export function useGetTransferClaimById(id: string): TransferClaim | undefined {
   return claims.find((claim) => claim.id === id);
 }
 
-export function useGetLotById(id: string): Lot | undefined {
+export function useGetLotById(id: string | null): Lot | undefined {
   const lots = useSelector((state: RootState) => state.market.lots);
+  if (!id) return undefined;
   return lots.find((lot) => lot.id === id);
 }
 
@@ -529,6 +538,7 @@ export function useCreateBuyLotClaim() {
         date: new Date(),
         lot: lot,
         status: ClaimStatus.Waiting,
+        approveDate: null,
       };
 
       dispatch(createBuyLotClaim({ claim, userId: authState.userId! }));

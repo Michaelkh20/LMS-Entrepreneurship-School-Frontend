@@ -5,11 +5,15 @@ import { BasePageLayout } from '@/components/Layouts/BasePageLayout/BasePageLayo
 import { ClaimListLotViewModal } from '@/components/Modals';
 import { Button, Modal } from 'antd';
 import LotListingForm from '@/components/Forms/LotListing';
+import { useCreateListLotClaim } from '@/redux/features/marketSlice';
+import { ListingLotFormValues } from '@/types/forms';
+import { ClaimPlacingLotTableWithFilterLearner } from '@/components/TableWithFilterNew/Components/ClaimPlacingLotTableWithFilterLearner';
 
 export default function LotsListingPage() {
   const [isModalViewOpen, setIsModalViewOpen] = useState(false);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [claimId, setClaimId] = React.useState<string | null>(null);
+  const createListLotClaim = useCreateListLotClaim();
 
   const handleOnRowClick = (id: string) => {
     setClaimId(id);
@@ -18,6 +22,11 @@ export default function LotsListingPage() {
 
   const handlePlaceClaimClick = () => {
     setIsModalFormOpen(true);
+  };
+
+  const handleFinish = (values: ListingLotFormValues) => {
+    createListLotClaim(values);
+    setIsModalFormOpen(false);
   };
 
   const handleCancel = () => {
@@ -35,8 +44,8 @@ export default function LotsListingPage() {
 
   return (
     <BasePageLayout header={header}>
-      <ClaimPlacingLotTableWithFilter
-        onRow={(record, rowindex) => {
+      <ClaimPlacingLotTableWithFilterLearner
+        onRow={(record) => {
           return {
             onClick: () => handleOnRowClick(record.id),
           };
@@ -45,7 +54,6 @@ export default function LotsListingPage() {
       <ClaimListLotViewModal
         claimId={claimId}
         isOpen={isModalViewOpen}
-        onCancel={() => {}}
         onExit={() => setIsModalViewOpen(false)}
       />
       <Modal
@@ -55,7 +63,7 @@ export default function LotsListingPage() {
         centered
         onCancel={handleCancel}
       >
-        <LotListingForm onFinish={handleCancel} />
+        <LotListingForm onFinish={handleFinish} />
       </Modal>
     </BasePageLayout>
   );

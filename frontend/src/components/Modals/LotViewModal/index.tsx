@@ -1,40 +1,86 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import { Button, Modal } from 'antd';
 import cn from 'classnames/bind';
 import React, { MouseEventHandler } from 'react';
 
 import PriceQuestionTooltip from '@/components/LotCard/components/QuestionTooltip';
-import { useGetLotByIdQuery } from '@/redux/services/api';
 
 import styles from './LotViewModal.module.css';
 
 import { lotStatusToString } from '@/util/enumsToString';
 import { EditOutlined } from '@ant-design/icons';
-import Link from 'next/link';
-import dateToFormatString from '@/util/dateToFormatString';
 import { LotStatus } from '@/types/common';
-import { LotCardViewType } from '@/components/LotCard/mock';
+import { useGetLotById } from '@/redux/features/marketSlice';
 
 type Props = {
-  // lotId?: string | null;
+  lotId: string | null;
   isOpen: boolean;
   onCancel: MouseEventHandler;
   onOk: MouseEventHandler;
-  // isClaimLoading: boolean;
-  lot: LotCardViewType;
 };
 
 const cx = cn.bind(styles);
 
-export default function LotViewModal({
-  // lotId,
-  isOpen,
-  onCancel,
-  onOk,
-  // isClaimLoading,
-  lot: data,
-}: Props) {
-  // const { data } = useGetLotByIdQuery(lotId && isOpen ? lotId : skipToken);
+export default function LotViewModal({ lotId, isOpen, onCancel, onOk }: Props) {
+  const data = useGetLotById(lotId);
+
+  let content: React.JSX.Element | null = null;
+
+  if (data) {
+    content = (
+      <>
+        <div className={styles.ModalContainer}>
+          <div className={styles.FirstRow}>
+            <div className={styles.PropertyContainer}>
+              <p className={styles.PropertyTitle}>Статус</p>
+              <p
+                className={cx('PropertyValue', {
+                  StatusApproval: data.status === LotStatus.Approval,
+                  StatusActive: data.status === LotStatus.OnSale,
+                  StatusInactive: data.status === LotStatus.Withdrawn,
+                })}
+              >
+                {lotStatusToString(data.status)}
+              </p>
+            </div>
+            <Property title="Название" value={data.title} />
+            <div className={styles.PropertyContainer}>
+              <p className={styles.PropertyTitle}>Стоимость</p>
+              <p className={cx('PropertyValue', 'Price')}>
+                {data.price} ШП
+                <PriceQuestionTooltip />
+              </p>
+            </div>
+          </div>
+
+          <Property title="Описание" value={data.description} />
+          <Property title="Условия" value={data.terms} />
+          <Property title="Исполнитель" value={data.performer.name} />
+          <Property
+            title="Дата размещения"
+            value={
+              data.listingDate
+                ? data.listingDate.toLocaleDateString('ru-RU', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: 'numeric',
+                  })
+                : '-'
+            }
+          />
+        </div>
+        <div className={styles.Actions}>
+          <Button
+            size="large"
+            type="primary"
+            onClick={onOk}
+            icon={<EditOutlined />}
+          >
+            Подать заявку
+          </Button>
+        </div>
+      </>
+    );
+  }
 
   return (
     <Modal
@@ -44,56 +90,7 @@ export default function LotViewModal({
       footer={null}
       centered
     >
-      <div className={styles.ModalContainer}>
-        <div className={styles.FirstRow}>
-          <div className={styles.PropertyContainer}>
-            <p className={styles.PropertyTitle}>Статус</p>
-            <p
-              className={cx('PropertyValue', {
-                StatusApproval: data?.status === LotStatus.Approval,
-                StatusActive: data?.status === LotStatus.OnSale,
-                StatusInactive: data?.status === LotStatus.Withdrawn,
-              })}
-            >
-              {lotStatusToString(data?.status)}
-            </p>
-          </div>
-          <Property title="Название" value={data?.title || ''} />
-          <div className={styles.PropertyContainer}>
-            <p className={styles.PropertyTitle}>Стоимость</p>
-            <p className={cx('PropertyValue', 'Price')}>
-              {data?.price} ШП
-              <PriceQuestionTooltip />
-            </p>
-          </div>
-        </div>
-
-        <Property title="Описание" value={data?.description || ''} />
-        <Property title="Условия" value={data?.terms || ''} />
-        <Property title="Исполнитель" value={data?.performer || ''} />
-        <Property
-          title="Дата размещения"
-          value={data?.date.toLocaleDateString('ru-RU', {
-            year: 'numeric',
-            month: '2-digit',
-            day: 'numeric',
-          })}
-        />
-      </div>
-      <div className={styles.Actions}>
-        <Button size="large" type="default" onClick={onCancel}>
-          Назад
-        </Button>
-        <Button
-          size="large"
-          type="primary"
-          onClick={onOk}
-          icon={<EditOutlined />}
-          // loading={isClaimLoading}
-        >
-          Подать заявку
-        </Button>
-      </div>
+      {content}
     </Modal>
   );
 }

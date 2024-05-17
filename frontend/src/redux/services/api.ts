@@ -376,7 +376,7 @@ export const api = createApi({
     getTeamSnippetList: build.query<ITeamsList, void>({
       query: () => ({
         url: `/teams/list`,
-        params: { size: 999_999, sort: 'teamNumber,asc' },
+        params: { size: 999_999 },
         responseHandler: getResponseHandler(TeamsListTransformer),
       }),
     }),
